@@ -2,7 +2,7 @@
 
 ![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api) ![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API) ![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API) ![PyPI - License](https://img.shields.io/pypi/l/gitcode-api)
 
-![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=readthedocs&link=README.zh.md) ![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=readthedocs&link=README.md)
+![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html) ![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md) ![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)
 
 `gitcode-api` 是一个由社区维护的 GitCode REST API Python SDK。它提供易用的同步和异步客户端、按资源分组的调用入口，以及轻量级响应模型，帮助你在 Python 中更方便地使用 GitCode，而不必手写原始 HTTP 请求。
 

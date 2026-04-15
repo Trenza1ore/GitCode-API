@@ -1,10 +1,14 @@
 [project]
 name = "gitcode-api"
-version = "1.0.1"
-description = ""
+version = "1.0.2"
+description = "Easy to use Python SDK for the GitCode REST API, community-maintained."
+keywords = ["gitcode", "git", "devops", "api", "sdk", "python", "httpx", "client"]
 readme = "README.md"
 requires-python = ">=3.9,<4"
 license = "MIT"
+authors = [
+    {name = "Hugo Huang", email = "hugo@hugohuang.com"}
+]
 classifiers = [
     'Development Status :: 4 - Beta',
     "License :: OSI Approved :: MIT License",
@@ -47,6 +51,7 @@ dev = [{ include-group = "test" }, { include-group = "format" }, { include-group
 [project.urls]
 github = "https://github.com/Trenza1ore/GitCode-API"
 gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
+documentation = "https://gitcode-api.readthedocs.io/en/latest/index.html"
 
 [tool.uv]
 default-groups = ['test']
