@@ -22,7 +22,7 @@ def main() -> None:
         print("")
         print("recent commits:")
         for commit in commits[: config.per_page]:
-            print(f"- {commit.get('short_id', commit.get('id'))}: {commit.get('title', commit.get('message'))}")
+            print(f"- {str(commit.get('sha'))[:10]}... {(commit.get('commit', {}).get('message')).splitlines()[0]}")
     finally:
         client.close()
 
