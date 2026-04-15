@@ -1,6 +1,6 @@
 """Repository, contents, branch, and commit resource groups."""
 
-from typing import Any, List
+from typing import Any, Dict, List, Optional, Union
 
 from .._models import (
     APIObject,
@@ -24,7 +24,7 @@ from ._shared import AsyncResource, SyncResource
 class ReposResource(SyncResource):
     """Synchronous repository endpoints."""
 
-    def get(self, *, owner: str | None = None, repo: str | None = None) -> Repository:
+    def get(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> Repository:
         """Get a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -36,14 +36,14 @@ class ReposResource(SyncResource):
     def list_user(
         self,
         *,
-        visibility: str | None = None,
-        affiliation: str | None = None,
-        type: str | None = None,
-        sort: str | None = None,
-        direction: str | None = None,
-        q: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        visibility: Optional[str] = None,
+        affiliation: Optional[str] = None,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        q: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Repository]:
         """List repositories visible to the authenticated user.
 
@@ -77,11 +77,11 @@ class ReposResource(SyncResource):
         self,
         *,
         owner: str,
-        type: str | None = None,
-        sort: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Repository]:
         """List public repositories for a user or owner path.
 
@@ -110,15 +110,15 @@ class ReposResource(SyncResource):
         self,
         *,
         name: str,
-        description: str | None = None,
-        path: str | None = None,
-        private: bool | None = None,
-        auto_init: bool | None = None,
-        has_issues: bool | None = None,
-        has_wiki: bool | None = None,
-        default_branch: str | None = None,
-        gitignore_template: str | None = None,
-        license_template: str | None = None,
+        description: Optional[str] = None,
+        path: Optional[str] = None,
+        private: Optional[bool] = None,
+        auto_init: Optional[bool] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        default_branch: Optional[str] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
     ) -> Repository:
         """Create a repository for the authenticated user.
 
@@ -157,18 +157,18 @@ class ReposResource(SyncResource):
         *,
         org: str,
         name: str,
-        description: str | None = None,
-        homepage: str | None = None,
-        path: str | None = None,
-        private: bool | None = None,
-        public: int | None = None,
-        auto_init: bool | None = None,
-        has_issues: bool | None = None,
-        has_wiki: bool | None = None,
-        can_comment: bool | None = None,
-        default_branch: str | None = None,
-        gitignore_template: str | None = None,
-        license_template: str | None = None,
+        description: Optional[str] = None,
+        homepage: Optional[str] = None,
+        path: Optional[str] = None,
+        private: Optional[bool] = None,
+        public: Optional[int] = None,
+        auto_init: Optional[bool] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        can_comment: Optional[bool] = None,
+        default_branch: Optional[str] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
     ) -> Repository:
         """Create a repository under an organization.
 
@@ -209,7 +209,7 @@ class ReposResource(SyncResource):
             },
         )
 
-    def update(self, *, owner: str | None = None, repo: str | None = None, **changes: Any) -> Repository:
+    def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes: Any) -> Repository:
         """Update repository metadata.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -219,7 +219,7 @@ class ReposResource(SyncResource):
         """
         return self._model("PATCH", self._client._repo_path(owner=owner, repo=repo), Repository, json=changes)
 
-    def delete(self, *, owner: str | None = None, repo: str | None = None) -> None:
+    def delete(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Delete a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -230,11 +230,11 @@ class ReposResource(SyncResource):
     def fork(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        namespace: str | None = None,
-        path: str | None = None,
-        name: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        namespace: Optional[str] = None,
+        path: Optional[str] = None,
+        name: Optional[str] = None,
     ) -> Repository:
         """Fork a repository.
 
@@ -255,11 +255,11 @@ class ReposResource(SyncResource):
     def list_forks(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        sort: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Repository]:
         """List forks of a repository.
 
@@ -280,10 +280,10 @@ class ReposResource(SyncResource):
     def list_contributors(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Contributor]:
         """List repository contributors.
 
@@ -300,7 +300,7 @@ class ReposResource(SyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    def list_languages(self, *, owner: str | None = None, repo: str | None = None) -> dict[str, int]:
+    def list_languages(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> Dict[str, int]:
         """List language statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -312,10 +312,10 @@ class ReposResource(SyncResource):
     def list_stargazers(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[UserSummary]:
         """List users who starred a repository.
 
@@ -335,10 +335,10 @@ class ReposResource(SyncResource):
     def list_subscribers(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[UserSummary]:
         """List users watching a repository.
 
@@ -356,7 +356,7 @@ class ReposResource(SyncResource):
         )
 
     def update_module_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **settings: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
     ) -> APIObject:
         """Update repository module settings.
 
@@ -373,7 +373,7 @@ class ReposResource(SyncResource):
         )
 
     def update_reviewer_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **settings: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
     ) -> APIObject:
         """Update repository reviewer settings.
 
@@ -411,7 +411,7 @@ class ReposResource(SyncResource):
             "POST", self._client._path("org", org, "projects", repo, "transfer"), APIObject, json=payload
         )
 
-    def get_transition(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    def get_transition(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         """Get repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -420,7 +420,9 @@ class ReposResource(SyncResource):
         """
         return self._model("GET", self._client._repo_path("transition", owner=owner, repo=repo), APIObject)
 
-    def update_transition(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    def update_transition(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+    ) -> APIObject:
         """Update repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -432,7 +434,9 @@ class ReposResource(SyncResource):
             "PUT", self._client._repo_path("transition", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    def update_push_config(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    def update_push_config(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+    ) -> APIObject:
         """Update repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -444,7 +448,7 @@ class ReposResource(SyncResource):
             "PUT", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    def get_push_config(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         """Get repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -453,7 +457,7 @@ class ReposResource(SyncResource):
         """
         return self._model("GET", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject)
 
-    def upload_image(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    def upload_image(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
         """Upload an image asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -465,7 +469,7 @@ class ReposResource(SyncResource):
             "POST", self._client._repo_path("img", "upload", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    def upload_file(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    def upload_file(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
         """Upload a file asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -477,7 +481,9 @@ class ReposResource(SyncResource):
             "POST", self._client._repo_path("file", "upload", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    def update_repo_settings(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    def update_repo_settings(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+    ) -> APIObject:
         """Update repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -489,7 +495,7 @@ class ReposResource(SyncResource):
             "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    def get_repo_settings(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         """Get repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -498,7 +504,7 @@ class ReposResource(SyncResource):
         """
         return self._model("GET", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject)
 
-    def get_pull_request_settings(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    def get_pull_request_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         """Get pull request settings for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -508,7 +514,7 @@ class ReposResource(SyncResource):
         return self._model("GET", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), APIObject)
 
     def update_pull_request_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> APIObject:
         """Update pull request settings for a repository.
 
@@ -528,9 +534,9 @@ class ReposResource(SyncResource):
         self,
         *,
         username: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        permission: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        permission: Optional[str] = None,
     ) -> APIObject:
         """Set a repository member role.
 
@@ -547,7 +553,7 @@ class ReposResource(SyncResource):
             json={"permission": permission},
         )
 
-    def transfer(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    def transfer(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
         """Transfer a repository to another owner or namespace.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -557,7 +563,7 @@ class ReposResource(SyncResource):
         """
         return self._model("POST", self._client._repo_path("transfer", owner=owner, repo=repo), APIObject, json=payload)
 
-    def list_customized_roles(self, *, owner: str | None = None, repo: str | None = None) -> List[APIObject]:
+    def list_customized_roles(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[APIObject]:
         """List customized roles for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -567,7 +573,9 @@ class ReposResource(SyncResource):
         data = self._request("GET", self._client._repo_path("customized_roles", owner=owner, repo=repo))
         return [as_model(item, APIObject) for item in data]
 
-    def get_download_statistics(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> APIObject:
+    def get_download_statistics(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+    ) -> APIObject:
         """Get download statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -582,7 +590,7 @@ class ReposResource(SyncResource):
             params=params,
         )
 
-    def get_contributor_statistics(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    def get_contributor_statistics(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         """Get code contribution statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -598,10 +606,10 @@ class ReposResource(SyncResource):
     def list_events(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[APIObject]:
         """List repository events.
 
@@ -626,9 +634,9 @@ class RepoContentsResource(SyncResource):
         self,
         *,
         path: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        ref: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        ref: Optional[str] = None,
     ) -> ContentObject:
         """Get a file or directory entry from a repository.
 
@@ -651,11 +659,11 @@ class RepoContentsResource(SyncResource):
         path: str,
         content: str,
         message: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        branch: str | None = None,
-        author_name: str | None = None,
-        author_email: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+        author_name: Optional[str] = None,
+        author_email: Optional[str] = None,
     ) -> CommitResult:
         """Create a file in a repository.
 
@@ -688,11 +696,11 @@ class RepoContentsResource(SyncResource):
         content: str,
         message: str,
         sha: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        branch: str | None = None,
-        author_name: str | None = None,
-        author_email: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+        author_name: Optional[str] = None,
+        author_email: Optional[str] = None,
     ) -> CommitResult:
         """Update a file in a repository.
 
@@ -726,11 +734,11 @@ class RepoContentsResource(SyncResource):
         path: str,
         message: str,
         sha: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        branch: str | None = None,
-        author_name: str | None = None,
-        author_email: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+        author_name: Optional[str] = None,
+        author_email: Optional[str] = None,
     ) -> CommitResult:
         """Delete a file from a repository.
 
@@ -759,10 +767,10 @@ class RepoContentsResource(SyncResource):
     def list_paths(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        ref_name: str | None = None,
-        file_name: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        ref_name: Optional[str] = None,
+        file_name: Optional[str] = None,
     ) -> List[str]:
         """List repository paths known to GitCode.
 
@@ -782,11 +790,11 @@ class RepoContentsResource(SyncResource):
         self,
         *,
         sha: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        recursive: int | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        recursive: Optional[int] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> Tree:
         """Get a Git tree object.
 
@@ -805,7 +813,7 @@ class RepoContentsResource(SyncResource):
             params={"recursive": recursive, "page": page, "per_page": per_page},
         )
 
-    def get_blob(self, *, sha: str, owner: str | None = None, repo: str | None = None) -> Blob:
+    def get_blob(self, *, sha: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Blob:
         """Get a Git blob object by SHA.
 
         :param sha: Blob SHA.
@@ -819,9 +827,9 @@ class RepoContentsResource(SyncResource):
         self,
         *,
         path: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        ref: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        ref: Optional[str] = None,
     ) -> bytes:
         """Download raw file bytes from a repository.
 
@@ -845,12 +853,12 @@ class BranchesResource(SyncResource):
     def list(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        sort: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Branch]:
         """List branches in a repository.
 
@@ -869,7 +877,7 @@ class BranchesResource(SyncResource):
             params={"sort": sort, "direction": direction, "page": page, "per_page": per_page},
         )
 
-    def get(self, *, branch: str, owner: str | None = None, repo: str | None = None) -> Branch:
+    def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         """Get a single branch.
 
         :param branch: Branch name.
@@ -879,7 +887,7 @@ class BranchesResource(SyncResource):
         """
         return self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), Branch)
 
-    def create(self, *, branch: str, ref: str, owner: str | None = None, repo: str | None = None) -> Branch:
+    def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         """Create a branch from an existing ref.
 
         :param branch: New branch name.
@@ -895,7 +903,7 @@ class BranchesResource(SyncResource):
             json={"branch_name": branch, "refs": ref},
         )
 
-    def list_protected(self, *, owner: str | None = None, repo: str | None = None) -> List[ProtectedBranch]:
+    def list_protected(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[ProtectedBranch]:
         """List protected branch rules for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -915,12 +923,12 @@ class CommitsResource(SyncResource):
     def list(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        sha: str | None = None,
-        path: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sha: Optional[str] = None,
+        path: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Commit]:
         """List commits in a repository.
 
@@ -939,7 +947,7 @@ class CommitsResource(SyncResource):
             params={"sha": sha, "path": path, "page": page, "per_page": per_page},
         )
 
-    def get(self, *, sha: str, owner: str | None = None, repo: str | None = None) -> Commit:
+    def get(self, *, sha: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Commit:
         """Get a single commit.
 
         :param sha: Commit SHA or branch name accepted by the API.
@@ -949,7 +957,9 @@ class CommitsResource(SyncResource):
         """
         return self._model("GET", self._client._repo_path("commits", sha, owner=owner, repo=repo), Commit)
 
-    def compare(self, *, base: str, head: str, owner: str | None = None, repo: str | None = None) -> CommitComparison:
+    def compare(
+        self, *, base: str, head: str, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> CommitComparison:
         """Compare two refs in a repository.
 
         :param base: Base commit SHA, branch, or tag.
@@ -967,10 +977,10 @@ class CommitsResource(SyncResource):
     def list_comments(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[CommitComment]:
         """List commit comments for a repository.
 
@@ -990,9 +1000,9 @@ class CommitsResource(SyncResource):
     def get_comment(
         self,
         *,
-        comment_id: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
+        comment_id: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> CommitComment:
         """Get a single commit comment.
 
@@ -1010,10 +1020,10 @@ class CommitsResource(SyncResource):
         *,
         sha: str,
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        path: str | None = None,
-        position: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        path: Optional[str] = None,
+        position: Optional[int] = None,
     ) -> CommitComment:
         """Create a comment on a commit.
 
@@ -1035,10 +1045,10 @@ class CommitsResource(SyncResource):
     def update_comment(
         self,
         *,
-        comment_id: int | str,
+        comment_id: Union[int, str],
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> CommitComment:
         """Update a commit comment.
 
@@ -1055,7 +1065,7 @@ class CommitsResource(SyncResource):
             json={"body": body},
         )
 
-    def delete_comment(self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    def delete_comment(self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Delete a commit comment.
 
         :param comment_id: Commit comment identifier.
@@ -1068,7 +1078,7 @@ class CommitsResource(SyncResource):
 class AsyncReposResource(AsyncResource):
     """Asynchronous repository endpoints."""
 
-    async def get(self, *, owner: str | None = None, repo: str | None = None) -> Repository:
+    async def get(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> Repository:
         return await self._model("GET", self._client._repo_path(owner=owner, repo=repo), Repository)
 
     async def list_user(self, **params: Any) -> List[Repository]:
@@ -1085,24 +1095,26 @@ class AsyncReposResource(AsyncResource):
         payload["name"] = name
         return await self._model("POST", self._client._path("orgs", org, "repos"), Repository, json=payload)
 
-    async def update(self, *, owner: str | None = None, repo: str | None = None, **changes: Any) -> Repository:
+    async def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes: Any) -> Repository:
         return await self._model("PATCH", self._client._repo_path(owner=owner, repo=repo), Repository, json=changes)
 
-    async def delete(self, *, owner: str | None = None, repo: str | None = None) -> None:
+    async def delete(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         await self._request("DELETE", self._client._repo_path(owner=owner, repo=repo))
 
-    async def fork(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> Repository:
+    async def fork(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> Repository:
         return await self._model(
             "POST", self._client._repo_path("forks", owner=owner, repo=repo), Repository, json=payload
         )
 
-    async def list_forks(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[Repository]:
+    async def list_forks(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+    ) -> List[Repository]:
         return await self._models(
             "GET", self._client._repo_path("forks", owner=owner, repo=repo), Repository, params=params
         )
 
     async def list_contributors(
-        self, *, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[Contributor]:
         return await self._models(
             "GET",
@@ -1111,18 +1123,18 @@ class AsyncReposResource(AsyncResource):
             params=params,
         )
 
-    async def list_languages(self, *, owner: str | None = None, repo: str | None = None) -> dict[str, int]:
+    async def list_languages(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> Dict[str, int]:
         return await self._request("GET", self._client._repo_path("languages", owner=owner, repo=repo))
 
     async def list_stargazers(
-        self, *, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[UserSummary]:
         return await self._models(
             "GET", self._client._repo_path("stargazers", owner=owner, repo=repo), UserSummary, params=params
         )
 
     async def list_subscribers(
-        self, *, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[UserSummary]:
         return await self._models(
             "GET",
@@ -1132,14 +1144,14 @@ class AsyncReposResource(AsyncResource):
         )
 
     async def update_module_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **settings: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
     ) -> APIObject:
         return await self._model(
             "PUT", self._client._repo_path("module", "setting", owner=owner, repo=repo), APIObject, json=settings
         )
 
     async def update_reviewer_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **settings: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
     ) -> APIObject:
         return await self._model(
             "PUT", self._client._repo_path("reviewer", owner=owner, repo=repo), APIObject, json=settings
@@ -1153,60 +1165,69 @@ class AsyncReposResource(AsyncResource):
             "POST", self._client._path("org", org, "projects", repo, "transfer"), APIObject, json=payload
         )
 
-    async def get_transition(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    async def get_transition(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         return await self._model("GET", self._client._repo_path("transition", owner=owner, repo=repo), APIObject)
 
     async def update_transition(
-        self, *, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> APIObject:
         return await self._model(
             "PUT", self._client._repo_path("transition", owner=owner, repo=repo), APIObject, json=payload
         )
 
     async def update_push_config(
-        self, *, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> APIObject:
         return await self._model(
             "PUT", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    async def get_push_config(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    async def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         return await self._model("GET", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject)
 
-    async def upload_image(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    async def upload_image(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+    ) -> APIObject:
         return await self._model(
             "POST", self._client._repo_path("img", "upload", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    async def upload_file(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    async def upload_file(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+    ) -> APIObject:
         return await self._model(
             "POST", self._client._repo_path("file", "upload", owner=owner, repo=repo), APIObject, json=payload
         )
 
     async def update_repo_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> APIObject:
         return await self._model(
             "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    async def get_repo_settings(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    async def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         return await self._model("GET", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject)
 
-    async def get_pull_request_settings(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    async def get_pull_request_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         return await self._model(
             "GET", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), APIObject
         )
 
     async def update_pull_request_settings(
-        self, *, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> APIObject:
         return await self._model(
             "PUT", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), APIObject, json=payload
         )
 
     async def set_member_role(
-        self, *, username: str, owner: str | None = None, repo: str | None = None, permission: str | None = None
+        self,
+        *,
+        username: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        permission: Optional[str] = None,
     ) -> APIObject:
         return await self._model(
             "PUT",
@@ -1215,28 +1236,32 @@ class AsyncReposResource(AsyncResource):
             json={"permission": permission},
         )
 
-    async def transfer(self, *, owner: str | None = None, repo: str | None = None, **payload: Any) -> APIObject:
+    async def transfer(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
         return await self._model(
             "POST", self._client._repo_path("transfer", owner=owner, repo=repo), APIObject, json=payload
         )
 
-    async def list_customized_roles(self, *, owner: str | None = None, repo: str | None = None) -> List[APIObject]:
+    async def list_customized_roles(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[APIObject]:
         data = await self._request("GET", self._client._repo_path("customized_roles", owner=owner, repo=repo))
         return [as_model(item, APIObject) for item in data]
 
     async def get_download_statistics(
-        self, *, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> APIObject:
         return await self._model(
             "GET", self._client._repo_path("download_statistics", owner=owner, repo=repo), APIObject, params=params
         )
 
-    async def get_contributor_statistics(self, *, owner: str | None = None, repo: str | None = None) -> APIObject:
+    async def get_contributor_statistics(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         return await self._model(
             "GET", self._client._repo_path("contributors", "statistic", owner=owner, repo=repo), APIObject
         )
 
-    async def list_events(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[APIObject]:
+    async def list_events(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+    ) -> List[APIObject]:
         data = await self._request("GET", self._client._repo_path("events", owner=owner, repo=repo), params=params)
         return [as_model(item, APIObject) for item in data]
 
@@ -1245,7 +1270,7 @@ class AsyncRepoContentsResource(AsyncResource):
     """Asynchronous repository contents endpoints."""
 
     async def get(
-        self, *, path: str, owner: str | None = None, repo: str | None = None, ref: str | None = None
+        self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None, ref: Optional[str] = None
     ) -> ContentObject:
         return await self._model(
             "GET",
@@ -1260,11 +1285,11 @@ class AsyncRepoContentsResource(AsyncResource):
         path: str,
         content: str,
         message: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        branch: str | None = None,
-        author_name: str | None = None,
-        author_email: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+        author_name: Optional[str] = None,
+        author_email: Optional[str] = None,
     ) -> CommitResult:
         return await self._model(
             "POST",
@@ -1285,11 +1310,11 @@ class AsyncRepoContentsResource(AsyncResource):
         content: str,
         message: str,
         sha: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        branch: str | None = None,
-        author_name: str | None = None,
-        author_email: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+        author_name: Optional[str] = None,
+        author_email: Optional[str] = None,
     ) -> CommitResult:
         return await self._model(
             "PUT",
@@ -1310,11 +1335,11 @@ class AsyncRepoContentsResource(AsyncResource):
         path: str,
         message: str,
         sha: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        branch: str | None = None,
-        author_name: str | None = None,
-        author_email: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+        author_name: Optional[str] = None,
+        author_email: Optional[str] = None,
     ) -> CommitResult:
         return await self._model(
             "DELETE",
@@ -1331,10 +1356,10 @@ class AsyncRepoContentsResource(AsyncResource):
     async def list_paths(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        ref_name: str | None = None,
-        file_name: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        ref_name: Optional[str] = None,
+        file_name: Optional[str] = None,
     ) -> List[str]:
         return await self._request(
             "GET",
@@ -1346,11 +1371,11 @@ class AsyncRepoContentsResource(AsyncResource):
         self,
         *,
         sha: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        recursive: int | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        recursive: Optional[int] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> Tree:
         return await self._model(
             "GET",
@@ -1359,11 +1384,11 @@ class AsyncRepoContentsResource(AsyncResource):
             params={"recursive": recursive, "page": page, "per_page": per_page},
         )
 
-    async def get_blob(self, *, sha: str, owner: str | None = None, repo: str | None = None) -> Blob:
+    async def get_blob(self, *, sha: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Blob:
         return await self._model("GET", self._client._repo_path("git", "blobs", sha, owner=owner, repo=repo), Blob)
 
     async def get_raw(
-        self, *, path: str, owner: str | None = None, repo: str | None = None, ref: str | None = None
+        self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None, ref: Optional[str] = None
     ) -> bytes:
         return await self._request(
             "GET", self._client._repo_file_path("raw", path, owner=owner, repo=repo), params={"ref": ref}, raw=True
@@ -1373,15 +1398,15 @@ class AsyncRepoContentsResource(AsyncResource):
 class AsyncBranchesResource(AsyncResource):
     """Asynchronous branch endpoints."""
 
-    async def list(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[Branch]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Branch]:
         return await self._models(
             "GET", self._client._repo_path("branches", owner=owner, repo=repo), Branch, params=params
         )
 
-    async def get(self, *, branch: str, owner: str | None = None, repo: str | None = None) -> Branch:
+    async def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         return await self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), Branch)
 
-    async def create(self, *, branch: str, ref: str, owner: str | None = None, repo: str | None = None) -> Branch:
+    async def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         return await self._model(
             "POST",
             self._client._repo_path("branches", owner=owner, repo=repo),
@@ -1389,7 +1414,7 @@ class AsyncBranchesResource(AsyncResource):
             json={"branch_name": branch, "refs": ref},
         )
 
-    async def list_protected(self, *, owner: str | None = None, repo: str | None = None) -> List[ProtectedBranch]:
+    async def list_protected(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[ProtectedBranch]:
         return await self._models(
             "GET", self._client._repo_path("protect_branches", owner=owner, repo=repo), ProtectedBranch
         )
@@ -1398,30 +1423,30 @@ class AsyncBranchesResource(AsyncResource):
 class AsyncCommitsResource(AsyncResource):
     """Asynchronous commit endpoints."""
 
-    async def list(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[Commit]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Commit]:
         return await self._models(
             "GET", self._client._repo_path("commits", owner=owner, repo=repo), Commit, params=params
         )
 
-    async def get(self, *, sha: str, owner: str | None = None, repo: str | None = None) -> Commit:
+    async def get(self, *, sha: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Commit:
         return await self._model("GET", self._client._repo_path("commits", sha, owner=owner, repo=repo), Commit)
 
     async def compare(
-        self, *, base: str, head: str, owner: str | None = None, repo: str | None = None
+        self, *, base: str, head: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> CommitComparison:
         return await self._model(
             "GET", self._client._repo_path("compare", f"{base}...{head}", owner=owner, repo=repo), CommitComparison
         )
 
     async def list_comments(
-        self, *, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[CommitComment]:
         return await self._models(
             "GET", self._client._repo_path("comments", owner=owner, repo=repo), CommitComment, params=params
         )
 
     async def get_comment(
-        self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> CommitComment:
         return await self._model(
             "GET", self._client._repo_path("comments", comment_id, owner=owner, repo=repo), CommitComment
@@ -1432,10 +1457,10 @@ class AsyncCommitsResource(AsyncResource):
         *,
         sha: str,
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        path: str | None = None,
-        position: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        path: Optional[str] = None,
+        position: Optional[int] = None,
     ) -> CommitComment:
         return await self._model(
             "POST",
@@ -1445,7 +1470,7 @@ class AsyncCommitsResource(AsyncResource):
         )
 
     async def update_comment(
-        self, *, comment_id: int | str, body: str, owner: str | None = None, repo: str | None = None
+        self, *, comment_id: Union[int, str], body: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> CommitComment:
         return await self._model(
             "PATCH",
@@ -1454,5 +1479,7 @@ class AsyncCommitsResource(AsyncResource):
             json={"body": body},
         )
 
-    async def delete_comment(self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    async def delete_comment(
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         await self._request("DELETE", self._client._repo_path("comments", comment_id, owner=owner, repo=repo))

@@ -1,6 +1,6 @@
 """Issue, pull request, label, milestone, and member resource groups."""
 
-from typing import Any, List
+from typing import Any, List, Optional, Union
 
 from .._models import (
     APIObject,
@@ -23,7 +23,7 @@ from .._models import (
 from ._shared import AsyncResource, SyncResource
 
 
-def _comma_join(values: List[str] | None) -> str | None:
+def _comma_join(values: Optional[List[str]]) -> Optional[str]:
     """Join a list of strings into the comma-separated format used by the API."""
     if not values:
         return None
@@ -36,13 +36,13 @@ class IssuesResource(SyncResource):
     def list(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        state: str | None = None,
-        sort: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Issue]:
         """List issues for a repository.
 
@@ -68,7 +68,7 @@ class IssuesResource(SyncResource):
             },
         )
 
-    def get(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> Issue:
+    def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Issue:
         """Get a single issue by number.
 
         :param number: Repository-local issue number.
@@ -82,13 +82,13 @@ class IssuesResource(SyncResource):
         self,
         *,
         owner: str,
-        repo: str | None = None,
+        repo: Optional[str] = None,
         title: str,
-        body: str | None = None,
-        assignee: str | None = None,
-        labels: List[str] | None = None,
-        milestone: int | str | None = None,
-        security_hole: str | None = None,
+        body: Optional[str] = None,
+        assignee: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        milestone: Union[int, str, None] = None,
+        security_hole: Optional[str] = None,
     ) -> Issue:
         """Create an issue for a repository.
 
@@ -121,16 +121,16 @@ class IssuesResource(SyncResource):
     def update(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         owner: str,
-        repo: str | None = None,
-        title: str | None = None,
-        body: str | None = None,
-        state: str | None = None,
-        assignee: str | None = None,
-        labels: List[str] | None = None,
-        milestone: int | str | None = None,
-        security_hole: str | None = None,
+        repo: Optional[str] = None,
+        title: Optional[str] = None,
+        body: Optional[str] = None,
+        state: Optional[str] = None,
+        assignee: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        milestone: Union[int, str, None] = None,
+        security_hole: Optional[str] = None,
     ) -> Issue:
         """Update an existing issue.
 
@@ -166,11 +166,11 @@ class IssuesResource(SyncResource):
     def list_comments(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[IssueComment]:
         """List comments for an issue."""
         return self._models(
@@ -183,10 +183,10 @@ class IssuesResource(SyncResource):
     def create_comment(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> IssueComment:
         """Create a comment on an issue."""
         return self._model(
@@ -199,9 +199,9 @@ class IssuesResource(SyncResource):
     def get_comment(
         self,
         *,
-        comment_id: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
+        comment_id: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> IssueComment:
         """Get a single issue comment by identifier."""
         return self._model(
@@ -213,10 +213,10 @@ class IssuesResource(SyncResource):
     def update_comment(
         self,
         *,
-        comment_id: int | str,
+        comment_id: Union[int, str],
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> IssueComment:
         """Update an issue comment."""
         return self._model(
@@ -226,12 +226,12 @@ class IssuesResource(SyncResource):
             json={"body": body},
         )
 
-    def delete_comment(self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    def delete_comment(self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Delete an issue comment."""
         self._request("DELETE", self._client._repo_path("issues", "comments", comment_id, owner=owner, repo=repo))
 
     def list_pull_requests(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[PullRequest]:
         """List pull requests associated with an issue."""
         return self._models(
@@ -241,7 +241,7 @@ class IssuesResource(SyncResource):
         )
 
     def add_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         """Add labels to an issue."""
         return self._models(
@@ -251,7 +251,9 @@ class IssuesResource(SyncResource):
             json=labels,
         )
 
-    def remove_label(self, *, number: int | str, name: str, owner: str | None = None, repo: str | None = None) -> None:
+    def remove_label(
+        self, *, number: Union[int, str], name: str, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         """Remove one or more labels from an issue."""
         self._request("DELETE", self._client._repo_path("issues", number, "labels", name, owner=owner, repo=repo))
 
@@ -267,11 +269,11 @@ class IssuesResource(SyncResource):
         """List organization issues visible to the current user."""
         return self._models("GET", self._client._path("orgs", org, "issues"), Issue, params=params)
 
-    def get_enterprise_issue(self, *, enterprise: str, number: int | str) -> Issue:
+    def get_enterprise_issue(self, *, enterprise: str, number: Union[int, str]) -> Issue:
         """Get a specific enterprise issue by global issue identifier."""
         return self._model("GET", self._client._path("enterprises", enterprise, "issues", number), Issue)
 
-    def list_enterprise_comments(self, *, enterprise: str, number: int | str, **params: Any) -> List[IssueComment]:
+    def list_enterprise_comments(self, *, enterprise: str, number: Union[int, str], **params: Any) -> List[IssueComment]:
         """List comments for an enterprise issue."""
         return self._models(
             "GET",
@@ -280,12 +282,12 @@ class IssuesResource(SyncResource):
             params=params,
         )
 
-    def list_enterprise_labels(self, *, enterprise: str, issue_id: int | str) -> List[Label]:
+    def list_enterprise_labels(self, *, enterprise: str, issue_id: Union[int, str]) -> List[Label]:
         """List labels attached to an enterprise issue."""
         return self._models("GET", self._client._path("enterprises", enterprise, "issues", issue_id, "labels"), Label)
 
     def list_operation_logs(
-        self, *, owner: str, number: int | str, page: int | None = None, per_page: int | None = None
+        self, *, owner: str, number: Union[int, str], page: Optional[int] = None, per_page: Optional[int] = None
     ) -> List[IssueOperationLog]:
         """List operation logs for an issue."""
         return self._models(
@@ -302,15 +304,15 @@ class PullsResource(SyncResource):
     def list(
         self,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
-        state: str | None = None,
-        sort: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
         **params: Any,
-    ) -> List[PullRequest] | APIObject:
+    ) -> Union[List[PullRequest], APIObject]:
         """List pull requests for a repository."""
         path = self._client._repo_path("pulls", owner=owner, repo=repo)
         response = self._request(
@@ -329,7 +331,7 @@ class PullsResource(SyncResource):
             return as_model(response, APIObject)
         return [as_model(item, PullRequest) for item in response]
 
-    def get(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> PullRequest:
+    def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> PullRequest:
         """Get a single pull request."""
         return self._model("GET", self._client._repo_path("pulls", number, owner=owner, repo=repo), PullRequest)
 
@@ -339,19 +341,19 @@ class PullsResource(SyncResource):
         title: str,
         head: str,
         base: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        body: str | None = None,
-        draft: bool | None = None,
-        assignees: List[str] | None = None,
-        testers: List[str] | None = None,
-        labels: List[str] | None = None,
-        milestone_number: int | None = None,
-        issue: str | None = None,
-        prune_source_branch: bool | None = None,
-        squash: bool | None = None,
-        squash_commit_message: str | None = None,
-        fork_path: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        body: Optional[str] = None,
+        draft: Optional[bool] = None,
+        assignees: Optional[List[str]] = None,
+        testers: Optional[List[str]] = None,
+        labels: Optional[List[str]] = None,
+        milestone_number: Optional[int] = None,
+        issue: Optional[str] = None,
+        prune_source_branch: Optional[bool] = None,
+        squash: Optional[bool] = None,
+        squash_commit_message: Optional[str] = None,
+        fork_path: Optional[str] = None,
     ) -> PullRequest:
         """Create a pull request."""
         return self._model(
@@ -379,15 +381,15 @@ class PullsResource(SyncResource):
     def update(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
-        title: str | None = None,
-        body: str | None = None,
-        state: str | None = None,
-        base: str | None = None,
-        labels: List[str] | None = None,
-        draft: bool | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        title: Optional[str] = None,
+        body: Optional[str] = None,
+        state: Optional[str] = None,
+        base: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        draft: Optional[bool] = None,
     ) -> PullRequest:
         """Update a pull request."""
         return self._model(
@@ -407,11 +409,11 @@ class PullsResource(SyncResource):
     def merge(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
-        merge_commit_message: str | None = None,
-        squash: bool | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        merge_commit_message: Optional[str] = None,
+        squash: Optional[bool] = None,
     ) -> MergeResult:
         """Merge a pull request."""
         return self._model(
@@ -421,7 +423,9 @@ class PullsResource(SyncResource):
             json={"merge_commit_message": merge_commit_message, "squash": squash},
         )
 
-    def get_merge_status(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> MergeStatus:
+    def get_merge_status(
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> MergeStatus:
         """Get mergeability status for a pull request."""
         return self._model(
             "GET",
@@ -429,13 +433,15 @@ class PullsResource(SyncResource):
             MergeStatus,
         )
 
-    def list_commits(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> List[APIObject]:
+    def list_commits(
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[APIObject]:
         """List commits included in a pull request."""
         data = self._request("GET", self._client._repo_path("pulls", number, "commits", owner=owner, repo=repo))
         return [as_model(item, APIObject) for item in data]
 
     def list_files(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[PullRequestFile]:
         """List files changed by a pull request."""
         return self._models(
@@ -447,11 +453,11 @@ class PullsResource(SyncResource):
     def list_comments(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[PullRequestComment]:
         """List comments on a pull request."""
         return self._models(
@@ -464,13 +470,13 @@ class PullsResource(SyncResource):
     def create_comment(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        commit_id: str | None = None,
-        path: str | None = None,
-        position: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        commit_id: Optional[str] = None,
+        path: Optional[str] = None,
+        position: Optional[int] = None,
     ) -> PullRequestComment:
         """Create a pull request comment."""
         return self._model(
@@ -483,9 +489,9 @@ class PullsResource(SyncResource):
     def get_comment(
         self,
         *,
-        comment_id: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
+        comment_id: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> PullRequestComment:
         """Get a single pull request comment."""
         return self._model(
@@ -497,10 +503,10 @@ class PullsResource(SyncResource):
     def update_comment(
         self,
         *,
-        comment_id: int | str,
+        comment_id: Union[int, str],
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> PullRequestComment:
         """Update a pull request comment."""
         return self._model(
@@ -510,11 +516,11 @@ class PullsResource(SyncResource):
             json={"body": body},
         )
 
-    def delete_comment(self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    def delete_comment(self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Delete a pull request comment."""
         self._request("DELETE", self._client._repo_path("pulls", "comments", comment_id, owner=owner, repo=repo))
 
-    def list_labels(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> List[Label]:
+    def list_labels(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> List[Label]:
         """List labels attached to a pull request."""
         return self._models(
             "GET",
@@ -523,7 +529,7 @@ class PullsResource(SyncResource):
         )
 
     def add_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         """Add labels to a pull request."""
         return self._models(
@@ -534,7 +540,7 @@ class PullsResource(SyncResource):
         )
 
     def replace_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         """Replace all labels on a pull request."""
         return self._models(
@@ -544,18 +550,20 @@ class PullsResource(SyncResource):
             json=labels,
         )
 
-    def remove_label(self, *, number: int | str, label: str, owner: str | None = None, repo: str | None = None) -> None:
+    def remove_label(
+        self, *, number: Union[int, str], label: str, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         """Remove a label from a pull request."""
         self._request("DELETE", self._client._repo_path("pulls", number, "labels", label, owner=owner, repo=repo))
 
     def request_review(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         event: str,
-        body: str | None = None,
+        body: Optional[str] = None,
     ) -> PullRequestReview:
         """Submit a pull request review event."""
         return self._model(
@@ -566,7 +574,7 @@ class PullsResource(SyncResource):
         )
 
     def list_operation_logs(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[APIObject]:
         """List operation logs for a pull request."""
         data = self._request(
@@ -577,7 +585,7 @@ class PullsResource(SyncResource):
         return [as_model(item, APIObject) for item in data]
 
     def request_test(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> PullRequestTest:
         """Request testing for a pull request."""
         return self._model(
@@ -588,7 +596,7 @@ class PullsResource(SyncResource):
         )
 
     def update_testers(
-        self, *, number: int | str, testers: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         """Replace pull request testers."""
         return self._model(
@@ -599,7 +607,7 @@ class PullsResource(SyncResource):
         )
 
     def add_testers(
-        self, *, number: int | str, testers: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         """Add testers to a pull request."""
         return self._model(
@@ -610,7 +618,7 @@ class PullsResource(SyncResource):
         )
 
     def update_assignees(
-        self, *, number: int | str, assignees: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         """Replace pull request assignees."""
         return self._model(
@@ -621,7 +629,7 @@ class PullsResource(SyncResource):
         )
 
     def add_assignees(
-        self, *, number: int | str, assignees: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         """Add assignees to a pull request."""
         return self._model(
@@ -632,7 +640,7 @@ class PullsResource(SyncResource):
         )
 
     def remove_assignees(
-        self, *, number: int | str, assignees: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> None:
         """Remove assignees from a pull request."""
         self._request(
@@ -641,7 +649,7 @@ class PullsResource(SyncResource):
             json={"assignees": _comma_join(assignees)},
         )
 
-    def list_issues(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> List[Issue]:
+    def list_issues(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> List[Issue]:
         """List issues linked to a pull request."""
         return self._models("GET", self._client._repo_path("pulls", number, "issues", owner=owner, repo=repo), Issue)
 
@@ -655,7 +663,7 @@ class PullsResource(SyncResource):
         """List pull requests for an organization scope."""
         return self._models("GET", self._client._path("org", org, "pull_requests"), PullRequest, params=params)
 
-    def list_issue_pull_requests(self, *, enterprise: str, number: int | str) -> List[PullRequest]:
+    def list_issue_pull_requests(self, *, enterprise: str, number: Union[int, str]) -> List[PullRequest]:
         """List pull requests associated with an enterprise issue."""
         return self._models(
             "GET",
@@ -667,11 +675,11 @@ class PullsResource(SyncResource):
 class LabelsResource(SyncResource):
     """Synchronous label endpoints."""
 
-    def list(self, *, owner: str | None = None, repo: str | None = None) -> List[Label]:
+    def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[Label]:
         """List repository labels."""
         return self._models("GET", self._client._repo_path("labels", owner=owner, repo=repo), Label)
 
-    def create(self, *, name: str, color: str, owner: str | None = None, repo: str | None = None) -> Label:
+    def create(self, *, name: str, color: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Label:
         """Create a repository label."""
         return self._model(
             "POST",
@@ -684,10 +692,10 @@ class LabelsResource(SyncResource):
         self,
         *,
         original_name: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        name: str | None = None,
-        color: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        name: Optional[str] = None,
+        color: Optional[str] = None,
     ) -> Label:
         """Update a repository label."""
         return self._model(
@@ -697,16 +705,16 @@ class LabelsResource(SyncResource):
             json={"name": name, "color": color},
         )
 
-    def delete(self, *, name: str, owner: str | None = None, repo: str | None = None) -> None:
+    def delete(self, *, name: str, owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Delete a repository label."""
         self._request("DELETE", self._client._repo_path("labels", name, owner=owner, repo=repo))
 
-    def clear_issue_labels(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    def clear_issue_labels(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Remove all labels from an issue."""
         self._request("DELETE", self._client._repo_path("issues", number, "labels", owner=owner, repo=repo))
 
     def replace_issue_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         """Replace all labels on an issue."""
         return self._models(
@@ -720,10 +728,10 @@ class LabelsResource(SyncResource):
         self,
         *,
         enterprise: str,
-        search: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        search: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
         api_version: str = "v5",
     ) -> List[Label]:
         """List labels for an enterprise, optionally using a different API version."""
@@ -743,13 +751,13 @@ class LabelsResource(SyncResource):
 class MilestonesResource(SyncResource):
     """Synchronous milestone endpoints."""
 
-    def list(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[Milestone]:
+    def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Milestone]:
         """List milestones for a repository."""
         return self._models(
             "GET", self._client._repo_path("milestones", owner=owner, repo=repo), Milestone, params=params
         )
 
-    def get(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> Milestone:
+    def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Milestone:
         """Get a single milestone."""
         return self._model("GET", self._client._repo_path("milestones", number, owner=owner, repo=repo), Milestone)
 
@@ -758,9 +766,9 @@ class MilestonesResource(SyncResource):
         *,
         title: str,
         due_on: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        description: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        description: Optional[str] = None,
     ) -> Milestone:
         """Create a milestone."""
         return self._model(
@@ -773,13 +781,13 @@ class MilestonesResource(SyncResource):
     def update(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         title: str,
         due_on: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        description: str | None = None,
-        state: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        description: Optional[str] = None,
+        state: Optional[str] = None,
     ) -> Milestone:
         """Update a milestone."""
         return self._model(
@@ -789,7 +797,7 @@ class MilestonesResource(SyncResource):
             json={"title": title, "due_on": due_on, "description": description, "state": state},
         )
 
-    def delete(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    def delete(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Delete a milestone."""
         self._request("DELETE", self._client._repo_path("milestones", number, owner=owner, repo=repo))
 
@@ -798,7 +806,12 @@ class MembersResource(SyncResource):
     """Synchronous repository member endpoints."""
 
     def add_or_update(
-        self, *, username: str, owner: str | None = None, repo: str | None = None, permission: str | None = None
+        self,
+        *,
+        username: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        permission: Optional[str] = None,
     ) -> RepoMember:
         """Add or update repository member permissions."""
         return self._model(
@@ -808,12 +821,17 @@ class MembersResource(SyncResource):
             json={"permission": permission},
         )
 
-    def remove(self, *, username: str, owner: str | None = None, repo: str | None = None) -> None:
+    def remove(self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         """Remove a repository member."""
         self._request("DELETE", self._client._repo_path("collaborators", username, owner=owner, repo=repo))
 
     def list(
-        self, *, owner: str | None = None, repo: str | None = None, page: int | None = None, per_page: int | None = None
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[RepoMember]:
         """List repository members."""
         return self._models(
@@ -823,12 +841,12 @@ class MembersResource(SyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    def get(self, *, username: str, owner: str | None = None, repo: str | None = None) -> APIObject:
+    def get(self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         """Check whether a user is a repository member."""
         return self._model("GET", self._client._repo_path("collaborators", username, owner=owner, repo=repo), APIObject)
 
     def get_permission(
-        self, *, username: str, owner: str | None = None, repo: str | None = None
+        self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> RepoMemberPermission:
         """Get repository member permissions."""
         return self._model(
@@ -841,25 +859,25 @@ class MembersResource(SyncResource):
 class AsyncIssuesResource(AsyncResource):
     """Asynchronous issue endpoints."""
 
-    async def list(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[Issue]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Issue]:
         return await self._models(
             "GET", self._client._repo_path("issues", owner=owner, repo=repo), Issue, params=params
         )
 
-    async def get(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> Issue:
+    async def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Issue:
         return await self._model("GET", self._client._repo_path("issues", number, owner=owner, repo=repo), Issue)
 
     async def create(
         self,
         *,
         owner: str,
-        repo: str | None = None,
+        repo: Optional[str] = None,
         title: str,
-        body: str | None = None,
-        assignee: str | None = None,
-        labels: List[str] | None = None,
-        milestone: int | str | None = None,
-        security_hole: str | None = None,
+        body: Optional[str] = None,
+        assignee: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        milestone: Union[int, str, None] = None,
+        security_hole: Optional[str] = None,
     ) -> Issue:
         resolved_repo = repo or self._client.repo
         return await self._model(
@@ -880,16 +898,16 @@ class AsyncIssuesResource(AsyncResource):
     async def update(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         owner: str,
-        repo: str | None = None,
-        title: str | None = None,
-        body: str | None = None,
-        state: str | None = None,
-        assignee: str | None = None,
-        labels: List[str] | None = None,
-        milestone: int | str | None = None,
-        security_hole: str | None = None,
+        repo: Optional[str] = None,
+        title: Optional[str] = None,
+        body: Optional[str] = None,
+        state: Optional[str] = None,
+        assignee: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        milestone: Union[int, str, None] = None,
+        security_hole: Optional[str] = None,
     ) -> Issue:
         resolved_repo = repo or self._client.repo
         return await self._model(
@@ -909,7 +927,7 @@ class AsyncIssuesResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[IssueComment]:
         return await self._models(
             "GET",
@@ -919,7 +937,7 @@ class AsyncIssuesResource(AsyncResource):
         )
 
     async def create_comment(
-        self, *, number: int | str, body: str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], body: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> IssueComment:
         return await self._model(
             "POST",
@@ -929,14 +947,14 @@ class AsyncIssuesResource(AsyncResource):
         )
 
     async def get_comment(
-        self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> IssueComment:
         return await self._model(
             "GET", self._client._repo_path("issues", "comments", comment_id, owner=owner, repo=repo), IssueComment
         )
 
     async def update_comment(
-        self, *, comment_id: int | str, body: str, owner: str | None = None, repo: str | None = None
+        self, *, comment_id: Union[int, str], body: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> IssueComment:
         return await self._model(
             "PATCH",
@@ -945,25 +963,27 @@ class AsyncIssuesResource(AsyncResource):
             json={"body": body},
         )
 
-    async def delete_comment(self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    async def delete_comment(
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         await self._request("DELETE", self._client._repo_path("issues", "comments", comment_id, owner=owner, repo=repo))
 
     async def list_pull_requests(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[PullRequest]:
         return await self._models(
             "GET", self._client._repo_path("issues", number, "pull_requests", owner=owner, repo=repo), PullRequest
         )
 
     async def add_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         return await self._models(
             "POST", self._client._repo_path("issues", number, "labels", owner=owner, repo=repo), Label, json=labels
         )
 
     async def remove_label(
-        self, *, number: int | str, name: str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], name: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> None:
         await self._request("DELETE", self._client._repo_path("issues", number, "labels", name, owner=owner, repo=repo))
 
@@ -976,11 +996,11 @@ class AsyncIssuesResource(AsyncResource):
     async def list_org(self, *, org: str, **params: Any) -> List[Issue]:
         return await self._models("GET", self._client._path("orgs", org, "issues"), Issue, params=params)
 
-    async def get_enterprise_issue(self, *, enterprise: str, number: int | str) -> Issue:
+    async def get_enterprise_issue(self, *, enterprise: str, number: Union[int, str]) -> Issue:
         return await self._model("GET", self._client._path("enterprises", enterprise, "issues", number), Issue)
 
     async def list_enterprise_comments(
-        self, *, enterprise: str, number: int | str, **params: Any
+        self, *, enterprise: str, number: Union[int, str], **params: Any
     ) -> List[IssueComment]:
         return await self._models(
             "GET",
@@ -989,12 +1009,12 @@ class AsyncIssuesResource(AsyncResource):
             params=params,
         )
 
-    async def list_enterprise_labels(self, *, enterprise: str, issue_id: int | str) -> List[Label]:
+    async def list_enterprise_labels(self, *, enterprise: str, issue_id: Union[int, str]) -> List[Label]:
         return await self._models(
             "GET", self._client._path("enterprises", enterprise, "issues", issue_id, "labels"), Label
         )
 
-    async def list_operation_logs(self, *, owner: str, number: int | str, **params: Any) -> List[IssueOperationLog]:
+    async def list_operation_logs(self, *, owner: str, number: Union[int, str], **params: Any) -> List[IssueOperationLog]:
         return await self._models(
             "GET",
             self._client._path("repos", owner, "issues", number, "operate_logs"),
@@ -1007,14 +1027,14 @@ class AsyncPullsResource(AsyncResource):
     """Asynchronous pull request endpoints."""
 
     async def list(
-        self, *, owner: str | None = None, repo: str | None = None, **params: Any
-    ) -> List[PullRequest] | APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+    ) -> Union[List[PullRequest], APIObject]:
         response = await self._request("GET", self._client._repo_path("pulls", owner=owner, repo=repo), params=params)
         if isinstance(response, dict):
             return as_model(response, APIObject)
         return [as_model(item, PullRequest) for item in response]
 
-    async def get(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> PullRequest:
+    async def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> PullRequest:
         return await self._model("GET", self._client._repo_path("pulls", number, owner=owner, repo=repo), PullRequest)
 
     async def create(
@@ -1023,19 +1043,19 @@ class AsyncPullsResource(AsyncResource):
         title: str,
         head: str,
         base: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        body: str | None = None,
-        draft: bool | None = None,
-        assignees: List[str] | None = None,
-        testers: List[str] | None = None,
-        labels: List[str] | None = None,
-        milestone_number: int | None = None,
-        issue: str | None = None,
-        prune_source_branch: bool | None = None,
-        squash: bool | None = None,
-        squash_commit_message: str | None = None,
-        fork_path: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        body: Optional[str] = None,
+        draft: Optional[bool] = None,
+        assignees: Optional[List[str]] = None,
+        testers: Optional[List[str]] = None,
+        labels: Optional[List[str]] = None,
+        milestone_number: Optional[int] = None,
+        issue: Optional[str] = None,
+        prune_source_branch: Optional[bool] = None,
+        squash: Optional[bool] = None,
+        squash_commit_message: Optional[str] = None,
+        fork_path: Optional[str] = None,
     ) -> PullRequest:
         return await self._model(
             "POST",
@@ -1062,15 +1082,15 @@ class AsyncPullsResource(AsyncResource):
     async def update(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
-        title: str | None = None,
-        body: str | None = None,
-        state: str | None = None,
-        base: str | None = None,
-        labels: List[str] | None = None,
-        draft: bool | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        title: Optional[str] = None,
+        body: Optional[str] = None,
+        state: Optional[str] = None,
+        base: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        draft: Optional[bool] = None,
     ) -> PullRequest:
         return await self._model(
             "PATCH",
@@ -1089,11 +1109,11 @@ class AsyncPullsResource(AsyncResource):
     async def merge(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
-        merge_commit_message: str | None = None,
-        squash: bool | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        merge_commit_message: Optional[str] = None,
+        squash: Optional[bool] = None,
     ) -> MergeResult:
         return await self._model(
             "PUT",
@@ -1103,27 +1123,27 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def get_merge_status(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> MergeStatus:
         return await self._model(
             "GET", self._client._repo_path("pulls", number, "merge", owner=owner, repo=repo), MergeStatus
         )
 
     async def list_commits(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[APIObject]:
         data = await self._request("GET", self._client._repo_path("pulls", number, "commits", owner=owner, repo=repo))
         return [as_model(item, APIObject) for item in data]
 
     async def list_files(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[PullRequestFile]:
         return await self._models(
             "GET", self._client._repo_path("pulls", number, "files", owner=owner, repo=repo), PullRequestFile
         )
 
     async def list_comments(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[PullRequestComment]:
         return await self._models(
             "GET",
@@ -1135,13 +1155,13 @@ class AsyncPullsResource(AsyncResource):
     async def create_comment(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         body: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        commit_id: str | None = None,
-        path: str | None = None,
-        position: int | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        commit_id: Optional[str] = None,
+        path: Optional[str] = None,
+        position: Optional[int] = None,
     ) -> PullRequestComment:
         return await self._model(
             "POST",
@@ -1151,14 +1171,14 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def get_comment(
-        self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> PullRequestComment:
         return await self._model(
             "GET", self._client._repo_path("pulls", "comments", comment_id, owner=owner, repo=repo), PullRequestComment
         )
 
     async def update_comment(
-        self, *, comment_id: int | str, body: str, owner: str | None = None, repo: str | None = None
+        self, *, comment_id: Union[int, str], body: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> PullRequestComment:
         return await self._model(
             "PATCH",
@@ -1167,41 +1187,45 @@ class AsyncPullsResource(AsyncResource):
             json={"body": body},
         )
 
-    async def delete_comment(self, *, comment_id: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    async def delete_comment(
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         await self._request("DELETE", self._client._repo_path("pulls", "comments", comment_id, owner=owner, repo=repo))
 
-    async def list_labels(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> List[Label]:
+    async def list_labels(
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[Label]:
         return await self._models(
             "GET", self._client._repo_path("pulls", number, "labels", owner=owner, repo=repo), Label
         )
 
     async def add_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         return await self._models(
             "POST", self._client._repo_path("pulls", number, "labels", owner=owner, repo=repo), Label, json=labels
         )
 
     async def replace_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         return await self._models(
             "PUT", self._client._repo_path("pulls", number, "labels", owner=owner, repo=repo), Label, json=labels
         )
 
     async def remove_label(
-        self, *, number: int | str, label: str, owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], label: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> None:
         await self._request("DELETE", self._client._repo_path("pulls", number, "labels", label, owner=owner, repo=repo))
 
     async def request_review(
         self,
         *,
-        number: int | str,
-        owner: str | None = None,
-        repo: str | None = None,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         event: str,
-        body: str | None = None,
+        body: Optional[str] = None,
     ) -> PullRequestReview:
         return await self._model(
             "POST",
@@ -1211,7 +1235,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def list_operation_logs(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None, **params: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
     ) -> List[APIObject]:
         data = await self._request(
             "GET", self._client._repo_path("pulls", number, "operate_logs", owner=owner, repo=repo), params=params
@@ -1219,7 +1243,7 @@ class AsyncPullsResource(AsyncResource):
         return [as_model(item, APIObject) for item in data]
 
     async def request_test(
-        self, *, number: int | str, owner: str | None = None, repo: str | None = None, **payload: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
     ) -> PullRequestTest:
         return await self._model(
             "POST",
@@ -1229,7 +1253,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def update_testers(
-        self, *, number: int | str, testers: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         return await self._model(
             "PATCH",
@@ -1239,7 +1263,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def add_testers(
-        self, *, number: int | str, testers: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         return await self._model(
             "POST",
@@ -1249,7 +1273,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def update_assignees(
-        self, *, number: int | str, assignees: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         return await self._model(
             "PATCH",
@@ -1259,7 +1283,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def add_assignees(
-        self, *, number: int | str, assignees: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> APIObject:
         return await self._model(
             "POST",
@@ -1269,7 +1293,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def remove_assignees(
-        self, *, number: int | str, assignees: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> None:
         await self._request(
             "DELETE",
@@ -1277,7 +1301,9 @@ class AsyncPullsResource(AsyncResource):
             json={"assignees": _comma_join(assignees)},
         )
 
-    async def list_issues(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> List[Issue]:
+    async def list_issues(
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[Issue]:
         return await self._models(
             "GET", self._client._repo_path("pulls", number, "issues", owner=owner, repo=repo), Issue
         )
@@ -1290,7 +1316,7 @@ class AsyncPullsResource(AsyncResource):
     async def list_org(self, *, org: str, **params: Any) -> List[PullRequest]:
         return await self._models("GET", self._client._path("org", org, "pull_requests"), PullRequest, params=params)
 
-    async def list_issue_pull_requests(self, *, enterprise: str, number: int | str) -> List[PullRequest]:
+    async def list_issue_pull_requests(self, *, enterprise: str, number: Union[int, str]) -> List[PullRequest]:
         return await self._models(
             "GET", self._client._path("enterprises", enterprise, "issues", number, "pull_requests"), PullRequest
         )
@@ -1299,10 +1325,10 @@ class AsyncPullsResource(AsyncResource):
 class AsyncLabelsResource(AsyncResource):
     """Asynchronous label endpoints."""
 
-    async def list(self, *, owner: str | None = None, repo: str | None = None) -> List[Label]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[Label]:
         return await self._models("GET", self._client._repo_path("labels", owner=owner, repo=repo), Label)
 
-    async def create(self, *, name: str, color: str, owner: str | None = None, repo: str | None = None) -> Label:
+    async def create(self, *, name: str, color: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Label:
         return await self._model(
             "POST",
             self._client._repo_path("labels", owner=owner, repo=repo),
@@ -1314,10 +1340,10 @@ class AsyncLabelsResource(AsyncResource):
         self,
         *,
         original_name: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        name: str | None = None,
-        color: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        name: Optional[str] = None,
+        color: Optional[str] = None,
     ) -> Label:
         return await self._model(
             "PATCH",
@@ -1326,14 +1352,16 @@ class AsyncLabelsResource(AsyncResource):
             json={"name": name, "color": color},
         )
 
-    async def delete(self, *, name: str, owner: str | None = None, repo: str | None = None) -> None:
+    async def delete(self, *, name: str, owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         await self._request("DELETE", self._client._repo_path("labels", name, owner=owner, repo=repo))
 
-    async def clear_issue_labels(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    async def clear_issue_labels(
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         await self._request("DELETE", self._client._repo_path("issues", number, "labels", owner=owner, repo=repo))
 
     async def replace_issue_labels(
-        self, *, number: int | str, labels: List[str], owner: str | None = None, repo: str | None = None
+        self, *, number: Union[int, str], labels: List[str], owner: Optional[str] = None, repo: Optional[str] = None
     ) -> List[Label]:
         return await self._models(
             "PUT", self._client._repo_path("issues", number, "labels", owner=owner, repo=repo), Label, json=labels
@@ -1343,10 +1371,10 @@ class AsyncLabelsResource(AsyncResource):
         self,
         *,
         enterprise: str,
-        search: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        search: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
         api_version: str = "v5",
     ) -> List[Label]:
         if api_version == "v5":
@@ -1362,12 +1390,12 @@ class AsyncLabelsResource(AsyncResource):
 class AsyncMilestonesResource(AsyncResource):
     """Asynchronous milestone endpoints."""
 
-    async def list(self, *, owner: str | None = None, repo: str | None = None, **params: Any) -> List[Milestone]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Milestone]:
         return await self._models(
             "GET", self._client._repo_path("milestones", owner=owner, repo=repo), Milestone, params=params
         )
 
-    async def get(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> Milestone:
+    async def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Milestone:
         return await self._model(
             "GET", self._client._repo_path("milestones", number, owner=owner, repo=repo), Milestone
         )
@@ -1377,9 +1405,9 @@ class AsyncMilestonesResource(AsyncResource):
         *,
         title: str,
         due_on: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        description: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        description: Optional[str] = None,
     ) -> Milestone:
         return await self._model(
             "POST",
@@ -1391,13 +1419,13 @@ class AsyncMilestonesResource(AsyncResource):
     async def update(
         self,
         *,
-        number: int | str,
+        number: Union[int, str],
         title: str,
         due_on: str,
-        owner: str | None = None,
-        repo: str | None = None,
-        description: str | None = None,
-        state: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        description: Optional[str] = None,
+        state: Optional[str] = None,
     ) -> Milestone:
         return await self._model(
             "PATCH",
@@ -1406,7 +1434,7 @@ class AsyncMilestonesResource(AsyncResource):
             json={"title": title, "due_on": due_on, "description": description, "state": state},
         )
 
-    async def delete(self, *, number: int | str, owner: str | None = None, repo: str | None = None) -> None:
+    async def delete(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         await self._request("DELETE", self._client._repo_path("milestones", number, owner=owner, repo=repo))
 
 
@@ -1414,7 +1442,12 @@ class AsyncMembersResource(AsyncResource):
     """Asynchronous repository member endpoints."""
 
     async def add_or_update(
-        self, *, username: str, owner: str | None = None, repo: str | None = None, permission: str | None = None
+        self,
+        *,
+        username: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        permission: Optional[str] = None,
     ) -> RepoMember:
         return await self._model(
             "PUT",
@@ -1423,11 +1456,16 @@ class AsyncMembersResource(AsyncResource):
             json={"permission": permission},
         )
 
-    async def remove(self, *, username: str, owner: str | None = None, repo: str | None = None) -> None:
+    async def remove(self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None) -> None:
         await self._request("DELETE", self._client._repo_path("collaborators", username, owner=owner, repo=repo))
 
     async def list(
-        self, *, owner: str | None = None, repo: str | None = None, page: int | None = None, per_page: int | None = None
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[RepoMember]:
         return await self._models(
             "GET",
@@ -1436,13 +1474,13 @@ class AsyncMembersResource(AsyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    async def get(self, *, username: str, owner: str | None = None, repo: str | None = None) -> APIObject:
+    async def get(self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
         return await self._model(
             "GET", self._client._repo_path("collaborators", username, owner=owner, repo=repo), APIObject
         )
 
     async def get_permission(
-        self, *, username: str, owner: str | None = None, repo: str | None = None
+        self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None
     ) -> RepoMemberPermission:
         return await self._model(
             "GET",

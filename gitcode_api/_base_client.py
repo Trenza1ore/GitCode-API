@@ -5,7 +5,7 @@ payload cleanup, and response parsing for both sync and async clients.
 """
 
 import os
-from typing import Any
+from typing import Any, Dict, Optional, Tuple, Union
 from urllib.parse import quote
 
 import httpx
@@ -17,7 +17,7 @@ DEFAULT_TIMEOUT = 30.0
 DEFAULT_TOKEN_ENV = "GITCODE_ACCESS_TOKEN"
 
 
-def _drop_none_values(mapping: dict[str, Any]) -> dict[str, Any]:
+def _drop_none_values(mapping: Dict[str, Any]) -> Dict[str, Any]:
     """Return a copy of ``mapping`` without keys that have ``None`` values."""
     return {key: value for key, value in mapping.items() if value is not None}
 
@@ -35,11 +35,11 @@ class BaseGitCodeClient:
     def __init__(
         self,
         *,
-        api_key: str | None = None,
-        owner: str | None = None,
-        repo: str | None = None,
+        api_key: Optional[str] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
-        timeout: float | None = None,
+        timeout: Optional[float] = None,
     ) -> None:
         """Store client configuration and resolve authentication."""
         self.api_key = self._resolve_api_key(api_key)
@@ -48,7 +48,7 @@ class BaseGitCodeClient:
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
-    def _resolve_api_key(self, api_key: str | None) -> str:
+    def _resolve_api_key(self, api_key: Optional[str]) -> str:
         """Resolve the access token from an argument or environment variable."""
         token = api_key or os.getenv(DEFAULT_TOKEN_ENV)
         if not token:
@@ -57,9 +57,9 @@ class BaseGitCodeClient:
 
     def _resolve_repo_context(
         self,
-        owner: str | None = None,
-        repo: str | None = None,
-    ) -> tuple[str, str]:
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> Tuple[str, str]:
         """Return the effective repository owner and name for a request."""
         resolved_owner = owner or self.owner
         resolved_repo = repo or self.repo
@@ -69,7 +69,7 @@ class BaseGitCodeClient:
             )
         return resolved_owner, resolved_repo
 
-    def _headers(self, extra_headers: dict[str, str] | None = None) -> dict[str, str]:
+    def _headers(self, extra_headers: Optional[Dict[str, str]] = None) -> Dict[str, str]:
         """Build request headers for authenticated JSON API calls."""
         headers = {
             "Accept": "application/json",
@@ -79,7 +79,7 @@ class BaseGitCodeClient:
             headers.update(extra_headers)
         return headers
 
-    def _encode_segment(self, value: str | int) -> str:
+    def _encode_segment(self, value: Union[int, str]) -> str:
         """Percent-encode a single URL path segment."""
         return quote(str(value), safe="")
 
@@ -87,15 +87,15 @@ class BaseGitCodeClient:
         """Percent-encode a repository path while preserving slashes."""
         return quote(value, safe="/")
 
-    def _join_path(self, *segments: str | int) -> str:
+    def _join_path(self, *segments: Union[int, str]) -> str:
         """Join URL path segments into an API path."""
         return "/" + "/".join(self._encode_segment(segment) for segment in segments)
 
     def _repo_path(
         self,
-        *segments: str | int,
-        owner: str | None = None,
-        repo: str | None = None,
+        *segments: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> str:
         """Build a path under ``/repos/{owner}/{repo}``."""
         resolved_owner, resolved_repo = self._resolve_repo_context(owner, repo)
@@ -106,8 +106,8 @@ class BaseGitCodeClient:
         prefix: str,
         file_path: str,
         *,
-        owner: str | None = None,
-        repo: str | None = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> str:
         """Build a file-oriented repository path such as ``contents`` or ``raw``."""
         resolved_owner, resolved_repo = self._resolve_repo_context(owner, repo)
@@ -117,7 +117,7 @@ class BaseGitCodeClient:
             f"{self._encode_path_value(file_path)}"
         )
 
-    def _path(self, *segments: str | int) -> str:
+    def _path(self, *segments: Union[int, str]) -> str:
         """Build a non-repository API path."""
         return self._join_path(*segments)
 
@@ -130,10 +130,10 @@ class BaseGitCodeClient:
     def _coerce_payload(
         self,
         *,
-        params: dict[str, Any] | None = None,
+        params: Optional[Dict[str, Any]] = None,
         json: Any = None,
-        data: dict[str, Any] | None = None,
-    ) -> tuple[dict[str, Any] | None, Any, dict[str, Any] | None]:
+        data: Optional[Dict[str, Any]] = None,
+    ) -> Tuple[Optional[Dict[str, Any]], Any, Optional[Dict[str, Any]]]:
         """Drop ``None`` values from params and form payloads before sending."""
         clean_params = _drop_none_values(params or {}) or None
         clean_data = _drop_none_values(data or {}) or None
@@ -192,12 +192,12 @@ class SyncAPIClient(BaseGitCodeClient):
     def __init__(
         self,
         *,
-        api_key: str | None = None,
-        owner: str | None = None,
-        repo: str | None = None,
+        api_key: Optional[str] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
-        timeout: float | None = None,
-        http_client: httpx.Client | None = None,
+        timeout: Optional[float] = None,
+        http_client: Optional[httpx.Client] = None,
     ) -> None:
         """Create or reuse an ``httpx.Client`` for synchronous requests."""
         super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout)
@@ -209,10 +209,10 @@ class SyncAPIClient(BaseGitCodeClient):
         method: str,
         path: str,
         *,
-        params: dict[str, Any] | None = None,
+        params: Optional[Dict[str, Any]] = None,
         json: Any = None,
-        data: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
+        data: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None,
         raw: bool = False,
     ) -> Any:
         """Send an HTTP request to the GitCode API and parse the response.
@@ -265,12 +265,12 @@ class AsyncAPIClient(BaseGitCodeClient):
     def __init__(
         self,
         *,
-        api_key: str | None = None,
-        owner: str | None = None,
-        repo: str | None = None,
+        api_key: Optional[str] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
-        timeout: float | None = None,
-        http_client: httpx.AsyncClient | None = None,
+        timeout: Optional[float] = None,
+        http_client: Optional[httpx.AsyncClient] = None,
     ) -> None:
         """Create or reuse an ``httpx.AsyncClient`` for asynchronous requests."""
         super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout)
@@ -282,10 +282,10 @@ class AsyncAPIClient(BaseGitCodeClient):
         method: str,
         path: str,
         *,
-        params: dict[str, Any] | None = None,
+        params: Optional[Dict[str, Any]] = None,
         json: Any = None,
-        data: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
+        data: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None,
         raw: bool = False,
     ) -> Any:
         """Send an asynchronous HTTP request to the GitCode API.

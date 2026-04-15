@@ -8,7 +8,7 @@ import subprocess
 import sys
 from collections import deque
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Set
 from urllib.parse import urlparse
 
 import httpx
@@ -48,9 +48,9 @@ def _normalize_doc_url(href: str) -> Optional[str]:
     return BASE + path
 
 
-def crawl_doc_urls(client: httpx.Client) -> list[str]:
+def crawl_doc_urls(client: httpx.Client) -> List[str]:
     seeds = [BASE + DOCS_PREFIX + "/"]
-    seen: set[str] = set()
+    seen: Set[str] = set()
     q: deque[str] = deque(seeds)
     while q:
         url = q.popleft()
@@ -97,7 +97,7 @@ def extract_main_content_html(page_html: str) -> str:
     main = soup.select_one("main.prose div.content") or soup.select_one("div.content")
     if main is None:
         raise ValueError("Could not find main content div (.content)")
-    parts: list[str] = []
+    parts: List[str] = []
     for child in main.children:
         name = getattr(child, "name", None)
         if name is not None:
@@ -107,8 +107,8 @@ def extract_main_content_html(page_html: str) -> str:
     return "".join(parts)
 
 
-def _strip_empty_highlight_code_blocks(lines: list[str]) -> list[str]:
-    out: list[str] = []
+def _strip_empty_highlight_code_blocks(lines: List[str]) -> List[str]:
+    out: List[str] = []
     idx = 0
     while idx < len(lines):
         if lines[idx].strip() == ".. container:: highlight" and idx + 1 < len(lines) and lines[idx + 1] == "":
@@ -134,7 +134,7 @@ def repair_rst(rst: str) -> str:
     """Fix pandoc RST patterns that break docutils (nested rubrics with body text)."""
     rst = rst.replace(".. code:: chroma", ".. code:: text")
     lines = _strip_empty_highlight_code_blocks(rst.splitlines())
-    out: list[str] = []
+    out: List[str] = []
     idx = 0
     while idx < len(lines):
         line = lines[idx]
@@ -147,7 +147,7 @@ def repair_rst(rst: str) -> str:
             while j < len(lines) and lines[j].strip() == "":
                 j += 1
             base_indent = len(line) - len(line.lstrip())
-            body_lines: list[str] = []
+            body_lines: List[str] = []
             while j < len(lines):
                 nxt = lines[j]
                 if nxt.strip() == "":
@@ -180,7 +180,7 @@ def repair_rst(rst: str) -> str:
             continue
         out.append(line)
         idx += 1
-    cleaned: list[str] = []
+    cleaned: List[str] = []
     for line in out:
         if re.match(r"^\.\. _[A-Za-z0-9_.-]+:\s*$", line):
             continue
@@ -223,7 +223,7 @@ def write_rst(
     path.write_text(body_rst.rstrip() + footer, encoding="utf-8")
 
 
-def write_master_index(docs_dir: Path, docnames: list[str]) -> None:
+def write_master_index(docs_dir: Path, docnames: List[str]) -> None:
     lines = [
         "GitCode REST API",
         "================",
@@ -309,7 +309,7 @@ def main() -> int:
         shutil.rmtree(rest_dir)
     rest_dir.mkdir(parents=True, exist_ok=True)
 
-    docnames: list[str] = []
+    docnames: List[str] = []
     for url in urls:
         docname = url_to_docname(url)
         docnames.append(docname)

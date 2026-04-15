@@ -1,6 +1,6 @@
 """Account, organization, search, and OAuth resource groups."""
 
-from typing import Any, List
+from typing import Any, List, Optional, Union
 from urllib.parse import urlencode
 
 import httpx
@@ -47,7 +47,7 @@ class UsersResource(SyncResource):
         """
         return self._models("GET", self._client._path("emails"), Email)
 
-    def list_events(self, *, username: str, year: str | None = None, next: str | None = None) -> APIObject:
+    def list_events(self, *, username: str, year: Optional[str] = None, next: Optional[str] = None) -> APIObject:
         """List activity events for a user.
 
         :param username: GitCode username or login.
@@ -80,7 +80,7 @@ class UsersResource(SyncResource):
         """
         return self._model("POST", self._client._path("user", "keys"), APIObject, json={"key": key, "title": title})
 
-    def list_keys(self, *, page: int | None = None, per_page: int | None = None) -> List[APIObject]:
+    def list_keys(self, *, page: Optional[int] = None, per_page: Optional[int] = None) -> List[APIObject]:
         """List public SSH keys for the authenticated user.
 
         :param page: Page number.
@@ -90,14 +90,14 @@ class UsersResource(SyncResource):
         data = self._request("GET", self._client._path("user", "keys"), params={"page": page, "per_page": per_page})
         return [APIObject(dict(item)) for item in data]
 
-    def delete_key(self, *, key_id: int | str) -> None:
+    def delete_key(self, *, key_id: Union[int, str]) -> None:
         """Delete a public SSH key.
 
         :param key_id: Public key identifier.
         """
         self._request("DELETE", self._client._path("user", "keys", key_id))
 
-    def get_key(self, *, key_id: int | str) -> APIObject:
+    def get_key(self, *, key_id: Union[int, str]) -> APIObject:
         """Get a single public SSH key.
 
         :param key_id: Public key identifier.
@@ -116,10 +116,10 @@ class UsersResource(SyncResource):
     def list_starred(
         self,
         *,
-        sort: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Repository]:
         """List repositories starred by the authenticated user.
 
@@ -141,7 +141,7 @@ class OrgsResource(SyncResource):
     """Synchronous organization and enterprise endpoints."""
 
     def list_for_user(
-        self, *, username: str, page: int | None = None, per_page: int | None = None
+        self, *, username: str, page: Optional[int] = None, per_page: Optional[int] = None
     ) -> List[Organization]:
         """List organizations for a user.
 
@@ -158,7 +158,7 @@ class OrgsResource(SyncResource):
         )
 
     def list_authenticated(
-        self, *, page: int | None = None, per_page: int | None = None, admin: bool | None = None
+        self, *, page: Optional[int] = None, per_page: Optional[int] = None, admin: Optional[bool] = None
     ) -> List[Organization]:
         """List organizations for the authenticated user.
 
@@ -192,7 +192,7 @@ class OrgsResource(SyncResource):
         return self._model("GET", self._client._path("orgs", org), Organization)
 
     def list_repos(
-        self, *, org: str, type: str | None = None, page: int | None = None, per_page: int | None = None
+        self, *, org: str, type: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None
     ) -> List[Repository]:
         """List repositories for an organization.
 
@@ -242,7 +242,7 @@ class OrgsResource(SyncResource):
         return self._model("GET", self._client._path("user", "memberships", "orgs", org), OrganizationMembership)
 
     def list_members(
-        self, *, org: str, page: int | None = None, per_page: int | None = None, role: str | None = None
+        self, *, org: str, page: Optional[int] = None, per_page: Optional[int] = None, role: Optional[str] = None
     ) -> List[User]:
         """List members of an organization.
 
@@ -260,7 +260,7 @@ class OrgsResource(SyncResource):
         )
 
     def list_enterprise_members(
-        self, *, enterprise: str, page: int | None = None, per_page: int | None = None, role: str | None = None
+        self, *, enterprise: str, page: Optional[int] = None, per_page: Optional[int] = None, role: Optional[str] = None
     ) -> List[EnterpriseMember]:
         """List members of an enterprise.
 
@@ -286,7 +286,7 @@ class OrgsResource(SyncResource):
         """
         return self._model("DELETE", self._client._path("orgs", org, "memberships", username), APIObject)
 
-    def list_followers(self, *, owner: str, page: int | None = None, per_page: int | None = None) -> List[User]:
+    def list_followers(self, *, owner: str, page: Optional[int] = None, per_page: Optional[int] = None) -> List[User]:
         """List followers of an organization.
 
         :param owner: Organization path.
@@ -311,7 +311,7 @@ class OrgsResource(SyncResource):
         return [APIObject(dict(item)) for item in data]
 
     def invite_member(
-        self, *, org: str, username: str, permission: str | None = None, role_id: str | None = None
+        self, *, org: str, username: str, permission: Optional[str] = None, role_id: Optional[str] = None
     ) -> User:
         """Invite a user to an organization.
 
@@ -367,10 +367,10 @@ class SearchResource(SyncResource):
         self,
         *,
         q: str,
-        page: int | None = None,
-        per_page: int | None = None,
-        sort: str | None = None,
-        order: str | None = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        sort: Optional[str] = None,
+        order: Optional[str] = None,
     ) -> List[SearchResult]:
         """Search users.
 
@@ -392,12 +392,12 @@ class SearchResource(SyncResource):
         self,
         *,
         q: str,
-        page: int | None = None,
-        per_page: int | None = None,
-        sort: str | None = None,
-        order: str | None = None,
-        repo: str | None = None,
-        state: str | None = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        sort: Optional[str] = None,
+        order: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
     ) -> List[SearchResult]:
         """Search issues.
 
@@ -429,13 +429,13 @@ class SearchResource(SyncResource):
         self,
         *,
         q: str,
-        page: int | None = None,
-        per_page: int | None = None,
-        sort: str | None = None,
-        order: str | None = None,
-        owner: str | None = None,
-        fork: str | None = None,
-        language: str | None = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        sort: Optional[str] = None,
+        order: Optional[str] = None,
+        owner: Optional[str] = None,
+        fork: Optional[str] = None,
+        language: Optional[str] = None,
     ) -> List[SearchResult]:
         """Search repositories.
 
@@ -474,8 +474,8 @@ class OAuthResource(SyncResource):
         *,
         client_id: str,
         redirect_uri: str,
-        scope: str | None = None,
-        state: str | None = None,
+        scope: Optional[str] = None,
+        state: Optional[str] = None,
         response_type: str = "code",
     ) -> str:
         """Build the GitCode OAuth authorization URL.
@@ -548,7 +548,7 @@ class AsyncUsersResource(AsyncResource):
     async def list_emails(self) -> List[Email]:
         return await self._models("GET", self._client._path("emails"), Email)
 
-    async def list_events(self, *, username: str, year: str | None = None, next: str | None = None) -> APIObject:
+    async def list_events(self, *, username: str, year: Optional[str] = None, next: Optional[str] = None) -> APIObject:
         return await self._model(
             "GET", self._client._path("users", username, "events"), APIObject, params={"year": year, "next": next}
         )
@@ -561,16 +561,16 @@ class AsyncUsersResource(AsyncResource):
             "POST", self._client._path("user", "keys"), APIObject, json={"key": key, "title": title}
         )
 
-    async def list_keys(self, *, page: int | None = None, per_page: int | None = None) -> List[APIObject]:
+    async def list_keys(self, *, page: Optional[int] = None, per_page: Optional[int] = None) -> List[APIObject]:
         data = await self._request(
             "GET", self._client._path("user", "keys"), params={"page": page, "per_page": per_page}
         )
         return [APIObject(dict(item)) for item in data]
 
-    async def delete_key(self, *, key_id: int | str) -> None:
+    async def delete_key(self, *, key_id: Union[int, str]) -> None:
         await self._request("DELETE", self._client._path("user", "keys", key_id))
 
-    async def get_key(self, *, key_id: int | str) -> APIObject:
+    async def get_key(self, *, key_id: Union[int, str]) -> APIObject:
         return await self._model("GET", self._client._path("user", "keys", key_id), APIObject)
 
     async def get_namespace(self, *, path: str) -> Namespace:
@@ -579,10 +579,10 @@ class AsyncUsersResource(AsyncResource):
     async def list_starred(
         self,
         *,
-        sort: str | None = None,
-        direction: str | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Repository]:
         return await self._models(
             "GET",
@@ -596,7 +596,7 @@ class AsyncOrgsResource(AsyncResource):
     """Asynchronous organization and enterprise endpoints."""
 
     async def list_for_user(
-        self, *, username: str, page: int | None = None, per_page: int | None = None
+        self, *, username: str, page: Optional[int] = None, per_page: Optional[int] = None
     ) -> List[Organization]:
         return await self._models(
             "GET",
@@ -606,7 +606,7 @@ class AsyncOrgsResource(AsyncResource):
         )
 
     async def list_authenticated(
-        self, *, page: int | None = None, per_page: int | None = None, admin: bool | None = None
+        self, *, page: Optional[int] = None, per_page: Optional[int] = None, admin: Optional[bool] = None
     ) -> List[Organization]:
         return await self._models(
             "GET",
@@ -622,7 +622,7 @@ class AsyncOrgsResource(AsyncResource):
         return await self._model("GET", self._client._path("orgs", org), Organization)
 
     async def list_repos(
-        self, *, org: str, type: str | None = None, page: int | None = None, per_page: int | None = None
+        self, *, org: str, type: Optional[str] = None, page: Optional[int] = None, per_page: Optional[int] = None
     ) -> List[Repository]:
         return await self._models(
             "GET",
@@ -644,7 +644,7 @@ class AsyncOrgsResource(AsyncResource):
         return await self._model("GET", self._client._path("user", "memberships", "orgs", org), OrganizationMembership)
 
     async def list_members(
-        self, *, org: str, page: int | None = None, per_page: int | None = None, role: str | None = None
+        self, *, org: str, page: Optional[int] = None, per_page: Optional[int] = None, role: Optional[str] = None
     ) -> List[User]:
         return await self._models(
             "GET",
@@ -654,7 +654,7 @@ class AsyncOrgsResource(AsyncResource):
         )
 
     async def list_enterprise_members(
-        self, *, enterprise: str, page: int | None = None, per_page: int | None = None, role: str | None = None
+        self, *, enterprise: str, page: Optional[int] = None, per_page: Optional[int] = None, role: Optional[str] = None
     ) -> List[EnterpriseMember]:
         return await self._models(
             "GET",
@@ -666,7 +666,9 @@ class AsyncOrgsResource(AsyncResource):
     async def remove_member(self, *, org: str, username: str) -> APIObject:
         return await self._model("DELETE", self._client._path("orgs", org, "memberships", username), APIObject)
 
-    async def list_followers(self, *, owner: str, page: int | None = None, per_page: int | None = None) -> List[User]:
+    async def list_followers(
+        self, *, owner: str, page: Optional[int] = None, per_page: Optional[int] = None
+    ) -> List[User]:
         return await self._models(
             "GET", self._client._path("orgs", owner, "followers"), User, params={"page": page, "per_page": per_page}
         )
@@ -676,7 +678,7 @@ class AsyncOrgsResource(AsyncResource):
         return [APIObject(dict(item)) for item in data]
 
     async def invite_member(
-        self, *, org: str, username: str, permission: str | None = None, role_id: str | None = None
+        self, *, org: str, username: str, permission: Optional[str] = None, role_id: Optional[str] = None
     ) -> User:
         return await self._model(
             "POST",
@@ -725,8 +727,8 @@ class AsyncOAuthResource(AsyncResource):
         *,
         client_id: str,
         redirect_uri: str,
-        scope: str | None = None,
-        state: str | None = None,
+        scope: Optional[str] = None,
+        state: Optional[str] = None,
         response_type: str = "code",
     ) -> str:
         query = urlencode(

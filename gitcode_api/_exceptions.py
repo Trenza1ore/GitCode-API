@@ -1,6 +1,6 @@
 """Custom exceptions raised by the GitCode SDK."""
 
-from typing import Any
+from typing import Any, Optional
 
 
 class GitCodeError(Exception):
@@ -25,7 +25,7 @@ class GitCodeAPIError(GitCodeError):
         message: str,
         *,
         status_code: int,
-        request_id: str | None = None,
+        request_id: Optional[str] = None,
         payload: Any = None,
     ) -> None:
         """Store structured error metadata from a failed API response."""

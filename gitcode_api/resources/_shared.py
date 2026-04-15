@@ -1,6 +1,6 @@
 """Shared resource base classes for the GitCode SDK."""
 
-from typing import Any, List
+from typing import Any, Dict, List, Optional, Union
 
 from .._base_client import AsyncAPIClient, SyncAPIClient
 from .._models import APIObject, ModelT, as_model, as_model_list
@@ -18,9 +18,9 @@ class SyncResource:
         method: str,
         path: str,
         *,
-        params: dict[str, Any] | None = None,
+        params: Optional[Dict[str, Any]] = None,
         json: Any = None,
-        data: dict[str, Any] | None = None,
+        data: Optional[Dict[str, Any]] = None,
         raw: bool = False,
     ) -> Any:
         """Dispatch a low-level request through the owning client."""
@@ -36,7 +36,7 @@ class SyncResource:
         data = self._request(method, path, **kwargs)
         return as_model_list(data, model_type)
 
-    def _maybe_model(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> ModelT | APIObject:
+    def _maybe_model(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> Union[ModelT, APIObject]:
         """Wrap dict responses as models and scalar responses as ``APIObject``."""
         data = self._request(method, path, **kwargs)
         if isinstance(data, dict):
@@ -56,9 +56,9 @@ class AsyncResource:
         method: str,
         path: str,
         *,
-        params: dict[str, Any] | None = None,
+        params: Optional[Dict[str, Any]] = None,
         json: Any = None,
-        data: dict[str, Any] | None = None,
+        data: Optional[Dict[str, Any]] = None,
         raw: bool = False,
     ) -> Any:
         """Dispatch a low-level async request through the owning client."""

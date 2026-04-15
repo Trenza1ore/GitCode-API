@@ -14,7 +14,7 @@ from gitcode_api import AsyncGitCode, GitCode
 ENV_PATH = Path(__file__).with_name(".env")
 
 
-@dataclass(slots=True)
+@dataclass
 class ExampleConfig:
     api_key: str
     owner: str

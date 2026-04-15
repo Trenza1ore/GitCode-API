@@ -1,7 +1,7 @@
 """Lightweight wrappers and typed payload hints for GitCode API responses."""
 
 from dataclasses import dataclass
-from typing import Any, Iterator, List, Mapping, MutableMapping, TypedDict, TypeVar
+from typing import Any, Dict, Iterator, List, Mapping, MutableMapping, TypedDict, TypeVar, Union
 
 JsonValue = Any
 
@@ -15,7 +15,7 @@ def _wrap_value(value: Any) -> Any:
     return value
 
 
-@dataclass(slots=True)
+@dataclass
 class APIObject(Mapping[str, Any]):
     """Dictionary-backed wrapper around GitCode JSON objects.
 
@@ -48,7 +48,7 @@ class APIObject(Mapping[str, Any]):
         """Return a wrapped value with an optional default."""
         return _wrap_value(self.data.get(key, default))
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> Dict[str, Any]:
         """Return a shallow ``dict`` copy of the underlying payload."""
         return dict(self.data)
 
@@ -91,7 +91,7 @@ class IssueCreateParams(TypedDict, total=False):
     body: str
     assignee: str
     labels: List[str]
-    milestone: int | str
+    milestone: Union[int, str]
 
 
 class PullRequestCreateParams(TypedDict, total=False):

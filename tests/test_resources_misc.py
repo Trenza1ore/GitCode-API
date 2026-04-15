@@ -1,9 +1,10 @@
+from typing import Optional
 import httpx
 import pytest
 
 
 def test_labels_list_enterprise_v8_uses_absolute_versioned_url(sync_client_factory) -> None:
-    seen_url: str | None = None
+    seen_url: Optional[str] = None
 
     def handler(request: httpx.Request) -> httpx.Response:
         nonlocal seen_url

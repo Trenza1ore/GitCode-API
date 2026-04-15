@@ -4,6 +4,8 @@ These client classes expose grouped resource helpers that mirror the
 published GitCode REST API documentation.
 """
 
+from typing import Optional
+
 import httpx
 
 from ._base_client import DEFAULT_BASE_URL, AsyncAPIClient, SyncAPIClient
@@ -105,12 +107,12 @@ class GitCode(SyncAPIClient):
     def __init__(
         self,
         *,
-        api_key: str | None = None,
-        owner: str | None = None,
-        repo: str | None = None,
+        api_key: Optional[str] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
-        timeout: float | None = None,
-        http_client: httpx.Client | None = None,
+        timeout: Optional[float] = None,
+        http_client: Optional[httpx.Client] = None,
     ) -> None:
         """Create a synchronous client and attach resource groups."""
         super().__init__(
@@ -201,12 +203,12 @@ class AsyncGitCode(AsyncAPIClient):
     def __init__(
         self,
         *,
-        api_key: str | None = None,
-        owner: str | None = None,
-        repo: str | None = None,
+        api_key: Optional[str] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
-        timeout: float | None = None,
-        http_client: httpx.AsyncClient | None = None,
+        timeout: Optional[float] = None,
+        http_client: Optional[httpx.AsyncClient] = None,
     ) -> None:
         """Create an asynchronous client and attach resource groups."""
         super().__init__(

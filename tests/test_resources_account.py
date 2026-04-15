@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 import httpx
 import pytest
@@ -38,7 +38,7 @@ def test_search_repositories_passes_expected_query_params(sync_client_factory) -
 
 
 def test_oauth_exchange_token_uses_expected_request(monkeypatch: pytest.MonkeyPatch, sync_client_factory) -> None:
-    captured: dict[str, Any] = {}
+    captured: Dict[str, Any] = {}
 
     def fake_post(url: str, **kwargs: Any) -> httpx.Response:
         captured["url"] = url
@@ -65,7 +65,7 @@ def test_oauth_exchange_token_uses_expected_request(monkeypatch: pytest.MonkeyPa
 
 @pytest.mark.asyncio
 async def test_async_oauth_refresh_token_uses_async_http_client(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, Any] = {}
+    captured: Dict[str, Any] = {}
     http_client = httpx.AsyncClient(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={})))
 
     class FakeAsyncClient:
