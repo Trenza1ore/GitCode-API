@@ -14,7 +14,13 @@
 
 ## Installation
 
-This repository currently focuses on source usage and development workflows.
+Install from PyPI:
+
+```bash
+pip install gitcode-api
+```
+
+For local development from source:
 
 ```bash
 uv sync

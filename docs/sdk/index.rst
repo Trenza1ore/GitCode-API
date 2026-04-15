@@ -24,7 +24,14 @@ Highlights
 Install
 -------
 
-Install the project and optional documentation dependencies with ``uv``:
+Install the package from PyPI:
+
+.. code-block:: bash
+
+   pip install gitcode-api
+
+For local development, install the project and optional documentation
+dependencies with ``uv``:
 
 .. code-block:: bash
 

@@ -14,7 +14,13 @@
 
 ## 安装
 
-当前仓库主要面向源码使用和本地开发：
+推荐直接通过 PyPI 安装：
+
+```bash
+pip install gitcode-api
+```
+
+如果你需要基于源码本地开发：
 
 ```bash
 uv sync
