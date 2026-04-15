@@ -1,0 +1,66 @@
+[project]
+name = "gitcode-api"
+version = "1.0.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.9,<4"
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+]
+dependencies = [
+    "httpx",
+    "python-dotenv",
+]
+
+[dependency-groups]
+# Testing
+test = [
+    "pytest", "pytest-asyncio", "pytest-html", "pytest-mock", "pytest-cov", "coverage",
+]
+
+# Documentation (Sphinx + mirroring upstream GitCode Help pages)
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "beautifulsoup4",
+]
+
+# Formatting
+format = [
+    "ruff",
+]
+
+dev = [{ include-group = "test" }, { include-group = "format" }, { include-group = "docs" }]
+
+[project.urls]
+github = "https://github.com/Trenza1ore/GitCode-API"
+gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
+
+[tool.uv]
+default-groups = ['test']
+
+[tool.setuptools.package-data]
+gitcode-api = ["/**/version.txt"]
+
+[tool.coverage.run]
+omit = ["tests/*"]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+addopts = ["-v"]
+
+# Formatting
+[tool.ruff]
+line-length = 120
+target-version = "py39"

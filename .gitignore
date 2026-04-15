@@ -70,6 +70,8 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/_downloads/
+docs/sdk/generated/
 
 # PyBuilder
 .pybuilder/
@@ -205,3 +207,4 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+.DS_Store
