@@ -1,11 +1,13 @@
 [project]
 name = "gitcode-api"
-version = "1.0.0"
+version = "1.0.1"
 description = ""
 readme = "README.md"
 requires-python = ">=3.9,<4"
+license = "MIT"
 classifiers = [
     'Development Status :: 4 - Beta',
+    "License :: OSI Approved :: MIT License",
     'Programming Language :: Python',
     'Programming Language :: Python :: Implementation :: CPython',
     'Programming Language :: Python :: 3',
