@@ -1,6 +1,6 @@
 [project]
 name = "gitcode-api"
-version = "1.1.0"
+version = "1.1.1"
 description = "Easy to use Python SDK for the GitCode REST API, community-maintained."
 keywords = ["gitcode", "git", "devops", "api", "sdk", "python", "httpx", "client"]
 readme = "README.md"

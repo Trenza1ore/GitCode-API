@@ -15,3 +15,7 @@ format:
 	uv run ruff check --fix || true
 	uv run ruff check --select I --fix || true
 	uv run ruff format || true
+
+test:
+	uv pip install .
+	uv run pytest
