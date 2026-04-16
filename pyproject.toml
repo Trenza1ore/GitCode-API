@@ -1,6 +1,6 @@
 [project]
 name = "gitcode-api"
-version = "1.0.3"
+version = "1.1.0"
 description = "Easy to use Python SDK for the GitCode REST API, community-maintained."
 keywords = ["gitcode", "git", "devops", "api", "sdk", "python", "httpx", "client"]
 readme = "README.md"
@@ -47,9 +47,9 @@ format = [
 dev = [{ include-group = "test" }, { include-group = "format" }, { include-group = "docs" }]
 
 [project.urls]
-github = "https://github.com/Trenza1ore/GitCode-API"
+documentation = "https://gitcode-api.readthedocs.io"
 gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
-documentation = "https://gitcode-api.readthedocs.io/en/latest/index.html"
+github = "https://github.com/Trenza1ore/GitCode-API"
 
 [tool.uv]
 default-groups = ['test']
