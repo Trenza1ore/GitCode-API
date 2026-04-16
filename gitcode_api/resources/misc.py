@@ -170,7 +170,13 @@ class WebhooksResource(SyncResource):
         return self._model("GET", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo), Webhook)
 
     def update(
-        self, *, hook_id: Union[int, str], url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+        self,
+        *,
+        hook_id: Union[int, str],
+        url: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        **payload: Any,
     ) -> Webhook:
         """Update a repository webhook."""
         payload["url"] = url
@@ -327,18 +333,28 @@ class AsyncWebhooksResource(AsyncResource):
             "POST", self._client._repo_path("hooks", owner=owner, repo=repo), Webhook, json=payload
         )
 
-    async def get(self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Webhook:
+    async def get(
+        self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> Webhook:
         return await self._model("GET", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo), Webhook)
 
     async def update(
-        self, *, hook_id: Union[int, str], url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+        self,
+        *,
+        hook_id: Union[int, str],
+        url: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        **payload: Any,
     ) -> Webhook:
         payload["url"] = url
         return await self._model(
             "PATCH", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo), Webhook, json=payload
         )
 
-    async def delete(self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
+    async def delete(
+        self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         await self._request("DELETE", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo))
 
     async def test(self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:

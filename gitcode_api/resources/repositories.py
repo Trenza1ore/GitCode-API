@@ -1065,7 +1065,9 @@ class CommitsResource(SyncResource):
             json={"body": body},
         )
 
-    def delete_comment(self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
+    def delete_comment(
+        self, *, comment_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> None:
         """Delete a commit comment.
 
         :param comment_id: Commit comment identifier.
