@@ -1,6 +1,6 @@
 # GitCode-API
 
-![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api) ![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API) ![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API) ![PyPI - License](https://img.shields.io/pypi/l/gitcode-api)
+![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F) ![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API) ![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API) ![PyPI - License](https://img.shields.io/pypi/l/gitcode-api)
 
 ![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html) ![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md) ![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)
 
@@ -20,18 +20,6 @@ Install from PyPI:
 
 ```bash
 pip install gitcode-api
-```
-
-For local development from source:
-
-```bash
-uv sync
-```
-
-Install documentation dependencies:
-
-```bash
-uv sync --group docs
 ```
 
 ## Authentication
@@ -84,6 +72,35 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+### Context managers
+
+`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. When the SDK creates the underlying httpx client for you, leaving the block calls `close()` / `await close()` on that client automatically.
+
+```python
+from gitcode_api import GitCode
+
+with GitCode(owner="SushiNinja", repo="GitCode-API") as client:
+    repo = client.repos.get()
+    print(repo.full_name)
+```
+
+```python
+import asyncio
+
+from gitcode_api import AsyncGitCode
+
+
+async def main() -> None:
+    async with AsyncGitCode(owner="SushiNinja", repo="GitCode-API") as client:
+        pulls = await client.pulls.list(state="open", per_page=20)
+        print(len(pulls))
+
+
+asyncio.run(main())
+```
+
+If you pass a custom `http_client=`, the SDK does not close it; you still own that client’s lifecycle (for example `async with httpx.AsyncClient(...) as http:` plus `AsyncGitCode(http_client=http)`).
 
 ## Common Workflows
 

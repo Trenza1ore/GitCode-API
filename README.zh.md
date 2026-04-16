@@ -1,6 +1,6 @@
 # GitCode-API
 
-![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api) ![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API) ![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API) ![PyPI - License](https://img.shields.io/pypi/l/gitcode-api)
+![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F) ![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API) ![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API) ![PyPI - License](https://img.shields.io/pypi/l/gitcode-api)
 
 ![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html) ![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md) ![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)
 
@@ -20,18 +20,6 @@
 
 ```bash
 pip install gitcode-api
-```
-
-如果你需要基于源码本地开发：
-
-```bash
-uv sync
-```
-
-如果需要构建文档：
-
-```bash
-uv sync --group docs
 ```
 
 ## 认证
@@ -84,6 +72,35 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+### 上下文管理器
+
+`GitCode` 与 `AsyncGitCode`（以及底层的 `SyncAPIClient` / `AsyncAPIClient`）支持 `with` / `async with`。当由 SDK 自行创建底层 httpx 客户端时，离开代码块会自动对其调用 `close()` / `await close()`。
+
+```python
+from gitcode_api import GitCode
+
+with GitCode(owner="SushiNinja", repo="GitCode-API") as client:
+    repo = client.repos.get()
+    print(repo.full_name)
+```
+
+```python
+import asyncio
+
+from gitcode_api import AsyncGitCode
+
+
+async def main() -> None:
+    async with AsyncGitCode(owner="SushiNinja", repo="GitCode-API") as client:
+        pulls = await client.pulls.list(state="open", per_page=20)
+        print(len(pulls))
+
+
+asyncio.run(main())
+```
+
+若你传入自定义的 `http_client=`，SDK 不会关闭该实例，仍由你负责其生命周期（例如先 `async with httpx.AsyncClient(...) as http:`，再传入 `AsyncGitCode(http_client=http)`）。
 
 ## 常见用法
 
