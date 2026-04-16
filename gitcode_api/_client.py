@@ -140,6 +140,9 @@ class GitCode(SyncAPIClient):
         self.search = SearchResource(self)
         self.oauth = OAuthResource(self)
 
+    def __enter__(self) -> "GitCode":
+        return self
+
 
 class AsyncGitCode(AsyncAPIClient):
     """Asynchronous GitCode API client.
@@ -235,3 +238,6 @@ class AsyncGitCode(AsyncAPIClient):
         self.orgs = AsyncOrgsResource(self)
         self.search = AsyncSearchResource(self)
         self.oauth = AsyncOAuthResource(self)
+
+    async def __aenter__(self) -> "AsyncGitCode":
+        return self
