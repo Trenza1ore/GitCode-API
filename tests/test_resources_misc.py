@@ -16,7 +16,7 @@ def test_labels_list_enterprise_v8_uses_absolute_versioned_url(sync_client_facto
     try:
         labels = client.labels.list_enterprise(enterprise="SushiNinja", api_version="v8", search="bug")
         assert labels[0].name == "bug"
-        assert seen_url == "https://api.gitcode.com/api/v8/enterprises/acme/labels?search=bug"
+        assert seen_url == "https://api.gitcode.com/api/v8/enterprises/SushiNinja/labels?search=bug"
     finally:
         client.close()
         http_client.close()
@@ -26,7 +26,7 @@ def test_labels_list_enterprise_v8_uses_absolute_versioned_url(sync_client_facto
 async def test_async_webhooks_test_hits_expected_endpoint(async_client_factory) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.method == "POST"
-        assert request.url.path == "/api/v5/repos/acme/demo/hooks/44/tests"
+        assert request.url.path == "/api/v5/repos/SushiNinja/GitCode-API/hooks/44/tests"
         return httpx.Response(204)
 
     client, http_client = async_client_factory(handler, owner="SushiNinja", repo="GitCode-API")

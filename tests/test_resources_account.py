@@ -26,12 +26,12 @@ def test_search_repositories_passes_expected_query_params(sync_client_factory) -
         assert request.url.params["q"] == "sdk"
         assert request.url.params["owner"] == "SushiNinja"
         assert request.url.params["language"] == "Python"
-        return httpx.Response(200, json=[{"full_name": "acme/sdk"}])
+        return httpx.Response(200, json=[{"full_name": "SushiNinja/sdk"}])
 
     client, http_client = sync_client_factory(handler)
     try:
         results = client.search.repositories(q="sdk", owner="SushiNinja", language="Python")
-        assert results[0].full_name == "acme/sdk"
+        assert results[0].full_name == "SushiNinja/sdk"
     finally:
         client.close()
         http_client.close()

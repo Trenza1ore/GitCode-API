@@ -6,7 +6,7 @@ from gitcode_api._models import APIObject
 
 def test_sync_pull_create_uses_default_owner_repo(sync_client_factory) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
-        assert request.url.path == "/api/v5/repos/acme/demo/pulls"
+        assert request.url.path == "/api/v5/repos/SushiNinja/GitCode-API/pulls"
         assert request.headers["Authorization"] == "Bearer test-token"
         payload = {
             "number": 7,
@@ -29,7 +29,7 @@ def test_sync_pull_create_uses_default_owner_repo(sync_client_factory) -> None:
 
 def test_issues_create_uses_client_default_repo_and_joins_labels(sync_client_factory) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
-        assert request.url.path == "/api/v5/repos/acme/issues"
+        assert request.url.path == "/api/v5/repos/SushiNinja/issues"
         assert request.headers["Authorization"] == "Bearer test-token"
         payload = request.read().decode()
         assert '"repo":"GitCode-API"' in payload
@@ -79,7 +79,7 @@ def test_delete_operations_return_none_for_204(sync_client_factory) -> None:
 @pytest.mark.asyncio
 async def test_async_issues_create_joins_labels_and_uses_default_repo(async_client_factory) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
-        assert request.url.path == "/api/v5/repos/acme/issues"
+        assert request.url.path == "/api/v5/repos/SushiNinja/issues"
         payload = request.read().decode()
         assert '"repo":"GitCode-API"' in payload
         assert '"labels":"bug,feature"' in payload
