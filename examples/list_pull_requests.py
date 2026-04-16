@@ -15,7 +15,7 @@ def main() -> None:
             print(
                 f"- #{pull.number} [{pull.state}] "
                 f"{pull.title} "
-                f"(source={pull.get('source_branch')}, target={pull.get('target_branch')})"
+                f"(source={pull.source_branch}, target={pull.target_branch})"
             )
 
 

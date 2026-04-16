@@ -8,10 +8,10 @@ def main() -> None:
     with GitCode(api_key=config.api_key, owner=config.owner, repo=config.repo) as client:
         user = client.users.me()
         print(f"login: {user.login}")
-        print(f"name: {user.get('name')}")
-        print(f"html_url: {user.get('html_url')}")
-        print(f"followers: {user.get('followers')}")
-        print(f"following: {user.get('following')}")
+        print(f"name: {user.name}")
+        print(f"html_url: {user.html_url}")
+        print(f"followers: {user.followers}")
+        print(f"following: {user.following}")
 
 
 if __name__ == "__main__":

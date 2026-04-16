@@ -12,7 +12,7 @@ async def main() -> None:
         print(f"repository: {config.owner}/{config.repo}")
         print("branches:")
         for branch in branches[: config.per_page]:
-            print(f"- {branch.name} (protected={branch.get('protected')})")
+            print(f"- {branch.name} (protected={branch.protected})")
 
 
 if __name__ == "__main__":
