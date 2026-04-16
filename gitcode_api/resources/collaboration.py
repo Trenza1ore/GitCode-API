@@ -13,9 +13,9 @@ from .._models import (
     Milestone,
     PullRequest,
     PullRequestComment,
+    PullRequestCount,
     PullRequestFile,
-    PullRequestReview,
-    PullRequestTest,
+    RepoCollaborator,
     RepoMember,
     RepoMemberPermission,
     as_model,
@@ -405,7 +405,7 @@ class PullsResource(SyncResource):
         page: Optional[int] = None,
         per_page: Optional[int] = None,
         **params: Any,
-    ) -> Union[List[PullRequest], APIObject]:
+    ) -> Union[List[PullRequest], PullRequestCount]:
         """List pull requests for a repository.
 
         When ``only_count`` is true in ``params`` (or passed via ``**params``), the API returns a
@@ -438,7 +438,7 @@ class PullsResource(SyncResource):
             },
         )
         if isinstance(response, dict):
-            return as_model(response, APIObject)
+            return as_model(response, PullRequestCount)
         return [as_model(item, PullRequest) for item in response]
 
     def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> PullRequest:
@@ -803,7 +803,7 @@ class PullsResource(SyncResource):
         repo: Optional[str] = None,
         event: str,
         body: Optional[str] = None,
-    ) -> PullRequestReview:
+    ) -> None:
         """Submit a pull request review event (approve, request changes, etc., per API).
 
         :param number: Pull request number.
@@ -813,10 +813,9 @@ class PullsResource(SyncResource):
         :param body: Optional comment body accompanying the event.
         :returns: Review result object.
         """
-        return self._model(
+        self._request(
             "POST",
             self._client._repo_path("pulls", number, "review", owner=owner, repo=repo),
-            PullRequestReview,
             json={"event": event, "body": body},
         )
 
@@ -840,7 +839,7 @@ class PullsResource(SyncResource):
 
     def request_test(
         self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> PullRequestTest:
+    ) -> None:
         """Request testing for a pull request.
 
         :param number: Pull request number.
@@ -849,10 +848,9 @@ class PullsResource(SyncResource):
         :param payload: JSON fields required by the test request endpoint.
         :returns: Test request result.
         """
-        return self._model(
+        self._request(
             "POST",
             self._client._repo_path("pulls", number, "test", owner=owner, repo=repo),
-            PullRequestTest,
             json=payload,
         )
 
@@ -1245,7 +1243,7 @@ class MembersResource(SyncResource):
         repo: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-    ) -> List[RepoMember]:
+    ) -> List[RepoCollaborator]:
         """List repository members (collaborators).
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1257,7 +1255,7 @@ class MembersResource(SyncResource):
         return self._models(
             "GET",
             self._client._repo_path("collaborators", owner=owner, repo=repo),
-            RepoMember,
+            RepoCollaborator,
             params={"page": page, "per_page": per_page},
         )
 
@@ -1607,7 +1605,7 @@ class AsyncPullsResource(AsyncResource):
 
     async def list(
         self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
-    ) -> Union[List[PullRequest], APIObject]:
+    ) -> Union[List[PullRequest], PullRequestCount]:
         """List pull requests for a repository.
 
         When ``only_count`` is true in ``params``, the API returns a JSON object with counts per state
@@ -1622,7 +1620,7 @@ class AsyncPullsResource(AsyncResource):
         """
         response = await self._request("GET", self._client._repo_path("pulls", owner=owner, repo=repo), params=params)
         if isinstance(response, dict):
-            return as_model(response, APIObject)
+            return as_model(response, PullRequestCount)
         return [as_model(item, PullRequest) for item in response]
 
     async def get(
@@ -1959,7 +1957,7 @@ class AsyncPullsResource(AsyncResource):
         repo: Optional[str] = None,
         event: str,
         body: Optional[str] = None,
-    ) -> PullRequestReview:
+    ) -> None:
         """Submit a pull request review event (approve, request changes, etc., per API).
 
         :param number: Pull request number.
@@ -1969,10 +1967,9 @@ class AsyncPullsResource(AsyncResource):
         :param body: Optional comment body accompanying the event.
         :returns: Review result object.
         """
-        return await self._model(
+        await self._request(
             "POST",
             self._client._repo_path("pulls", number, "review", owner=owner, repo=repo),
-            PullRequestReview,
             json={"event": event, "body": body},
         )
 
@@ -1994,7 +1991,7 @@ class AsyncPullsResource(AsyncResource):
 
     async def request_test(
         self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> PullRequestTest:
+    ) -> None:
         """Request testing for a pull request.
 
         :param number: Pull request number.
@@ -2003,10 +2000,9 @@ class AsyncPullsResource(AsyncResource):
         :param payload: JSON fields required by the test request endpoint.
         :returns: Test request result.
         """
-        return await self._model(
+        await self._request(
             "POST",
             self._client._repo_path("pulls", number, "test", owner=owner, repo=repo),
-            PullRequestTest,
             json=payload,
         )
 
@@ -2406,7 +2402,7 @@ class AsyncMembersResource(AsyncResource):
         repo: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-    ) -> List[RepoMember]:
+    ) -> List[RepoCollaborator]:
         """List repository members (collaborators).
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -2418,7 +2414,7 @@ class AsyncMembersResource(AsyncResource):
         return await self._models(
             "GET",
             self._client._repo_path("collaborators", owner=owner, repo=repo),
-            RepoMember,
+            RepoCollaborator,
             params={"page": page, "per_page": per_page},
         )
 

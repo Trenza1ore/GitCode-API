@@ -6,10 +6,12 @@ from .._models import (
     APIObject,
     Blob,
     Branch,
+    BranchDetail,
     Commit,
     CommitComment,
     CommitComparison,
     CommitResult,
+    CommitSummary,
     ContentObject,
     Contributor,
     ProtectedBranch,
@@ -877,7 +879,7 @@ class BranchesResource(SyncResource):
             params={"sort": sort, "direction": direction, "page": page, "per_page": per_page},
         )
 
-    def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
+    def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> BranchDetail:
         """Get a single branch.
 
         :param branch: Branch name.
@@ -885,7 +887,7 @@ class BranchesResource(SyncResource):
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Branch details.
         """
-        return self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), Branch)
+        return self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), BranchDetail)
 
     def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         """Create a branch from an existing ref.
@@ -929,7 +931,7 @@ class CommitsResource(SyncResource):
         path: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-    ) -> List[Commit]:
+    ) -> List[CommitSummary]:
         """List commits in a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -943,7 +945,7 @@ class CommitsResource(SyncResource):
         return self._models(
             "GET",
             self._client._repo_path("commits", owner=owner, repo=repo),
-            Commit,
+            CommitSummary,
             params={"sha": sha, "path": path, "page": page, "per_page": per_page},
         )
 
@@ -1721,7 +1723,7 @@ class AsyncBranchesResource(AsyncResource):
             "GET", self._client._repo_path("branches", owner=owner, repo=repo), Branch, params=params
         )
 
-    async def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
+    async def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> BranchDetail:
         """Get a single branch.
 
         :param branch: Branch name.
@@ -1729,7 +1731,9 @@ class AsyncBranchesResource(AsyncResource):
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Branch details.
         """
-        return await self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), Branch)
+        return await self._model(
+            "GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), BranchDetail
+        )
 
     async def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         """Create a branch from an existing ref.
@@ -1765,7 +1769,9 @@ class AsyncCommitsResource(AsyncResource):
     Mirrors :class:`CommitsResource` (``docs/rest_api/repos/commit``).
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Commit]:
+    async def list(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+    ) -> List[CommitSummary]:
         """List commits in a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1774,7 +1780,7 @@ class AsyncCommitsResource(AsyncResource):
         :returns: Matching commits.
         """
         return await self._models(
-            "GET", self._client._repo_path("commits", owner=owner, repo=repo), Commit, params=params
+            "GET", self._client._repo_path("commits", owner=owner, repo=repo), CommitSummary, params=params
         )
 
     async def get(self, *, sha: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Commit:

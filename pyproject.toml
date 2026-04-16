@@ -29,7 +29,7 @@ dependencies = [
 [dependency-groups]
 # Testing
 test = [
-    "pytest", "pytest-asyncio", "pytest-html", "pytest-mock", "pytest-cov", "coverage",
+    "pytest", "pytest-asyncio", "pytest-html", "pytest-mock", "pytest-cov", "coverage", "json-repair"
 ]
 
 # Documentation (Sphinx + mirroring upstream GitCode Help pages)

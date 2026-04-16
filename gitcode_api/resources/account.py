@@ -13,8 +13,11 @@ from .._models import (
     OAuthToken,
     Organization,
     OrganizationMembership,
+    OrganizationSummary,
     Repository,
-    SearchResult,
+    SearchIssue,
+    SearchRepository,
+    SearchUser,
     User,
 )
 from ._shared import AsyncResource, SyncResource
@@ -142,7 +145,7 @@ class OrgsResource(SyncResource):
 
     def list_for_user(
         self, *, username: str, page: Optional[int] = None, per_page: Optional[int] = None
-    ) -> List[Organization]:
+    ) -> List[OrganizationSummary]:
         """List organizations for a user.
 
         :param username: GitCode username or login.
@@ -153,13 +156,13 @@ class OrgsResource(SyncResource):
         return self._models(
             "GET",
             self._client._path("users", username, "orgs"),
-            Organization,
+            OrganizationSummary,
             params={"page": page, "per_page": per_page},
         )
 
     def list_authenticated(
         self, *, page: Optional[int] = None, per_page: Optional[int] = None, admin: Optional[bool] = None
-    ) -> List[Organization]:
+    ) -> List[OrganizationSummary]:
         """List organizations for the authenticated user.
 
         :param page: Page number.
@@ -170,7 +173,7 @@ class OrgsResource(SyncResource):
         return self._models(
             "GET",
             self._client._path("users", "orgs"),
-            Organization,
+            OrganizationSummary,
             params={"page": page, "per_page": per_page, "admin": admin},
         )
 
@@ -371,7 +374,7 @@ class SearchResource(SyncResource):
         per_page: Optional[int] = None,
         sort: Optional[str] = None,
         order: Optional[str] = None,
-    ) -> List[SearchResult]:
+    ) -> List[SearchUser]:
         """Search users.
 
         :param q: Search keywords.
@@ -384,7 +387,7 @@ class SearchResource(SyncResource):
         return self._models(
             "GET",
             self._client._path("search", "users"),
-            SearchResult,
+            SearchUser,
             params={"q": q, "page": page, "per_page": per_page, "sort": sort, "order": order},
         )
 
@@ -398,7 +401,7 @@ class SearchResource(SyncResource):
         order: Optional[str] = None,
         repo: Optional[str] = None,
         state: Optional[str] = None,
-    ) -> List[SearchResult]:
+    ) -> List[SearchIssue]:
         """Search issues.
 
         :param q: Search keywords.
@@ -413,7 +416,7 @@ class SearchResource(SyncResource):
         return self._models(
             "GET",
             self._client._path("search", "issues"),
-            SearchResult,
+            SearchIssue,
             params={
                 "q": q,
                 "page": page,
@@ -436,7 +439,7 @@ class SearchResource(SyncResource):
         owner: Optional[str] = None,
         fork: Optional[str] = None,
         language: Optional[str] = None,
-    ) -> List[SearchResult]:
+    ) -> List[SearchRepository]:
         """Search repositories.
 
         :param q: Search keywords.
@@ -452,7 +455,7 @@ class SearchResource(SyncResource):
         return self._models(
             "GET",
             self._client._path("search", "repositories"),
-            SearchResult,
+            SearchRepository,
             params={
                 "q": q,
                 "page": page,
@@ -667,7 +670,7 @@ class AsyncOrgsResource(AsyncResource):
 
     async def list_for_user(
         self, *, username: str, page: Optional[int] = None, per_page: Optional[int] = None
-    ) -> List[Organization]:
+    ) -> List[OrganizationSummary]:
         """List organizations for a user.
 
         :param username: GitCode username or login.
@@ -678,13 +681,13 @@ class AsyncOrgsResource(AsyncResource):
         return await self._models(
             "GET",
             self._client._path("users", username, "orgs"),
-            Organization,
+            OrganizationSummary,
             params={"page": page, "per_page": per_page},
         )
 
     async def list_authenticated(
         self, *, page: Optional[int] = None, per_page: Optional[int] = None, admin: Optional[bool] = None
-    ) -> List[Organization]:
+    ) -> List[OrganizationSummary]:
         """List organizations for the authenticated user.
 
         :param page: Page number.
@@ -695,7 +698,7 @@ class AsyncOrgsResource(AsyncResource):
         return await self._models(
             "GET",
             self._client._path("users", "orgs"),
-            Organization,
+            OrganizationSummary,
             params={"page": page, "per_page": per_page, "admin": admin},
         )
 
@@ -893,7 +896,7 @@ class AsyncSearchResource(AsyncResource):
     see ``docs/rest_api/search`` and the synchronous methods for field meanings.
     """
 
-    async def users(self, *, q: str, **params: Any) -> List[SearchResult]:
+    async def users(self, *, q: str, **params: Any) -> List[SearchUser]:
         """Search users.
 
         :param q: Search keywords (required).
@@ -901,9 +904,9 @@ class AsyncSearchResource(AsyncResource):
             ``per_page``, ``sort``, and ``order`` (same meanings as :meth:`SearchResource.users`).
         :returns: Matching user search results.
         """
-        return await self._models("GET", self._client._path("search", "users"), SearchResult, params={"q": q, **params})
+        return await self._models("GET", self._client._path("search", "users"), SearchUser, params={"q": q, **params})
 
-    async def issues(self, *, q: str, **params: Any) -> List[SearchResult]:
+    async def issues(self, *, q: str, **params: Any) -> List[SearchIssue]:
         """Search issues.
 
         :param q: Search keywords (required).
@@ -911,11 +914,9 @@ class AsyncSearchResource(AsyncResource):
             ``per_page``, ``sort``, ``order``, ``repo``, and ``state`` (see :meth:`SearchResource.issues`).
         :returns: Matching issue search results.
         """
-        return await self._models(
-            "GET", self._client._path("search", "issues"), SearchResult, params={"q": q, **params}
-        )
+        return await self._models("GET", self._client._path("search", "issues"), SearchIssue, params={"q": q, **params})
 
-    async def repositories(self, *, q: str, **params: Any) -> List[SearchResult]:
+    async def repositories(self, *, q: str, **params: Any) -> List[SearchRepository]:
         """Search repositories.
 
         :param q: Search keywords (required).
@@ -925,7 +926,7 @@ class AsyncSearchResource(AsyncResource):
         :returns: Matching repository search results.
         """
         return await self._models(
-            "GET", self._client._path("search", "repositories"), SearchResult, params={"q": q, **params}
+            "GET", self._client._path("search", "repositories"), SearchRepository, params={"q": q, **params}
         )
 
 
