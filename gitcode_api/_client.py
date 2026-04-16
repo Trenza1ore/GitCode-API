@@ -4,7 +4,7 @@ These client classes expose grouped resource helpers that mirror the
 published GitCode REST API documentation.
 """
 
-from typing import Optional
+from typing import Callable, Optional
 
 import httpx
 
@@ -54,6 +54,7 @@ class GitCode(SyncAPIClient):
     :param base_url: Base URL for the GitCode REST API.
     :param timeout: Request timeout in seconds.
     :param http_client: Optional pre-configured ``httpx.Client`` instance.
+    :param decrypt: Optional decryption function for encrypted access token.
     """
 
     repos: ReposResource
@@ -113,6 +114,7 @@ class GitCode(SyncAPIClient):
         base_url: str = DEFAULT_BASE_URL,
         timeout: Optional[float] = None,
         http_client: Optional[httpx.Client] = None,
+        decrypt: Optional[Callable] = None,
     ) -> None:
         """Create a synchronous client and attach resource groups."""
         super().__init__(
@@ -122,6 +124,7 @@ class GitCode(SyncAPIClient):
             base_url=base_url,
             timeout=timeout,
             http_client=http_client,
+            decrypt=decrypt,
         )
         self.repos = ReposResource(self)
         self.contents = RepoContentsResource(self)
@@ -153,6 +156,7 @@ class AsyncGitCode(AsyncAPIClient):
     :param base_url: Base URL for the GitCode REST API.
     :param timeout: Request timeout in seconds.
     :param http_client: Optional pre-configured ``httpx.AsyncClient`` instance.
+    :param decrypt: Optional decryption function for encrypted access token.
     """
 
     repos: AsyncReposResource
@@ -212,6 +216,7 @@ class AsyncGitCode(AsyncAPIClient):
         base_url: str = DEFAULT_BASE_URL,
         timeout: Optional[float] = None,
         http_client: Optional[httpx.AsyncClient] = None,
+        decrypt: Optional[Callable] = None,
     ) -> None:
         """Create an asynchronous client and attach resource groups."""
         super().__init__(
@@ -221,6 +226,7 @@ class AsyncGitCode(AsyncAPIClient):
             base_url=base_url,
             timeout=timeout,
             http_client=http_client,
+            decrypt=decrypt,
         )
         self.repos = AsyncReposResource(self)
         self.contents = AsyncRepoContentsResource(self)

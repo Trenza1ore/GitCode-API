@@ -5,7 +5,7 @@ payload cleanup, and response parsing for both sync and async clients.
 """
 
 import os
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Tuple, Union
 from urllib.parse import quote
 
 import httpx
@@ -30,6 +30,7 @@ class BaseGitCodeClient:
     :param repo: Default repository name for repository-scoped calls.
     :param base_url: Base URL for the GitCode REST API.
     :param timeout: Request timeout in seconds.
+    :param decrypt: Optional decryption function for encrypted access token.
     """
 
     def __init__(
@@ -40,20 +41,23 @@ class BaseGitCodeClient:
         repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
         timeout: Optional[float] = None,
+        decrypt: Optional[Callable] = None,
     ) -> None:
         """Store client configuration and resolve authentication."""
-        self.api_key = self._resolve_api_key(api_key)
+        self.api_key = self._resolve_api_key(api_key, decrypt)
         self.owner = owner
         self.repo = repo
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
-    def _resolve_api_key(self, api_key: Optional[str]) -> str:
+    def _resolve_api_key(self, api_key: Optional[str], decrypt: Optional[Callable] = None) -> str:
         """Resolve the access token from an argument or environment variable."""
         token = api_key or os.getenv(DEFAULT_TOKEN_ENV)
+        if callable(decrypt):
+            token = decrypt(token)
         if not token:
             raise GitCodeConfigurationError("No API key provided. Pass api_key=... or set GITCODE_ACCESS_TOKEN.")
-        return token
+        return str(token)
 
     def _resolve_repo_context(
         self,
@@ -187,6 +191,7 @@ class SyncAPIClient(BaseGitCodeClient):
     :param base_url: Base URL for the GitCode REST API.
     :param timeout: Request timeout in seconds.
     :param http_client: Optional pre-configured ``httpx.Client`` instance.
+    :param decrypt: Optional decryption function for encrypted access token.
     """
 
     def __init__(
@@ -198,9 +203,10 @@ class SyncAPIClient(BaseGitCodeClient):
         base_url: str = DEFAULT_BASE_URL,
         timeout: Optional[float] = None,
         http_client: Optional[httpx.Client] = None,
+        decrypt: Optional[Callable] = None,
     ) -> None:
         """Create or reuse an ``httpx.Client`` for synchronous requests."""
-        super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout)
+        super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout, decrypt=decrypt)
         self._owns_client = http_client is None
         self._client = http_client or httpx.Client(timeout=self.timeout)
 
@@ -260,6 +266,7 @@ class AsyncAPIClient(BaseGitCodeClient):
     :param base_url: Base URL for the GitCode REST API.
     :param timeout: Request timeout in seconds.
     :param http_client: Optional pre-configured ``httpx.AsyncClient`` instance.
+    :param decrypt: Optional decryption function for encrypted access token.
     """
 
     def __init__(
@@ -271,9 +278,10 @@ class AsyncAPIClient(BaseGitCodeClient):
         base_url: str = DEFAULT_BASE_URL,
         timeout: Optional[float] = None,
         http_client: Optional[httpx.AsyncClient] = None,
+        decrypt: Optional[Callable] = None,
     ) -> None:
         """Create or reuse an ``httpx.AsyncClient`` for asynchronous requests."""
-        super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout)
+        super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout, decrypt=decrypt)
         self._owns_client = http_client is None
         self._client = http_client or httpx.AsyncClient(timeout=self.timeout)
 
