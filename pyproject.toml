@@ -1,6 +1,6 @@
 [project]
 name = "gitcode-api"
-version = "1.1.1"
+version = "1.1.2"
 description = "Easy to use Python SDK for the GitCode REST API, community-maintained."
 keywords = ["gitcode", "git", "devops", "api", "sdk", "python", "httpx", "client"]
 readme = "README.md"
@@ -55,7 +55,7 @@ github = "https://github.com/Trenza1ore/GitCode-API"
 default-groups = ['test']
 
 [tool.setuptools.package-data]
-gitcode-api = ["/**/version.txt"]
+gitcode_api = ["**/version.txt"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
