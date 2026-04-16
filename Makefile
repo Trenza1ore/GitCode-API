@@ -12,6 +12,6 @@ docs-clean:
 	rm -rf $(DOCS_SOURCE_DIR)/sdk/generated
 
 format:
-	ruff check --fix gitcode_api
-	ruff check --select I --fix gitcode_api
-	ruff format gitcode_api
+	uv run ruff check --fix || true
+	uv run ruff check --select I --fix || true
+	uv run ruff format || true
