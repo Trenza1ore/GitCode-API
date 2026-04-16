@@ -1029,7 +1029,7 @@ Response
           "description": "233333",
           "html_url": "www.baidu.com",
           "id": 138108,
-          "path": "xiaogang444
+          "path": "xiaogang444"
       }
 
 Response Fields Description
