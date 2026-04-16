@@ -1,13 +1,13 @@
 import inspect
 from dataclasses import dataclass
-from types import NoneType
-from typing import Any, Callable, Type, Union, get_args, get_origin
+from typing import Any, Callable, Optional, Type, Union, get_args, get_origin
 
 import httpx
 import pytest
 
 from gitcode_api._models import (
     APIObject,
+    ApiStatusResponse,
     Blob,
     Branch,
     BranchDetail,
@@ -31,21 +31,30 @@ from gitcode_api._models import (
     OrganizationSummary,
     ProtectedBranch,
     ProtectedTag,
+    PublicKey,
     PullRequest,
     PullRequestComment,
     PullRequestCount,
     PullRequestFile,
+    PullRequestOperationLog,
+    PullRequestSettings,
     Release,
     RepoCollaborator,
     RepoMember,
     RepoMemberPermission,
     Repository,
+    RepositoryCollaboratorCheck,
+    RepositoryCustomizedRole,
+    RepositoryDownloadStatistics,
+    RepositoryReviewerSettingsUpdate,
+    RepositorySettings,
     SearchIssue,
     SearchRepository,
     SearchUser,
     Tag,
     Tree,
     User,
+    UserEventsResponse,
     UserSummary,
     Webhook,
 )
@@ -68,7 +77,7 @@ class DocsResponseCase:
     model_type: Type[Any]
     value_path: str
     is_list: bool = False
-    payload_normalizer: Callable[[Any], Any] | None = None
+    payload_normalizer: Optional[Callable[[Any], Any]] = None
 
 
 def _get_case_method(client: Any, case: DocsResponseCase) -> Callable[..., Any]:
@@ -88,26 +97,9 @@ def _annotation_matches_case(annotation: Any, case: DocsResponseCase) -> bool:
         return case.is_list and bool(args) and args[0] is case.model_type
 
     if origin in (Union, getattr(__import__("types"), "UnionType", Union)):
-        return any(_annotation_matches_case(option, case) for option in get_args(annotation) if option is not NoneType)
+        return any(_annotation_matches_case(option, case) for option in get_args(annotation) if option is not None)
 
     return not case.is_list and annotation is case.model_type
-
-
-def test_doc_cases_match_resource_return_annotations(sync_client_factory) -> None:
-    client, http_client = sync_client_factory(lambda request: httpx.Response(200, json={}, request=request))
-
-    try:
-        for case in CASES:
-            method = _get_case_method(client, case)
-            annotation = inspect.signature(method).return_annotation
-            assert annotation is not inspect.Signature.empty, f"Missing return annotation for {case.id}"
-            assert _annotation_matches_case(annotation, case), (
-                f"{case.id} expects {'list[' if case.is_list else ''}{case.model_type.__name__}"
-                f"{']' if case.is_list else ''}, but {method.__qualname__} is annotated as {annotation!r}"
-            )
-    finally:
-        client.close()
-        http_client.close()
 
 
 CASES = [
@@ -149,7 +141,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/users/demo-user/events",
         invoke=lambda client: client.users.list_events(username="demo-user"),
-        model_type=APIObject,
+        model_type=UserEventsResponse,
         value_path="next",
     ),
     DocsResponseCase(
@@ -191,7 +183,7 @@ CASES = [
         method="POST",
         expected_path="/api/v5/user/keys",
         invoke=lambda client: client.users.create_key(key="ssh-rsa AAA", title="demo-key"),
-        model_type=APIObject,
+        model_type=PublicKey,
         value_path="id",
     ),
     DocsResponseCase(
@@ -212,7 +204,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/user/keys/1",
         invoke=lambda client: client.users.get_key(key_id=1),
-        model_type=APIObject,
+        model_type=PublicKey,
         value_path="id",
         payload_normalizer=lambda payload: payload[0],
     ),
@@ -481,7 +473,7 @@ CASES = [
         method="PUT",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/module/setting",
         invoke=lambda client: client.repos.update_module_settings(issue=True),
-        model_type=APIObject,
+        model_type=ApiStatusResponse,
         value_path="msg",
     ),
     DocsResponseCase(
@@ -491,7 +483,7 @@ CASES = [
         method="PUT",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/reviewer",
         invoke=lambda client: client.repos.update_reviewer_settings(enable=True),
-        model_type=APIObject,
+        model_type=RepositoryReviewerSettingsUpdate,
         value_path="id",
     ),
     DocsResponseCase(
@@ -533,7 +525,7 @@ CASES = [
         method="PUT",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/repo_settings",
         invoke=lambda client: client.repos.update_repo_settings(enable=True),
-        model_type=APIObject,
+        model_type=RepositorySettings,
         value_path="disable_fork",
     ),
     DocsResponseCase(
@@ -543,7 +535,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/repo_settings",
         invoke=lambda client: client.repos.get_repo_settings(),
-        model_type=APIObject,
+        model_type=RepositorySettings,
         value_path="disable_fork",
     ),
     DocsResponseCase(
@@ -553,7 +545,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/pull_request_settings",
         invoke=lambda client: client.repos.get_pull_request_settings(),
-        model_type=APIObject,
+        model_type=PullRequestSettings,
         value_path="merge_method",
     ),
     DocsResponseCase(
@@ -563,7 +555,7 @@ CASES = [
         method="PUT",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/pull_request_settings",
         invoke=lambda client: client.repos.update_pull_request_settings(enable=True),
-        model_type=APIObject,
+        model_type=PullRequestSettings,
         value_path="merge_method",
     ),
     DocsResponseCase(
@@ -573,7 +565,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/customized_roles",
         invoke=lambda client: client.repos.list_customized_roles(),
-        model_type=APIObject,
+        model_type=RepositoryCustomizedRole,
         value_path="role_name",
         is_list=True,
     ),
@@ -584,7 +576,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/download_statistics",
         invoke=lambda client: client.repos.get_download_statistics(),
-        model_type=APIObject,
+        model_type=RepositoryDownloadStatistics,
         value_path="download_statistics_total",
     ),
     DocsResponseCase(
@@ -802,7 +794,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/pulls/1/operate_logs",
         invoke=lambda client: client.pulls.list_operation_logs(number=1),
-        model_type=APIObject,
+        model_type=PullRequestOperationLog,
         value_path="action",
         is_list=True,
     ),
@@ -897,7 +889,7 @@ CASES = [
         method="GET",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/collaborators/demo-user",
         invoke=lambda client: client.members.get(username="demo-user"),
-        model_type=APIObject,
+        model_type=RepositoryCollaboratorCheck,
         value_path="message",
     ),
     DocsResponseCase(
@@ -1084,7 +1076,7 @@ def test_oauth_exchange_token_uses_documented_response_model(
 ) -> None:
     payload = load_response_payload("oauth.rst", "3. Obtaining an Authorization Token")
 
-    def fake_post(url: str, **kwargs: Any) -> httpx.Response:
+    def fake_post(url: str, **kwargs) -> httpx.Response:
         assert url == "https://gitcode.com/oauth/token"
         assert kwargs["params"]["grant_type"] == "authorization_code"
         return httpx.Response(200, json=payload, request=httpx.Request("POST", url))
@@ -1103,3 +1095,17 @@ def test_oauth_exchange_token_uses_documented_response_model(
     assert isinstance(token, OAuthToken)
     assert_payload_matches_object(payload, token)
     assert token.access_token == get_value(payload, "access_token")
+
+
+@pytest.mark.parametrize("case", CASES, ids=[case.id for case in CASES])
+def test_doc_cases_match_resource_return_annotations(sync_client_factory, case: DocsResponseCase) -> None:
+    client, _ = sync_client_factory(lambda request: httpx.Response(200, json={}, request=request))
+
+    with client:
+        method = _get_case_method(client, case)
+        annotation = inspect.signature(method).return_annotation
+        assert annotation is not inspect.Signature.empty, f"Missing return annotation for {case.id}"
+        assert _annotation_matches_case(annotation, case), (
+            f"{case.id} expects {'list[' if case.is_list else ''}{case.model_type.__name__}"
+            f"{']' if case.is_list else ''}, but {method.__qualname__} is annotated as {annotation!r}"
+        )

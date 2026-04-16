@@ -1,6 +1,6 @@
 """Account, organization, search, and OAuth resource groups."""
 
-from typing import Any, List, Optional, Union
+from typing import List, Optional, Union
 from urllib.parse import urlencode
 
 import httpx
@@ -8,17 +8,20 @@ import httpx
 from .._models import (
     APIObject,
     Email,
+    EmptyResponse,
     EnterpriseMember,
     Namespace,
     OAuthToken,
     Organization,
     OrganizationMembership,
     OrganizationSummary,
+    PublicKey,
     Repository,
     SearchIssue,
     SearchRepository,
     SearchUser,
     User,
+    UserEventsResponse,
 )
 from ._shared import AsyncResource, SyncResource
 
@@ -50,7 +53,9 @@ class UsersResource(SyncResource):
         """
         return self._models("GET", self._client._path("emails"), Email)
 
-    def list_events(self, *, username: str, year: Optional[str] = None, next: Optional[str] = None) -> APIObject:
+    def list_events(
+        self, *, username: str, year: Optional[str] = None, next: Optional[str] = None
+    ) -> UserEventsResponse:
         """List activity events for a user.
 
         :param username: GitCode username or login (path segment, see User API).
@@ -59,10 +64,13 @@ class UsersResource(SyncResource):
         :returns: Event payload grouped by date.
         """
         return self._model(
-            "GET", self._client._path("users", username, "events"), APIObject, params={"year": year, "next": next}
+            "GET",
+            self._client._path("users", username, "events"),
+            UserEventsResponse,
+            params={"year": year, "next": next},
         )
 
-    def list_repos(self, *, username: str, **params: Any) -> List[Repository]:
+    def list_repos(self, *, username: str, **params) -> List[Repository]:
         """List public repositories owned by a user.
 
         Supported filters follow the user repository API documentation, such as
@@ -74,14 +82,14 @@ class UsersResource(SyncResource):
         """
         return self._models("GET", self._client._path("users", username, "repos"), Repository, params=params)
 
-    def create_key(self, *, key: str, title: str) -> APIObject:
+    def create_key(self, *, key: str, title: str) -> PublicKey:
         """Add a public SSH key for the authenticated user.
 
         :param key: Public key material.
         :param title: Human-readable key name.
         :returns: Created key metadata.
         """
-        return self._model("POST", self._client._path("user", "keys"), APIObject, json={"key": key, "title": title})
+        return self._model("POST", self._client._path("user", "keys"), PublicKey, json={"key": key, "title": title})
 
     def list_keys(self, *, page: Optional[int] = None, per_page: Optional[int] = None) -> List[APIObject]:
         """List public SSH keys for the authenticated user.
@@ -100,13 +108,13 @@ class UsersResource(SyncResource):
         """
         self._request("DELETE", self._client._path("user", "keys", key_id))
 
-    def get_key(self, *, key_id: Union[int, str]) -> APIObject:
+    def get_key(self, *, key_id: Union[int, str]) -> PublicKey:
         """Get a single public SSH key.
 
         :param key_id: Public key identifier.
         :returns: Public key metadata.
         """
-        return self._model("GET", self._client._path("user", "keys", key_id), APIObject)
+        return self._model("GET", self._client._path("user", "keys", key_id), PublicKey)
 
     def get_namespace(self, *, path: str) -> Namespace:
         """Resolve namespace information for the authenticated user.
@@ -212,7 +220,7 @@ class OrgsResource(SyncResource):
             params={"type": type, "page": page, "per_page": per_page},
         )
 
-    def create_repo(self, *, org: str, name: str, **payload: Any) -> Repository:
+    def create_repo(self, *, org: str, name: str, **payload) -> Repository:
         """Create an organization repository.
 
         Additional payload fields match the organization repository creation
@@ -280,14 +288,14 @@ class OrgsResource(SyncResource):
             params={"page": page, "per_page": per_page, "role": role},
         )
 
-    def remove_member(self, *, org: str, username: str) -> APIObject:
+    def remove_member(self, *, org: str, username: str) -> EmptyResponse:
         """Remove a member from an organization.
 
         :param org: Organization path or login.
         :param username: Member username or login.
         :returns: API response payload, if any.
         """
-        return self._model("DELETE", self._client._path("orgs", org, "memberships", username), APIObject)
+        return self._model("DELETE", self._client._path("orgs", org, "memberships", username), EmptyResponse)
 
     def list_followers(self, *, owner: str, page: Optional[int] = None, per_page: Optional[int] = None) -> List[User]:
         """List followers of an organization.
@@ -346,7 +354,7 @@ class OrgsResource(SyncResource):
             json={"role": role},
         )
 
-    def update(self, *, org: str, **payload: Any) -> Organization:
+    def update(self, *, org: str, **payload) -> Organization:
         """Update organization metadata.
 
         :param org: Organization path or login.
@@ -568,7 +576,9 @@ class AsyncUsersResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("emails"), Email)
 
-    async def list_events(self, *, username: str, year: Optional[str] = None, next: Optional[str] = None) -> APIObject:
+    async def list_events(
+        self, *, username: str, year: Optional[str] = None, next: Optional[str] = None
+    ) -> UserEventsResponse:
         """List activity events for a user.
 
         :param username: GitCode username or login (path segment, see User API).
@@ -577,10 +587,13 @@ class AsyncUsersResource(AsyncResource):
         :returns: Event payload grouped by date.
         """
         return await self._model(
-            "GET", self._client._path("users", username, "events"), APIObject, params={"year": year, "next": next}
+            "GET",
+            self._client._path("users", username, "events"),
+            UserEventsResponse,
+            params={"year": year, "next": next},
         )
 
-    async def list_repos(self, *, username: str, **params: Any) -> List[Repository]:
+    async def list_repos(self, *, username: str, **params) -> List[Repository]:
         """List public repositories owned by a user.
 
         Supported filters follow the user repository API documentation, such as
@@ -592,7 +605,7 @@ class AsyncUsersResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("users", username, "repos"), Repository, params=params)
 
-    async def create_key(self, *, key: str, title: str) -> APIObject:
+    async def create_key(self, *, key: str, title: str) -> PublicKey:
         """Add a public SSH key for the authenticated user.
 
         :param key: Public key material.
@@ -600,7 +613,7 @@ class AsyncUsersResource(AsyncResource):
         :returns: Created key metadata.
         """
         return await self._model(
-            "POST", self._client._path("user", "keys"), APIObject, json={"key": key, "title": title}
+            "POST", self._client._path("user", "keys"), PublicKey, json={"key": key, "title": title}
         )
 
     async def list_keys(self, *, page: Optional[int] = None, per_page: Optional[int] = None) -> List[APIObject]:
@@ -622,13 +635,13 @@ class AsyncUsersResource(AsyncResource):
         """
         await self._request("DELETE", self._client._path("user", "keys", key_id))
 
-    async def get_key(self, *, key_id: Union[int, str]) -> APIObject:
+    async def get_key(self, *, key_id: Union[int, str]) -> PublicKey:
         """Get a single public SSH key.
 
         :param key_id: Public key identifier.
         :returns: Public key metadata.
         """
-        return await self._model("GET", self._client._path("user", "keys", key_id), APIObject)
+        return await self._model("GET", self._client._path("user", "keys", key_id), PublicKey)
 
     async def get_namespace(self, *, path: str) -> Namespace:
         """Resolve namespace information for the authenticated user.
@@ -737,7 +750,7 @@ class AsyncOrgsResource(AsyncResource):
             params={"type": type, "page": page, "per_page": per_page},
         )
 
-    async def create_repo(self, *, org: str, name: str, **payload: Any) -> Repository:
+    async def create_repo(self, *, org: str, name: str, **payload) -> Repository:
         """Create an organization repository.
 
         Additional payload fields match the organization repository creation
@@ -807,14 +820,14 @@ class AsyncOrgsResource(AsyncResource):
             params={"page": page, "per_page": per_page, "role": role},
         )
 
-    async def remove_member(self, *, org: str, username: str) -> APIObject:
+    async def remove_member(self, *, org: str, username: str) -> EmptyResponse:
         """Remove a member from an organization.
 
         :param org: Organization path or login.
         :param username: Member username or login.
         :returns: API response payload, if any.
         """
-        return await self._model("DELETE", self._client._path("orgs", org, "memberships", username), APIObject)
+        return await self._model("DELETE", self._client._path("orgs", org, "memberships", username), EmptyResponse)
 
     async def list_followers(
         self, *, owner: str, page: Optional[int] = None, per_page: Optional[int] = None
@@ -872,7 +885,7 @@ class AsyncOrgsResource(AsyncResource):
             json={"role": role},
         )
 
-    async def update(self, *, org: str, **payload: Any) -> Organization:
+    async def update(self, *, org: str, **payload) -> Organization:
         """Update organization metadata.
 
         :param org: Organization path or login.
@@ -896,7 +909,7 @@ class AsyncSearchResource(AsyncResource):
     see ``docs/rest_api/search`` and the synchronous methods for field meanings.
     """
 
-    async def users(self, *, q: str, **params: Any) -> List[SearchUser]:
+    async def users(self, *, q: str, **params) -> List[SearchUser]:
         """Search users.
 
         :param q: Search keywords (required).
@@ -906,7 +919,7 @@ class AsyncSearchResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("search", "users"), SearchUser, params={"q": q, **params})
 
-    async def issues(self, *, q: str, **params: Any) -> List[SearchIssue]:
+    async def issues(self, *, q: str, **params) -> List[SearchIssue]:
         """Search issues.
 
         :param q: Search keywords (required).
@@ -916,7 +929,7 @@ class AsyncSearchResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("search", "issues"), SearchIssue, params={"q": q, **params})
 
-    async def repositories(self, *, q: str, **params: Any) -> List[SearchRepository]:
+    async def repositories(self, *, q: str, **params) -> List[SearchRepository]:
         """Search repositories.
 
         :param q: Search keywords (required).

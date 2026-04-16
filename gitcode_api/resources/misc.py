@@ -1,6 +1,6 @@
 """Release, tag, and webhook resource groups."""
 
-from typing import Any, List, Optional, Union
+from typing import List, Optional, Union
 
 from .._models import ProtectedTag, Release, Tag, Webhook
 from ._shared import AsyncResource, SyncResource
@@ -218,7 +218,7 @@ class WebhooksResource(SyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    def create(self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> Webhook:
+    def create(self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Webhook:
         """Create a repository webhook.
 
         :param url: Payload URL GitCode should POST events to.
@@ -247,7 +247,7 @@ class WebhooksResource(SyncResource):
         url: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        **payload: Any,
+        **payload,
     ) -> Webhook:
         """Update a repository webhook.
 
@@ -508,9 +508,7 @@ class AsyncWebhooksResource(AsyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    async def create(
-        self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> Webhook:
+    async def create(self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Webhook:
         """Create a repository webhook.
 
         :param url: Payload URL GitCode should POST events to.
@@ -543,7 +541,7 @@ class AsyncWebhooksResource(AsyncResource):
         url: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        **payload: Any,
+        **payload,
     ) -> Webhook:
         """Update a repository webhook.
 

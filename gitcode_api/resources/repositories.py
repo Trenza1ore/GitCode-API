@@ -1,9 +1,10 @@
 """Repository, contents, branch, and commit resource groups."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from .._models import (
     APIObject,
+    ApiStatusResponse,
     Blob,
     Branch,
     BranchDetail,
@@ -14,8 +15,19 @@ from .._models import (
     CommitSummary,
     ContentObject,
     Contributor,
+    ContributorStatistics,
     ProtectedBranch,
+    PullRequestSettings,
+    RepoMember,
     Repository,
+    RepositoryCustomizedRole,
+    RepositoryDownloadStatistics,
+    RepositoryPermissionMode,
+    RepositoryPushConfig,
+    RepositoryReviewerSettingsUpdate,
+    RepositorySettings,
+    RepositoryTransferResult,
+    RepositoryUploadResult,
     Tree,
     UserSummary,
     as_model,
@@ -211,7 +223,7 @@ class ReposResource(SyncResource):
             },
         )
 
-    def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes: Any) -> Repository:
+    def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes) -> Repository:
         """Update repository metadata.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -358,8 +370,8 @@ class ReposResource(SyncResource):
         )
 
     def update_module_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings
+    ) -> ApiStatusResponse:
         """Update repository module settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -370,13 +382,13 @@ class ReposResource(SyncResource):
         return self._model(
             "PUT",
             self._client._repo_path("module", "setting", owner=owner, repo=repo),
-            APIObject,
+            ApiStatusResponse,
             json=settings,
         )
 
     def update_reviewer_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings
+    ) -> RepositoryReviewerSettingsUpdate:
         """Update repository reviewer settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -387,11 +399,11 @@ class ReposResource(SyncResource):
         return self._model(
             "PUT",
             self._client._repo_path("reviewer", owner=owner, repo=repo),
-            APIObject,
+            RepositoryReviewerSettingsUpdate,
             json=settings,
         )
 
-    def set_org_repo_status(self, *, org: str, repo: str, **payload: Any) -> APIObject:
+    def set_org_repo_status(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
         """Update organization repository status metadata.
 
         :param org: Organization path.
@@ -399,9 +411,11 @@ class ReposResource(SyncResource):
         :param payload: Status fields accepted by the API.
         :returns: API response payload.
         """
-        return self._model("PUT", self._client._path("org", org, "repo", repo, "status"), APIObject, json=payload)
+        return self._model(
+            "PUT", self._client._path("org", org, "repo", repo, "status"), ApiStatusResponse, json=payload
+        )
 
-    def transfer_to_org(self, *, org: str, repo: str, **payload: Any) -> APIObject:
+    def transfer_to_org(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
         """Transfer a repository to an organization.
 
         :param org: Destination organization path.
@@ -410,21 +424,23 @@ class ReposResource(SyncResource):
         :returns: API response payload.
         """
         return self._model(
-            "POST", self._client._path("org", org, "projects", repo, "transfer"), APIObject, json=payload
+            "POST", self._client._path("org", org, "projects", repo, "transfer"), ApiStatusResponse, json=payload
         )
 
-    def get_transition(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    def get_transition(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositoryPermissionMode:
         """Get repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Transition configuration.
         """
-        return self._model("GET", self._client._repo_path("transition", owner=owner, repo=repo), APIObject)
+        return self._model(
+            "GET", self._client._repo_path("transition", owner=owner, repo=repo), RepositoryPermissionMode
+        )
 
     def update_transition(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> ApiStatusResponse:
         """Update repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -433,12 +449,12 @@ class ReposResource(SyncResource):
         :returns: API response payload.
         """
         return self._model(
-            "PUT", self._client._repo_path("transition", owner=owner, repo=repo), APIObject, json=payload
+            "PUT", self._client._repo_path("transition", owner=owner, repo=repo), ApiStatusResponse, json=payload
         )
 
     def update_push_config(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryPushConfig:
         """Update repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -447,19 +463,21 @@ class ReposResource(SyncResource):
         :returns: API response payload.
         """
         return self._model(
-            "PUT", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject, json=payload
+            "PUT", self._client._repo_path("push_config", owner=owner, repo=repo), RepositoryPushConfig, json=payload
         )
 
-    def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositoryPushConfig:
         """Get repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Push configuration payload.
         """
-        return self._model("GET", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject)
+        return self._model("GET", self._client._repo_path("push_config", owner=owner, repo=repo), RepositoryPushConfig)
 
-    def upload_image(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
+    def upload_image(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryUploadResult:
         """Upload an image asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -468,10 +486,15 @@ class ReposResource(SyncResource):
         :returns: Uploaded image metadata.
         """
         return self._model(
-            "POST", self._client._repo_path("img", "upload", owner=owner, repo=repo), APIObject, json=payload
+            "POST",
+            self._client._repo_path("img", "upload", owner=owner, repo=repo),
+            RepositoryUploadResult,
+            json=payload,
         )
 
-    def upload_file(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
+    def upload_file(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryUploadResult:
         """Upload a file asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -480,12 +503,15 @@ class ReposResource(SyncResource):
         :returns: Uploaded file metadata.
         """
         return self._model(
-            "POST", self._client._repo_path("file", "upload", owner=owner, repo=repo), APIObject, json=payload
+            "POST",
+            self._client._repo_path("file", "upload", owner=owner, repo=repo),
+            RepositoryUploadResult,
+            json=payload,
         )
 
     def update_repo_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositorySettings:
         """Update repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -494,30 +520,34 @@ class ReposResource(SyncResource):
         :returns: API response payload.
         """
         return self._model(
-            "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject, json=payload
+            "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), RepositorySettings, json=payload
         )
 
-    def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositorySettings:
         """Get repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Repository settings payload.
         """
-        return self._model("GET", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject)
+        return self._model("GET", self._client._repo_path("repo_settings", owner=owner, repo=repo), RepositorySettings)
 
-    def get_pull_request_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    def get_pull_request_settings(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> PullRequestSettings:
         """Get pull request settings for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Pull request settings payload.
         """
-        return self._model("GET", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), APIObject)
+        return self._model(
+            "GET", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), PullRequestSettings
+        )
 
     def update_pull_request_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> PullRequestSettings:
         """Update pull request settings for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -528,7 +558,7 @@ class ReposResource(SyncResource):
         return self._model(
             "PUT",
             self._client._repo_path("pull_request_settings", owner=owner, repo=repo),
-            APIObject,
+            PullRequestSettings,
             json=payload,
         )
 
@@ -539,7 +569,7 @@ class ReposResource(SyncResource):
         owner: Optional[str] = None,
         repo: Optional[str] = None,
         permission: Optional[str] = None,
-    ) -> APIObject:
+    ) -> RepoMember:
         """Set a repository member role.
 
         :param username: Member username or login.
@@ -551,11 +581,13 @@ class ReposResource(SyncResource):
         return self._model(
             "PUT",
             self._client._repo_path("members", username, owner=owner, repo=repo),
-            APIObject,
+            RepoMember,
             json={"permission": permission},
         )
 
-    def transfer(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
+    def transfer(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryTransferResult:
         """Transfer a repository to another owner or namespace.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -563,9 +595,13 @@ class ReposResource(SyncResource):
         :param payload: Transfer options accepted by the API.
         :returns: API response payload.
         """
-        return self._model("POST", self._client._repo_path("transfer", owner=owner, repo=repo), APIObject, json=payload)
+        return self._model(
+            "POST", self._client._repo_path("transfer", owner=owner, repo=repo), RepositoryTransferResult, json=payload
+        )
 
-    def list_customized_roles(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[APIObject]:
+    def list_customized_roles(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[RepositoryCustomizedRole]:
         """List customized roles for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -573,11 +609,11 @@ class ReposResource(SyncResource):
         :returns: Customized role definitions.
         """
         data = self._request("GET", self._client._repo_path("customized_roles", owner=owner, repo=repo))
-        return [as_model(item, APIObject) for item in data]
+        return [as_model(item, RepositoryCustomizedRole) for item in data]
 
     def get_download_statistics(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+    ) -> RepositoryDownloadStatistics:
         """Get download statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -588,21 +624,23 @@ class ReposResource(SyncResource):
         return self._model(
             "GET",
             self._client._repo_path("download_statistics", owner=owner, repo=repo),
-            APIObject,
+            RepositoryDownloadStatistics,
             params=params,
         )
 
-    def get_contributor_statistics(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    def get_contributor_statistics(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[ContributorStatistics]:
         """Get code contribution statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Contributor statistics payload.
         """
-        return self._model(
+        return self._models(
             "GET",
             self._client._repo_path("contributors", "statistic", owner=owner, repo=repo),
-            APIObject,
+            ContributorStatistics,
         )
 
     def list_events(
@@ -1095,7 +1133,7 @@ class AsyncReposResource(AsyncResource):
         """
         return await self._model("GET", self._client._repo_path(owner=owner, repo=repo), Repository)
 
-    async def list_user(self, **params: Any) -> List[Repository]:
+    async def list_user(self, **params) -> List[Repository]:
         """List repositories visible to the authenticated user.
 
         Pass query parameters as keyword arguments (same names as :meth:`ReposResource.list_user`,
@@ -1106,7 +1144,7 @@ class AsyncReposResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("user", "repos"), Repository, params=params)
 
-    async def list_for_owner(self, *, owner: str, **params: Any) -> List[Repository]:
+    async def list_for_owner(self, *, owner: str, **params) -> List[Repository]:
         """List public repositories for a user or owner path.
 
         :param owner: Repository owner path or username.
@@ -1115,7 +1153,7 @@ class AsyncReposResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("users", owner, "repos"), Repository, params=params)
 
-    async def create_personal(self, *, name: str, **payload: Any) -> Repository:
+    async def create_personal(self, *, name: str, **payload) -> Repository:
         """Create a repository for the authenticated user.
 
         :param name: Repository name (also written into ``payload``).
@@ -1125,7 +1163,7 @@ class AsyncReposResource(AsyncResource):
         payload["name"] = name
         return await self._model("POST", self._client._path("user", "repos"), Repository, json=payload)
 
-    async def create_for_org(self, *, org: str, name: str, **payload: Any) -> Repository:
+    async def create_for_org(self, *, org: str, name: str, **payload) -> Repository:
         """Create a repository under an organization.
 
         :param org: Organization path or login.
@@ -1136,7 +1174,7 @@ class AsyncReposResource(AsyncResource):
         payload["name"] = name
         return await self._model("POST", self._client._path("orgs", org, "repos"), Repository, json=payload)
 
-    async def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes: Any) -> Repository:
+    async def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes) -> Repository:
         """Update repository metadata.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1154,7 +1192,7 @@ class AsyncReposResource(AsyncResource):
         """
         await self._request("DELETE", self._client._repo_path(owner=owner, repo=repo))
 
-    async def fork(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> Repository:
+    async def fork(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Repository:
         """Fork a repository.
 
         :param owner: Source repository owner path. Uses the client default when omitted.
@@ -1167,7 +1205,7 @@ class AsyncReposResource(AsyncResource):
         )
 
     async def list_forks(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[Repository]:
         """List forks of a repository.
 
@@ -1181,7 +1219,7 @@ class AsyncReposResource(AsyncResource):
         )
 
     async def list_contributors(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[Contributor]:
         """List repository contributors.
 
@@ -1207,7 +1245,7 @@ class AsyncReposResource(AsyncResource):
         return await self._request("GET", self._client._repo_path("languages", owner=owner, repo=repo))
 
     async def list_stargazers(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[UserSummary]:
         """List users who starred a repository.
 
@@ -1221,7 +1259,7 @@ class AsyncReposResource(AsyncResource):
         )
 
     async def list_subscribers(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[UserSummary]:
         """List users watching a repository.
 
@@ -1238,8 +1276,8 @@ class AsyncReposResource(AsyncResource):
         )
 
     async def update_module_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings
+    ) -> ApiStatusResponse:
         """Update repository module settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1248,12 +1286,15 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "PUT", self._client._repo_path("module", "setting", owner=owner, repo=repo), APIObject, json=settings
+            "PUT",
+            self._client._repo_path("module", "setting", owner=owner, repo=repo),
+            ApiStatusResponse,
+            json=settings,
         )
 
     async def update_reviewer_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **settings
+    ) -> RepositoryReviewerSettingsUpdate:
         """Update repository reviewer settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1262,10 +1303,13 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "PUT", self._client._repo_path("reviewer", owner=owner, repo=repo), APIObject, json=settings
+            "PUT",
+            self._client._repo_path("reviewer", owner=owner, repo=repo),
+            RepositoryReviewerSettingsUpdate,
+            json=settings,
         )
 
-    async def set_org_repo_status(self, *, org: str, repo: str, **payload: Any) -> APIObject:
+    async def set_org_repo_status(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
         """Update organization repository status metadata.
 
         :param org: Organization path.
@@ -1273,9 +1317,11 @@ class AsyncReposResource(AsyncResource):
         :param payload: Status fields accepted by the API.
         :returns: API response payload.
         """
-        return await self._model("PUT", self._client._path("org", org, "repo", repo, "status"), APIObject, json=payload)
+        return await self._model(
+            "PUT", self._client._path("org", org, "repo", repo, "status"), ApiStatusResponse, json=payload
+        )
 
-    async def transfer_to_org(self, *, org: str, repo: str, **payload: Any) -> APIObject:
+    async def transfer_to_org(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
         """Transfer a repository to an organization.
 
         :param org: Destination organization path.
@@ -1284,21 +1330,25 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "POST", self._client._path("org", org, "projects", repo, "transfer"), APIObject, json=payload
+            "POST", self._client._path("org", org, "projects", repo, "transfer"), ApiStatusResponse, json=payload
         )
 
-    async def get_transition(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    async def get_transition(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> RepositoryPermissionMode:
         """Get repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Transition configuration.
         """
-        return await self._model("GET", self._client._repo_path("transition", owner=owner, repo=repo), APIObject)
+        return await self._model(
+            "GET", self._client._repo_path("transition", owner=owner, repo=repo), RepositoryPermissionMode
+        )
 
     async def update_transition(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> ApiStatusResponse:
         """Update repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1307,12 +1357,12 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "PUT", self._client._repo_path("transition", owner=owner, repo=repo), APIObject, json=payload
+            "PUT", self._client._repo_path("transition", owner=owner, repo=repo), ApiStatusResponse, json=payload
         )
 
     async def update_push_config(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryPushConfig:
         """Update repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1321,21 +1371,26 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "PUT", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject, json=payload
+            "PUT",
+            self._client._repo_path("push_config", owner=owner, repo=repo),
+            RepositoryPushConfig,
+            json=payload,
         )
 
-    async def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    async def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositoryPushConfig:
         """Get repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Push configuration payload.
         """
-        return await self._model("GET", self._client._repo_path("push_config", owner=owner, repo=repo), APIObject)
+        return await self._model(
+            "GET", self._client._repo_path("push_config", owner=owner, repo=repo), RepositoryPushConfig
+        )
 
     async def upload_image(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryUploadResult:
         """Upload an image asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1344,12 +1399,15 @@ class AsyncReposResource(AsyncResource):
         :returns: Uploaded image metadata.
         """
         return await self._model(
-            "POST", self._client._repo_path("img", "upload", owner=owner, repo=repo), APIObject, json=payload
+            "POST",
+            self._client._repo_path("img", "upload", owner=owner, repo=repo),
+            RepositoryUploadResult,
+            json=payload,
         )
 
     async def upload_file(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryUploadResult:
         """Upload a file asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1358,12 +1416,15 @@ class AsyncReposResource(AsyncResource):
         :returns: Uploaded file metadata.
         """
         return await self._model(
-            "POST", self._client._repo_path("file", "upload", owner=owner, repo=repo), APIObject, json=payload
+            "POST",
+            self._client._repo_path("file", "upload", owner=owner, repo=repo),
+            RepositoryUploadResult,
+            json=payload,
         )
 
     async def update_repo_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositorySettings:
         """Update repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1372,19 +1433,23 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject, json=payload
+            "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), RepositorySettings, json=payload
         )
 
-    async def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    async def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositorySettings:
         """Get repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Repository settings payload.
         """
-        return await self._model("GET", self._client._repo_path("repo_settings", owner=owner, repo=repo), APIObject)
+        return await self._model(
+            "GET", self._client._repo_path("repo_settings", owner=owner, repo=repo), RepositorySettings
+        )
 
-    async def get_pull_request_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    async def get_pull_request_settings(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> PullRequestSettings:
         """Get pull request settings for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1392,12 +1457,12 @@ class AsyncReposResource(AsyncResource):
         :returns: Pull request settings payload.
         """
         return await self._model(
-            "GET", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), APIObject
+            "GET", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), PullRequestSettings
         )
 
     async def update_pull_request_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> PullRequestSettings:
         """Update pull request settings for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1406,7 +1471,10 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "PUT", self._client._repo_path("pull_request_settings", owner=owner, repo=repo), APIObject, json=payload
+            "PUT",
+            self._client._repo_path("pull_request_settings", owner=owner, repo=repo),
+            PullRequestSettings,
+            json=payload,
         )
 
     async def set_member_role(
@@ -1416,7 +1484,7 @@ class AsyncReposResource(AsyncResource):
         owner: Optional[str] = None,
         repo: Optional[str] = None,
         permission: Optional[str] = None,
-    ) -> APIObject:
+    ) -> RepoMember:
         """Set a repository member role.
 
         :param username: Member username or login.
@@ -1428,11 +1496,13 @@ class AsyncReposResource(AsyncResource):
         return await self._model(
             "PUT",
             self._client._repo_path("members", username, owner=owner, repo=repo),
-            APIObject,
+            RepoMember,
             json={"permission": permission},
         )
 
-    async def transfer(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any) -> APIObject:
+    async def transfer(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+    ) -> RepositoryTransferResult:
         """Transfer a repository to another owner or namespace.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1441,12 +1511,12 @@ class AsyncReposResource(AsyncResource):
         :returns: API response payload.
         """
         return await self._model(
-            "POST", self._client._repo_path("transfer", owner=owner, repo=repo), APIObject, json=payload
+            "POST", self._client._repo_path("transfer", owner=owner, repo=repo), RepositoryTransferResult, json=payload
         )
 
     async def list_customized_roles(
         self, *, owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> List[APIObject]:
+    ) -> List[RepositoryCustomizedRole]:
         """List customized roles for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1454,11 +1524,11 @@ class AsyncReposResource(AsyncResource):
         :returns: Customized role definitions.
         """
         data = await self._request("GET", self._client._repo_path("customized_roles", owner=owner, repo=repo))
-        return [as_model(item, APIObject) for item in data]
+        return [as_model(item, RepositoryCustomizedRole) for item in data]
 
     async def get_download_statistics(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
-    ) -> APIObject:
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+    ) -> RepositoryDownloadStatistics:
         """Get download statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1467,22 +1537,29 @@ class AsyncReposResource(AsyncResource):
         :returns: Download statistics payload.
         """
         return await self._model(
-            "GET", self._client._repo_path("download_statistics", owner=owner, repo=repo), APIObject, params=params
+            "GET",
+            self._client._repo_path("download_statistics", owner=owner, repo=repo),
+            RepositoryDownloadStatistics,
+            params=params,
         )
 
-    async def get_contributor_statistics(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    async def get_contributor_statistics(
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> List[ContributorStatistics]:
         """Get code contribution statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Contributor statistics payload.
         """
-        return await self._model(
-            "GET", self._client._repo_path("contributors", "statistic", owner=owner, repo=repo), APIObject
+        return await self._models(
+            "GET",
+            self._client._repo_path("contributors", "statistic", owner=owner, repo=repo),
+            ContributorStatistics,
         )
 
     async def list_events(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[APIObject]:
         """List repository events.
 
@@ -1711,7 +1788,7 @@ class AsyncBranchesResource(AsyncResource):
     Mirrors :class:`BranchesResource` (``docs/rest_api/repos/branch``).
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Branch]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Branch]:
         """List branches in a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1769,9 +1846,7 @@ class AsyncCommitsResource(AsyncResource):
     Mirrors :class:`CommitsResource` (``docs/rest_api/repos/commit``).
     """
 
-    async def list(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
-    ) -> List[CommitSummary]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[CommitSummary]:
         """List commits in a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1809,7 +1884,7 @@ class AsyncCommitsResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[CommitComment]:
         """List commit comments for a repository.
 

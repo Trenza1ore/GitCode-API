@@ -1170,6 +1170,284 @@ class OAuthToken(APIObject):
 
 
 @dataclass(init=False)
+class EmptyResponse(APIObject):
+    """Empty JSON object returned by some mutation endpoints."""
+
+
+@dataclass(init=False)
+class ApiStatusResponse(APIObject):
+    """Simple success/error response containing a numeric code and message."""
+
+    code: Optional[int] = None
+    msg: Optional[str] = None
+
+
+@dataclass(init=False)
+class PublicKey(APIObject):
+    """Public SSH key payload."""
+
+    id: Optional[Union[int, str]] = None
+    title: Optional[str] = None
+    key: Optional[str] = None
+    created_at: Optional[str] = None
+    url: Optional[str] = None
+
+
+@dataclass(init=False)
+class UserEventProject(APIObject):
+    """Project summary embedded in user event responses."""
+
+    main_repository_language: Optional[List[Any]] = None
+    star_count: Optional[int] = None
+    forks_count: Optional[int] = None
+    develop_mode: Optional[str] = None
+    stared: Optional[bool] = None
+
+
+@dataclass(init=False)
+class UserEventPushData(APIObject):
+    """Push event metadata embedded in user events."""
+
+    commit_count: Optional[int] = None
+    action: Optional[str] = None
+    ref_type: Optional[str] = None
+    commit_from: Optional[str] = None
+    commit_to: Optional[str] = None
+    ref: Optional[str] = None
+    commit_title: Optional[str] = None
+
+
+@dataclass(init=False)
+class UserEventLinks(APIObject):
+    """Link bundle embedded in user event responses."""
+
+    project: Optional[str] = None
+    action_type: Optional[str] = None
+
+
+@dataclass(init=False)
+class UserEvent(APIObject):
+    """Single activity event returned by the user events endpoint."""
+
+    action: Optional[Union[int, str]] = None
+    action_name: Optional[str] = None
+    author: Optional[UserRef] = None
+    author_id: Optional[Union[int, str]] = None
+    author_username: Optional[str] = None
+    created_at: Optional[str] = None
+    project: Optional[UserEventProject] = None
+    project_id: Optional[Union[int, str]] = None
+    project_name: Optional[str] = None
+    push_data: Optional[UserEventPushData] = None
+    _links: Optional[UserEventLinks] = None
+
+
+@dataclass(init=False)
+class UserEventsResponse(APIObject):
+    """Grouped user events response keyed by date."""
+
+    events: Optional[Dict[str, List[UserEvent]]] = None
+    next: Optional[str] = None
+
+
+@dataclass(init=False)
+class RepositoryReviewerSettingsUpdate(APIObject):
+    """Response returned after updating repository reviewer settings."""
+
+    id: Optional[Union[int, str]] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+
+@dataclass(init=False)
+class RepositoryPermissionMode(APIObject):
+    """Repository member management mode."""
+
+    memberMgntMode: Optional[int] = None
+
+
+@dataclass(init=False)
+class RepositoryPushConfig(APIObject):
+    """Repository push rules configuration."""
+
+    reject_not_signed_by_gpg: Optional[bool] = None
+    commit_message_regex: Optional[str] = None
+    max_file_size: Optional[int] = None
+    skip_rule_for_owner: Optional[bool] = None
+    deny_force_push: Optional[bool] = None
+
+
+@dataclass(init=False)
+class RepositoryUploadResult(APIObject):
+    """Uploaded repository attachment metadata."""
+
+    success: Optional[bool] = None
+    path: Optional[str] = None
+    full_path: Optional[str] = None
+
+
+@dataclass(init=False)
+class RepositorySettings(APIObject):
+    """Repository-level settings payload."""
+
+    disable_fork: Optional[bool] = None
+    forbidden_developer_create_branch: Optional[bool] = None
+    forbidden_developer_create_tag: Optional[bool] = None
+    forbidden_committer_create_branch: Optional[bool] = None
+    forbidden_developer_create_branch_user_ids: Optional[str] = None
+    branch_name_regex: Optional[str] = None
+    tag_name_regex: Optional[str] = None
+    generate_pre_merge_ref: Optional[bool] = None
+    rebase_disable_trigger_webhook: Optional[bool] = None
+    open_gpg_verified: Optional[bool] = None
+    include_lfs_objects: Optional[bool] = None
+    forbidden_gitlab_access: Optional[bool] = None
+
+
+@dataclass(init=False)
+class PullRequestSettingDetail(APIObject):
+    """Nested merge request setting payload in repository PR settings."""
+
+    id: Optional[Union[int, str]] = None
+    project_id: Optional[Union[int, str]] = None
+    disable_merge_by_self: Optional[bool] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    can_force_merge: Optional[bool] = None
+    disable_squash_merge: Optional[bool] = None
+    approval_required_reviewers: Optional[int] = None
+    approval_required_approvers: Optional[int] = None
+    add_notes_after_merged: Optional[bool] = None
+    merged_commit_author: Optional[str] = None
+    mark_auto_merged_mr_as_closed: Optional[bool] = None
+    delete_source_branch_when_merged: Optional[bool] = None
+    auto_squash_merge: Optional[bool] = None
+    squash_merge_with_no_merge_commit: Optional[bool] = None
+    close_issue_when_mr_merged: Optional[bool] = None
+    can_reopen: Optional[bool] = None
+    is_check_cla: Optional[bool] = None
+    approval_approvers: Optional[List[APIObject]] = None
+    approval_testers: Optional[List[APIObject]] = None
+    approval_required_testers: Optional[int] = None
+    is_allow_lite_merge_request: Optional[bool] = None
+    lite_merge_request_prefix_title: Optional[str] = None
+
+
+@dataclass(init=False)
+class PullRequestSettings(APIObject):
+    """Repository pull request settings payload."""
+
+    merge_request_setting: Optional[PullRequestSettingDetail] = None
+    only_allow_merge_if_all_discussions_are_resolved: Optional[bool] = None
+    only_allow_merge_if_pipeline_succeeds: Optional[bool] = None
+    merge_method: Optional[str] = None
+
+
+@dataclass(init=False)
+class RepositoryTransferResult(APIObject):
+    """Repository transfer result payload."""
+
+    new_owner: Optional[str] = None
+    new_name: Optional[str] = None
+
+
+@dataclass(init=False)
+class RepositoryCustomizedRole(APIObject):
+    """Customized repository role definition."""
+
+    role_id: Optional[str] = None
+    access_level: Optional[int] = None
+    role_name: Optional[str] = None
+    role_chinese_name: Optional[str] = None
+    role_description: Optional[str] = None
+    role_type: Optional[str] = None
+    member_count: Optional[int] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+
+@dataclass(init=False)
+class RepositoryDownloadStatisticsDetail(APIObject):
+    """Per-day repository download statistics entry."""
+
+    pdate: Optional[str] = None
+    repo_id: Optional[str] = None
+    total_dl_cnt: Optional[int] = None
+    today_dl_cnt: Optional[int] = None
+
+
+@dataclass(init=False)
+class RepositoryDownloadStatistics(APIObject):
+    """Repository download statistics payload."""
+
+    download_statistics_detail: Optional[List[RepositoryDownloadStatisticsDetail]] = None
+    download_statistics_total: Optional[int] = None
+    download_statistics_history_total: Optional[int] = None
+
+
+@dataclass(init=False)
+class ContributorStatisticsOverview(APIObject):
+    """Aggregate contributor statistics summary."""
+
+    additions: Optional[int] = None
+    deletions: Optional[int] = None
+    total_changes: Optional[int] = None
+    commit_count: Optional[int] = None
+
+
+@dataclass(init=False)
+class ContributorStatisticsEntry(APIObject):
+    """Per-day contributor statistics entry."""
+
+    date: Optional[str] = None
+    additions: Optional[int] = None
+    deletions: Optional[int] = None
+    total_changes: Optional[int] = None
+    commit_count: Optional[int] = None
+
+
+@dataclass(init=False)
+class ContributorStatistics(APIObject):
+    """Contributor statistics payload returned by the repository statistics endpoint."""
+
+    name: Optional[str] = None
+    email: Optional[str] = None
+    overview: Optional[ContributorStatisticsOverview] = None
+    contributions: Optional[List[ContributorStatisticsEntry]] = None
+
+
+@dataclass(init=False)
+class PullRequestOperationLog(APIObject):
+    """Pull request operation log entry."""
+
+    content: Optional[str] = None
+    id: Optional[Union[int, str]] = None
+    action: Optional[str] = None
+    merge_request_id: Optional[Union[int, str]] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+    discussion_id: Optional[str] = None
+    project: Optional[str] = None
+    assignee: Optional[APIObject] = None
+    proposer: Optional[APIObject] = None
+    user: Optional[UserRef] = None
+
+
+@dataclass(init=False)
+class PullRequestAssigneeCount(APIObject):
+    """Response payload when assignees are added to a pull request."""
+
+    assignees_number: Optional[int] = None
+
+
+@dataclass(init=False)
+class RepositoryCollaboratorCheck(APIObject):
+    """Repository collaborator presence check response."""
+
+    message: Optional[str] = None
+
+
+@dataclass(init=False)
 class SearchUser(APIObject):
     """User search result payload."""
 

@@ -40,7 +40,7 @@ def test_search_repositories_passes_expected_query_params(sync_client_factory) -
 def test_oauth_exchange_token_uses_expected_request(monkeypatch: pytest.MonkeyPatch, sync_client_factory) -> None:
     captured: Dict[str, Any] = {}
 
-    def fake_post(url: str, **kwargs: Any) -> httpx.Response:
+    def fake_post(url: str, **kwargs) -> httpx.Response:
         captured["url"] = url
         captured["kwargs"] = kwargs
         return httpx.Response(
@@ -69,7 +69,7 @@ async def test_async_oauth_refresh_token_uses_async_http_client(monkeypatch: pyt
     http_client = httpx.AsyncClient(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={})))
 
     class FakeAsyncClient:
-        def __init__(self, **kwargs: Any) -> None:
+        def __init__(self, **kwargs) -> None:
             captured["init"] = kwargs
 
         async def __aenter__(self) -> "FakeAsyncClient":
@@ -78,7 +78,7 @@ async def test_async_oauth_refresh_token_uses_async_http_client(monkeypatch: pyt
         async def __aexit__(self, exc_type: Any, exc: Any, tb: Any) -> None:
             return None
 
-        async def post(self, url: str, **kwargs: Any) -> httpx.Response:
+        async def post(self, url: str, **kwargs) -> httpx.Response:
             captured["url"] = url
             captured["kwargs"] = kwargs
             return httpx.Response(

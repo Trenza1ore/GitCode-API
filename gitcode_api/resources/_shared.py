@@ -35,7 +35,7 @@ class SyncResource:
         """
         return self._client.request(method, path, params=params, json=json, data=data, raw=raw)
 
-    def _model(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> ModelT:
+    def _model(self, method: str, path: str, model_type: type[ModelT], **kwargs) -> ModelT:
         """Send a request and wrap a JSON object in ``model_type``.
 
         :param method: HTTP verb.
@@ -47,7 +47,7 @@ class SyncResource:
         data = self._request(method, path, **kwargs)
         return as_model(data, model_type)
 
-    def _models(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> List[ModelT]:
+    def _models(self, method: str, path: str, model_type: type[ModelT], **kwargs) -> List[ModelT]:
         """Send a request and wrap a JSON array in ``model_type`` instances.
 
         :param method: HTTP verb.
@@ -59,7 +59,7 @@ class SyncResource:
         data = self._request(method, path, **kwargs)
         return as_model_list(data, model_type)
 
-    def _maybe_model(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> Union[ModelT, APIObject]:
+    def _maybe_model(self, method: str, path: str, model_type: type[ModelT], **kwargs) -> Union[ModelT, APIObject]:
         """Wrap dict responses as models and scalar responses as ``APIObject``.
 
         :param method: HTTP verb.
@@ -103,7 +103,7 @@ class AsyncResource:
         """
         return await self._client.request(method, path, params=params, json=json, data=data, raw=raw)
 
-    async def _model(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> ModelT:
+    async def _model(self, method: str, path: str, model_type: type[ModelT], **kwargs) -> ModelT:
         """Send a request and wrap a JSON object in ``model_type``.
 
         :param method: HTTP verb.
@@ -115,7 +115,7 @@ class AsyncResource:
         data = await self._request(method, path, **kwargs)
         return as_model(data, model_type)
 
-    async def _models(self, method: str, path: str, model_type: type[ModelT], **kwargs: Any) -> List[ModelT]:
+    async def _models(self, method: str, path: str, model_type: type[ModelT], **kwargs) -> List[ModelT]:
         """Send a request and wrap a JSON array in ``model_type`` instances.
 
         :param method: HTTP verb.

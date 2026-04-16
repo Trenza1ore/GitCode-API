@@ -1,6 +1,6 @@
 """Issue, pull request, label, milestone, and member resource groups."""
 
-from typing import Any, List, Optional, Union
+from typing import List, Optional, Union
 
 from .._models import (
     APIObject,
@@ -12,12 +12,16 @@ from .._models import (
     MergeStatus,
     Milestone,
     PullRequest,
+    PullRequestAssigneeCount,
     PullRequestComment,
     PullRequestCount,
     PullRequestFile,
+    PullRequestOperationLog,
     RepoCollaborator,
     RepoMember,
     RepoMemberPermission,
+    RepositoryCollaboratorCheck,
+    UserSummary,
     as_model,
 )
 from ._shared import AsyncResource, SyncResource
@@ -311,7 +315,7 @@ class IssuesResource(SyncResource):
         """
         self._request("DELETE", self._client._repo_path("issues", number, "labels", name, owner=owner, repo=repo))
 
-    def list_enterprise(self, *, enterprise: str, **params: Any) -> List[Issue]:
+    def list_enterprise(self, *, enterprise: str, **params) -> List[Issue]:
         """List enterprise issues visible to the caller.
 
         :param enterprise: Enterprise path or login.
@@ -320,7 +324,7 @@ class IssuesResource(SyncResource):
         """
         return self._models("GET", self._client._path("enterprises", enterprise, "issues"), Issue, params=params)
 
-    def list_user(self, **params: Any) -> List[Issue]:
+    def list_user(self, **params) -> List[Issue]:
         """List issues for the authenticated user.
 
         :param params: Query parameters for ``GET /user/issues`` (filters, pagination, etc.).
@@ -328,7 +332,7 @@ class IssuesResource(SyncResource):
         """
         return self._models("GET", self._client._path("user", "issues"), Issue, params=params)
 
-    def list_org(self, *, org: str, **params: Any) -> List[Issue]:
+    def list_org(self, *, org: str, **params) -> List[Issue]:
         """List organization issues visible to the current user.
 
         :param org: Organization path or login.
@@ -346,9 +350,7 @@ class IssuesResource(SyncResource):
         """
         return self._model("GET", self._client._path("enterprises", enterprise, "issues", number), Issue)
 
-    def list_enterprise_comments(
-        self, *, enterprise: str, number: Union[int, str], **params: Any
-    ) -> List[IssueComment]:
+    def list_enterprise_comments(self, *, enterprise: str, number: Union[int, str], **params) -> List[IssueComment]:
         """List comments for an enterprise issue.
 
         :param enterprise: Enterprise path or login.
@@ -404,7 +406,7 @@ class PullsResource(SyncResource):
         direction: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **params: Any,
+        **params,
     ) -> Union[List[PullRequest], PullRequestCount]:
         """List pull requests for a repository.
 
@@ -820,8 +822,8 @@ class PullsResource(SyncResource):
         )
 
     def list_operation_logs(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
-    ) -> List[APIObject]:
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+    ) -> List[PullRequestOperationLog]:
         """List operation logs for a pull request.
 
         :param number: Pull request number.
@@ -835,10 +837,10 @@ class PullsResource(SyncResource):
             self._client._repo_path("pulls", number, "operate_logs", owner=owner, repo=repo),
             params=params,
         )
-        return [as_model(item, APIObject) for item in data]
+        return [as_model(item, PullRequestOperationLog) for item in data]
 
     def request_test(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload
     ) -> None:
         """Request testing for a pull request.
 
@@ -856,7 +858,7 @@ class PullsResource(SyncResource):
 
     def update_testers(
         self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> None:
         """Replace pull request testers.
 
         :param number: Pull request number.
@@ -865,16 +867,15 @@ class PullsResource(SyncResource):
         :param repo: Repository path. Uses the client default when omitted.
         :returns: API response payload.
         """
-        return self._model(
+        self._request(
             "PATCH",
             self._client._repo_path("pulls", number, "testers", owner=owner, repo=repo),
-            APIObject,
             json={"testers": _comma_join(testers)},
         )
 
     def add_testers(
         self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> List[UserSummary]:
         """Add testers to a pull request.
 
         :param number: Pull request number.
@@ -883,16 +884,16 @@ class PullsResource(SyncResource):
         :param repo: Repository path. Uses the client default when omitted.
         :returns: API response payload.
         """
-        return self._model(
+        data = self._request(
             "POST",
             self._client._repo_path("pulls", number, "testers", owner=owner, repo=repo),
-            APIObject,
             json={"testers": _comma_join(testers)},
         )
+        return [as_model(item, UserSummary) for item in data]
 
     def update_assignees(
         self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> None:
         """Replace pull request assignees.
 
         :param number: Pull request number.
@@ -901,16 +902,15 @@ class PullsResource(SyncResource):
         :param repo: Repository path. Uses the client default when omitted.
         :returns: API response payload.
         """
-        return self._model(
+        self._request(
             "PATCH",
             self._client._repo_path("pulls", number, "assignees", owner=owner, repo=repo),
-            APIObject,
             json={"assignees": _comma_join(assignees)},
         )
 
     def add_assignees(
         self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> PullRequestAssigneeCount:
         """Add assignees to a pull request.
 
         :param number: Pull request number.
@@ -922,7 +922,7 @@ class PullsResource(SyncResource):
         return self._model(
             "POST",
             self._client._repo_path("pulls", number, "assignees", owner=owner, repo=repo),
-            APIObject,
+            PullRequestAssigneeCount,
             json={"assignees": _comma_join(assignees)},
         )
 
@@ -954,7 +954,7 @@ class PullsResource(SyncResource):
         """
         return self._models("GET", self._client._repo_path("pulls", number, "issues", owner=owner, repo=repo), Issue)
 
-    def list_enterprise(self, *, enterprise: str, **params: Any) -> List[PullRequest]:
+    def list_enterprise(self, *, enterprise: str, **params) -> List[PullRequest]:
         """List enterprise pull requests.
 
         :param enterprise: Enterprise path or login.
@@ -965,7 +965,7 @@ class PullsResource(SyncResource):
             "GET", self._client._path("enterprises", enterprise, "pull_requests"), PullRequest, params=params
         )
 
-    def list_org(self, *, org: str, **params: Any) -> List[PullRequest]:
+    def list_org(self, *, org: str, **params) -> List[PullRequest]:
         """List pull requests for an organization scope.
 
         :param org: Organization path (``GET .../org/{org}/pull_requests``).
@@ -1115,7 +1115,7 @@ class LabelsResource(SyncResource):
 class MilestonesResource(SyncResource):
     """Synchronous milestone endpoints."""
 
-    def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Milestone]:
+    def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Milestone]:
         """List milestones for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1259,9 +1259,15 @@ class MembersResource(SyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    def get(self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    def get(
+        self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> RepositoryCollaboratorCheck:
         """Check whether a user is a repository member."""
-        return self._model("GET", self._client._repo_path("collaborators", username, owner=owner, repo=repo), APIObject)
+        return self._model(
+            "GET",
+            self._client._repo_path("collaborators", username, owner=owner, repo=repo),
+            RepositoryCollaboratorCheck,
+        )
 
     def get_permission(
         self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None
@@ -1288,7 +1294,7 @@ class AsyncIssuesResource(AsyncResource):
     parameter descriptions aligned with ``docs/rest_api`` (Issues API).
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Issue]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Issue]:
         """List issues for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -1396,7 +1402,7 @@ class AsyncIssuesResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[IssueComment]:
         """List comments for an issue.
 
@@ -1515,7 +1521,7 @@ class AsyncIssuesResource(AsyncResource):
         """
         await self._request("DELETE", self._client._repo_path("issues", number, "labels", name, owner=owner, repo=repo))
 
-    async def list_enterprise(self, *, enterprise: str, **params: Any) -> List[Issue]:
+    async def list_enterprise(self, *, enterprise: str, **params) -> List[Issue]:
         """List enterprise issues visible to the caller.
 
         :param enterprise: Enterprise path or login.
@@ -1524,7 +1530,7 @@ class AsyncIssuesResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("enterprises", enterprise, "issues"), Issue, params=params)
 
-    async def list_user(self, **params: Any) -> List[Issue]:
+    async def list_user(self, **params) -> List[Issue]:
         """List issues for the authenticated user.
 
         :param params: Query parameters for ``GET /user/issues`` (filters, pagination, etc.).
@@ -1532,7 +1538,7 @@ class AsyncIssuesResource(AsyncResource):
         """
         return await self._models("GET", self._client._path("user", "issues"), Issue, params=params)
 
-    async def list_org(self, *, org: str, **params: Any) -> List[Issue]:
+    async def list_org(self, *, org: str, **params) -> List[Issue]:
         """List organization issues visible to the current user.
 
         :param org: Organization path or login.
@@ -1551,7 +1557,7 @@ class AsyncIssuesResource(AsyncResource):
         return await self._model("GET", self._client._path("enterprises", enterprise, "issues", number), Issue)
 
     async def list_enterprise_comments(
-        self, *, enterprise: str, number: Union[int, str], **params: Any
+        self, *, enterprise: str, number: Union[int, str], **params
     ) -> List[IssueComment]:
         """List comments for an enterprise issue.
 
@@ -1578,9 +1584,7 @@ class AsyncIssuesResource(AsyncResource):
             "GET", self._client._path("enterprises", enterprise, "issues", issue_id, "labels"), Label
         )
 
-    async def list_operation_logs(
-        self, *, owner: str, number: Union[int, str], **params: Any
-    ) -> List[IssueOperationLog]:
+    async def list_operation_logs(self, *, owner: str, number: Union[int, str], **params) -> List[IssueOperationLog]:
         """List operation (audit) logs for an issue.
 
         :param owner: Repository owner path (path segment ``repos/{owner}/...`` for this endpoint).
@@ -1604,7 +1608,7 @@ class AsyncPullsResource(AsyncResource):
     """
 
     async def list(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> Union[List[PullRequest], PullRequestCount]:
         """List pull requests for a repository.
 
@@ -1804,7 +1808,7 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
     ) -> List[PullRequestComment]:
         """List comments on a pull request.
 
@@ -1974,8 +1978,8 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def list_operation_logs(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params: Any
-    ) -> List[APIObject]:
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+    ) -> List[PullRequestOperationLog]:
         """List operation logs for a pull request.
 
         :param number: Pull request number.
@@ -1987,10 +1991,10 @@ class AsyncPullsResource(AsyncResource):
         data = await self._request(
             "GET", self._client._repo_path("pulls", number, "operate_logs", owner=owner, repo=repo), params=params
         )
-        return [as_model(item, APIObject) for item in data]
+        return [as_model(item, PullRequestOperationLog) for item in data]
 
     async def request_test(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload: Any
+        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload
     ) -> None:
         """Request testing for a pull request.
 
@@ -2008,7 +2012,7 @@ class AsyncPullsResource(AsyncResource):
 
     async def update_testers(
         self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> None:
         """Replace pull request testers.
 
         :param number: Pull request number.
@@ -2017,16 +2021,15 @@ class AsyncPullsResource(AsyncResource):
         :param repo: Repository path. Uses the client default when omitted.
         :returns: API response payload.
         """
-        return await self._model(
+        await self._request(
             "PATCH",
             self._client._repo_path("pulls", number, "testers", owner=owner, repo=repo),
-            APIObject,
             json={"testers": _comma_join(testers)},
         )
 
     async def add_testers(
         self, *, number: Union[int, str], testers: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> List[UserSummary]:
         """Add testers to a pull request.
 
         :param number: Pull request number.
@@ -2035,16 +2038,16 @@ class AsyncPullsResource(AsyncResource):
         :param repo: Repository path. Uses the client default when omitted.
         :returns: API response payload.
         """
-        return await self._model(
+        data = await self._request(
             "POST",
             self._client._repo_path("pulls", number, "testers", owner=owner, repo=repo),
-            APIObject,
             json={"testers": _comma_join(testers)},
         )
+        return [as_model(item, UserSummary) for item in data]
 
     async def update_assignees(
         self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> None:
         """Replace pull request assignees.
 
         :param number: Pull request number.
@@ -2053,16 +2056,15 @@ class AsyncPullsResource(AsyncResource):
         :param repo: Repository path. Uses the client default when omitted.
         :returns: API response payload.
         """
-        return await self._model(
+        await self._request(
             "PATCH",
             self._client._repo_path("pulls", number, "assignees", owner=owner, repo=repo),
-            APIObject,
             json={"assignees": _comma_join(assignees)},
         )
 
     async def add_assignees(
         self, *, number: Union[int, str], assignees: List[str], owner: Optional[str] = None, repo: Optional[str] = None
-    ) -> APIObject:
+    ) -> PullRequestAssigneeCount:
         """Add assignees to a pull request.
 
         :param number: Pull request number.
@@ -2074,7 +2076,7 @@ class AsyncPullsResource(AsyncResource):
         return await self._model(
             "POST",
             self._client._repo_path("pulls", number, "assignees", owner=owner, repo=repo),
-            APIObject,
+            PullRequestAssigneeCount,
             json={"assignees": _comma_join(assignees)},
         )
 
@@ -2108,7 +2110,7 @@ class AsyncPullsResource(AsyncResource):
             "GET", self._client._repo_path("pulls", number, "issues", owner=owner, repo=repo), Issue
         )
 
-    async def list_enterprise(self, *, enterprise: str, **params: Any) -> List[PullRequest]:
+    async def list_enterprise(self, *, enterprise: str, **params) -> List[PullRequest]:
         """List enterprise pull requests.
 
         :param enterprise: Enterprise path or login.
@@ -2119,7 +2121,7 @@ class AsyncPullsResource(AsyncResource):
             "GET", self._client._path("enterprises", enterprise, "pull_requests"), PullRequest, params=params
         )
 
-    async def list_org(self, *, org: str, **params: Any) -> List[PullRequest]:
+    async def list_org(self, *, org: str, **params) -> List[PullRequest]:
         """List pull requests for an organization scope.
 
         :param org: Organization path (``GET .../org/{org}/pull_requests``).
@@ -2267,7 +2269,7 @@ class AsyncMilestonesResource(AsyncResource):
     Mirrors :class:`MilestonesResource`; see that class for parameter documentation.
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params: Any) -> List[Milestone]:
+    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Milestone]:
         """List milestones for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
@@ -2418,7 +2420,9 @@ class AsyncMembersResource(AsyncResource):
             params={"page": page, "per_page": per_page},
         )
 
-    async def get(self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None) -> APIObject:
+    async def get(
+        self, *, username: str, owner: Optional[str] = None, repo: Optional[str] = None
+    ) -> RepositoryCollaboratorCheck:
         """Check whether a user is a repository member.
 
         :param username: User login to look up.
@@ -2427,7 +2431,9 @@ class AsyncMembersResource(AsyncResource):
         :returns: Membership payload (typically includes whether the user is a collaborator).
         """
         return await self._model(
-            "GET", self._client._repo_path("collaborators", username, owner=owner, repo=repo), APIObject
+            "GET",
+            self._client._repo_path("collaborators", username, owner=owner, repo=repo),
+            RepositoryCollaboratorCheck,
         )
 
     async def get_permission(

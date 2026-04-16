@@ -1,7 +1,7 @@
 import sys
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Tuple
+from typing import Tuple
 
 import httpx
 import pytest
@@ -16,13 +16,13 @@ from gitcode_api import AsyncGitCode, GitCode
 ResponseFactory = Callable[[httpx.Request], httpx.Response]
 
 
-def make_sync_client(handler: ResponseFactory, **client_kwargs: Any) -> Tuple[GitCode, httpx.Client]:
+def make_sync_client(handler: ResponseFactory, **client_kwargs) -> Tuple[GitCode, httpx.Client]:
     http_client = httpx.Client(transport=httpx.MockTransport(handler))
     client = GitCode(api_key="test-token", http_client=http_client, **client_kwargs)
     return client, http_client
 
 
-def make_async_client(handler: ResponseFactory, **client_kwargs: Any) -> Tuple[AsyncGitCode, httpx.AsyncClient]:
+def make_async_client(handler: ResponseFactory, **client_kwargs) -> Tuple[AsyncGitCode, httpx.AsyncClient]:
     http_client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
     client = AsyncGitCode(api_key="test-token", http_client=http_client, **client_kwargs)
     return client, http_client
