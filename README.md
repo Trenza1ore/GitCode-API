@@ -42,33 +42,24 @@ client = GitCode(
     repo="GitCode-API",
 )
 
-try:
-    repo = client.repos.get()
-    branches = client.branches.list(per_page=5)
+repo = client.repos.get()
+branches = client.branches.list(per_page=5)
 
-    print(repo.full_name)
-    for branch in branches:
-        print(branch.name)
-finally:
-    client.close()
+print(repo.full_name)
+for branch in branches:
+    print(branch.name)
 ```
 
 ### Async client
 
 ```python
 import asyncio
-
 from gitcode_api import AsyncGitCode
-
 
 async def main() -> None:
     client = AsyncGitCode(owner="SushiNinja", repo="GitCode-API")
-    try:
-        pulls = await client.pulls.list(state="open", per_page=20)
-        print(len(pulls))
-    finally:
-        await client.close()
-
+    pulls = await client.pulls.list(state="open", per_page=20)
+    print(len(pulls))
 
 asyncio.run(main())
 ```
@@ -87,15 +78,12 @@ with GitCode(owner="SushiNinja", repo="GitCode-API") as client:
 
 ```python
 import asyncio
-
 from gitcode_api import AsyncGitCode
-
 
 async def main() -> None:
     async with AsyncGitCode(owner="SushiNinja", repo="GitCode-API") as client:
         pulls = await client.pulls.list(state="open", per_page=20)
         print(len(pulls))
-
 
 asyncio.run(main())
 ```
