@@ -5,6 +5,12 @@ This reference is organized by the chained SDK entrypoints users call at
 runtime, such as ``GitCode.branches.list()`` and
 ``AsyncGitCode.pulls.list()``.
 
+``GitCode`` and ``AsyncGitCode`` are context managers: use ``with GitCode(...)``
+and ``async with AsyncGitCode(...)`` so the default httpx client is closed when
+the block ends. The same applies to ``SyncAPIClient`` and ``AsyncAPIClient``;
+see :doc:`quickstart` for examples. If you pass ``http_client=``, only that
+outer client performs transport teardown when you close it.
+
 Synchronous client
 ------------------
 

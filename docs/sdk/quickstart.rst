@@ -44,6 +44,37 @@ Create an async client
 
    asyncio.run(main())
 
+Context managers
+----------------
+
+``GitCode`` / ``AsyncGitCode`` (and ``SyncAPIClient`` / ``AsyncAPIClient``)
+implement synchronous and asynchronous context managers. If the SDK constructed
+the httpx client (you did not pass ``http_client=``), exiting the block closes
+it. If you supply your own client, you must close it yourself.
+
+.. code-block:: python
+
+   from gitcode_api import GitCode
+
+   with GitCode(owner="SushiNinja", repo="GitCode-API") as client:
+       repo = client.repos.get()
+       print(repo.full_name)
+
+.. code-block:: python
+
+   import asyncio
+
+   from gitcode_api import AsyncGitCode
+
+
+   async def main() -> None:
+       async with AsyncGitCode(owner="SushiNinja", repo="GitCode-API") as client:
+           pulls = await client.pulls.list(state="open", per_page=20)
+           print(len(pulls))
+
+
+   asyncio.run(main())
+
 Repository-scoped defaults
 --------------------------
 
