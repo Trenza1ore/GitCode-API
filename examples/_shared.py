@@ -3,13 +3,14 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError as e:
+    raise RuntimeError("python-dotenv not installed, please install via `pip install python-dotenv`") from e
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-
-from gitcode_api import AsyncGitCode, GitCode
 
 ENV_PATH = Path(__file__).with_name(".env")
 
@@ -48,13 +49,3 @@ def load_config() -> ExampleConfig:
         pull_state=os.getenv("GITCODE_PULL_STATE", "open") or "open",
         per_page=int(os.getenv("GITCODE_PER_PAGE", "5") or "5"),
     )
-
-
-def create_client() -> GitCode:
-    config = load_config()
-    return GitCode(api_key=config.api_key, owner=config.owner, repo=config.repo)
-
-
-def create_async_client() -> AsyncGitCode:
-    config = load_config()
-    return AsyncGitCode(api_key=config.api_key, owner=config.owner, repo=config.repo)

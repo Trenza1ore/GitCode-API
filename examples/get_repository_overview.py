@@ -1,10 +1,11 @@
-from _shared import create_client, load_config
+from _shared import load_config
+
+from gitcode_api import GitCode
 
 
 def main() -> None:
     config = load_config()
-    client = create_client()
-    try:
+    with GitCode(api_key=config.api_key, owner=config.owner, repo=config.repo) as client:
         repo = client.repos.get()
         branches = client.branches.list(per_page=config.per_page)
         commits = client.commits.list(per_page=config.per_page)
@@ -23,8 +24,6 @@ def main() -> None:
         print("recent commits:")
         for commit in commits[: config.per_page]:
             print(f"- {str(commit.get('sha'))[:10]}... {(commit.get('commit', {}).get('message')).splitlines()[0]}")
-    finally:
-        client.close()
 
 
 if __name__ == "__main__":

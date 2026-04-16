@@ -1,10 +1,11 @@
-from _shared import create_client, load_config
+from _shared import load_config
+
+from gitcode_api import GitCode
 
 
 def main() -> None:
     config = load_config()
-    client = create_client()
-    try:
+    with GitCode(api_key=config.api_key, owner=config.owner, repo=config.repo) as client:
         pulls = client.pulls.list(state=config.pull_state, per_page=config.per_page)
         print(f"pull request state: {config.pull_state}")
         print(f"repository: {config.owner}/{config.repo}")
@@ -16,8 +17,6 @@ def main() -> None:
                 f"{pull.title} "
                 f"(source={pull.get('source_branch')}, target={pull.get('target_branch')})"
             )
-    finally:
-        client.close()
 
 
 if __name__ == "__main__":
