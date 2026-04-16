@@ -30,6 +30,20 @@ Pass `api_key=` directly, or set `GITCODE_ACCESS_TOKEN` in your environment:
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
+If your token is stored in encrypted form, pass `decrypt=` to decode either an
+encrypted `api_key=` value or an encrypted `GITCODE_ACCESS_TOKEN` value before
+the client uses it.
+
+```python
+from gitcode_api import GitCode
+from trusted_library import decrypt_token
+
+client = GitCode(
+    api_key="encrypted-token",
+    decrypt=decrypt_token,
+)
+```
+
 ## Quick Start
 
 ### Sync client
@@ -66,7 +80,7 @@ asyncio.run(main())
 
 ### Context managers
 
-`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. When the SDK creates the underlying httpx client for you, leaving the block calls `close()` / `await close()` on that client automatically.
+`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. Leaving the block calls `close()` / `await close()` on the underlying client automatically, including a custom `http_client=` you passed in.
 
 ```python
 from gitcode_api import GitCode
@@ -87,8 +101,6 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
-
-If you pass a custom `http_client=`, the SDK does not close it; you still own that client’s lifecycle (for example `async with httpx.AsyncClient(...) as http:` plus `AsyncGitCode(http_client=http)`).
 
 ## Common Workflows
 

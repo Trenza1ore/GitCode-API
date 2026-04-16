@@ -48,9 +48,9 @@ Context managers
 ----------------
 
 ``GitCode`` / ``AsyncGitCode`` (and ``SyncAPIClient`` / ``AsyncAPIClient``)
-implement synchronous and asynchronous context managers. If the SDK constructed
-the httpx client (you did not pass ``http_client=``), exiting the block closes
-it. If you supply your own client, you must close it yourself.
+implement synchronous and asynchronous context managers. Exiting the block
+closes the underlying httpx client automatically, including a supplied
+``http_client`` instance.
 
 .. code-block:: python
 

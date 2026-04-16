@@ -30,6 +30,19 @@ pip install gitcode-api
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
+如果你的令牌是加密存储的，可以传入 `decrypt=`，在客户端使用之前解密
+加密的 `api_key=` 或环境变量 `GITCODE_ACCESS_TOKEN`：
+
+```python
+from gitcode_api import GitCode
+from trusted_library import decrypt_token
+
+client = GitCode(
+    api_key="encrypted-token",
+    decrypt=decrypt_token,
+)
+```
+
 ## 快速开始
 
 ### 同步客户端
@@ -66,7 +79,7 @@ asyncio.run(main())
 
 ### 上下文管理器
 
-`GitCode` 与 `AsyncGitCode`（以及底层的 `SyncAPIClient` / `AsyncAPIClient`）支持 `with` / `async with`。当由 SDK 自行创建底层 httpx 客户端时，离开代码块会自动对其调用 `close()` / `await close()`。
+`GitCode` 与 `AsyncGitCode`（以及底层的 `SyncAPIClient` / `AsyncAPIClient`）支持 `with` / `async with`。离开代码块时会自动对底层客户端调用 `close()` / `await close()`，即使你传入了自定义 `http_client=` 也是如此。
 
 ```python
 from gitcode_api import GitCode
@@ -87,8 +100,6 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
-
-若你传入自定义的 `http_client=`，SDK 不会关闭该实例，仍由你负责其生命周期（例如先 `async with httpx.AsyncClient(...) as http:`，再传入 `AsyncGitCode(http_client=http)`）。
 
 ## 常见用法
 

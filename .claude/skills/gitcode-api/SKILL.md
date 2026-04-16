@@ -48,7 +48,7 @@ This SDK is structured similarly to OpenAI's Python clients:
 - Start from a top-level client object: `GitCode(...)` or `AsyncGitCode(...)`.
 - Call grouped resources off the client, such as `client.repos`, `client.pulls`, `client.users`, and `client.search`.
 - Invoke methods on those resource groups, such as `client.repos.get()` or `await client.pulls.list()`.
-- Prefer `with GitCode(...) as client:` or `async with AsyncGitCode(...) as client:` so the SDK can close its default `httpx` client automatically.
+- Prefer `with GitCode(...) as client:` or `async with AsyncGitCode(...) as client:` so the SDK closes the underlying `httpx` client automatically, including a custom `http_client`.
 
 Unlike OpenAI's typed request/response shapes, this SDK focuses on GitCode REST resources and returns lightweight response objects with attribute access.
 

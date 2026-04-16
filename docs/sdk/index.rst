@@ -57,6 +57,8 @@ Both clients accept shared defaults for ``owner``, ``repo``, ``base_url``, and
 ``AsyncGitCode`` manages an asynchronous ``httpx.AsyncClient`` and supports
 ``await close()``.
 
+Closing the SDK client also closes a supplied ``http_client`` instance.
+
 .. code-block:: python
 
    from gitcode_api import GitCode

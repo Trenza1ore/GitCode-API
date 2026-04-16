@@ -244,9 +244,8 @@ class SyncAPIClient(BaseGitCodeClient):
         return self._parse_response(response, raw=raw)
 
     def close(self) -> None:
-        """Close the underlying HTTP client if this instance created it."""
-        if self._owns_client:
-            self._client.close()
+        """Close the underlying HTTP client."""
+        self._client.close()
 
     def __enter__(self) -> "SyncAPIClient":
         """Enter a context manager and return the client instance."""
@@ -319,9 +318,8 @@ class AsyncAPIClient(BaseGitCodeClient):
         return self._parse_response(response, raw=raw)
 
     async def close(self) -> None:
-        """Close the underlying async HTTP client if this instance created it."""
-        if self._owns_client:
-            await self._client.aclose()
+        """Close the underlying async HTTP client."""
+        await self._client.aclose()
 
     async def __aenter__(self) -> "AsyncAPIClient":
         """Enter an async context manager and return the client instance."""

@@ -84,7 +84,7 @@ Lifecycle:
 
 - Supports `with GitCode(...) as client:`
 - Call `client.close()` if not using a context manager
-- If you pass `http_client=`, you own that client's lifecycle
+- Closing the SDK client also closes a supplied `http_client`
 
 ### `AsyncGitCode`
 
@@ -107,7 +107,7 @@ Lifecycle:
 
 - Supports `async with AsyncGitCode(...) as client:`
 - Call `await client.close()` if not using an async context manager
-- If you pass `http_client=`, you own that client's lifecycle
+- Closing the SDK client also closes a supplied `http_client`
 
 ## Repository-scoped behavior
 
