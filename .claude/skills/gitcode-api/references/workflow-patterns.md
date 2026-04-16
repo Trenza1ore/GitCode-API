@@ -14,12 +14,15 @@ pip install -U gitcode-api
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
+If the token is encrypted, pass `decrypt=` on the client so it can decode an
+encrypted `api_key=` value or encrypted `GITCODE_ACCESS_TOKEN` at runtime.
+
 3. Decide whether your task is repository-scoped.
 
 - Repository-scoped: set `owner=` and `repo=` on the client for convenience.
 - Account-wide: use `users`, `orgs`, `search`, or `oauth` without repository defaults.
 
-4. Prefer context managers so the underlying `httpx` client closes cleanly.
+4. Prefer context managers so the underlying `httpx` client closes cleanly, including a supplied `http_client=`.
 5. If you need a runnable baseline, start from `examples/README.md` and the scripts in `examples/`.
 
 ## Pick the best local reference
@@ -163,6 +166,7 @@ Fix:
 
 - pass `api_key="..."`, or
 - export `GITCODE_ACCESS_TOKEN`
+- if the stored token is encrypted, pass `decrypt=...`
 
 ### Missing repository context
 
@@ -199,7 +203,7 @@ Fix:
 
 - prefer `with GitCode(...) as client:`
 - prefer `async with AsyncGitCode(...) as client:`
-- if you injected a custom `http_client=`, close that outer client yourself
+- remember that closing the SDK client also closes a supplied `http_client=`
 
 ## CLI helpers
 

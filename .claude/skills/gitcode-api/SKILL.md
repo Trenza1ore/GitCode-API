@@ -27,7 +27,7 @@ Use the published Python package:
 pip install -U gitcode-api
 ```
 
-Authentication defaults to the `GITCODE_ACCESS_TOKEN` environment variable, or pass `api_key=...` explicitly.
+Authentication defaults to the `GITCODE_ACCESS_TOKEN` environment variable, or pass `api_key=...` explicitly. If either value is encrypted, pass `decrypt=...` so the client can decode it before authenticating.
 
 ## Confirm with user before installation or setup environment variable
 
@@ -39,7 +39,7 @@ Authentication defaults to the `GITCODE_ACCESS_TOKEN` environment variable, or p
   - source repository: https://github.com/Trenza1ore/GitCode-API
 - ask user to provide the `GITCODE_ACCESS_TOKEN` environment variable, preferably encrypted:
   - environment variable may be read by untrusted software as that is not unscoped.
-  - a `decrypt` argument can be passed into GitCode clients' constructor to decrypt at runtime.
+  - a `decrypt` argument can be passed into GitCode clients' constructor to decrypt an encrypted `api_key` value or encrypted `GITCODE_ACCESS_TOKEN` at runtime.
 
 ## Client shape
 
@@ -90,13 +90,14 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-Encrypted:
+Encrypted token:
 
 ```python
 from gitcode_api import GitCode
 from trusted_library import decryption_method
 
 with GitCode(
+    api_key="encrypted-token",
     owner="SushiNinja",
     repo="GitCode-API",
     decrypt=decryption_method,

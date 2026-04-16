@@ -44,6 +44,20 @@ client = AsyncGitCode(api_key="token", owner="owner", repo="repo")
 pulls = await client.pulls.list(state="open")
 ```
 
+Encrypted token example:
+
+```python
+from gitcode_api import GitCode
+from trusted_library import decrypt_token
+
+client = GitCode(
+    api_key="encrypted-token",
+    owner="owner",
+    repo="repo",
+    decrypt=decrypt_token,
+)
+```
+
 ## Top-level clients
 
 ### `GitCode`
@@ -77,6 +91,7 @@ GitCode(
     base_url: str = "https://api.gitcode.com/api/v5",
     timeout: float | None = None,
     http_client=None,
+    decrypt=None,
 )
 ```
 
@@ -100,6 +115,7 @@ AsyncGitCode(
     base_url: str = "https://api.gitcode.com/api/v5",
     timeout: float | None = None,
     http_client=None,
+    decrypt=None,
 )
 ```
 

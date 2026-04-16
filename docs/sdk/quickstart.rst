@@ -44,6 +44,26 @@ Create an async client
 
    asyncio.run(main())
 
+Encrypted tokens
+----------------
+
+Pass ``decrypt=`` when ``api_key=`` or ``GITCODE_ACCESS_TOKEN`` contains an
+encrypted token value.
+
+.. code-block:: python
+
+   from gitcode_api import GitCode
+   from trusted_library import decrypt_token
+
+   with GitCode(
+       api_key="encrypted-token",
+       decrypt=decrypt_token,
+       owner="SushiNinja",
+       repo="GitCode-API",
+   ) as client:
+       repo = client.repos.get()
+       print(repo.full_name)
+
 Context managers
 ----------------
 

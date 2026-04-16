@@ -42,10 +42,19 @@ Authentication
 --------------
 
 Pass ``api_key=`` directly or set ``GITCODE_ACCESS_TOKEN`` in your environment.
+If either value is stored in encrypted form, pass ``decrypt=`` so the client can
+decode it before authenticating.
 
 .. code-block:: bash
 
    export GITCODE_ACCESS_TOKEN="your-token"
+
+.. code-block:: python
+
+   from gitcode_api import GitCode
+   from trusted_library import decrypt_token
+
+   client = GitCode(api_key="encrypted-token", decrypt=decrypt_token)
 
 Client lifecycle
 ----------------
