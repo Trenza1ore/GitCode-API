@@ -8,6 +8,22 @@ building applications against GitCode, and a **REST API reference** that
 mirrors the public English help content so you can read endpoints alongside
 client usage.
 
+
+Github repository: https://github.com/Trenza1ore/GitCode-API
+
+GitCode repository: https://gitcode.com/SushiNinja/GitCode-API
+
+PyPI package page: https://pypi.org/project/gitcode-api
+
+My personal website: https://hugohuang.com
+
+.. note::
+
+   The SDK is published on `PyPI <https://pypi.org/project/gitcode-api/>`__,
+   developed on `GitHub <https://github.com/Trenza1ore/GitCode-API>`__, and
+   mirrored on `GitCode <https://gitcode.com/SushiNinja/GitCode-API>`__. The
+   REST pages are mirrored from GitCode’s official documentation.
+
 .. topic:: Python SDK
    :class: gc-doc-card
 
@@ -25,12 +41,6 @@ client usage.
    English site.
 
    :doc:`Open the REST API reference <rest_api/index>`
-
-.. note::
-
-   The SDK lives in `GitCode-API on GitHub <https://github.com/Trenza1ore/GitCode-API>`__
-   and is maintained by Hugo Huang. The REST pages are mirrored from GitCode’s
-   official documentation.
 
 .. toctree::
    :maxdepth: 2
