@@ -43,6 +43,20 @@ client = GitCode(
 )
 ```
 
+## CLI
+
+安装完成后，也可以直接通过命令行调用 SDK：
+
+```bash
+gitcode-api repos get --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API
+python -m gitcode_api pulls list --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API --state open
+```
+
+命令与 `GitCode` 的同步资源方法一一对应，格式为
+`gitcode-api <resource> <method> ...`。如果某个方法接收额外的 `**params`
+或 `**payload`，可以使用重复的 `--set key=value`，或传入
+`--set-json '{"key": "value"}'`。
+
 ## 快速开始
 
 ### 同步客户端

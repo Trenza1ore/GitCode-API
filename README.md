@@ -44,6 +44,19 @@ client = GitCode(
 )
 ```
 
+## CLI
+
+After installation, you can invoke the SDK directly from the command line:
+
+```bash
+gitcode-api repos get --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API
+python -m gitcode_api pulls list --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API --state open
+```
+
+Commands mirror the synchronous resource methods on `GitCode`, using the pattern
+`gitcode-api <resource> <method> ...`. For methods that accept extra `**params`
+or `**payload`, pass repeated `--set key=value` flags or `--set-json '{"key": "value"}'`.
+
 ## Quick Start
 
 ### Sync client
