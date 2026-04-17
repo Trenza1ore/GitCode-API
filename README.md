@@ -19,7 +19,7 @@
 Install from PyPI:
 
 ```bash
-pip install gitcode-api
+pip install -U gitcode-api
 ```
 
 ## Authentication

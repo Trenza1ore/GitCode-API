@@ -28,7 +28,7 @@ Install the package from PyPI:
 
 .. code-block:: bash
 
-   pip install gitcode-api
+   pip install -U gitcode-api
 
 For local development, install the project and optional documentation
 dependencies with ``uv``:

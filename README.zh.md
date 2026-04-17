@@ -19,7 +19,7 @@
 推荐直接通过 PyPI 安装：
 
 ```bash
-pip install gitcode-api
+pip install -U gitcode-api
 ```
 
 ## 认证
