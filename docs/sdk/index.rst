@@ -9,6 +9,7 @@ GitCode REST API. The public entry points are ``GitCode`` and
    :maxdepth: 2
 
    quickstart
+   cli
    client_api
    reference
 
@@ -95,5 +96,6 @@ Next steps
 ----------
 
 - See :doc:`quickstart` for common usage patterns.
+- See :doc:`cli` for the command-line entry point and examples.
 - See :doc:`client_api` for the client-oriented chained API reference.
 - See :doc:`reference` for the autodoc-generated module reference.
