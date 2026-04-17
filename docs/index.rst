@@ -9,7 +9,7 @@ mirrors the public English help content so you can read endpoints alongside
 client usage.
 
 
-Github repository: https://github.com/Trenza1ore/GitCode-API
+GitHub repository: https://github.com/Trenza1ore/GitCode-API
 
 GitCode repository: https://gitcode.com/SushiNinja/GitCode-API
 
