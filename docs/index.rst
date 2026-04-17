@@ -24,6 +24,8 @@ My personal website: https://hugohuang.com
    mirrored on `GitCode <https://gitcode.com/SushiNinja/GitCode-API>`__. The
    REST pages are mirrored from GitCode’s official documentation.
 
+   Coffee requests may trigger a small :doc:`hot beverage notice <coffee>`.
+
 .. topic:: Python SDK
    :class: gc-doc-card
 
