@@ -10,7 +10,6 @@ This section mirrors the public English GitCode documentation published at
    guide
    oauth
    orgs
-   quickstart
    repos
    repos/branch
    repos/commit
