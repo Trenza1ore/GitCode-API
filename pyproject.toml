@@ -72,3 +72,10 @@ addopts = ["-v"]
 [tool.ruff]
 line-length = 120
 target-version = "py39"
+
+[tool.pylint.MAIN]
+ignore-paths = ["^(examples|tests|docs|scripts)/.*"]
+py-version = "3.9"
+
+[tool.pylint.FORMAT]
+max-line-length = 120
