@@ -19,3 +19,14 @@ format:
 test:
 	uv pip install .
 	uv run pytest
+
+release:
+	@$(if $(strip $(VERSION)),:,$(error VERSION is required, e.g. make release VERSION=1.2.3))
+	printf '%s\n' "$(VERSION)" > gitcode_api/version.txt
+	sed -i '' 's/^version = ".*"/version = "$(VERSION)"/' pyproject.toml
+	uv lock
+	git add pyproject.toml uv.lock gitcode_api/version.txt
+	git commit -m "chore: bump version to $(VERSION)"
+	git tag -a "$(VERSION)" -m "$(VERSION)"
+	git push --tags
+	git push
