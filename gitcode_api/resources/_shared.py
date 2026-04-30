@@ -1,5 +1,6 @@
 """Shared resource base classes for the GitCode SDK."""
 
+from functools import lru_cache
 from typing import Any, Dict, List, Optional, Union
 
 from .._base_client import AsyncAPIClient, SyncAPIClient
@@ -73,6 +74,39 @@ class SyncResource:
             return as_model(data, model_type)
         return APIObject({"value": data})
 
+    @property
+    @lru_cache(maxsize=1)
+    def methods(self) -> tuple[str, ...]:
+        """Public callable names on this resource group in stable SDK order.
+
+        Ordering uses :func:`sorted` with a key derived from each name's
+        underscore-separated segments (for example two-part names are ordered
+        as if ``second_first``). This is **not** plain lexicographic order on the
+        full method string. Excludes ``methods``, names starting with ``_``,
+        and non-callables. The result is cached on first access.
+
+        :returns: Tuple of method names in that order.
+        """
+
+        def _is_valid_func(name: str):
+            return not (name.startswith("_") or name == "methods") and callable(getattr(self, name))
+
+        def _sort_helper(method_name: str):
+            name_parts = method_name.split("_")
+            num_part = len(name_parts)
+            if num_part == 2:
+                return f"{name_parts[1]}_{name_parts[0]}"
+            if num_part == 3:
+                return f"{{{name_parts[0]}_"
+            return "_" + method_name
+
+        return tuple(
+            sorted(
+                (func for func in dir(self) if _is_valid_func(func)),
+                key=_sort_helper,
+            )
+        )
+
 
 class AsyncResource:
     """Base class for asynchronous resource groups."""
@@ -126,3 +160,36 @@ class AsyncResource:
         """
         data = await self._request(method, path, **kwargs)
         return as_model_list(data, model_type)
+
+    @property
+    @lru_cache(maxsize=1)
+    def methods(self) -> tuple[str, ...]:
+        """Public callable names on this resource group in stable SDK order.
+
+        Ordering uses :func:`sorted` with a key derived from each name's
+        underscore-separated segments (for example two-part names are ordered
+        as if ``second_first``). This is **not** plain lexicographic order on the
+        full method string. Excludes ``methods``, names starting with ``_``,
+        and non-callables. The result is cached on first access.
+
+        :returns: Tuple of method names in that order.
+        """
+
+        def _is_valid_func(name: str):
+            return not (name.startswith("_") or name == "methods") and callable(getattr(self, name))
+
+        def _sort_helper(method_name: str):
+            name_parts = method_name.split("_")
+            num_part = len(name_parts)
+            if num_part == 2:
+                return f"{name_parts[1]}_{name_parts[0]}"
+            if num_part == 3:
+                return f"{{{name_parts[0]}_"
+            return "_" + method_name
+
+        return tuple(
+            sorted(
+                (func for func in dir(self) if _is_valid_func(func)),
+                key=_sort_helper,
+            )
+        )
