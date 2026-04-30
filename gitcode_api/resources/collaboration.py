@@ -476,7 +476,7 @@ class PullsResource(SyncResource):
         """Create a pull request.
 
         :param title: Pull request title.
-        :param head: Source branch ref (head branch).
+        :param head: Source branch ref (head branch, in forks use ``owner:branch`` like "SushiNinja:develop").
         :param base: Target branch ref (base branch).
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
@@ -490,7 +490,7 @@ class PullsResource(SyncResource):
         :param prune_source_branch: Whether to delete the source branch after merge when applicable.
         :param squash: Squash-merge preference where supported.
         :param squash_commit_message: Custom squash commit message.
-        :param fork_path: Fork namespace/path when opening a PR from a fork.
+        :param fork_path: Fork ``owner/repo`` when opening a PR from a fork, like "SushiNinja/agent-core-contrib".
         :returns: Created pull request.
         """
         return self._model(
@@ -1662,7 +1662,7 @@ class AsyncPullsResource(AsyncResource):
         """Create a pull request.
 
         :param title: Pull request title.
-        :param head: Source branch ref (head branch).
+        :param head: Source branch ref (head branch, in forks use ``owner:branch`` like "SushiNinja:develop").
         :param base: Target branch ref (base branch).
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
@@ -1676,7 +1676,7 @@ class AsyncPullsResource(AsyncResource):
         :param prune_source_branch: Whether to delete the source branch after merge when applicable.
         :param squash: Squash-merge preference where supported.
         :param squash_commit_message: Custom squash commit message.
-        :param fork_path: Fork namespace/path when opening a PR from a fork.
+        :param fork_path: Fork ``owner/repo`` when opening a PR from a fork, like "SushiNinja/agent-core-contrib".
         :returns: Created pull request.
         """
         return await self._model(
