@@ -8,7 +8,7 @@ description: |
   (3) Needing quick repository, pull request, user, or search examples,
   (4) Running bundled scripts to validate the environment or make simple CLI calls.
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
   {
     "openclaw":
       {
@@ -156,10 +156,11 @@ payload = pull.to_dict()
 Bundled helpers:
 
 - `scripts/check_env.py` verifies Python, package import, and token setup.
-- `scripts/gitcode_api_cli.py` provides a small example CLI for common SDK calls, you are advised to write your own version with encrypted access token for security.
+- `scripts/gitcode_api_cli.py` is a legacy example CLI (deprecated; it warns on use). Prefer the package's experimental built-in CLI (`gitcode-api` or `python -m gitcode_api`); see https://gitcode-api.readthedocs.io/en/latest/sdk/cli.html. For production, keep tokens out of argv and use env vars or your own wrapper.
 
 ## Additional resources
 
+- Hosted documentation (quickstart, full SDK pages, REST reference): https://gitcode-api.readthedocs.io/en/latest/sdk/quickstart.html
 - API interfaces and resource method inventory: [references/api-reference.md](references/api-reference.md)
 - Usage habits and troubleshooting flow: [references/workflow-patterns.md](references/workflow-patterns.md)
 

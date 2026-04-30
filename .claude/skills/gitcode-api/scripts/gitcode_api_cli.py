@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
-"""Small CLI for common gitcode-api SDK actions."""
+"""Small CLI for common gitcode-api SDK actions.
+
+Deprecated: kept for backward compatibility. Prefer the package's built-in
+``gitcode-api`` console entry (still experimental); see
+https://gitcode-api.readthedocs.io/en/latest/sdk/cli.html
+"""
 
 import argparse
 import json
 import os
 import sys
+import warnings
 from typing import Any
 
 from gitcode_api import GitCode
+
+_BUILTIN_CLI_DOCS = "https://gitcode-api.readthedocs.io/en/latest/sdk/cli.html"
 
 
 def build_client(args: argparse.Namespace) -> GitCode:
@@ -89,6 +97,13 @@ def make_parser() -> argparse.ArgumentParser:
 
 
 def main() -> int:
+    warnings.warn(
+        "This script is deprecated and retained for backward compatibility only. "
+        "The gitcode-api package provides an experimental built-in CLI (`gitcode-api` / "
+        f"`python -m gitcode_api`); see {_BUILTIN_CLI_DOCS}",
+        DeprecationWarning,
+        stacklevel=1,
+    )
     parser = make_parser()
     args = parser.parse_args()
     try:

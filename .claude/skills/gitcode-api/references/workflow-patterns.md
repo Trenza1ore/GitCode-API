@@ -25,15 +25,17 @@ encrypted `api_key=` value or encrypted `GITCODE_ACCESS_TOKEN` at runtime.
 4. Prefer context managers so the underlying `httpx` client closes cleanly, including a supplied `http_client=`.
 5. If you need a runnable baseline, start from `examples/README.md` and the scripts in `examples/`.
 
-## Pick the best local reference
+## Pick the best reference
 
 Use:
 
-- `README.md` for project overview and short common workflows
-- `docs/sdk/quickstart.rst` for first-use SDK patterns
-- `docs/sdk/client_api.rst` when you need exact chained method coverage
-- `docs/rest_api/index.rst` when you need endpoint-level REST behavior
+- [Project README](https://github.com/Trenza1ore/GitCode-API/blob/main/README.md) for overview and short common workflows
+- [SDK quickstart](https://gitcode-api.readthedocs.io/en/latest/sdk/quickstart.html) for first-use SDK patterns
+- [Client API](https://gitcode-api.readthedocs.io/en/latest/sdk/client_api.html) when you need exact chained method coverage
+- [REST API index](https://gitcode-api.readthedocs.io/en/latest/rest_api/index.html) when you need endpoint-level REST behavior
 - `references/api-reference.md` when a compact skill-local summary is enough
+
+If you are editing the repository itself, the same content lives under `docs/sdk/` and `docs/rest_api/` as Sphinx sources.
 
 ## Picking the client
 
@@ -80,7 +82,7 @@ with GitCode(owner="SushiNinja", repo="GitCode-API") as client:
 - Need current-user, organization, search, or OAuth actions:
   start with `GitCode()` or `AsyncGitCode()` and only add repo context if a later call needs it.
 - Need a quick demo or smoke test:
-  prefer `examples/` or `scripts/gitcode_api_cli.py` before writing fresh code.
+  prefer `examples/`, the built-in [`gitcode-api` CLI](https://gitcode-api.readthedocs.io/en/latest/sdk/cli.html), or `python scripts/check_env.py` before writing fresh code.
 - Need plain JSON-like data for another tool:
   call `.to_dict()` on response objects.
 
@@ -191,7 +193,7 @@ Fix:
 - confirm the endpoint supports the requested action
 - confirm the token has permission for the resource
 - verify repository identifiers and numeric IDs
-- compare the intended call with `docs/sdk/client_api.rst` and the corresponding page in `docs/rest_api/`
+- compare the intended call with the [Client API](https://gitcode-api.readthedocs.io/en/latest/sdk/client_api.html) page and the matching topic under [REST API](https://gitcode-api.readthedocs.io/en/latest/rest_api/index.html)
 
 ### Lifecycle issues
 
@@ -207,36 +209,27 @@ Fix:
 
 ## CLI helpers
 
-Use the bundled scripts for quick checks:
+Prefer the package's experimental built-in CLI ([documentation](https://gitcode-api.readthedocs.io/en/latest/sdk/cli.html)):
 
-Environment validation:
+```bash
+export GITCODE_ACCESS_TOKEN="your-token"
+gitcode-api repos get --owner SushiNinja --repo GitCode-API
+gitcode-api pulls list --owner SushiNinja --repo GitCode-API --state open --per-page 10
+gitcode-api search repositories --q "sdk language:python" --per-page 10
+```
+
+Environment validation (bundled skill script):
 
 ```bash
 python scripts/check_env.py
 ```
 
-Basic repository inspection:
-
-```bash
-python scripts/gitcode_api_cli.py repo --owner SushiNinja --repo GitCode-API
-```
-
-List pull requests:
-
-```bash
-python scripts/gitcode_api_cli.py pulls --owner SushiNinja --repo GitCode-API --state open --per-page 10
-```
-
-Search repositories:
-
-```bash
-python scripts/gitcode_api_cli.py search-repos --query "sdk language:python" --per-page 10
-```
+The legacy `scripts/gitcode_api_cli.py` remains for backward compatibility but emits a `DeprecationWarning` directing you to the built-in CLI above.
 
 ## Practical debugging order
 
 1. Run `python scripts/check_env.py`.
 2. If the task is repository-scoped, confirm `owner` and `repo` are set either on the client or on the call.
-3. Reproduce with the smallest relevant example from `examples/` or the CLI helper.
-4. If the method name is unclear, check `docs/sdk/client_api.rst`.
-5. If behavior still looks wrong, compare with the mirrored REST docs under `docs/rest_api/`.
+3. Reproduce with the smallest relevant example from `examples/` or the `gitcode-api` CLI.
+4. If the method name is unclear, check the [Client API](https://gitcode-api.readthedocs.io/en/latest/sdk/client_api.html) documentation.
+5. If behavior still looks wrong, compare with the mirrored REST docs under the [REST API](https://gitcode-api.readthedocs.io/en/latest/rest_api/index.html) section.
