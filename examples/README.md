@@ -23,4 +23,5 @@ uv run python examples/get_current_user.py
 uv run python examples/get_repository_overview.py
 uv run python examples/list_pull_requests.py
 uv run python examples/async_list_branches.py
+uv run python examples/inspect_resource_group_methods.py
 ```
