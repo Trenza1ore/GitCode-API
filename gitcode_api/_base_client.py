@@ -10,6 +10,7 @@ from urllib.parse import quote
 
 import httpx
 
+from ._base_resource import BaseResource
 from ._exceptions import GitCodeConfigurationError, GitCodeHTTPStatusError
 
 DEFAULT_BASE_URL = "https://api.gitcode.com/api/v5"
@@ -181,6 +182,13 @@ class BaseGitCodeClient:
         except ValueError:
             return response.text
 
+    def _close_resources(self) -> None:
+        """Release resource group caches to allow for garbage collection."""
+        for attr in dir(self):
+            resource = getattr(self, attr)
+            if isinstance(resource, BaseResource):
+                resource.method_signature.cache_clear()
+
 
 class SyncAPIClient(BaseGitCodeClient):
     """Low-level synchronous HTTP transport used by resource classes.
@@ -243,7 +251,8 @@ class SyncAPIClient(BaseGitCodeClient):
         return self._parse_response(response, raw=raw)
 
     def close(self) -> None:
-        """Close the underlying HTTP client."""
+        """Close the underlying HTTP client and clear cache for garbage collection."""
+        self._close_resources()
         self._client.close()
 
     def __enter__(self) -> "SyncAPIClient":
@@ -316,7 +325,8 @@ class AsyncAPIClient(BaseGitCodeClient):
         return self._parse_response(response, raw=raw)
 
     async def close(self) -> None:
-        """Close the underlying async HTTP client."""
+        """Close the underlying async HTTP client and clear cache for garbage collection."""
+        self._close_resources()
         await self._client.aclose()
 
     async def __aenter__(self) -> "AsyncAPIClient":

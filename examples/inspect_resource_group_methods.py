@@ -1,4 +1,5 @@
 from typing import List
+
 from _shared import load_config
 
 from gitcode_api import GitCode
