@@ -13,6 +13,10 @@ The CLI mirrors the synchronous ``GitCode`` client surface:
 For example, ``client.repos.get()`` becomes ``gitcode-api repos get ...`` and
 ``client.pulls.list()`` becomes ``gitcode-api pulls list ...``.
 
+Running ``gitcode-api`` with **no arguments** prints a short banner (version line
+and ASCII art when stdout is a TTY) followed by the same top-level help as
+``gitcode-api -h``.
+
 Installation
 ------------
 
@@ -35,6 +39,11 @@ Pass ``--api-key`` directly or set ``GITCODE_ACCESS_TOKEN`` in your environment.
 The CLI also accepts shared client options such as ``--owner``, ``--repo``,
 ``--base-url``, and ``--timeout``.
 
+The CLI does **not** expose the Python client's ``decrypt`` or custom
+``http_client`` hooks. If you store an encrypted token or need a bespoke
+``httpx`` client, use :class:`~gitcode_api.GitCode` in code instead (see
+:doc:`index` authentication examples).
+
 .. code-block:: bash
 
    export GITCODE_ACCESS_TOKEN="your-token"
@@ -49,13 +58,25 @@ available from the command line, the SDK raises ``GitCodeConfigurationError``.
 Discovering commands
 --------------------
 
-Use ``--help`` at any level to inspect available resource groups, methods, and flags:
+Use ``-h`` / ``--help`` at any level to inspect available resource groups, methods, and flags:
 
 .. code-block:: bash
 
    gitcode-api --help
    gitcode-api repos --help
    gitcode-api pulls create --help
+
+Resource help lists subcommand names in the **same order** as
+``resource.methods`` on the sync client. Each method's help opens with a
+signature line matching ``resource.method_signature("<name>")`` in Python, then
+the docstring summary—so the CLI stays aligned with runtime introspection on
+:class:`~gitcode_api.GitCode`.
+
+Print the installed package version:
+
+.. code-block:: bash
+
+   gitcode-api --version
 
 Basic examples
 --------------
