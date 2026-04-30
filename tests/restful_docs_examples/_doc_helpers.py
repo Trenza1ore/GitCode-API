@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, List
 
 import httpx
 import json_repair
@@ -63,15 +63,15 @@ def assert_payload_matches_object(payload: Any, result: Any, path: str = "root")
     assert result == payload, f"Value mismatch at {path}: {result!r} != {payload!r}"
 
 
-def _find_line(lines: list[str], needle: str, start: int = 0) -> int:
+def _find_line(lines: List[str], needle: str, start: int = 0) -> int:
     for index in range(start, len(lines)):
         if lines[index] == needle:
             return index
     raise AssertionError(f"Could not find {needle!r}")
 
 
-def _read_code_block(lines: list[str], start: int) -> list[str]:
-    block: list[str] = []
+def _read_code_block(lines: List[str], start: int) -> List[str]:
+    block: List[str] = []
     in_block = False
 
     for index in range(start, len(lines)):

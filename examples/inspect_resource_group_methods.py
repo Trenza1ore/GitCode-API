@@ -1,3 +1,4 @@
+from typing import List
 from _shared import load_config
 
 from gitcode_api import GitCode
@@ -5,7 +6,7 @@ from gitcode_api import GitCode
 
 def main() -> None:
     config = load_config()
-    lines: list[str] = []
+    lines: List[str] = []
     lines.append("Resource groups expose ``.methods`` — public callables per group")
     lines.append("(tuple order is stable SDK order, not plain A–Z on the full name)")
     lines.append("")

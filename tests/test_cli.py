@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict
 
 import httpx
 
@@ -38,7 +38,7 @@ def test_cli_build_parser_exposes_generated_commands() -> None:
 
 
 def test_cli_invokes_resource_methods_and_prints_json(capsys: Any, monkeypatch: Any) -> None:
-    captured: dict[str, Any] = {}
+    captured: Dict[str, Any] = {}
 
     def handler(request: httpx.Request) -> httpx.Response:
         captured["url"] = str(request.url)
@@ -66,7 +66,7 @@ def test_cli_invokes_resource_methods_and_prints_json(capsys: Any, monkeypatch: 
 
 
 def test_cli_supports_extra_kwargs_via_set_flags(capsys: Any, monkeypatch: Any) -> None:
-    captured: dict[str, Any] = {}
+    captured: Dict[str, Any] = {}
 
     def handler(request: httpx.Request) -> httpx.Response:
         captured["params"] = dict(request.url.params)
