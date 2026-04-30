@@ -1,6 +1,6 @@
 """Shared resource base classes for the GitCode SDK."""
 
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from typing import Any, Dict, List, Optional, Union
 
 from .._base_client import AsyncAPIClient, SyncAPIClient
@@ -17,8 +17,7 @@ class SyncResource:
         """Bind the resource to a synchronous API client."""
         self._client = client
 
-    @property
-    @lru_cache(maxsize=1)
+    @cached_property
     def methods(self) -> tuple[str, ...]:
         """Public callable names on this resource group in stable SDK order.
 
@@ -132,8 +131,7 @@ class AsyncResource:
         """Bind the resource to an asynchronous API client."""
         self._client = client
 
-    @property
-    @lru_cache(maxsize=1)
+    @cached_property
     def methods(self) -> tuple[str, ...]:
         """Public callable names on this resource group in stable SDK order.
 
