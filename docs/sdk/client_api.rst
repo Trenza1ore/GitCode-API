@@ -11,6 +11,15 @@ when the block ends. The same applies to ``SyncAPIClient`` and
 ``AsyncAPIClient``; see :doc:`quickstart` for examples. Closing the SDK client
 also closes a supplied ``http_client`` instance.
 
+Resource introspection
+----------------------
+
+Every chained resource on ``GitCode`` and ``AsyncGitCode`` (for example
+``client.repos`` or ``client.pulls``) expose the :attr:`methods` property: a tuple
+of public callable names in stable SDK-defined order. Private names (leading ``_``), the ``methods``
+attribute itself, and non-callables are omitted. The tuple is cached on first
+access for the lifetime of that resource object.
+
 Synchronous client
 ------------------
 

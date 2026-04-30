@@ -176,6 +176,8 @@ Both `GitCode` and `AsyncGitCode` expose:
 - `releases`, `tags`, and `webhooks`
 - `users`, `orgs`, `search`, and `oauth`
 
+Every resource namespace inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and `methods` itself are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list.
+
 ## Examples
 
 Runnable examples live in `examples/`:

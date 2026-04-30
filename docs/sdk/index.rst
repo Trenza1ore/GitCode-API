@@ -21,6 +21,8 @@ Highlights
 - Shared repository context via ``owner=`` and ``repo=`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
 - Matching sync and async resource surfaces.
+- Each resource namespace exposes a cached ``methods`` property (public
+  callable names in stable SDK order) for runtime introspection.
 
 Install
 -------
@@ -91,6 +93,11 @@ The SDK exposes these resource groups on both sync and async clients:
 - ``labels``, ``milestones``, and ``members``
 - ``releases``, ``tags``, and ``webhooks``
 - ``users``, ``orgs``, ``search``, and ``oauth``
+
+On any of the groups above, read ``client.<group>.methods`` for a stable tuple
+of public method names (excluding private helpers and the ``methods`` property
+itself). Order follows the SDK's segment-based sort key, not plain alphabetical
+order on each full name. The value is built once per resource instance.
 
 Next steps
 ----------

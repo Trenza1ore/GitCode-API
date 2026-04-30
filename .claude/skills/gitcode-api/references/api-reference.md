@@ -147,6 +147,22 @@ branches = client.branches.list(owner="SushiNinja", repo="GitCode-API")
 
 If a repository-scoped method runs without an effective `owner` and `repo`, the SDK raises `GitCodeConfigurationError`.
 
+## Resource introspection (`methods`)
+
+Each namespaced resource (for example `client.pulls`, `client.repos`) subclasses the shared `SyncResource` or `AsyncResource` base and exposes a read-only `methods` property: a `tuple[str, ...]` of **public callable** names in **stable SDK order** (Python `sorted` with a key derived from underscore-separated name segments). That order is **not** plain A–Z sorting on the full method string (for example two-part names are ordered as if `second_first`).
+
+```python
+names = client.pulls.methods
+assert "list" in names
+```
+
+Details:
+
+- Excludes names starting with `_`, the `methods` property itself, and any non-callable attributes.
+- The tuple is computed on first access and cached for the lifetime of that resource instance (`functools.lru_cache` on the property), so repeated reads are cheap.
+
+Use this for discovery, REPL exploration, or generating CLI or docs scaffolding.
+
 ## Resource groups and common methods
 
 ### Repositories and contents

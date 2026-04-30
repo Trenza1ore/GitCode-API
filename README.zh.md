@@ -4,19 +4,19 @@
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)](README.md)
 
-`gitcode-api` 是一个由社区维护的 GitCode REST API Python SDK。它提供易用的同步和异步客户端、按资源分组的调用入口，以及轻量级响应模型，帮助你在 Python 中更方便地使用 GitCode，而不必手写原始 HTTP 请求。
+`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组组织的调用方式，以及轻量响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。
 
 ## 项目定位
 
-- 面向社区的 GitCode Python 库项目。
-- 同时提供同步和异步客户端，调用方式保持一致。
-- 提供 `client.repos`、`client.pulls`、`client.users` 等资源命名空间。
-- 支持在客户端上设置 `owner=` 和 `repo=` 作为仓库级默认上下文。
-- 仓库内包含 Sphinx 文档，以及 GitCode REST API 文档镜像。
+- 面向需要在 Python 中接入 GitCode 的开发者。
+- 同步（`GitCode`）与异步（`AsyncGitCode`）两套接口形状一致，便于迁移或混用。
+- 通过 `client.repos`、`client.pulls`、`client.users` 等资源组挂载具体 API。
+- 可在构造客户端时设置 `owner=`、`repo=`，作为仓库相关接口的默认上下文。
+- 本仓库含 Sphinx 文档与 GitCode REST API 参考镜像。
 
 ## 安装
 
-推荐直接通过 PyPI 安装：
+推荐从 PyPI 安装：
 
 ```bash
 pip install -U gitcode-api
@@ -24,14 +24,13 @@ pip install -U gitcode-api
 
 ## 认证
 
-你可以直接传入 `api_key=`，也可以通过环境变量设置访问令牌：
+可直接传入 `api_key=`，或将访问令牌写入环境变量：
 
 ```bash
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
-如果你的令牌是加密存储的，可以传入 `decrypt=`，在客户端使用之前解密
-加密的 `api_key=` 或环境变量 `GITCODE_ACCESS_TOKEN`：
+若令牌以密文形式保存，可在构造客户端时传入 `decrypt=`，在发起请求前解密 `api_key=` 或环境变量 `GITCODE_ACCESS_TOKEN`：
 
 ```python
 from gitcode_api import GitCode
@@ -45,17 +44,14 @@ client = GitCode(
 
 ## CLI
 
-安装完成后，也可以直接通过命令行调用 SDK：
+安装后可通过命令行调用 SDK，例如：
 
 ```bash
 gitcode-api repos get --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API
 python -m gitcode_api pulls list --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API --state open
 ```
 
-命令与 `GitCode` 的同步资源方法一一对应，格式为
-`gitcode-api <resource> <method> ...`。如果某个方法接收额外的 `**params`
-或 `**payload`，可以使用重复的 `--set key=value`，或传入
-`--set-json '{"key": "value"}'`。
+子命令与**同步客户端** `GitCode` 上各资源组的方法一一对应，形如 `gitcode-api <resource> <method> ...`。若某方法还支持 `**params` 或 `**payload` 等额外参数，可多次使用 `--set key=value`，或使用 `--set-json '{"key": "value"}'` 传入 JSON。
 
 ## 快速开始
 
@@ -93,7 +89,7 @@ asyncio.run(main())
 
 ### 上下文管理器
 
-`GitCode` 与 `AsyncGitCode`（以及底层的 `SyncAPIClient` / `AsyncAPIClient`）支持 `with` / `async with`。离开代码块时会自动对底层客户端调用 `close()` / `await close()`，即使你传入了自定义 `http_client=` 也是如此。
+`GitCode` 与 `AsyncGitCode`（以及更底层的 `SyncAPIClient` / `AsyncAPIClient`）均可作为 `with` / `async with` 的上下文使用：离开代码块时会自动调用 `close()` 或 `await close()`，释放底层 httpx 客户端；若你传入了自定义 `http_client=`，也会随 SDK 客户端一并关闭。
 
 ```python
 from gitcode_api import GitCode
@@ -115,7 +111,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## 常见用法
+## 常见场景示例
 
 创建 Pull Request：
 
@@ -136,7 +132,7 @@ finally:
     client.close()
 ```
 
-获取当前认证用户：
+获取当前登录用户：
 
 ```python
 from gitcode_api import GitCode
@@ -165,9 +161,9 @@ finally:
     client.close()
 ```
 
-## 已支持的资源分组
+## 已支持的资源组
 
-`GitCode` 和 `AsyncGitCode` 都提供以下资源入口：
+`GitCode` 与 `AsyncGitCode` 均暴露下列资源组：
 
 - `repos` 与 `contents`
 - `branches` 与 `commits`
@@ -176,16 +172,18 @@ finally:
 - `releases`、`tags` 与 `webhooks`
 - `users`、`orgs`、`search` 与 `oauth`
 
+每个资源组（例如 `client.pulls`、`client.repos`）在共享基类上带有缓存属性 `methods`：值为该组**对外可调用的方法名**组成的 `tuple`。顺序由 SDK 根据方法名中下划线分段生成排序键决定，**并非**对完整方法名做字典序排列。不包含以下划线开头的名称，也不包含 `methods` 本身。适合在交互环境或工具链中快速查看某组暴露了哪些接口。
+
 ## 示例
 
-可运行示例位于 `examples/`：
+可运行脚本位于 `examples/`：
 
 - `get_current_user.py`
 - `get_repository_overview.py`
 - `list_pull_requests.py`
 - `async_list_branches.py`
 
-这些示例会通过 `python-dotenv` 从 `examples/.env` 读取共享配置。
+示例使用 `python-dotenv` 从 `examples/.env` 读取配置。
 
 ```bash
 uv run python examples/get_current_user.py
@@ -194,15 +192,15 @@ uv run python examples/list_pull_requests.py
 uv run python examples/async_list_branches.py
 ```
 
-所需环境变量可以参考 `examples/.env.example`。
+环境变量说明见 `examples/.env.example`。
 
 ## 文档
 
-- 项目文档入口：`docs/index.rst`
+- 文档总入口：`docs/index.rst`
 - SDK 文档：`docs/sdk/index.rst`
-- REST API 文档镜像：`docs/rest_api/index.rst`
+- REST API 参考镜像：`docs/rest_api/index.rst`
 
-使用 Sphinx 本地构建文档：
+本地用 Sphinx 构建 HTML：
 
 ```bash
 uv run --group docs sphinx-build -b html docs docs/_build/html
@@ -210,8 +208,8 @@ uv run --group docs sphinx-build -b html docs docs/_build/html
 
 ## 项目状态
 
-这是一个社区项目，目前仍在持续完善中。当前已经覆盖较多 GitCode API 能力，但随着 SDK 继续演进，部分端点和行为仍可能进一步补充和优化。
+本项目由社区维护，仍在持续演进。当前已覆盖大量 GitCode API；随着版本迭代，个别端点或行为仍可能被补充或调整。
 
 ## 贡献
 
-欢迎提交 issue、修复文档、补充测试、完善 API 覆盖率或直接发起 pull request。如果你在实际使用 GitCode 时发现缺失的端点或不够顺手的 SDK 设计，也非常欢迎反馈和贡献。
+欢迎提交 issue、改进文档、补充测试、扩展 API 封装或直接发起 pull request。若你在实际使用中发现缺失接口或不顺手的设计，也欢迎反馈与贡献。
