@@ -6,6 +6,9 @@ from typing import Any, Dict, List, Optional, Union
 from .._base_client import AsyncAPIClient, SyncAPIClient
 from .._models import APIObject, ModelT, as_model, as_model_list
 
+_UTILITY_METHODS = {"methods", "method_signature"}
+_DATA_MODEL_PATH = "gitcode_api._models."
+
 
 class SyncResource:
     """Base class for synchronous resource groups."""
@@ -13,6 +16,53 @@ class SyncResource:
     def __init__(self, client: SyncAPIClient) -> None:
         """Bind the resource to a synchronous API client."""
         self._client = client
+
+    @property
+    @lru_cache(maxsize=1)
+    def methods(self) -> tuple[str, ...]:
+        """Public callable names on this resource group in stable SDK order.
+
+        Ordering uses :func:`sorted` with a key derived from each name's
+        underscore-separated segments (for example two-part names are ordered
+        as if ``second_first``). This is not plain lexicographic order on the
+        full method string. Excludes ``methods``, names starting with ``_``,
+        and non-callables. The result is cached on first access.
+
+        :returns: Tuple of method names in that order.
+        """
+
+        def _is_valid_func(name: str):
+            return not (name.startswith("_") or name in _UTILITY_METHODS) and callable(getattr(self, name))
+
+        def _sort_helper(method_name: str):
+            name_parts = method_name.split("_")
+            num_part = len(name_parts)
+            if num_part == 2:
+                return f"{name_parts[1]}_{name_parts[0]}"
+            if num_part == 3:
+                return f"{{{name_parts[0]}_"
+            return "_" + method_name
+
+        return tuple(
+            sorted(
+                (func for func in dir(self) if _is_valid_func(func)),
+                key=_sort_helper,
+            )
+        )
+
+    @lru_cache(maxsize=50)
+    def method_signature(self, method_name: str) -> str:
+        """Return signature for a method in this resource group, result is cached.
+
+        For example ``client.pulls.method_signature("list_issues")`` would return:
+        list_issues(*, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> List[Issue]
+
+        :param method_name: Attribute name of a callable on this resource.
+        :returns: Formatted signature.
+        """
+        import inspect
+
+        return method_name + str(inspect.signature(getattr(self, method_name))).replace(_DATA_MODEL_PATH, "")
 
     def _request(
         self,
@@ -74,6 +124,14 @@ class SyncResource:
             return as_model(data, model_type)
         return APIObject({"value": data})
 
+
+class AsyncResource:
+    """Base class for asynchronous resource groups."""
+
+    def __init__(self, client: AsyncAPIClient) -> None:
+        """Bind the resource to an asynchronous API client."""
+        self._client = client
+
     @property
     @lru_cache(maxsize=1)
     def methods(self) -> tuple[str, ...]:
@@ -81,7 +139,7 @@ class SyncResource:
 
         Ordering uses :func:`sorted` with a key derived from each name's
         underscore-separated segments (for example two-part names are ordered
-        as if ``second_first``). This is **not** plain lexicographic order on the
+        as if ``second_first``). This is not plain lexicographic order on the
         full method string. Excludes ``methods``, names starting with ``_``,
         and non-callables. The result is cached on first access.
 
@@ -89,7 +147,7 @@ class SyncResource:
         """
 
         def _is_valid_func(name: str):
-            return not (name.startswith("_") or name == "methods") and callable(getattr(self, name))
+            return not (name.startswith("_") or name in _UTILITY_METHODS) and callable(getattr(self, name))
 
         def _sort_helper(method_name: str):
             name_parts = method_name.split("_")
@@ -107,13 +165,19 @@ class SyncResource:
             )
         )
 
+    @lru_cache(maxsize=50)
+    def method_signature(self, method_name: str) -> str:
+        """Return signature for a method in this resource group, result is cached.
 
-class AsyncResource:
-    """Base class for asynchronous resource groups."""
+        For example ``client.pulls.method_signature("list_issues")`` would return:
+        list_issues(*, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> List[Issue]
 
-    def __init__(self, client: AsyncAPIClient) -> None:
-        """Bind the resource to an asynchronous API client."""
-        self._client = client
+        :param method_name: Attribute name of a callable on this resource.
+        :returns: Formatted signature.
+        """
+        import inspect
+
+        return method_name + str(inspect.signature(getattr(self, method_name))).replace(_DATA_MODEL_PATH, "")
 
     async def _request(
         self,
@@ -160,36 +224,3 @@ class AsyncResource:
         """
         data = await self._request(method, path, **kwargs)
         return as_model_list(data, model_type)
-
-    @property
-    @lru_cache(maxsize=1)
-    def methods(self) -> tuple[str, ...]:
-        """Public callable names on this resource group in stable SDK order.
-
-        Ordering uses :func:`sorted` with a key derived from each name's
-        underscore-separated segments (for example two-part names are ordered
-        as if ``second_first``). This is **not** plain lexicographic order on the
-        full method string. Excludes ``methods``, names starting with ``_``,
-        and non-callables. The result is cached on first access.
-
-        :returns: Tuple of method names in that order.
-        """
-
-        def _is_valid_func(name: str):
-            return not (name.startswith("_") or name == "methods") and callable(getattr(self, name))
-
-        def _sort_helper(method_name: str):
-            name_parts = method_name.split("_")
-            num_part = len(name_parts)
-            if num_part == 2:
-                return f"{name_parts[1]}_{name_parts[0]}"
-            if num_part == 3:
-                return f"{{{name_parts[0]}_"
-            return "_" + method_name
-
-        return tuple(
-            sorted(
-                (func for func in dir(self) if _is_valid_func(func)),
-                key=_sort_helper,
-            )
-        )
