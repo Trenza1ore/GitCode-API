@@ -22,7 +22,8 @@ Highlights
 - Lightweight response wrappers that expose JSON fields as attributes.
 - Matching sync and async resource surfaces.
 - Each resource group exposes a cached ``methods`` property (public
-  callable names in stable SDK order) for runtime introspection.
+  callable names in stable SDK order) and ``method_signature(name)`` for a
+  single method’s signature string, for runtime introspection.
 
 Install
 -------
@@ -95,9 +96,10 @@ The SDK exposes these resource groups on both sync and async clients:
 - ``users``, ``orgs``, ``search``, and ``oauth``
 
 On any of the groups above, read ``client.<group>.methods`` for a stable tuple
-of public method names (excluding private helpers and the ``methods`` property
-itself). Order follows the SDK's segment-based sort key, not plain alphabetical
-order on each full name. The value is built once per resource instance.
+of public method names (excluding private helpers and the ``methods`` /
+``method_signature`` utilities). Order follows the SDK's segment-based sort key, not plain alphabetical
+order on each full name. The value is built once per resource instance. Use
+``client.<group>.method_signature("method_name")`` for parameters and return type of one callable.
 
 Next steps
 ----------

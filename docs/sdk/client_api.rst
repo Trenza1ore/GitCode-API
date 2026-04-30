@@ -15,10 +15,16 @@ Resource introspection
 ----------------------
 
 Every chained resource on ``GitCode`` and ``AsyncGitCode`` (for example
-``client.repos`` or ``client.pulls``) expose the :attr:`methods` property: a tuple
-of public callable names in stable SDK-defined order. Private names (leading ``_``), the ``methods``
-attribute itself, and non-callables are omitted. The tuple is cached on first
-access for the lifetime of that resource object.
+``client.repos`` or ``client.pulls``) exposes the :attr:`methods` property: a tuple
+of public callable names in stable SDK-defined order. Private names (leading ``_``), the
+``methods`` and :meth:`~gitcode_api.resources._shared.SyncResource.method_signature` helpers,
+and non-callables are omitted. The tuple is cached on first access for the lifetime of that
+resource object.
+
+The same objects provide :meth:`~gitcode_api.resources._shared.SyncResource.method_signature`
+(also on :class:`~gitcode_api.resources._shared.AsyncResource`), which takes a method name and
+returns that name plus the formatted ``inspect.signature`` string (cached per name, annotations
+shortened by stripping the internal ``gitcode_api._models.`` prefix).
 
 Synchronous client
 ------------------

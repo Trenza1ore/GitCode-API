@@ -176,7 +176,7 @@ Both `GitCode` and `AsyncGitCode` expose:
 - `releases`, `tags`, and `webhooks`
 - `users`, `orgs`, `search`, and `oauth`
 
-Every resource group inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and `methods` itself are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list.
+Every resource group inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and the introspection helpers `methods` and `method_signature` are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list. For one method’s parameters and return type, call `client.pulls.method_signature("list_issues")` (a cached string from `inspect.signature`, with `gitcode_api._models.` stripped from annotations).
 
 ## Examples
 

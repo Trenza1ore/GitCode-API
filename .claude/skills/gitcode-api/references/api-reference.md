@@ -147,9 +147,13 @@ branches = client.branches.list(owner="SushiNinja", repo="GitCode-API")
 
 If a repository-scoped method runs without an effective `owner` and `repo`, the SDK raises `GitCodeConfigurationError`.
 
-## Resource introspection (`methods`)
+## Resource introspection (`methods`, `method_signature`)
 
-Each resource group (for example `client.pulls`, `client.repos`) subclasses the shared `SyncResource` or `AsyncResource` base and exposes a read-only `methods` property: a `tuple[str, ...]` of **public callable** names in **stable SDK order** (Python `sorted` with a key derived from underscore-separated name segments). That order is **not** plain A–Z sorting on the full method string (for example two-part names are ordered as if `second_first`).
+Each resource group (for example `client.pulls`, `client.repos`) subclasses the shared `SyncResource` or `AsyncResource` base.
+
+### `methods`
+
+A read-only `methods` property returns a `tuple[str, ...]` of **public callable** names in **stable SDK order** (Python `sorted` with a key derived from underscore-separated name segments). That order is **not** plain A–Z sorting on the full method string (for example two-part names are ordered as if `second_first`).
 
 ```python
 names = client.pulls.methods
@@ -158,10 +162,19 @@ assert "list" in names
 
 Details:
 
-- Excludes names starting with `_`, the `methods` property itself, and any non-callable attributes.
+- Excludes names starting with `_`, the introspection helpers `methods` and `method_signature`, and any non-callable attributes.
 - The tuple is computed on first access and cached for the lifetime of that resource instance (`functools.lru_cache` on the property), so repeated reads are cheap.
 
-Use this for discovery, REPL exploration, or generating CLI or docs scaffolding.
+### `method_signature(method_name)`
+
+`method_signature(name: str) -> str` returns the method name plus the formatted signature from `inspect.signature` for that callable on the resource group (type hints are shortened by stripping the internal `gitcode_api._models.` prefix). Results are cached (`functools.lru_cache`, up to 50 distinct names per instance).
+
+```python
+sig = client.pulls.method_signature("list_issues")
+# e.g. list_issues(*, number: Union[int, str], owner: Optional[str] = None, ...) -> List[Issue]
+```
+
+Use `methods` for discovery and `method_signature` when you need parameters and return type for a specific method without opening the source or full manual.
 
 ## Resource groups and common methods
 

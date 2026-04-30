@@ -172,7 +172,7 @@ finally:
 - `releases`、`tags` 与 `webhooks`
 - `users`、`orgs`、`search` 与 `oauth`
 
-每个资源组（例如 `client.pulls`、`client.repos`）在共享基类上带有缓存属性 `methods`：值为该组**对外可调用的方法名**组成的 `tuple`。顺序由 SDK 根据方法名中下划线分段生成排序键决定，**并非**对完整方法名做字典序排列。不包含以下划线开头的名称，也不包含 `methods` 本身。适合在交互环境或工具链中快速查看某组暴露了哪些接口。
+每个资源组（例如 `client.pulls`、`client.repos`）在共享基类上带有缓存属性 `methods`：值为该组**对外可调用的方法名**组成的 `tuple`。顺序由 SDK 根据方法名中下划线分段生成排序键决定，**并非**对完整方法名做字典序排列。不包含以下划线开头的名称，也不包含内省辅助方法 `methods` 与 `method_signature`。适合在交互环境或工具链中快速查看某组暴露了哪些接口。若需要单个方法的参数与返回类型，可调用 `client.pulls.method_signature("list_issues")`（基于 `inspect.signature` 的缓存字符串，注解中的 `gitcode_api._models.` 前缀会被去掉）。
 
 ## 示例
 
