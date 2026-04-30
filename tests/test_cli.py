@@ -1,9 +1,13 @@
+import sys
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 from typing import Any, Dict
 
 import httpx
+import pytest
 
-from gitcode_api.cli import build_parser, main
+from gitcode_api.cli import _kebab_case, _probe_gitcode, build_parser, main
 
 
 def _mock_sync_client(monkeypatch: Any, handler: Any) -> None:
@@ -16,6 +20,70 @@ def _mock_sync_client(monkeypatch: Any, handler: Any) -> None:
         return real_client(*args, **merged)
 
     monkeypatch.setattr(httpx, "Client", client_with_mock_transport)
+
+
+def test_cli_no_args_prints_help_and_exits_zero(capsys: Any, monkeypatch: Any) -> None:
+    monkeypatch.setattr(sys, "argv", ["gitcode-api"])
+    assert main() == 0
+    out = capsys.readouterr().out
+    assert "usage:" in out.lower()
+    assert "gitcode-api" in out
+    assert "_____" in out
+    assert "Examples:" not in out
+
+
+def test_cli_empty_argv_prints_help(capsys: Any) -> None:
+    assert main([]) == 0
+    out = capsys.readouterr().out.lower()
+    assert "usage:" in out
+    assert "examples:" not in out
+
+
+def test_cli_root_explicit_help_includes_epilog() -> None:
+    buf = StringIO()
+    with redirect_stdout(buf):
+        with pytest.raises(SystemExit) as exc_info:
+            build_parser().parse_args(["--help"])
+    assert exc_info.value.code == 0
+    assert "Examples:" in buf.getvalue()
+
+
+def test_cli_method_subcommands_follow_resource_methods_order() -> None:
+    """CLI lists methods in the same order as client.<resource>.methods."""
+    parser = build_parser()
+    client = _probe_gitcode()
+    try:
+        resources_action = next(
+            action for action in parser._actions if getattr(action, "choices", None) and "pulls" in action.choices
+        )
+        pulls_parser = resources_action.choices["pulls"]
+        methods_action = next(
+            action for action in pulls_parser._actions if getattr(action, "choices", None)
+        )
+        cli_kebab_order = list(methods_action.choices.keys())
+        assert cli_kebab_order == [_kebab_case(name) for name in client.pulls.methods]
+    finally:
+        client.close()
+
+
+def test_cli_method_help_description_has_summary_then_signature() -> None:
+    client = _probe_gitcode()
+    try:
+        parser = build_parser()
+        resources_action = next(
+            action for action in parser._actions if getattr(action, "choices", None) and "pulls" in action.choices
+        )
+        pulls_parser = resources_action.choices["pulls"]
+        methods_action = next(
+            action for action in pulls_parser._actions if getattr(action, "choices", None)
+        )
+        list_parser = methods_action.choices["list"]
+        sig = client.pulls.method_signature("list")
+        assert list_parser.description is not None
+        assert list_parser.description.startswith("List pull requests for a repository.")
+        assert list_parser.description.endswith(sig)
+    finally:
+        client.close()
 
 
 def test_cli_build_parser_exposes_generated_commands() -> None:

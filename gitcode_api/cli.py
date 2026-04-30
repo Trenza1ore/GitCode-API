@@ -3,15 +3,37 @@
 import argparse
 import inspect
 import json
+import re
 import sys
+import textwrap
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, List, Optional, Union, get_args, get_origin
 
+import httpx
+
 from . import GitCode, __version__
 from ._base_client import DEFAULT_BASE_URL, DEFAULT_TOKEN_ENV
+from ._cli_banner import format_default_welcome
 from ._exceptions import GitCodeError
 from .resources._shared import SyncResource
+
+
+class _CLIHelpFormatter(argparse.RawDescriptionHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
+    """Preserve paragraph breaks in descriptions; wider columns for signatures."""
+
+    def __init__(self, prog: str) -> None:
+        super().__init__(prog, width=108, max_help_position=32)
+
+
+def _plain_cli_inline(text: str) -> str:
+    """Strip Sphinx-style inline markup (roles, doubled literals) for terminal text."""
+    if not text:
+        return ""
+    t = re.sub(r"``\s*([^`]+?)\s*``", r"\1", text)
+    t = re.sub(r":\w+:`([^`]*)`", r"\1", t)
+    t = re.sub(r"`([^`]+)`", r"\1", t)
+    return t
 
 
 def _unwrap_optional(annotation: Any) -> Any:
@@ -51,8 +73,17 @@ def _argument_kwargs(parameter: inspect.Parameter) -> dict[str, Any]:
 
 
 def _first_doc_line(obj: Any) -> str:
-    doc = inspect.getdoc(obj) or ""
-    return doc.splitlines()[0] if doc else ""
+    doc = inspect.getdoc(obj).removeprefix("Synchronous ").capitalize() or ""
+    for line in doc.splitlines():
+        stripped = line.strip()
+        if stripped:
+            return _plain_cli_inline(stripped)
+    return ""
+
+
+def _method_cli_summary(doc: str) -> str:
+    """Text before the first ':param' in the docstring, collapsed to one line for CLI help."""
+    return doc.split(":param", 1)[0].strip().replace("\n", " ")
 
 
 def _resource_types() -> dict[str, type[SyncResource]]:
@@ -63,13 +94,25 @@ def _resource_types() -> dict[str, type[SyncResource]]:
     return resources
 
 
-def _iter_resource_methods(resource_type: type[SyncResource]) -> list[tuple[str, Any]]:
-    methods: list[tuple[str, Any]] = []
-    for name, value in resource_type.__dict__.items():
-        if name.startswith("_") or not inspect.isfunction(value):
-            continue
-        methods.append((name, value))
-    return methods
+def _probe_gitcode() -> GitCode:
+    """Lightweight client used only while building -h/--help metadata (no network)."""
+    transport = httpx.MockTransport(lambda _request: httpx.Response(200, json={}))
+    return GitCode(api_key="__cli_help__", http_client=httpx.Client(transport=transport))
+
+
+def _resource_commands_epilog(resource: SyncResource) -> str:
+    """List CLI subcommand names in the same order as resource.methods on the client."""
+    kebab_names = [_kebab_case(name) for name in resource.methods]
+    joined = ", ".join(kebab_names)
+    wrapped = textwrap.fill(
+        joined,
+        width=120,
+        initial_indent="  ",
+        subsequent_indent="  ",
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+    return "Subcommands (stable SDK order, same as resource.methods):\n" + wrapped
 
 
 def _kebab_case(value: str) -> str:
@@ -130,76 +173,134 @@ def _write_output(value: Any, *, output_file: Optional[str], compact: bool) -> N
         print(text)
 
 
-def _global_parent_parser() -> argparse.ArgumentParser:
+def _invocation_parent_parser() -> argparse.ArgumentParser:
+    """Flags for real API calls (attached only to leaf METHOD parsers, not top-level usage)."""
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--api-key", help=f"GitCode access token. Defaults to {DEFAULT_TOKEN_ENV}.")
     parser.add_argument("--owner", help="Default repository owner.")
     parser.add_argument("--repo", help="Default repository name.")
-    parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for the GitCode REST API.")
+    parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for the REST API.")
     parser.add_argument("--timeout", type=float, default=None, help="Request timeout in seconds.")
     parser.add_argument("--output-file", help="Write the response to a file instead of stdout.")
     parser.add_argument("--compact", action="store_true", help="Print JSON without indentation.")
     return parser
 
 
+def _root_banner() -> str:
+    return "Connection and defaults are documented on each method's help: %(prog)s RESOURCE METHOD -h."
+
+
 def build_parser() -> argparse.ArgumentParser:
-    common = _global_parent_parser()
+    common = _invocation_parent_parser()
+    epilog = """\
+Examples:
+  %(prog)s pulls list --api-key "$GITCODE_ACCESS_TOKEN" --owner my-org --repo my-repo
+  %(prog)s users me --api-key "$GITCODE_ACCESS_TOKEN"
+  %(prog)s pulls list --set only_count=true --set reviewer=demo
+
+Extra keyword arguments (**params / **payload on some methods):
+  Repeat --set key=value (value is JSON if it parses as JSON; otherwise a string).
+  --set-json merges one JSON object (or @path/to/file.json) into those kwargs.
+
+Each resource -h lists subcommands in SDK order (resource.methods).
+Each method -h opens with resource.method_signature("<name>") from the Python SDK.
+"""
     parser = argparse.ArgumentParser(
         prog="gitcode-api",
-        description="Invoke any synchronous gitcode-api resource method from the command line.",
-        epilog='Use `--set key=value` and `--set-json \'{"key": "value"}\'` for methods with `**params` or `**payload`.',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        parents=[common],
+        usage="%(prog)s [-h] [--version] RESOURCE ...",
+        description=_root_banner(),
+        epilog=epilog,
+        formatter_class=_CLIHelpFormatter,
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 
-    resource_parsers = parser.add_subparsers(dest="resource", required=True)
-    for resource_name, resource_type in _resource_types().items():
-        resource_parser = resource_parsers.add_parser(
-            _kebab_case(resource_name),
-            help=_first_doc_line(resource_type),
+    client = _probe_gitcode()
+    try:
+        resource_parsers = parser.add_subparsers(
+            dest="resource",
+            required=True,
+            metavar="RESOURCE",
+            title="resources",
+            description="Pick a resource group (same attribute names as on GitCode, e.g. pulls, repos).",
         )
-        method_parsers = resource_parser.add_subparsers(dest="method", required=True)
-
-        for method_name, method in _iter_resource_methods(resource_type):
-            method_parser = method_parsers.add_parser(
-                _kebab_case(method_name),
-                help=_first_doc_line(method),
-                description=inspect.getdoc(method),
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                parents=[common],
+        for resource_name, resource_type in _resource_types().items():
+            resource = getattr(client, resource_name)
+            class_doc = inspect.getdoc(resource_type).removeprefix("Synchronous ").capitalize() or ""
+            class_lead = class_doc.split("\n\n", maxsplit=1)[0].strip() if class_doc else ""
+            class_lead = _plain_cli_inline(class_lead) if class_lead else ""
+            resource_desc_parts = [
+                class_lead or _first_doc_line(resource_type),
+                "",
+                _resource_commands_epilog(resource),
+            ]
+            resource_parser = resource_parsers.add_parser(
+                _kebab_case(resource_name),
+                help=_first_doc_line(resource_type) or f"GitCode {resource_name} endpoints.",
+                description="\n".join(resource_desc_parts),
+                formatter_class=_CLIHelpFormatter,
             )
-            signature = inspect.signature(method)
-            for parameter in signature.parameters.values():
-                if parameter.name == "self":
-                    continue
-                if parameter.kind == inspect.Parameter.VAR_KEYWORD:
-                    method_parser.add_argument(
-                        "--set",
-                        dest="extra_items",
-                        action="append",
-                        default=None,
-                        metavar="KEY=VALUE",
-                        help="Additional keyword arguments for `**params` or `**payload`.",
-                    )
-                    method_parser.add_argument(
-                        "--set-json",
-                        dest="extra_json",
-                        default=None,
-                        metavar="JSON_OR_@FILE",
-                        help="JSON object merged into extra keyword arguments.",
-                    )
-                    continue
+            method_parsers = resource_parser.add_subparsers(
+                dest="method",
+                required=True,
+                title="methods",
+                metavar="METHOD",
+                description=(
+                    "Method names use kebab-case. The opening line of each command's help matches "
+                    "resource.method_signature('<name>') on the Python client."
+                ),
+            )
 
-                flag = f"--{parameter.name.replace('_', '-')}"
-                if flag in method_parser._option_string_actions:
-                    continue
-                kwargs = _argument_kwargs(parameter)
-                kwargs["dest"] = parameter.name
-                kwargs["required"] = parameter.default is inspect.Signature.empty
-                method_parser.add_argument(flag, **kwargs)
+            for method_name in resource.methods:
+                method = getattr(resource, method_name)
+                sig_line = resource.method_signature(method_name)
+                doc = inspect.getdoc(method).removeprefix("Synchronous ").capitalize() or ""
+                summary = _method_cli_summary(doc)
+                if summary and len(summary) > 90:
+                    method_help = summary[:87] + "..."
+                else:
+                    method_help = summary or (sig_line if len(sig_line) <= 90 else sig_line[:87] + "...")
+                method_description = f"{summary}\n\n{sig_line}" if summary else sig_line
 
-            method_parser.set_defaults(resource_name=resource_name, method_name=method_name)
+                method_parser = method_parsers.add_parser(
+                    _kebab_case(method_name),
+                    help=method_help,
+                    description=method_description,
+                    formatter_class=_CLIHelpFormatter,
+                    parents=[common],
+                )
+                signature = inspect.signature(method)
+                for parameter in signature.parameters.values():
+                    if parameter.name == "self":
+                        continue
+                    if parameter.kind == inspect.Parameter.VAR_KEYWORD:
+                        method_parser.add_argument(
+                            "--set",
+                            dest="extra_items",
+                            action="append",
+                            default=None,
+                            metavar="KEY=VALUE",
+                            help="Extra keyword argument (merged into **params / **payload).",
+                        )
+                        method_parser.add_argument(
+                            "--set-json",
+                            dest="extra_json",
+                            default=None,
+                            metavar="JSON_OR_@FILE",
+                            help="JSON object merged into extra keyword arguments.",
+                        )
+                        continue
+
+                    flag = f"--{parameter.name.replace('_', '-')}"
+                    if flag in method_parser._option_string_actions:
+                        continue
+                    kwargs = _argument_kwargs(parameter)
+                    kwargs["dest"] = parameter.name
+                    kwargs["required"] = parameter.default is inspect.Signature.empty
+                    method_parser.add_argument(flag, **kwargs)
+
+                method_parser.set_defaults(resource_name=resource_name, method_name=method_name)
+    finally:
+        client.close()
 
     return parser
 
@@ -234,7 +335,17 @@ def _collect_kwargs(args: argparse.Namespace, method: Any) -> dict[str, Any]:
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = build_parser()
-    args = parser.parse_args(argv)
+    effective = list(sys.argv[1:] if argv is None else argv)
+    if not effective:
+        print(format_default_welcome(__version__), end="")
+        saved_epilog = parser.epilog
+        parser.epilog = None
+        try:
+            parser.print_help()
+        finally:
+            parser.epilog = saved_epilog
+        return 0
+    args = parser.parse_args(effective)
 
     try:
         with GitCode(
