@@ -17,11 +17,8 @@ Create a sync client
        repo="GitCode-API",
    )
 
-   try:
-       repo = client.repos.get()
-       print(repo.full_name)
-   finally:
-       client.close()
+   repo = client.repos.get()
+   print(repo.full_name)
 
 Create an async client
 ----------------------
@@ -35,11 +32,8 @@ Create an async client
 
    async def main() -> None:
        client = AsyncGitCode(owner="SushiNinja", repo="GitCode-API")
-       try:
-           pulls = await client.pulls.list(state="open", per_page=20)
-           print(len(pulls))
-       finally:
-           await client.close()
+       pulls = await client.pulls.list(state="open", per_page=20)
+       print(len(pulls))
 
 
    asyncio.run(main())

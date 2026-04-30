@@ -77,11 +77,8 @@ Closing the SDK client also closes a supplied ``http_client`` instance.
    from gitcode_api import GitCode
 
    client = GitCode(owner="SushiNinja", repo="GitCode-API")
-   try:
-       repo = client.repos.get()
-       print(repo.full_name)
-   finally:
-       client.close()
+   repo = client.repos.get()
+   print(repo.full_name)
 
 Available resource groups
 -------------------------

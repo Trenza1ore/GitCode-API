@@ -120,16 +120,13 @@ from gitcode_api import GitCode
 
 client = GitCode(owner="SushiNinja", repo="GitCode-API")
 
-try:
-    pull = client.pulls.create(
-        title="Add feature",
-        head="feature-branch",
-        base="main",
-        body="Implements the new flow.",
-    )
-    print(pull.number)
-finally:
-    client.close()
+pull = client.pulls.create(
+    title="Add feature",
+    head="feature-branch",
+    base="main",
+    body="Implements the new flow.",
+)
+print(pull.number)
 ```
 
 获取当前登录用户：
@@ -139,11 +136,8 @@ from gitcode_api import GitCode
 
 client = GitCode()
 
-try:
-    user = client.users.me()
-    print(user.login)
-finally:
-    client.close()
+user = client.users.me()
+print(user.login)
 ```
 
 搜索仓库：
@@ -153,12 +147,9 @@ from gitcode_api import GitCode
 
 client = GitCode()
 
-try:
-    repos = client.search.repositories(q="sdk language:python", per_page=10)
-    for repo in repos:
-        print(repo.full_name)
-finally:
-    client.close()
+repos = client.search.repositories(q="sdk language:python", per_page=10)
+for repo in repos:
+    print(repo.full_name)
 ```
 
 ## 已支持的资源组
