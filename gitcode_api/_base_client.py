@@ -207,7 +207,6 @@ class SyncAPIClient(BaseGitCodeClient):
     ) -> None:
         """Create or reuse an ``httpx.Client`` for synchronous requests."""
         super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout, decrypt=decrypt)
-        self._owns_client = http_client is None
         self._client = http_client or httpx.Client(timeout=self.timeout)
 
     def request(
@@ -281,7 +280,6 @@ class AsyncAPIClient(BaseGitCodeClient):
     ) -> None:
         """Create or reuse an ``httpx.AsyncClient`` for asynchronous requests."""
         super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout, decrypt=decrypt)
-        self._owns_client = http_client is None
         self._client = http_client or httpx.AsyncClient(timeout=self.timeout)
 
     async def request(

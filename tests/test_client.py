@@ -13,7 +13,7 @@ def test_client_reads_api_key_from_environment(monkeypatch: pytest.MonkeyPatch) 
         assert client.api_key == "env-token"
 
 
-def test_sync_client_exposes_resource_namespaces() -> None:
+def test_sync_client_exposes_resource_groups() -> None:
     with httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={}))) as http_client:
         client = GitCode(api_key="test-token", http_client=http_client)
         assert client.repos is not None
@@ -23,7 +23,7 @@ def test_sync_client_exposes_resource_namespaces() -> None:
 
 
 @pytest.mark.asyncio
-async def test_async_client_exposes_resource_namespaces() -> None:
+async def test_async_client_exposes_resource_groups() -> None:
     async_client = httpx.AsyncClient(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={})))
     client = AsyncGitCode(api_key="test-token", http_client=async_client)
     try:
@@ -50,15 +50,12 @@ def test_sync_client_context_manager_closes_owned_http_client(monkeypatch: pytes
     assert client._client.is_closed is True
 
 
-def test_sync_client_context_manager_does_not_close_injected_http_client() -> None:
+def test_sync_client_context_manager_closes_injected_http_client() -> None:
     transport = httpx.MockTransport(lambda request: httpx.Response(200, json={}))
     http_client = httpx.Client(transport=transport)
-    try:
-        with GitCode(api_key="test-token", http_client=http_client, owner="o", repo="r"):
-            pass
+    with GitCode(api_key="test-token", http_client=http_client, owner="o", repo="r"):
         assert http_client.is_closed is False
-    finally:
-        http_client.close()
+    assert http_client.is_closed is True
 
 
 @pytest.mark.asyncio
@@ -78,12 +75,9 @@ async def test_async_client_context_manager_closes_owned_http_client(monkeypatch
 
 
 @pytest.mark.asyncio
-async def test_async_client_context_manager_does_not_close_injected_http_client() -> None:
+async def test_async_client_context_manager_closes_injected_http_client() -> None:
     transport = httpx.MockTransport(lambda request: httpx.Response(200, json={}))
     http_client = httpx.AsyncClient(transport=transport)
-    try:
-        async with AsyncGitCode(api_key="test-token", http_client=http_client, owner="o", repo="r"):
-            pass
+    async with AsyncGitCode(api_key="test-token", http_client=http_client, owner="o", repo="r"):
         assert http_client.is_closed is False
-    finally:
-        await http_client.aclose()
+    assert http_client.is_closed is True
