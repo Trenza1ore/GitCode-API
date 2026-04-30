@@ -54,10 +54,10 @@ Keep the same resource names across both forms. Only the calling style changes:
 
 ## OpenAI-style mental model
 
-Think in the same shape as modern API SDKs that expose namespaced resources:
+Think in the same shape as modern API SDKs that expose resource groups on the client:
 
 1. Create one root client
-2. Navigate to a resource namespace
+2. Pick a resource group (for example `client.repos`, `client.pulls`)
 3. Call an action method
 4. Work with the returned object
 

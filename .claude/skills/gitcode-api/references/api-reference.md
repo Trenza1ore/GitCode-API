@@ -24,7 +24,7 @@ Base transport defaults:
 
 ## Mental model
 
-The SDK follows a top-level-client plus namespaced-resources pattern:
+The SDK follows a top-level client with resource groups (for example `client.repos`, `client.pulls`):
 
 ```python
 from gitcode_api import GitCode
@@ -62,7 +62,7 @@ client = GitCode(
 
 ### `GitCode`
 
-Synchronous client with grouped resources:
+Synchronous client with resource groups:
 
 - `repos`
 - `contents`
@@ -149,7 +149,7 @@ If a repository-scoped method runs without an effective `owner` and `repo`, the 
 
 ## Resource introspection (`methods`)
 
-Each namespaced resource (for example `client.pulls`, `client.repos`) subclasses the shared `SyncResource` or `AsyncResource` base and exposes a read-only `methods` property: a `tuple[str, ...]` of **public callable** names in **stable SDK order** (Python `sorted` with a key derived from underscore-separated name segments). That order is **not** plain A–Z sorting on the full method string (for example two-part names are ordered as if `second_first`).
+Each resource group (for example `client.pulls`, `client.repos`) subclasses the shared `SyncResource` or `AsyncResource` base and exposes a read-only `methods` property: a `tuple[str, ...]` of **public callable** names in **stable SDK order** (Python `sorted` with a key derived from underscore-separated name segments). That order is **not** plain A–Z sorting on the full method string (for example two-part names are ordered as if `second_first`).
 
 ```python
 names = client.pulls.methods

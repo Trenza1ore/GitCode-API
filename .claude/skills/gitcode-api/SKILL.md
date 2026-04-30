@@ -46,7 +46,7 @@ Authentication defaults to the `GITCODE_ACCESS_TOKEN` environment variable, or p
 This SDK is structured similarly to OpenAI's Python clients:
 
 - Start from a top-level client object: `GitCode(...)` or `AsyncGitCode(...)`.
-- Call grouped resources off the client, such as `client.repos`, `client.pulls`, `client.users`, and `client.search`.
+- Call resource groups off the client, such as `client.repos`, `client.pulls`, `client.users`, and `client.search`.
 - Invoke methods on those resource groups, such as `client.repos.get()` or `await client.pulls.list()`.
 - Each resource group exposes `methods` (public callable names in stable SDK order via a segment-based sorting) for runtime introspection; see the "Resource introspection" section in `references/api-reference.md`.
 - Prefer `with GitCode(...) as client:` or `async with AsyncGitCode(...) as client:` so the SDK closes the underlying `httpx` client automatically, including a custom `http_client`.

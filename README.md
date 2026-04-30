@@ -10,7 +10,7 @@
 
 - Community project for developers who want a practical GitCode Python library.
 - Sync and async clients with a consistent API surface.
-- Resource namespaces such as `client.repos`, `client.pulls`, and `client.users`.
+- Resource groups such as `client.repos`, `client.pulls`, and `client.users`.
 - Repository defaults via `owner=` and `repo=` on the client.
 - Sphinx docs plus a mirrored GitCode REST API reference in `docs/`.
 
@@ -176,7 +176,7 @@ Both `GitCode` and `AsyncGitCode` expose:
 - `releases`, `tags`, and `webhooks`
 - `users`, `orgs`, `search`, and `oauth`
 
-Every resource namespace inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and `methods` itself are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list.
+Every resource group inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and `methods` itself are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list.
 
 ## Examples
 

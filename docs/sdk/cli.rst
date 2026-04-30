@@ -49,7 +49,7 @@ available from the command line, the SDK raises ``GitCodeConfigurationError``.
 Discovering commands
 --------------------
 
-Use ``--help`` at any level to inspect available resources, methods, and flags:
+Use ``--help`` at any level to inspect available resource groups, methods, and flags:
 
 .. code-block:: bash
 

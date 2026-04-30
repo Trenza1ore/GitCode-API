@@ -16,12 +16,12 @@ GitCode REST API. The public entry points are ``GitCode`` and
 Highlights
 ----------
 
-- OpenAI-style resource namespaces such as ``client.repos`` and
+- OpenAI-style resource groups such as ``client.repos`` and
   ``client.pulls``.
 - Shared repository context via ``owner=`` and ``repo=`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
 - Matching sync and async resource surfaces.
-- Each resource namespace exposes a cached ``methods`` property (public
+- Each resource group exposes a cached ``methods`` property (public
   callable names in stable SDK order) for runtime introspection.
 
 Install
@@ -82,8 +82,8 @@ Closing the SDK client also closes a supplied ``http_client`` instance.
    finally:
        client.close()
 
-Available resources
--------------------
+Available resource groups
+-------------------------
 
 The SDK exposes these resource groups on both sync and async clients:
 
