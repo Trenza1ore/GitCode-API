@@ -93,7 +93,7 @@ asyncio.run(main())
 
 ### Context managers
 
-`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. Leaving the block calls `close()` / `await close()` on the underlying client automatically, including a custom `http_client=` you passed in.
+`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. Leaving the block calls `close()` / `await close()` on the underlying client automatically, including a custom `http_client=` you passed in. `close()` also clears the LRU cache used by each resource group's `method_signature(...)` helper (see the [Available Resources](#available-resources) section).
 
 ```python
 from gitcode_api import GitCode

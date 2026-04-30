@@ -89,7 +89,7 @@ asyncio.run(main())
 
 ### 上下文管理器
 
-`GitCode` 与 `AsyncGitCode`（以及更底层的 `SyncAPIClient` / `AsyncAPIClient`）均可作为 `with` / `async with` 的上下文使用：离开代码块时会自动调用 `close()` 或 `await close()`，释放底层 httpx 客户端；若你传入了自定义 `http_client=`，也会随 SDK 客户端一并关闭。
+`GitCode` 与 `AsyncGitCode`（以及更底层的 `SyncAPIClient` / `AsyncAPIClient`）均可作为 `with` / `async with` 的上下文使用：离开代码块时会自动调用 `close()` 或 `await close()`，释放底层 httpx 客户端；若你传入了自定义 `http_client=`，也会随 SDK 客户端一并关闭。`close()` 还会清空各资源组上 `method_signature(...)` 的 LRU 缓存（见[资源组](#资源组），避免 LRU 缓存在关闭后仍持有引用、影响垃圾回收。
 
 ```python
 from gitcode_api import GitCode
@@ -152,7 +152,7 @@ for repo in repos:
     print(repo.full_name)
 ```
 
-## 已支持的资源组
+## 资源组
 
 `GitCode` 与 `AsyncGitCode` 均暴露下列资源组：
 
