@@ -1,4 +1,4 @@
-.PHONY: docs docs-clean format
+.PHONY: docs docs-clean format test release docstring amend
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build
 DOCS_SOURCE_DIR := docs
@@ -30,3 +30,9 @@ release:
 	git tag -a "$(VERSION)" -m "$(VERSION)"
 	git push --tags
 	git push
+
+docstring:
+	@uv run pydocstyle gitcode_api/
+
+amend:
+	git commit --amend --no-edit
