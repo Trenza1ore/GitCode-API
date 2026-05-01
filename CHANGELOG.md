@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.3](https://github.com/Trenza1ore/GitCode-API/compare/1.2.2...1.2.3) — 2026-05-01
+
+Changes since `1.2.2`…`1.2.3`.
+
+### CI
+
+- **Release binaries:** uploads are now versioned `.zip` files (`gitcode-api-<tag>-<platform>.zip`) that bundle the PyInstaller CLI with the `.claude/` skill tree and `README.md`, `README.zh.md`, and `examples/README.md`, assembled by `scripts/package_release_zip.py`.
+- Pinned build matrix to `ubuntu-22.04`, `ubuntu-24.04`, `macos-14` (arm64), and `windows-2022`, and builds with Python **3.12** (replacing `*-latest` / 3.13) for more predictable release artifacts.
+
+### Chore
+
+- Added `scripts/package_release_zip.py` to create the release zip layout with best-effort compression.
+
+### Docs
+
+- Updated `AGENTS.md` to describe the zip-based GitHub Release assets.
+
+---
+
 ## [1.2.2](https://github.com/Trenza1ore/GitCode-API/compare/1.2.1...1.2.2) — 2026-05-01
 
 Changes since `1.2.1`…`1.2.2`.
