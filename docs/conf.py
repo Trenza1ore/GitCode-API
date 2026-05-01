@@ -11,6 +11,12 @@ project = "GitCode API"
 author = "Hugo Huang"
 copyright = "2026, GitCode official team (REST API docs); Hugo Huang (SDK docs)"
 
+_version_file = PROJECT_ROOT / "gitcode_api" / "version.txt"
+if _version_file.is_file():
+    version = release = _version_file.read_text(encoding="utf-8").strip()
+else:
+    version = release = "0.0.0"
+
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",

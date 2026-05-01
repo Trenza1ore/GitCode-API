@@ -36,7 +36,7 @@ Use `uv` from the repository root.
 
 The `Makefile` currently defines:
 
-- `docs`: removes old docs build/generated SDK files, then runs Sphinx.
+- `docs`: removes old docs build/generated SDK files, then runs Sphinx (`html`, `epub`, and `singlehtml` into `docs/_build/{html,epub,singlehtml}/`).
 - `format`: runs Ruff fixes, import sorting, and formatting. The commands are allowed to continue on failure because they use `|| true`; inspect output if formatting matters.
 - `test`: installs the package into the active uv environment, then runs pytest.
 - `docstring`: runs `pydocstyle` against `gitcode_api/` to check PEP 257/reST-style docstrings.

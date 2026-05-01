@@ -51,7 +51,6 @@ My personal website: https://hugohuang.com
    sdk/index
    rest_api/index
    Changelog <changelog>
-   Index <genindex>
 
 ----
 

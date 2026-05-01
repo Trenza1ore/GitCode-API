@@ -195,7 +195,7 @@ See `examples/.env.example` for the expected variables.
 - SDK docs: `docs/sdk/index.rst`
 - REST API mirror: `docs/rest_api/index.rst`
 
-Build the docs locally from the repository root. The `docs` Makefile target removes stale `docs/_build` and `docs/sdk/generated` output, then runs Sphinx (via `uv`):
+Build the docs locally from the repository root. The `docs` Makefile target removes stale `docs/_build` and `docs/sdk/generated` output, then runs Sphinx (via `uv`) with the `html`, `epub`, and `singlehtml` builders. Outputs land under `docs/_build/html/`, `docs/_build/epub/` (including `GitCodeAPI.epub`), and `docs/_build/singlehtml/`:
 
 ```bash
 make docs

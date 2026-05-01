@@ -2,10 +2,18 @@
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build
 DOCS_SOURCE_DIR := docs
-DOCS_BUILD_DIR := $(DOCS_SOURCE_DIR)/_build/html
+DOCS_BUILD_ROOT := $(DOCS_SOURCE_DIR)/_build
+DOCS_HTML_DIR := $(DOCS_BUILD_ROOT)/html
+DOCS_EPUB_DIR := $(DOCS_BUILD_ROOT)/epub
+DOCS_SINGLEHTML_DIR := $(DOCS_BUILD_ROOT)/singlehtml
+
+# Shared doctree cache outside each builder output to avoid EPUB packager unknown-mimetype warnings.
+DOCS_DOCTREES_DIR := $(DOCS_BUILD_ROOT)/doctrees
 
 docs: docs-clean
-	$(SPHINX_BUILD) -b html $(DOCS_SOURCE_DIR) $(DOCS_BUILD_DIR)
+	$(SPHINX_BUILD) -d $(DOCS_DOCTREES_DIR) -b html $(DOCS_SOURCE_DIR) $(DOCS_HTML_DIR)
+	$(SPHINX_BUILD) -d $(DOCS_DOCTREES_DIR) -b epub $(DOCS_SOURCE_DIR) $(DOCS_EPUB_DIR)
+	$(SPHINX_BUILD) -d $(DOCS_DOCTREES_DIR) -b singlehtml $(DOCS_SOURCE_DIR) $(DOCS_SINGLEHTML_DIR)
 
 docs-clean:
 	rm -rf $(DOCS_SOURCE_DIR)/_build

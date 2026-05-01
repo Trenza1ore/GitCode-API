@@ -191,7 +191,7 @@ uv run python examples/async_list_branches.py
 - SDK 文档：`docs/sdk/index.rst`
 - REST API 参考镜像：`docs/rest_api/index.rst`
 
-在仓库根目录构建 HTML 文档。`make docs` 会先清理旧的 `docs/_build` 与 `docs/sdk/generated`，再通过 `uv` 调用 Sphinx：
+在仓库根目录构建文档。`make docs` 会先清理旧的 `docs/_build` 与 `docs/sdk/generated`，再通过 `uv` 依次运行 Sphinx 的 `html`、`epub`、`singlehtml` 构建器；产物分别位于 `docs/_build/html/`、`docs/_build/epub/`（含 `GitCodeAPI.epub`）、`docs/_build/singlehtml/`：
 
 ```bash
 make docs
