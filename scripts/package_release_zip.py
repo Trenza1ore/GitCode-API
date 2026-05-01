@@ -8,7 +8,7 @@ from pathlib import Path
 from zlib import Z_BEST_COMPRESSION
 
 # Paths relative to repository root.
-README_REL_PATHS = ("README.md", "README.zh.md", "examples/README.md")
+README_REL_PATHS = ("README.md", "README.zh.md")
 
 
 def main() -> int:

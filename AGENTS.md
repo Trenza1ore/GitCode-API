@@ -41,7 +41,7 @@ The `Makefile` currently defines:
 - `test`: installs the package into the active uv environment, then runs pytest.
 - `docstring`: runs `pydocstyle` against `gitcode_api/` to check PEP 257/reST-style docstrings.
 - `release`: bumps `gitcode_api/version.txt`, `pyproject.toml`, locks, commits, tags, and pushes. Do not run it unless the user explicitly asks for a release.
-- `binary`: runs PyInstaller from `gitcode-api.spec`; produces `dist/gitcode-api` (Unix) or `dist/gitcode-api.exe` (Windows). Build on each target OS; the binary embeds the Python used to build it. On GitHub Release publish, `release-binaries.yml` builds those platforms and uploads a zip per runner (binary, `.claude/`, `README.md`, `README.zh.md`, `examples/README.md`) via `scripts/package_release_zip.py`.
+- `binary`: runs PyInstaller from `gitcode-api.spec`; produces `dist/gitcode-api` (Unix) or `dist/gitcode-api.exe` (Windows). Build on each target OS; the binary embeds the Python used to build it. On GitHub Release publish, `release-binaries.yml` builds those platforms and uploads a zip per runner (binary, `.claude/`, `README.md`, `README.zh.md`) via `scripts/package_release_zip.py`.
 
 Project metadata and tool configuration live in `pyproject.toml`:
 

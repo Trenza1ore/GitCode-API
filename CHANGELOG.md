@@ -8,7 +8,7 @@ Changes since `1.2.2`…`1.2.3`.
 
 ### CI
 
-- **Release binaries:** uploads are now versioned `.zip` files (`gitcode-api-<tag>-<platform>.zip`) that bundle the PyInstaller CLI with the `.claude/` skill tree and `README.md`, `README.zh.md`, and `examples/README.md`, assembled by `scripts/package_release_zip.py`.
+- **Release binaries:** uploads are now versioned `.zip` files (`gitcode-api-<tag>-<platform>.zip`) that bundle the PyInstaller CLI with the `.claude/` skill tree and `README.md` / `README.zh.md` (not `examples/README.md`), assembled by `scripts/package_release_zip.py`.
 - Pinned build matrix to `ubuntu-22.04`, `ubuntu-24.04`, `macos-14` (arm64), and `windows-2022`, and builds with Python **3.12** (replacing `*-latest` / 3.13) for more predictable release artifacts.
 
 ### Chore
