@@ -1,5 +1,4 @@
-# Build PyInstaller one-file CLIs for Linux, macOS, and Windows and attach them to the GitHub Release.
-# macos-latest is Apple Silicon (arm64). Add e.g. macos-13 for an Intel macOS build if needed.
+# Build PyInstaller one-file CLIs, zip each with .claude/ and README files, attach to the GitHub Release.
 
 name: Release binaries
 
@@ -20,9 +19,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: ubuntu-latest
-          - runner: windows-latest
-          - runner: macos-latest
+          - runner: ubuntu-22.04
+            zip_slug: ubuntu-22.04-x86_64
+            dist_name: gitcode-api
+          - runner: ubuntu-24.04
+            zip_slug: ubuntu-24.04-x86_64
+            dist_name: gitcode-api
+          - runner: macos-14
+            zip_slug: macos-14-arm64
+            dist_name: gitcode-api
+          - runner: windows-2022
+            zip_slug: windows-2022-x86_64
+            dist_name: gitcode-api.exe
 
     runs-on: ${{ matrix.runner }}
 
@@ -35,7 +43,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.12"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -48,30 +56,16 @@ jobs:
       - name: Build executable
         run: uv run --group binary pyinstaller --clean --noconfirm gitcode-api.spec
 
-      - name: Prepare release asset
+      - name: Build release zip
         run: |
           set -euxo pipefail
           TAG="${{ github.event.release.tag_name }}"
-          case "${{ runner.os }}" in
-            Linux)
-              SRC="dist/gitcode-api"
-              DST="gitcode-api-${TAG}-linux-x86_64"
-              ;;
-            Windows)
-              SRC="dist/gitcode-api.exe"
-              DST="gitcode-api-${TAG}-windows-x86_64.exe"
-              ;;
-            macOS)
-              SRC="dist/gitcode-api"
-              DST="gitcode-api-${TAG}-macos-arm64"
-              ;;
-            *)
-              echo "unsupported runner.os=${{ runner.os }}" >&2
-              exit 1
-              ;;
-          esac
-          cp "$SRC" "$DST"
-          echo "ASSET_PATH=$DST" >> "$GITHUB_ENV"
+          ZIP="gitcode-api-${TAG}-${{ matrix.zip_slug }}.zip"
+          python scripts/package_release_zip.py \
+            --binary "dist/${{ matrix.dist_name }}" \
+            --zip "$ZIP" \
+            --arcname-binary "${{ matrix.dist_name }}"
+          echo "ASSET_PATH=$ZIP" >> "$GITHUB_ENV"
 
       - name: Upload to GitHub Release
         env:
