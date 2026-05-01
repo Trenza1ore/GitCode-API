@@ -174,7 +174,7 @@ def _write_output(value: Any, *, output_file: Optional[str], compact: bool) -> N
 
 
 def _invocation_parent_parser() -> argparse.ArgumentParser:
-    """Flags for real API calls (attached only to leaf METHOD parsers, not top-level usage)."""
+    """Parser with flags for real API calls (attached only to leaf METHOD parsers, not top-level usage)."""
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--api-key", help=f"GitCode access token. Defaults to {DEFAULT_TOKEN_ENV}.")
     parser.add_argument("--owner", help="Default repository owner.")
@@ -191,6 +191,7 @@ def _root_banner() -> str:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Build main parser."""
     common = _invocation_parent_parser()
     epilog = """\
 Examples:
@@ -334,6 +335,7 @@ def _collect_kwargs(args: argparse.Namespace, method: Any) -> dict[str, Any]:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    """CLI entry point."""
     parser = build_parser()
     effective = list(sys.argv[1:] if argv is None else argv)
     if not effective:

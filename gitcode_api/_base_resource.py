@@ -7,7 +7,7 @@ _DATA_MODEL_PATH = "gitcode_api._models."
 
 
 class BaseResource:
-    """Resource group base class"""
+    """Resource group base class."""
 
     def __del__(self) -> None:
         """Attempt to clear the lru cache."""

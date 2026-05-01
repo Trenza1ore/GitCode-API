@@ -144,6 +144,7 @@ class GitCode(SyncAPIClient):
         self.oauth = OAuthResource(self)
 
     def __enter__(self) -> "GitCode":
+        """Enter synchronous context and return this client."""
         return self
 
 
@@ -246,4 +247,5 @@ class AsyncGitCode(AsyncAPIClient):
         self.oauth = AsyncOAuthResource(self)
 
     async def __aenter__(self) -> "AsyncGitCode":
+        """Enter asynchronous context and return this client."""
         return self

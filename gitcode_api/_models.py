@@ -73,6 +73,7 @@ class APIObject(Mapping[str, Any]):
     data: MutableMapping[str, Any] = field(init=False, repr=False)
 
     def __init__(self, data: Mapping[str, Any]):
+        """Initialize from API response data."""
         payload = dict(data)
         object.__setattr__(self, "data", payload)
         type_hints = get_type_hints(self.__class__)
@@ -95,24 +96,30 @@ class APIObject(Mapping[str, Any]):
             object.__setattr__(self, model_field.name, value)
 
     def __getitem__(self, key: str) -> Any:
+        """Return the value for ``key`` from the backing mapping."""
         return _wrap_value(self.data[key])
 
     def __iter__(self) -> Iterator[str]:
+        """Iterate keys of the backing mapping."""
         return iter(self.data)
 
     def __len__(self) -> int:
+        """Return the number of keys in the backing mapping."""
         return len(self.data)
 
     def __getattr__(self, name: str) -> Any:
+        """Resolve unknown attributes from the backing mapping."""
         try:
             return _wrap_value(self.data[name])
         except KeyError as exc:
             raise AttributeError(name) from exc
 
     def get(self, key: str, default: Any = None) -> Any:
+        """Return the value for ``key``, or ``default`` if missing."""
         return _wrap_value(self.data.get(key, default))
 
     def to_dict(self) -> Dict[str, Any]:
+        """Return a shallow copy of the backing mapping."""
         return dict(self.data)
 
 
