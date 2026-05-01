@@ -32,6 +32,7 @@ Use `uv` from the repository root.
 - Check docstrings: `make docstring`.
 - Build docs: `make docs`.
 - Clean docs build artifacts: `make docs-clean`.
+- Build a standalone CLI binary (PyInstaller one-file): `make binary` (uses dependency group `binary`; output under `dist/`).
 
 The `Makefile` currently defines:
 
@@ -40,12 +41,13 @@ The `Makefile` currently defines:
 - `test`: installs the package into the active uv environment, then runs pytest.
 - `docstring`: runs `pydocstyle` against `gitcode_api/` to check PEP 257/reST-style docstrings.
 - `release`: bumps `gitcode_api/version.txt`, `pyproject.toml`, locks, commits, tags, and pushes. Do not run it unless the user explicitly asks for a release.
+- `binary`: runs PyInstaller from `gitcode-api.spec`; produces `dist/gitcode-api` (Unix) or `dist/gitcode-api.exe` (Windows). Build on each target OS; the binary embeds the Python used to build it.
 
 Project metadata and tool configuration live in `pyproject.toml`:
 
 - Python support is `>=3.9,<4`.
 - Runtime dependency is intentionally small: `httpx`.
-- Test/docs/format dependencies are uv dependency groups.
+- Test/docs/format/binary (frozen CLI) dependencies are uv dependency groups.
 - Ruff line length is 120 and target version is Python 3.9.
 - Pydocstyle convention is `pep257`.
 - `uv.lock` is intentionally tracked.

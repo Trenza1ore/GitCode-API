@@ -45,6 +45,11 @@ format = [
     "ruff",
 ]
 
+# PyInstaller; build with Makefile target binary.
+binary = [
+    "pyinstaller>=6.0,<7",
+]
+
 dev = [{ include-group = "test" }, { include-group = "format" }, { include-group = "docs" }]
 
 [project.urls]

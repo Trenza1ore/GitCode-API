@@ -1,4 +1,4 @@
-.PHONY: docs docs-clean format test release docstring amend
+.PHONY: docs docs-clean format test release docstring amend binary
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build
 DOCS_SOURCE_DIR := docs
@@ -36,3 +36,7 @@ docstring:
 
 amend:
 	git commit --amend --no-edit
+
+# One-file executable: dist/gitcode-api (macOS/Linux) or dist/gitcode-api.exe (Windows).
+binary:
+	uv run --group binary pyinstaller --clean --noconfirm gitcode-api.spec
