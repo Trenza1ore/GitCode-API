@@ -48,9 +48,10 @@ My personal website: https://hugohuang.com
    :maxdepth: 2
    :caption: Browse documentation
 
-   General index <genindex>
    sdk/index
    rest_api/index
+   Changelog <changelog>
+   Index <genindex>
 
 ----
 

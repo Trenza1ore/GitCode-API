@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Small CLI for common gitcode-api SDK actions.
 
-Deprecated: kept for backward compatibility. Prefer the package's built-in
-``gitcode-api`` console entry (still experimental); see
+Deprecated: kept for backward compatibility. Prefer the package's experimental
+built-in ``gitcode-api`` console entry; see
 https://gitcode-api.readthedocs.io/en/latest/sdk/cli.html
 """
 
@@ -102,7 +102,7 @@ def main() -> int:
         "The gitcode-api package provides an experimental built-in CLI (`gitcode-api` / "
         f"`python -m gitcode_api`); see {_BUILTIN_CLI_DOCS}",
         DeprecationWarning,
-        stacklevel=1,
+        stacklevel=2,
     )
     parser = make_parser()
     args = parser.parse_args()

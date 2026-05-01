@@ -37,6 +37,7 @@ docs = [
     "sphinx",
     "sphinx-rtd-theme",
     "beautifulsoup4",
+    "myst-parser>=3.0.1,<4",
 ]
 
 # Formatting
