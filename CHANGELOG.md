@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.4](https://github.com/Trenza1ore/GitCode-API/compare/1.2.3...1.2.4) — 2026-05-01
+
+Changes since `1.2.3`…`1.2.4`.
+
+### Fix
+
+- **Release zip contents:** GitHub Release zips built by `scripts/package_release_zip.py` no longer include `examples/README.md`; they still bundle the PyInstaller CLI, `.claude/`, and the repository root `README.md` / `README.zh.md`.
+
+### Docs
+
+- Corrected `AGENTS.md` and the `1.2.3` changelog bullets so they describe the same zip layout as the packager.
+
+---
+
 ## [1.2.3](https://github.com/Trenza1ore/GitCode-API/compare/1.2.2...1.2.3) — 2026-05-01
 
 Changes since `1.2.2`…`1.2.3`.
