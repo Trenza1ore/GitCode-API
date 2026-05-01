@@ -2,11 +2,22 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
-## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...main) — Unreleased
+## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...1.2.1) — 2026-05-01
+
+Changes since `1.2.0`…`1.2.1`.
 
 ### Feature
 
+- Added `AGENTS.md` as repository guidance for AI-assisted development workflows.
 - Improved the bundled GitCode API skill: tighter workflow patterns, SKILL updates, and enhancements to the skill’s `gitcode_api_cli` helper script.
+
+### Chore
+
+- Extended the `Makefile` with `docstring` (pydocstyle) and `amend` helpers, and broadened `.PHONY` coverage for existing targets.
+
+### Style
+
+- Aligned package docstrings with reStructuredText field conventions for pydocstyle checks.
 
 ### Docs
 
