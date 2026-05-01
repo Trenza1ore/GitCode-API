@@ -191,11 +191,19 @@ uv run python examples/async_list_branches.py
 - SDK 文档：`docs/sdk/index.rst`
 - REST API 参考镜像：`docs/rest_api/index.rst`
 
-本地用 Sphinx 构建 HTML：
+在仓库根目录构建 HTML 文档。`make docs` 会先清理旧的 `docs/_build` 与 `docs/sdk/generated`，再通过 `uv` 调用 Sphinx：
 
 ```bash
-uv run --group docs sphinx-build -b html docs docs/_build/html
+make docs
 ```
+
+在仓库根目录常用的其他 Makefile 目标（建议先执行 `uv sync --all-groups`，以便安装文档、测试、格式化等可选依赖组）：
+
+- `make docs-clean` — 仅删除 `docs/_build` 与 `docs/sdk/generated`，不重新构建。
+- `make format` — Ruff 修复、import 排序与代码格式化。
+- `make test` — 将包安装到当前环境并运行 pytest。
+- `make docstring` — 对 `gitcode_api/` 运行 pydocstyle 检查。
+- `make binary` — 使用 PyInstaller 打包单文件 CLI 到 `dist/`（需 `binary` 依赖组）。
 
 ## 项目状态
 

@@ -195,11 +195,19 @@ See `examples/.env.example` for the expected variables.
 - SDK docs: `docs/sdk/index.rst`
 - REST API mirror: `docs/rest_api/index.rst`
 
-Build the docs locally with Sphinx:
+Build the docs locally from the repository root. The `docs` Makefile target removes stale `docs/_build` and `docs/sdk/generated` output, then runs Sphinx (via `uv`):
 
 ```bash
-uv run --group docs sphinx-build -b html docs docs/_build/html
+make docs
 ```
+
+Other common targets from the repository root (after `uv sync --all-groups` so optional dependency groups are available):
+
+- `make docs-clean` — remove `docs/_build` and `docs/sdk/generated` without rebuilding.
+- `make format` — Ruff lint fixes, import sorting, and formatting.
+- `make test` — install the package into the active environment and run pytest.
+- `make docstring` — pydocstyle checks for `gitcode_api/`.
+- `make binary` — PyInstaller one-file CLI under `dist/` (requires the `binary` group).
 
 ## Project Status
 
