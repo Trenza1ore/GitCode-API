@@ -132,6 +132,24 @@ For pre-release changelog sections, use the title format `## [next-version](http
 
 Do not create tags, push, publish, or run `make release` unless the user explicitly requests it. If changing release notes or changelogs, keep `CHANGELOG.md`, `docs/changelog.md`, and any release note files consistent with the requested version.
 
+## Git commit messages
+
+Use this convention only when the user **explicitly** asks for a commit (for example, they say to commit, stage, or write a commit message). Do not invent commits otherwise. And never add tags or push unless **explicitly asked and confirmed**.
+
+Template (scope can be omitted):
+
+`<type>(<scope>): <subject>`
+
+Types:
+
+- `feat`: (new feature for the user, not a new feature for build script)
+- `fix`: (bug fix for the user, not a fix to a build script)
+- `docs`: (changes to the documentation)
+- `style`: (formatting, missing semi colons, etc; no production code change)
+- `refactor`: (refactoring production code, eg. renaming a variable)
+- `test`: (adding missing tests, refactoring tests; no production code change)
+- `chore`: (updating grunt tasks etc; no production code change)
+
 ## Safety Notes
 
 - The working tree may contain user changes. Do not revert unrelated edits.
