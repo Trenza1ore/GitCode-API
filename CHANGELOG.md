@@ -2,6 +2,28 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.2](https://github.com/Trenza1ore/GitCode-API/compare/1.2.1...1.2.2) — 2026-05-01
+
+Changes since `1.2.1`…`1.2.2`.
+
+### Feature
+
+- Added a PyInstaller **one-file** build for the `gitcode-api` CLI (`gitcode-api.spec`, entry script under `scripts/`), installable via a new uv dependency group `binary` and the `make binary` target (output under `dist/`).
+
+### CI
+
+- Added a **Release binaries** workflow that runs on published GitHub Releases, builds the CLI on Linux (x86_64), Windows (x86_64), and macOS (Apple Silicon), and uploads versioned release assets.
+
+### Chore
+
+- Tracked `gitcode-api.spec` in git while keeping other `*.spec` ignored.
+
+### Docs
+
+- Documented the standalone binary workflow in `AGENTS.md`.
+
+---
+
 ## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...1.2.1) — 2026-05-01
 
 Changes since `1.2.0`…`1.2.1`.
