@@ -1,3 +1,4 @@
+import argparse
 import sys
 from contextlib import redirect_stdout
 from io import StringIO
@@ -7,7 +8,7 @@ from typing import Any, Dict
 import httpx
 import pytest
 
-from gitcode_api.cli import _kebab_case, _probe_gitcode, build_parser, main
+from gitcode_api.cli import _kebab_case, _probe_gitcode, _run_mcp_server, build_parser, main
 
 
 def _mock_sync_client(monkeypatch: Any, handler: Any) -> None:
@@ -57,9 +58,7 @@ def test_cli_method_subcommands_follow_resource_methods_order() -> None:
             action for action in parser._actions if getattr(action, "choices", None) and "pulls" in action.choices
         )
         pulls_parser = resources_action.choices["pulls"]
-        methods_action = next(
-            action for action in pulls_parser._actions if getattr(action, "choices", None)
-        )
+        methods_action = next(action for action in pulls_parser._actions if getattr(action, "choices", None))
         cli_kebab_order = list(methods_action.choices.keys())
         assert cli_kebab_order == [_kebab_case(name) for name in client.pulls.methods]
     finally:
@@ -74,9 +73,7 @@ def test_cli_method_help_description_has_summary_then_signature() -> None:
             action for action in parser._actions if getattr(action, "choices", None) and "pulls" in action.choices
         )
         pulls_parser = resources_action.choices["pulls"]
-        methods_action = next(
-            action for action in pulls_parser._actions if getattr(action, "choices", None)
-        )
+        methods_action = next(action for action in pulls_parser._actions if getattr(action, "choices", None))
         list_parser = methods_action.choices["list"]
         sig = client.pulls.method_signature("list")
         assert list_parser.description is not None
@@ -103,6 +100,78 @@ def test_cli_build_parser_exposes_generated_commands() -> None:
 
     assert args.resource_name == "oauth"
     assert args.method_name == "build_authorize_url"
+
+
+def test_cli_build_parser_exposes_serve_command() -> None:
+    parser = build_parser()
+    args = parser.parse_args(
+        [
+            "serve",
+            "--api-key",
+            "test-token",
+            "--transport",
+            "http",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "8000",
+        ]
+    )
+
+    assert args.command == "serve"
+    assert args.api_key == "test-token"
+    assert args.transport == "http"
+    assert args.host == "127.0.0.1"
+    assert args.port == 8000
+
+
+def test_cli_serve_routes_to_mcp_runner(monkeypatch: Any) -> None:
+    captured: Dict[str, Any] = {}
+
+    def fake_run(args: Any) -> int:
+        captured["transport"] = args.transport
+        return 0
+
+    monkeypatch.setattr("gitcode_api.cli._run_mcp_server", fake_run)
+
+    assert main(["serve", "--transport", "stdio"]) == 0
+    assert captured["transport"] == "stdio"
+
+
+def test_run_mcp_server_passes_fastmcp_options(monkeypatch: Any) -> None:
+    captured: Dict[str, Any] = {}
+
+    class DummyServer:
+        def run(self, **kwargs) -> None:
+            captured["run_kwargs"] = kwargs
+
+    def fake_create_mcp_server(**kwargs) -> DummyServer:
+        captured["server_kwargs"] = kwargs
+        return DummyServer()
+
+    monkeypatch.setattr("gitcode_api.llm.create_mcp_server", fake_create_mcp_server)
+    args = argparse.Namespace(
+        name="GitCode API",
+        api_key="test-token",
+        owner="SushiNinja",
+        repo="GitCode-API",
+        base_url="https://api.gitcode.com/api/v5",
+        timeout=60.0,
+        transport="http",
+        host="127.0.0.1",
+        port=8000,
+        path="/mcp",
+    )
+
+    assert _run_mcp_server(args) == 0
+    assert captured["server_kwargs"]["name"] == "GitCode API"
+    assert captured["server_kwargs"]["tool"]._client_kwargs["api_key"] == "test-token"
+    assert captured["run_kwargs"] == {
+        "transport": "http",
+        "host": "127.0.0.1",
+        "port": 8000,
+        "path": "/mcp",
+    }
 
 
 def test_cli_invokes_resource_methods_and_prints_json(capsys: Any, monkeypatch: Any) -> None:

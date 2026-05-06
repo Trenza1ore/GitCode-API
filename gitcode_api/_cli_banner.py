@@ -1,7 +1,7 @@
 """ASCII art banner for command-line interface."""
 
-from functools import lru_cache
 import sys
+from functools import lru_cache
 
 # ANSI Colour Codes
 CREDBG = "\033[41m"

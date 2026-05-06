@@ -26,6 +26,11 @@ dependencies = [
     "httpx",
 ]
 
+[project.optional-dependencies]
+mcp = [
+    "fastmcp; python_version >= '3.10'",
+]
+
 [dependency-groups]
 # Testing
 test = [
@@ -48,6 +53,10 @@ format = [
 # PyInstaller; build with Makefile target binary.
 binary = [
     "pyinstaller>=6.0,<7",
+]
+
+mcp = [
+    "fastmcp; python_version >= '3.10'",
 ]
 
 dev = [{ include-group = "test" }, { include-group = "format" }, { include-group = "docs" }]
@@ -80,7 +89,7 @@ addopts = ["-v"]
 line-length = 120
 target-version = "py39"
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "pep257"
 
 [tool.pylint.MAIN]

@@ -1,6 +1,7 @@
 """Command-line interface for the GitCode SDK."""
 
 import argparse
+import asyncio
 import inspect
 import json
 import re
@@ -190,6 +191,22 @@ def _root_banner() -> str:
     return "Connection and defaults are documented on each method's help: %(prog)s RESOURCE METHOD -h."
 
 
+def _serve_parser() -> argparse.ArgumentParser:
+    """Parser with options for starting the bundled MCP server."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--name", default="GitCode API", help="MCP server name.")
+    parser.add_argument("--api-key", help=f"GitCode access token. Defaults to {DEFAULT_TOKEN_ENV}.")
+    parser.add_argument("--owner", help="Default repository owner.")
+    parser.add_argument("--repo", help="Default repository name.")
+    parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for the REST API.")
+    parser.add_argument("--timeout", type=float, default=None, help="Request timeout in seconds.")
+    parser.add_argument("--transport", default="stdio", help="FastMCP transport to run, such as stdio or http.")
+    parser.add_argument("--host", default=None, help="Host for HTTP-based transports.")
+    parser.add_argument("--port", type=int, default=None, help="Port for HTTP-based transports.")
+    parser.add_argument("--path", default=None, help="Path for HTTP-based transports.")
+    return parser
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build main parser."""
     common = _invocation_parent_parser()
@@ -221,9 +238,18 @@ Each method -h opens with resource.method_signature("<name>") from the Python SD
             dest="resource",
             required=True,
             metavar="RESOURCE",
-            title="resources",
-            description="Pick a resource group (same attribute names as on GitCode, e.g. pulls, repos).",
+            title="commands",
+            description="Pick a command or resource group (same attribute names as on GitCode, e.g. pulls, repos).",
         )
+        serve_parser = resource_parsers.add_parser(
+            "serve",
+            help="Start the bundled GitCode MCP server.",
+            description="Start a FastMCP server exposing the gitcode_api_tool.",
+            formatter_class=_CLIHelpFormatter,
+            parents=[_serve_parser()],
+        )
+        serve_parser.set_defaults(command="serve")
+
         for resource_name, resource_type in _resource_types().items():
             resource = getattr(client, resource_name)
             class_doc = inspect.getdoc(resource_type).removeprefix("Synchronous ").capitalize() or ""
@@ -306,6 +332,31 @@ Each method -h opens with resource.method_signature("<name>") from the Python SD
     return parser
 
 
+def _run_mcp_server(args: argparse.Namespace) -> int:
+    """Start the bundled FastMCP server."""
+    from .llm import create_mcp_server
+    from .llm._tool import GitCodeLLMTool
+
+    tool = GitCodeLLMTool(
+        api_key=args.api_key,
+        owner=args.owner,
+        repo=args.repo,
+        base_url=args.base_url,
+        timeout=args.timeout,
+    )
+    server = create_mcp_server(name=args.name, tool=tool)
+    run_kwargs: dict[str, Any] = {"transport": args.transport}
+    for key in ("host", "port", "path"):
+        value = getattr(args, key)
+        if value is not None:
+            run_kwargs[key] = value
+
+    result = server.run(**run_kwargs)
+    if inspect.isawaitable(result):
+        asyncio.run(result)
+    return 0
+
+
 def _collect_kwargs(args: argparse.Namespace, method: Any) -> dict[str, Any]:
     signature = inspect.signature(method)
     kwargs: dict[str, Any] = {}
@@ -350,6 +401,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(effective)
 
     try:
+        if getattr(args, "command", None) == "serve":
+            return _run_mcp_server(args)
+
         with GitCode(
             api_key=args.api_key,
             owner=args.owner,
@@ -360,7 +414,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             resource = getattr(client, args.resource_name)
             method = getattr(resource, args.method_name)
             result = method(**_collect_kwargs(args, method))
-    except (GitCodeError, OSError, TypeError, ValueError) as exc:  # pragma: no cover - integration style
+    except (GitCodeError, ImportError, OSError, TypeError, ValueError) as exc:  # pragma: no cover - integration style
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
