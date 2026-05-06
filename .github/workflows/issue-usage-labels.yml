@@ -1,0 +1,94 @@
+name: Issue usage labels
+
+# Applies short integration labels from issue form checkboxes. Keep allowed names in sync
+# with `.github/ISSUE_TEMPLATE/*_request.yml` (options under "How are you using gitcode-api?").
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  usage-labels:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+            const heading = '### How are you using gitcode-api?';
+            if (!body.includes(heading)) {
+              core.info('No usage section in issue body; skipping.');
+              return;
+            }
+
+            const start = body.indexOf(heading) + heading.length;
+            const rest = body.slice(start);
+            const nextHeading = rest.search(/\n### /);
+            const section = (nextHeading === -1 ? rest : rest.slice(0, nextHeading)).split('\n');
+
+            const labelMeta = {
+              SDK: { color: '0052CC', description: 'Python SDK (GitCode / AsyncGitCode).' },
+              CLI: { color: '5319E7', description: 'CLI: gitcode-api / python -m gitcode_api.' },
+              MCP: { color: '006B75', description: 'MCP: FastMCP / gitcode-api serve.' },
+              'OpenAI Tool': {
+                color: 'FBCA04',
+                description: 'OpenAI Chat Completions tool adapter.',
+              },
+            };
+            const allowed = new Set(Object.keys(labelMeta));
+
+            const labelsToAdd = [];
+            for (const line of section) {
+              const m = line.match(/^\s*- \[x\]\s*(.+?)\s*$/);
+              if (!m) continue;
+              const name = m[1].trim();
+              if (allowed.has(name)) labelsToAdd.push(name);
+            }
+
+            const unique = [...new Set(labelsToAdd)];
+            if (!unique.length) {
+              core.info('No checked usage options matched; skipping.');
+              return;
+            }
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.issue.number;
+
+            async function ensureLabel(name) {
+              const meta = labelMeta[name] || { color: 'EDEDED', description: 'Triage (auto-created).' };
+              try {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name,
+                  color: meta.color,
+                  description: meta.description,
+                });
+                core.info(`Created label ${name}`);
+              } catch (e) {
+                if (e.status === 422) {
+                  core.info(`Label ${name} already exists or unchanged`);
+                  return;
+                }
+                throw e;
+              }
+            }
+
+            for (const name of unique) {
+              await ensureLabel(name);
+            }
+
+            const { data: issue } = await github.rest.issues.get({ owner, repo, issue_number });
+            const have = new Set(issue.labels.map((l) => l.name));
+            const missing = unique.filter((n) => !have.has(n));
+            if (missing.length) {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number,
+                labels: missing,
+              });
+            }

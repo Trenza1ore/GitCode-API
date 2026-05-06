@@ -1,26 +1,26 @@
 name: Bug report
 description: Report incorrect behavior in the SDK, CLI, MCP server, or OpenAI tool adapter
 title: "[Bug]: "
+labels:
+  - bug
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for the report. Please redact tokens, cookies, and private repository names where possible.
         If the problem is a **response shape vs model / JSON Schema** mismatch, use the schema section below.
+        Checking the boxes below adds matching **SDK** / **CLI** / **MCP** / **OpenAI Tool** labels automatically (GitHub Actions).
 
-  - type: dropdown
-    id: surfaces
+  - type: checkboxes
+    id: usage
     attributes:
-      label: Where does this occur?
-      description: Choose every surface that applies (multi-select).
-      multiple: true
+      label: How are you using gitcode-api?
+      description: Check every path that applies.
       options:
-        - Python SDK (sync/async `GitCode` clients and `client.*` resources)
-        - CLI (`gitcode-api` or `python -m gitcode_api`)
-        - MCP (FastMCP / `gitcode-api serve` and tool registration)
-        - OpenAI tool adapter (`GitCodeOpenAITool` / Chat Completions tools)
-    validations:
-      required: true
+        - label: SDK
+        - label: CLI
+        - label: MCP
+        - label: OpenAI Tool
 
   - type: textarea
     id: versions
