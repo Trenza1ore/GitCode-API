@@ -11,6 +11,7 @@ GitCode REST API. The public entry points are ``GitCode`` and
    quickstart
    cli
    client_api
+   llm_tools
    reference
 
 Highlights
@@ -21,6 +22,8 @@ Highlights
 - Shared repository context via ``owner=`` and ``repo=`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
 - Matching sync and async resource surfaces.
+- Optional :doc:`llm_tools` adapters: OpenAI Chat Completions tool shape and MCP
+  server helpers (FastMCP) for agent workflows.
 - Each resource group exposes a cached ``methods`` property (public
   callable names in stable SDK order) and ``method_signature(name)`` for a
   single method’s signature string, for runtime introspection.
@@ -33,6 +36,12 @@ Install the package from PyPI:
 .. code-block:: bash
 
    pip install -U gitcode-api
+
+For **MCP / FastMCP** helpers (Python **3.10+**), install the optional extra:
+
+.. code-block:: bash
+
+   pip install 'gitcode-api[mcp]'
 
 For local development, install the project and optional documentation
 dependencies with ``uv``:
@@ -104,4 +113,5 @@ Next steps
 - See :doc:`quickstart` for common usage patterns.
 - See :doc:`cli` for the command-line entry point and examples.
 - See :doc:`client_api` for the client-oriented chained API reference.
+- See :doc:`llm_tools` for OpenAI tool definitions and MCP (FastMCP) usage.
 - See :doc:`reference` for the autodoc-generated module reference.

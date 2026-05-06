@@ -22,3 +22,6 @@ Module index
    gitcode_api.resources.collaboration
    gitcode_api.resources.misc
    gitcode_api.resources.repositories
+   gitcode_api.llm
+   gitcode_api.llm.openai
+   gitcode_api.llm.mcp

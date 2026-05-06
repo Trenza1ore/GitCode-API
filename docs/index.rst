@@ -31,7 +31,8 @@ My personal website: https://hugohuang.com
 
    The ``gitcode_api`` package on PyPI exposes synchronous and asynchronous
    ``httpx`` clients with resource-oriented entry points such as
-   ``client.repos`` and ``client.pulls``.
+   ``client.repos`` and ``client.pulls``. Optional :doc:`LLM tool adapters
+   <sdk/llm_tools>` cover OpenAI-style function tools and MCP (FastMCP).
 
    :doc:`Open the SDK documentation <sdk/index>`
 

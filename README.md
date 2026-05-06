@@ -209,6 +209,36 @@ async_tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API", async_mod
 # await async_tool("pulls", "list", params={"state": "open", "per_page": 5})
 ```
 
+You can pass the emitted tool definition into `chat.completions.create(...)`
+and handle tool calls directly:
+
+```python
+import json
+from openai import OpenAI
+from gitcode_api.llm import GitCodeOpenAITool
+
+tools = {
+    "gitcode_api_tool": GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API"),
+}
+client = OpenAI(
+    api_key="your-openai-compatible-api-key",
+    base_url="https://your-openai-compatible-base-url/v1",
+)
+
+response = client.chat.completions.create(
+    model="gpt-4.1-mini",
+    messages=[{"role": "user", "content": "List the last 5 commits."}],
+    tools=[tools["gitcode_api_tool"].tool],
+)
+
+for tool_call in response.choices[0].message.tool_calls:
+    selected_tool = tools[tool_call.function.name]
+    print(f"Calling tool {tool_call.function.name}({tool_call.function.arguments}):")
+    print("---result---")
+    print(selected_tool(**json.loads(tool_call.function.arguments)))
+    print("---result---")
+```
+
 Constructor options mirror `GitCode` / `AsyncGitCode`: `client=`, `async_client=`, `api_key=`, `owner=`, `repo=`, `base_url=`, `timeout=`, and `decrypt=`. For dict-driven setups that reserve the name `async`, you may pass `**{"async": True}` instead of `async_mode=True` (but not both).
 
 ### MCP server and MCP tool (FastMCP)

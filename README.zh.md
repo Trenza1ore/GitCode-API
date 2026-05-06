@@ -205,6 +205,36 @@ async_tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API", async_mod
 # await async_tool("pulls", "list", params={"state": "open", "per_page": 5})
 ```
 
+也可以直接把生成的工具定义传给 `chat.completions.create(...)`，并像
+`test.py` 那样手动处理工具调用：
+
+```python
+import json
+from openai import OpenAI
+from gitcode_api.llm import GitCodeOpenAITool
+
+tools = {
+    "gitcode_api_tool": GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API"),
+}
+client = OpenAI(
+    api_key="your-openai-compatible-api-key",
+    base_url="https://your-openai-compatible-base-url/v1",
+)
+
+response = client.chat.completions.create(
+    model="gpt-4.1-mini",
+    messages=[{"role": "user", "content": "列出最近 5 条提交。"}],
+    tools=[tools["gitcode_api_tool"].tool],
+)
+
+for tool_call in response.choices[0].message.tool_calls:
+    selected_tool = tools[tool_call.function.name]
+    print(f"Calling tool {tool_call.function.name}({tool_call.function.arguments}):")
+    print("---result---")
+    print(selected_tool(**json.loads(tool_call.function.arguments)))
+    print("---result---")
+```
+
 构造参数与 `GitCode` / `AsyncGitCode` 对齐：`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`。若从字典等结构组装且需保留 `async` 这个名字，可使用 `**{"async": True}` 代替 `async_mode=True`（二者勿同时使用）。
 
 ### MCP 服务与 MCP 工具（FastMCP）
