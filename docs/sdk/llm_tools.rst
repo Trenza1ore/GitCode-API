@@ -14,7 +14,7 @@ imports.
 Logical tool: ``gitcode_api_tool``
 ----------------------------------
 
-All adapters expose one logical function tool named **``gitcode_api_tool``**.
+All adapters expose one logical function tool named ``gitcode_api_tool``.
 Model-facing arguments follow the JSON Schema used by OpenAI-style function
 calling:
 

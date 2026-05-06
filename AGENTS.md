@@ -116,6 +116,14 @@ The documentation is a Sphinx project under `docs/`.
 
 Use reStructuredText for existing `.rst` pages. Use MyST Markdown only where the file is already Markdown. Build locally with `make docs` after nontrivial docs changes.
 
+In `.rst` files, do not mix Markdown-only or hybrid markup with reST — stick to docutils/Sphinx constructs. A line like the following is invalid in reST because it combines Markdown-style `**` emphasis with reST inline literals (double backticks around the name):
+
+```text
+All adapters expose one logical function tool named **``gitcode_api_tool``**.
+```
+
+Prefer one style only: valid reST inline literals for identifiers, a rephrased sentence, or a supported role or directive — not mashed-together syntax from both worlds.
+
 The REST API reference is mirrored from GitCode Help documentation. Broad refreshes should go through `scripts/build_gitcode_sphinx_docs.py`, which requires `pandoc` and downloads upstream pages. Generated REST pages include a footer that says not to edit by hand; avoid hand-editing those pages except for small, user-requested fixes.
 
 ## Examples And CLI
