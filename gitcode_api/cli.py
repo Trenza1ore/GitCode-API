@@ -1,7 +1,6 @@
 """Command-line interface for the GitCode SDK."""
 
 import argparse
-import asyncio
 import inspect
 import json
 import re

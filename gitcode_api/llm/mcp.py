@@ -89,9 +89,7 @@ def register_mcp_help_resources(mcp: Union["FastMCP", Any]) -> None:
     @mcp.resource(
         "gitcode-api://help/{op_type}",
         name="gitcode_api_op_type_help",
-        description=(
-            "Method list for one op_type (same as gitcode_api_tool with help=true and empty action)."
-        ),
+        description=("Method list for one op_type (same as gitcode_api_tool with help=true and empty action)."),
         mime_type="text/plain",
     )
     async def _op_type_help_resource(op_type: str) -> str:
@@ -132,9 +130,7 @@ class GitCodeMCP:
         return getattr(self.mcp, name)
 
 
-def create_mcp_server(
-    name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs: Any
-) -> "FastMCP":
+def create_mcp_server(name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs: Any) -> "FastMCP":
     """Create a FastMCP server with the GitCode API tool already registered.
 
     :param name: MCP server display name.

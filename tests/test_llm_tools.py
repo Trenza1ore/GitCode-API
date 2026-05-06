@@ -10,9 +10,9 @@ from gitcode_api.llm import (
     register_mcp_gitcode_api_tool,
 )
 from gitcode_api.llm._tool import (
-    GitCodeLLMTool,
     MCP_SERVER_INSTRUCTIONS,
     OP_TYPE_ENUM,
+    GitCodeLLMTool,
     help_resource_index_body,
     op_type_help_resource_body,
 )

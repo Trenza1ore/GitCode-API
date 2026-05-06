@@ -1,0 +1,55 @@
+{
+  "manifest_version": "0.4",
+  "name": "Gitcode",
+  "version": "{{VERSION}}",
+  "description": "Easy to use MCP server for interaction with the GitCode REST API. Community-maintained.",
+  "author": {
+    "name": "{{AUTHOR_NAME}}",
+    "email": "{{AUTHOR_EMAIL}}",
+    "url": "{{AUTHOR_URL}}"
+  },
+  "homepage": "{{HOMEPAGE}}",
+  "documentation": "{{DOCUMENTATION}}",
+  "support": "{{SUPPORT}}",
+  "server": {
+    "type": "uv",
+    "entry_point": "gitcode_api/run_mcp.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run", "--extra", "mcp", "--directory", "${__dirname}", "gitcode_api/run_mcp.py"
+      ],
+      "env": {
+        "PYTHONPATH": "${__dirname}",
+        "GITCODE_ACCESS_TOKEN": "${user_config.gicode_access_token}"
+      }
+    }
+  },
+  "user_config": {
+    "gicode_access_token": {
+      "type": "string",
+      "title": "GITCODE ACCESS TOKEN",
+      "description": "Your access token for GitCode",
+      "sensitive": true,
+      "required": true
+    }
+  },
+  "tools": [
+    {
+      "name": "gitcode_api_tool",
+      "description": "Call the GitCode REST API through the gitcode-api client. Use op_type to choose a client resource group, action as the resource method name, and params as the keyword arguments for that method. Set help=true to inspect available resource methods or a target method signature without sending an API request."
+    }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "linux", "win32"],
+    "runtimes": {
+      "python": ">=3.10,<4.0"
+    }
+  },
+  "keywords": [],
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "{{REPOSITORY_URL}}"
+  }
+}

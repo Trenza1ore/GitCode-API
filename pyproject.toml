@@ -72,10 +72,12 @@ dev = [{ include-group = "test" }, { include-group = "format" }, { include-group
 
 [project.urls]
 changelog = "https://gitcode-api.readthedocs.io/en/latest/changelog.html"
+issues = "https://github.com/Trenza1ore/GitCode-API/issues"
 documentation = "https://gitcode-api.readthedocs.io"
 gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
 github = "https://github.com/Trenza1ore/GitCode-API"
 homepage = "https://linktr.ee/Hugoooo"
+author = "https://hugohuang.com"
 
 [project.scripts]
 gitcode-api = "gitcode_api.cli:main"

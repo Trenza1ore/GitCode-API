@@ -3,9 +3,9 @@
 import base64
 import inspect
 import logging
+import os
 from collections.abc import Mapping
 from functools import lru_cache
-import os
 from typing import Any, Callable, Dict, Optional, Tuple
 
 from gitcode_api import (
@@ -38,9 +38,7 @@ MCP_SERVER_INSTRUCTIONS = (
     "Successful results are JSON-serializable. Raw bytes from endpoints such as contents.get_raw are "
     'returned as {"encoding": "base64", "data": "<ascii>"}.\n'
     'Failures are objects with "error": true and a "message" string.\n\n'
-    "Valid op_type values for this client version:\n- "
-    + "\n- ".join(OP_TYPE_ENUM)
-    + "\n\n"
+    "Valid op_type values for this client version:\n- " + "\n- ".join(OP_TYPE_ENUM) + "\n\n"
     "Optional MCP resources (read without calling the tool):\n"
     "- gitcode-api://help — markdown index of help URIs\n"
     "- gitcode-api://help/{op_type} — plain-text method list for that client resource\n"

@@ -1,0 +1,56 @@
+# Build MCP bundle (.mcpb) from the repo manifest and attach to the GitHub Release.
+
+name: Release MCP bundle
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-mcpb-${{ github.event.release.tag_name }}
+  cancel-in-progress: true
+
+jobs:
+  mcpb:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Install mcpb CLI
+        run: npm install -g @anthropic-ai/mcpb
+
+      - name: Build MCP bundle
+        run: |
+          set -euxo pipefail
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          OUT="gitcode-${VERSION}.mcpb"
+          uv run python scripts/build_manifest.py
+          mcpb pack . "$OUT"
+          rm -f manifest.json
+          echo "ASSET_PATH=$OUT" >> "$GITHUB_ENV"
+
+      - name: Upload to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "$ASSET_PATH" --clobber
