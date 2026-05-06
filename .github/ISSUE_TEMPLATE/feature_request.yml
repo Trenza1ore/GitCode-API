@@ -7,15 +7,15 @@ body:
   - type: markdown
     attributes:
       value: |
-        This project mirrors the GitCode REST API in Python and exposes the same capabilities through the SDK, CLI, MCP server, and OpenAI tool adapter.
-        Check every integration that should gain the behavior so maintainers can keep them aligned.
-        Checking the boxes below adds matching **SDK** / **CLI** / **MCP** / **OpenAI Tool** labels automatically (GitHub Actions).
+        This project wraps the GitCode REST API for Python and also ships a CLI, an MCP server, and an OpenAI-style tool adapter.
+        **Only “Problem or use case” is required** — rough ideas for the rest are welcome.
+        Checking the boxes under **How are you using gitcode-api?** adds **SDK** / **CLI** / **MCP** / **OpenAI Tool** labels automatically (GitHub Actions).
 
   - type: checkboxes
     id: usage
     attributes:
       label: How are you using gitcode-api?
-      description: Check every path this request should cover.
+      description: Check every path this should affect.
       options:
         - label: SDK
         - label: CLI
@@ -26,26 +26,24 @@ body:
     id: problem
     attributes:
       label: Problem or use case
-      description: What you cannot do today, or what is awkward or missing?
+      description: What is missing, slow, awkward, or impossible today? Plain language is perfect.
     validations:
       required: true
 
   - type: textarea
     id: solution
     attributes:
-      label: Proposed solution
-      description: Desired API shape, CLI flags, tool name, or behavior. Link to upstream GitCode REST docs if relevant.
-    validations:
-      required: true
+      label: What you would like (optional)
+      description: Optional. API shape, CLI flags, tool behavior, or links to upstream GitCode REST docs — even a vague direction helps.
 
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives considered
-      description: Optional. Other designs or workarounds you thought about.
+      label: Alternatives or workarounds (optional)
+      description: Anything you tried or other tools you considered.
 
   - type: textarea
     id: extra
     attributes:
-      label: Additional context
-      description: Examples, diagrams, or related issues.
+      label: Additional context (optional)
+      description: Screenshots, diagrams, or related issues. You can attach files when you submit.

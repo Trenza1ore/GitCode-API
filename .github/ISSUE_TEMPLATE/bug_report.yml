@@ -7,15 +7,15 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the report. Please redact tokens, cookies, and private repository names where possible.
-        If the problem is a **response shape vs model / JSON Schema** mismatch, use the schema section below.
-        Checking the boxes below adds matching **SDK** / **CLI** / **MCP** / **OpenAI Tool** labels automatically (GitHub Actions).
+        Thanks for taking the time to report this. **Only “What happened?” is required** — everything else helps us reproduce faster but can be left blank if you are not sure how to fill it in.
+        Please redact tokens, passwords, and private repo names. If something looks like a **wrong type or JSON shape** (SDK model, OpenAI tool, or MCP), use the optional schema box at the end.
+        Checking the boxes under **How are you using gitcode-api?** adds **SDK** / **CLI** / **MCP** / **OpenAI Tool** labels automatically (GitHub Actions).
 
   - type: checkboxes
     id: usage
     attributes:
       label: How are you using gitcode-api?
-      description: Check every path that applies.
+      description: Check every path that applies (SDK, CLI, MCP, OpenAI tool).
       options:
         - label: SDK
         - label: CLI
@@ -23,61 +23,75 @@ body:
         - label: OpenAI Tool
 
   - type: textarea
-    id: versions
-    attributes:
-      label: Environment
-      description: Versions help reproduce serialization, typing, and CLI differences.
-      placeholder: |
-        gitcode-api: 0.0.0
-        Python: 3.12
-        OS: macOS 14
-        Optional extras installed (if any): e.g. `[mcp]`
-    validations:
-      required: true
-
-  - type: textarea
     id: description
     attributes:
-      label: What went wrong?
-      description: Short summary of the bug and any error message or traceback.
-    validations:
-      required: true
-
-  - type: textarea
-    id: reproduce
-    attributes:
-      label: How to reproduce
-      description: Steps, minimal code, or exact CLI flags. Prefer the smallest example that still fails.
-      placeholder: |
-        ```python
-        from gitcode_api import GitCode
-        with GitCode(api_key="...") as client:
-            ...
-        ```
+      label: What happened?
+      description: In your own words — what did you see or what went wrong? Paste an error message if there is one.
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: What you expected
-    validations:
-      required: true
+      label: What did you expect instead?
+      description: Optional. Skip if the same as “it should just work” or obvious from above.
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce (optional)
+      description: |
+        Optional. Steps you took, what you clicked, or a short code sample. Rough notes are fine.
+        You can attach screenshots or logs when you submit the issue (drag files into a comment after opening if this box is not enough).
+      placeholder: |
+        Examples (anything helps):
+        - “I ran … then …”
+        - App or agent name (e.g. Cursor, Claude) if you are not using Python directly
+
+        If you use code, a minimal snippet is great (redact secrets):
+
+        ```python
+        from gitcode_api import GitCode
+        with GitCode(api_key="...") as client:
+            ...
+        ```
+
+  - type: textarea
+    id: versions
+    attributes:
+      label: Environment (optional but helpful)
+      description: |
+        Paste command output if you can — copy from Terminal, PowerShell, or Command Prompt.
+        If a command fails or you do not use the CLI, skip that line and tell us what you *do* use (e.g. “installed from PyPI in a venv”).
+      placeholder: |
+        Run what applies and paste the output (or write “unknown” / skip):
+
+        python --version
+
+        which python
+        (On Windows you can use: where python)
+
+        which gitcode-api
+        gitcode-api --version
+
+        pip show gitcode-api
+        # or: uv pip show gitcode-api
+
+        OS (e.g. macOS 14, Windows 11, Ubuntu 22.04):
 
   - type: textarea
     id: schema
     attributes:
-      label: Schema / models / tool shape (optional)
+      label: Types, schema, or API shape (optional)
       description: |
-        Use this when the REST payload, Pydantic-style model, OpenAI function schema, or MCP tool schema does not match reality.
-        Include the resource or CLI subcommand, field names, and a small redacted JSON sample if you can.
+        For developers: REST payload vs SDK model, or tool JSON schema issues. Field names and a small redacted JSON snippet help.
       placeholder: |
-        - Client method or REST path:
-        - Wrong or missing field (SDK model, OpenAI parameters, MCP input):
-        - Sample response or arguments (redacted):
+        - Method, CLI subcommand, or tool name:
+        - Field that looks wrong:
+        - Redacted sample JSON if you have it:
 
   - type: textarea
     id: extra
     attributes:
-      label: Additional context
-      description: Links to GitCode API docs, related issues, or workarounds you found.
+      label: Anything else?
+      description: Links to GitCode docs, related issues, or workarounds you found.
