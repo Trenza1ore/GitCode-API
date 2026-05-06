@@ -1,7 +1,7 @@
 """LLM tool adapters for the GitCode SDK."""
 
 from importlib import import_module
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict
 
 if TYPE_CHECKING:
     from .mcp import GitCodeMCP, create_mcp_gitcode_api_tool, create_mcp_server, register_mcp_gitcode_api_tool
@@ -16,7 +16,7 @@ _IMPORT_MAP = {
     "GitCodeOpenAITool": ".openai",
 }
 
-_IMPORT_CACHE = {}
+_IMPORT_CACHE: Dict[str, Any] = {}
 
 
 def __getattr__(name: str) -> object:

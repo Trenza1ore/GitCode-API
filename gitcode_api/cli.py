@@ -74,8 +74,10 @@ def _argument_kwargs(parameter: inspect.Parameter) -> dict[str, Any]:
 
 
 def _first_doc_line(obj: Any) -> str:
-    doc = inspect.getdoc(obj).removeprefix("Synchronous ").capitalize() or ""
-    for line in doc.splitlines():
+    doc = inspect.getdoc(obj)
+    if doc is not None:
+        doc = doc.removeprefix("Synchronous ").capitalize()
+    for line in (doc or "").splitlines():
         stripped = line.strip()
         if stripped:
             return _plain_cli_inline(stripped)
@@ -252,8 +254,10 @@ Each method -h opens with resource.method_signature("<name>") from the Python SD
 
         for resource_name, resource_type in _resource_types().items():
             resource = getattr(client, resource_name)
-            class_doc = inspect.getdoc(resource_type).removeprefix("Synchronous ").capitalize() or ""
-            class_lead = class_doc.split("\n\n", maxsplit=1)[0].strip() if class_doc else ""
+            class_doc = inspect.getdoc(resource_type)
+            if class_doc is not None:
+                class_doc = class_doc.removeprefix("Synchronous ").capitalize()
+            class_lead = (class_doc or "").split("\n\n", maxsplit=1)[0].strip() if class_doc else ""
             class_lead = _plain_cli_inline(class_lead) if class_lead else ""
             resource_desc_parts = [
                 class_lead or _first_doc_line(resource_type),
@@ -280,8 +284,10 @@ Each method -h opens with resource.method_signature("<name>") from the Python SD
             for method_name in resource.methods:
                 method = getattr(resource, method_name)
                 sig_line = resource.method_signature(method_name)
-                doc = inspect.getdoc(method).removeprefix("Synchronous ").capitalize() or ""
-                summary = _method_cli_summary(doc)
+                doc = inspect.getdoc(method)
+                if doc is not None:
+                    doc = doc.removeprefix("Synchronous ").capitalize()
+                summary = _method_cli_summary(doc or "")
                 if summary and len(summary) > 90:
                     method_help = summary[:87] + "..."
                 else:
@@ -351,9 +357,7 @@ def _run_mcp_server(args: argparse.Namespace) -> int:
         if value is not None:
             run_kwargs[key] = value
 
-    result = server.run(**run_kwargs)
-    if inspect.isawaitable(result):
-        asyncio.run(result)
+    server.run(**run_kwargs)
     return 0
 
 

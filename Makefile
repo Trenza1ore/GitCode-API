@@ -24,6 +24,9 @@ format:
 	uv run ruff check --select I --fix || true
 	uv run ruff format || true
 
+lint:
+	uv run mypy -p gitcode_api
+
 test:
 	uv pip install .
 	uv run pytest

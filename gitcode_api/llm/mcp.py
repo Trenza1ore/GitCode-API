@@ -1,23 +1,25 @@
 """FastMCP integration for the GitCode SDK LLM tool."""
 
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 from ._tool import TOOL_DESCRIPTION, TOOL_NAME, GitCodeLLMTool
 
 if TYPE_CHECKING:
     from fastmcp import FastMCP
+    from fastmcp.tools import Tool
 
 
 def _missing_fastmcp_error() -> ImportError:
     return ImportError("FastMCP support requires the optional dependency: pip install 'gitcode-api[mcp]'")
 
 
-def _load_fastmcp() -> "FastMCP":
+def _load_fastmcp() -> tuple["type[FastMCP]", Callable[..., "Tool"]]:
     try:
         from fastmcp import FastMCP
+        from fastmcp.tools import tool as fastmcp_tool
     except ImportError as exc:
         raise _missing_fastmcp_error() from exc
-    return FastMCP
+    return FastMCP, fastmcp_tool  # type: ignore[return-value]
 
 
 def create_mcp_gitcode_api_tool(tool: Optional[GitCodeLLMTool] = None) -> Any:
@@ -53,7 +55,9 @@ def register_mcp_gitcode_api_tool(mcp: Union["FastMCP", Any], tool: Optional[Git
         except TypeError:
             return mcp.tool()(callable_tool)
     if hasattr(mcp, "add_tool"):
-        return mcp.add_tool(callable_tool, name=TOOL_NAME, description=TOOL_DESCRIPTION)
+        _, fastmcp_tool = _load_fastmcp()
+        mcp_tool = fastmcp_tool(callable_tool, name=TOOL_NAME, description=TOOL_DESCRIPTION)
+        return mcp.add_tool(mcp_tool)
     raise TypeError("mcp must provide a tool decorator or add_tool method")
 
 
@@ -67,7 +71,7 @@ class GitCodeMCP:
 
     def __init__(self, name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs) -> None:
         """Create a FastMCP server and register the GitCode API tool."""
-        fastmcp = _load_fastmcp()
+        fastmcp, *_ = _load_fastmcp()
         self.mcp = fastmcp(name, **kwargs)
         self.gitcode_api_tool = register_mcp_gitcode_api_tool(self.mcp, tool)
 
@@ -76,7 +80,7 @@ class GitCodeMCP:
         return getattr(self.mcp, name)
 
 
-def create_mcp_server(name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs) -> Any:
+def create_mcp_server(name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs) -> "FastMCP":
     """Create a FastMCP server with the GitCode API tool already registered."""
     return GitCodeMCP(name=name, tool=tool, **kwargs).mcp
 

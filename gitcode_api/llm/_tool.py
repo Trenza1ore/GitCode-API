@@ -208,14 +208,14 @@ class GitCodeLLMTool:
     def client(self) -> GitCode:
         """Return the synchronous client, creating it lazily when needed."""
         if self._client is None:
-            self._client = GitCode(**self._client_kwargs)
+            self._client = GitCode(**self._client_kwargs)  # type: ignore[arg-type]
         return self._client
 
     @property
     def async_client(self) -> AsyncGitCode:
         """Return the asynchronous client, creating it lazily when needed."""
         if self._async_client is None:
-            self._async_client = AsyncGitCode(**self._client_kwargs)
+            self._async_client = AsyncGitCode(**self._client_kwargs)  # type: ignore[arg-type]
         return self._async_client
 
     def __call__(
@@ -266,7 +266,7 @@ class GitCodeLLMTool:
                     None,
                     None,
                 )
-            return error_dict(msg, op_type=op_type), None, None
+            return str(error_dict(msg, op_type=op_type)), None, None
 
         resource = resource_for_op_type(op_type)
         action = (action or "").strip()
@@ -283,7 +283,7 @@ class GitCodeLLMTool:
                     None,
                     None,
                 )
-            return error_dict(msg, op_type=op_type, action=action), None, None
+            return str(error_dict(msg, op_type=op_type, action=action)), None, None
 
         if help:
             return _format_action_help(op_type=op_type, resource=resource, action=action), None, None
@@ -298,7 +298,7 @@ class GitCodeLLMTool:
                     sig_line = f"{action}(...)"
                 header = f"{verr}\n\nTarget signature:\n{sig_line}"
                 return _format_help(op_type=op_type, resource=None, header=header), None, None
-            return error_dict(verr, op_type=op_type, action=action), None, None
+            return str(error_dict(verr, op_type=op_type, action=action)), None, None
 
         return None, call_kwargs or {}, resource
 
