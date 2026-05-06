@@ -1,8 +1,15 @@
-"""FastMCP integration for the GitCode SDK LLM tool."""
+"""FastMCP integration for the GitCode LLM tool."""
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
-from ._tool import MCP_SERVER_INSTRUCTIONS, TOOL_DESCRIPTION, TOOL_NAME, GitCodeLLMTool
+from ._tool import (
+    MCP_SERVER_INSTRUCTIONS,
+    TOOL_DESCRIPTION,
+    TOOL_NAME,
+    GitCodeLLMTool,
+    help_resource_index_body,
+    op_type_help_resource_body,
+)
 
 if TYPE_CHECKING:
     from fastmcp import FastMCP
@@ -36,7 +43,7 @@ def create_mcp_gitcode_api_tool(tool: Optional[GitCodeLLMTool] = None) -> Callab
     async def gitcode_api_tool(
         op_type: str, action: str = "", params: Optional[dict[str, Any]] = None, help: bool = False
     ) -> Any:
-        """Call GitCode SDK resources using op_type, action, and params."""
+        """Call GitCode client resources using op_type, action, and params."""
         return await wrapped.__async_call__(op_type=op_type, action=action, params=params, help=help)
 
     gitcode_api_tool.__name__ = TOOL_NAME
@@ -64,6 +71,44 @@ def register_mcp_gitcode_api_tool(mcp: Union["FastMCP", Any], tool: Optional[Git
     raise TypeError("mcp must provide a tool decorator or add_tool method")
 
 
+def register_mcp_help_resources(mcp: Union["FastMCP", Any]) -> None:
+    """Register optional MCP resources that mirror ``gitcode_api_tool`` help text.
+
+    Registers:
+
+    * ``gitcode-api://help`` — markdown index of per-``op_type`` URIs.
+    * ``gitcode-api://help/{op_type}`` — plain-text method list for one resource.
+
+    No-op when ``mcp`` does not expose FastMCP's ``resource`` decorator.
+
+    :param mcp: FastMCP server instance (or compatible object).
+    """
+    if not hasattr(mcp, "resource"):
+        return
+
+    @mcp.resource(
+        "gitcode-api://help/{op_type}",
+        name="gitcode_api_op_type_help",
+        description=(
+            "Method list for one op_type (same as gitcode_api_tool with help=true and empty action)."
+        ),
+        mime_type="text/plain",
+    )
+    async def _op_type_help_resource(op_type: str) -> str:
+        return op_type_help_resource_body(op_type)
+
+    @mcp.resource(
+        "gitcode-api://help",
+        name="gitcode_api_help_index",
+        description="Markdown index of gitcode-api://help/{op_type} help resources.",
+        mime_type="text/markdown",
+    )
+    async def _help_index_resource() -> str:
+        return help_resource_index_body()
+
+    _ = (_op_type_help_resource, _help_index_resource)
+
+
 class GitCodeMCP:
     """Small FastMCP server wrapper exposing the GitCode API tool.
 
@@ -80,6 +125,7 @@ class GitCodeMCP:
             kwargs["instructions"] = MCP_SERVER_INSTRUCTIONS
         self.mcp = fastmcp(name, **kwargs)
         self.gitcode_api_tool = register_mcp_gitcode_api_tool(self.mcp, tool)
+        register_mcp_help_resources(self.mcp)
 
     def __getattr__(self, name: str) -> Any:
         """Delegate unknown attributes to the wrapped FastMCP server."""
@@ -105,4 +151,5 @@ __all__ = [
     "create_mcp_gitcode_api_tool",
     "create_mcp_server",
     "register_mcp_gitcode_api_tool",
+    "register_mcp_help_resources",
 ]

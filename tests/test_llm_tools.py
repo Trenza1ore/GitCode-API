@@ -9,7 +9,13 @@ from gitcode_api.llm import (
     create_mcp_server,
     register_mcp_gitcode_api_tool,
 )
-from gitcode_api.llm._tool import GitCodeLLMTool, MCP_SERVER_INSTRUCTIONS, OP_TYPE_ENUM
+from gitcode_api.llm._tool import (
+    GitCodeLLMTool,
+    MCP_SERVER_INSTRUCTIONS,
+    OP_TYPE_ENUM,
+    help_resource_index_body,
+    op_type_help_resource_body,
+)
 
 
 def test_openai_tool_exposes_function_schema() -> None:
@@ -100,6 +106,37 @@ def test_create_mcp_server_default_instructions() -> None:
 def test_create_mcp_server_custom_instructions() -> None:
     server = create_mcp_server(instructions="Custom host copy.")
     assert server.instructions == "Custom host copy."
+
+
+def test_op_type_help_resource_body_unknown() -> None:
+    body = op_type_help_resource_body("not-a-real-op")
+    assert "Unknown op_type" in body
+    assert "not-a-real-op" in body
+
+
+def test_op_type_help_resource_body_pulls() -> None:
+    body = op_type_help_resource_body("pulls")
+    assert "Resource: pulls" in body
+    assert "list(" in body
+
+
+def test_help_resource_index_body() -> None:
+    body = help_resource_index_body()
+    assert "gitcode-api://help/pulls" in body
+    for name in OP_TYPE_ENUM:
+        assert f"gitcode-api://help/{name}" in body
+
+
+@pytest.mark.asyncio
+async def test_create_mcp_server_registers_help_resources() -> None:
+    mcp = create_mcp_server()
+    static = await mcp.list_resources()
+    templates = await mcp.list_resource_templates()
+    assert any(str(r.uri) == "gitcode-api://help" for r in static)
+    assert any("{op_type}" in str(t.uri_template) for t in templates)
+    read = await mcp.read_resource("gitcode-api://help/pulls")
+    payload = read.contents[0].content
+    assert "Resource: pulls" in payload
 
 
 def test_mcp_registers_with_existing_server() -> None:

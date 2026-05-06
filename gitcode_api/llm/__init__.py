@@ -4,7 +4,13 @@ from importlib import import_module
 from typing import TYPE_CHECKING, Any, Dict
 
 if TYPE_CHECKING:
-    from .mcp import GitCodeMCP, create_mcp_gitcode_api_tool, create_mcp_server, register_mcp_gitcode_api_tool
+    from .mcp import (
+        GitCodeMCP,
+        create_mcp_gitcode_api_tool,
+        create_mcp_server,
+        register_mcp_gitcode_api_tool,
+        register_mcp_help_resources,
+    )
     from .openai import GitCodeOpenAITool
 
 
@@ -13,6 +19,7 @@ _IMPORT_MAP = {
     "create_mcp_gitcode_api_tool": ".mcp",
     "create_mcp_server": ".mcp",
     "register_mcp_gitcode_api_tool": ".mcp",
+    "register_mcp_help_resources": ".mcp",
     "GitCodeOpenAITool": ".openai",
 }
 
@@ -46,4 +53,5 @@ __all__ = [
     "create_mcp_gitcode_api_tool",
     "create_mcp_server",
     "register_mcp_gitcode_api_tool",
+    "register_mcp_help_resources",
 ]

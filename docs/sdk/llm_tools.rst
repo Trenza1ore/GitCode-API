@@ -141,6 +141,14 @@ Public helpers (see module reference below):
 * :class:`~gitcode_api.llm.mcp.GitCodeMCP` — constructs that server and registers
   the tool; unknown attributes are delegated to the underlying ``FastMCP``
   object (for example transport helpers for your installed FastMCP version).
+  It also registers **MCP resources** for help messages (plain text / markdown,
+  same content as ``gitcode_api_tool`` help where applicable):
+
+  * ``gitcode-api://help`` — index of per-``op_type`` URIs.
+  * ``gitcode-api://help/{op_type}`` — method list for one resource.
+
+  Call :func:`~gitcode_api.llm.mcp.register_mcp_help_resources` if you attach
+  the tool to your own ``FastMCP`` instance and want the same resources.
 * :func:`~gitcode_api.llm.mcp.create_mcp_gitcode_api_tool` — standalone async
   callable used as the tool body for custom wiring.
 * :func:`~gitcode_api.llm.mcp.register_mcp_gitcode_api_tool` — attaches that callable

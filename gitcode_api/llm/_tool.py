@@ -28,9 +28,9 @@ OP_TYPES = frozenset(
 OP_TYPE_ENUM = sorted(OP_TYPES)
 
 MCP_SERVER_INSTRUCTIONS = (
-    "This MCP server exposes the GitCode REST API through the gitcode-api Python SDK.\n\n"
+    "This MCP server exposes the GitCode REST API through the gitcode-api package.\n\n"
     "Use the single tool gitcode_api_tool with:\n"
-    "- op_type (required): the SDK resource groups.\n"
+    "- op_type (required): client resource groups (same attribute names as on GitCode).\n"
     "- action: the method on that resource (for example get, list).\n"
     "- params: keyword arguments for that method as a JSON object; omit or null means {}.\n"
     "- help: when true, returns formatted help (available methods or a method signature) instead of "
@@ -38,13 +38,17 @@ MCP_SERVER_INSTRUCTIONS = (
     "Successful results are JSON-serializable. Raw bytes from endpoints such as contents.get_raw are "
     'returned as {"encoding": "base64", "data": "<ascii>"}.\n'
     'Failures are objects with "error": true and a "message" string.\n\n'
-    "Valid op_type values for this SDK build:\n- "
+    "Valid op_type values for this client version:\n- "
     + "\n- ".join(OP_TYPE_ENUM)
+    + "\n\n"
+    "Optional MCP resources (read without calling the tool):\n"
+    "- gitcode-api://help — markdown index of help URIs\n"
+    "- gitcode-api://help/{op_type} — plain-text method list for that client resource\n"
 )
 
 TOOL_NAME = "gitcode_api_tool"
 TOOL_DESCRIPTION = (
-    "Call the GitCode REST API through the gitcode-api SDK. Use op_type to choose a client resource group, "
+    "Call the GitCode REST API through the gitcode-api client. Use op_type to choose a client resource group, "
     "action as the resource method name, and params as the keyword arguments for that method. Set help=true to "
     "inspect available resource methods or a target method signature without sending an API request."
 )
@@ -54,7 +58,7 @@ TOOL_PARAMETERS = {
         "op_type": {
             "type": "string",
             "enum": OP_TYPE_ENUM,
-            "description": "SDK resource group matching client.<op_type>, such as repos, issues, or pulls.",
+            "description": "Resource group matching client.<op_type>, such as repos, issues, or pulls.",
         },
         "action": {
             "type": "string",
@@ -62,11 +66,11 @@ TOOL_PARAMETERS = {
         },
         "params": {
             "type": "object",
-            "description": "Keyword arguments passed to the SDK method. Omitted or null is treated as {}.",
+            "description": "Keyword arguments passed to the client method. Omitted or null is treated as {}.",
         },
         "help": {
             "type": "boolean",
-            "description": "When true, return dynamic SDK help instead of sending a request.",
+            "description": "When true, return dynamic client help instead of sending a request.",
             "default": False,
         },
     },
@@ -89,7 +93,7 @@ def error_dict(message: str, **extra: Any) -> Dict[str, Any]:
 
 
 def serialize(value: Any) -> Any:
-    """Convert SDK responses into JSON-serializable values for tool clients."""
+    """Convert client responses into JSON-serializable values for tool clients."""
     if value is None or isinstance(value, (bool, int, float, str)):
         return value
     if isinstance(value, bytes):
@@ -143,6 +147,44 @@ def _format_action_help(*, op_type: str, resource: Any, action: str) -> str:
         sig_line = f"{action}(...)"
     header = f"Target signature:\n{sig_line}"
     return _format_help(op_type=op_type, resource=None, header=header)
+
+
+def op_type_help_resource_body(op_type: str) -> str:
+    """Return plain-text method list for one ``op_type``.
+
+    Content matches :meth:`GitCodeLLMTool.__async_call__` with ``help=true`` and an empty ``action``.
+
+    :param op_type: Resource attribute name on :class:`~gitcode_api.GitCode`.
+    :returns: Help body for MCP ``gitcode-api://help/{op_type}`` resources.
+    """
+    if op_type not in OP_TYPES:
+        allowed = ", ".join(OP_TYPE_ENUM)
+        return f"Unknown op_type {op_type!r}. Allowed: {allowed}."
+    resource = resource_for_op_type(op_type)
+    header = "Specify non-empty action to invoke a method. Available methods:"
+    return _format_help(op_type=op_type, resource=resource, header=header)
+
+
+def help_resource_index_body() -> str:
+    """Return markdown listing ``gitcode-api://help/<op_type>`` URIs for MCP discovery.
+
+    :returns: Index body for MCP ``gitcode-api://help``.
+    """
+    lines = [
+        "# GitCode API — MCP help resources",
+        "",
+        "Read any URI below for the method list for that `op_type` on `gitcode_api_tool`.",
+        "",
+    ]
+    for name in OP_TYPE_ENUM:
+        lines.append(f"- gitcode-api://help/{name}")
+    lines.extend(
+        [
+            "",
+            "The same text is returned by `gitcode_api_tool` with `help: true` and an empty `action`.",
+        ]
+    )
+    return "\n".join(lines)
 
 
 def validate_call_kwargs(
@@ -246,7 +288,7 @@ class GitCodeLLMTool:
         help: bool = False,
         **kwargs,
     ) -> Any:
-        """Invoke a synchronous GitCode SDK method through the tool contract."""
+        """Invoke a synchronous GitCode client method through the tool contract."""
         if kwargs:
             return error_dict('Invalid tool invoke, API parameters should go into "params"')
         return self._invoke(op_type=op_type, action=action, params=params, help=help)
@@ -259,7 +301,7 @@ class GitCodeLLMTool:
         help: bool = False,
         **kwargs,
     ) -> Any:
-        """Invoke an asynchronous GitCode SDK method through the tool contract."""
+        """Invoke an asynchronous GitCode client method through the tool contract."""
         if kwargs:
             return error_dict('Invalid tool invoke, API parameters should go into "params"')
         return await self._ainvoke(op_type=op_type, action=action, params=params, help=help)
