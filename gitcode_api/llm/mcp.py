@@ -25,7 +25,7 @@ def _load_fastmcp() -> tuple["type[FastMCP]", Callable[..., "Tool"]]:
     return FastMCP, fastmcp_tool  # type: ignore[return-value]
 
 
-def create_mcp_gitcode_api_tool(tool: Optional[GitCodeLLMTool] = None) -> Any:
+def create_mcp_gitcode_api_tool(tool: Optional[GitCodeLLMTool] = None) -> Callable:
     """Return the async callable that can be registered with an MCP server.
 
     :param tool: Optional preconfigured shared GitCode LLM tool.
@@ -44,7 +44,7 @@ def create_mcp_gitcode_api_tool(tool: Optional[GitCodeLLMTool] = None) -> Any:
     return gitcode_api_tool
 
 
-def register_mcp_gitcode_api_tool(mcp: Union["FastMCP", Any], tool: Optional[GitCodeLLMTool] = None) -> Any:
+def register_mcp_gitcode_api_tool(mcp: Union["FastMCP", Any], tool: Optional[GitCodeLLMTool] = None) -> "Tool":
     """Register the GitCode API tool with an existing FastMCP-compatible server.
 
     :param mcp: FastMCP server instance.
