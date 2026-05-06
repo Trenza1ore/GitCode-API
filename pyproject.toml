@@ -60,6 +60,7 @@ format = [
 
 # PyInstaller; build with Makefile target binary.
 binary = [
+    { include-group = "mcp" },
     "pyinstaller>=6.0,<7",
 ]
 

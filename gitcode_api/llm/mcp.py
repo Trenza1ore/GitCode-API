@@ -10,7 +10,10 @@ if TYPE_CHECKING:
 
 
 def _missing_fastmcp_error() -> ImportError:
-    return ImportError("FastMCP support requires the optional dependency: pip install 'gitcode-api[mcp]'")
+    return ImportError(
+        "FastMCP support requires the optional dependency: pip install 'gitcode-api[mcp]' "
+        "Note: Python 3.10+ is required for FastMCP."
+    )
 
 
 def _load_fastmcp() -> tuple["type[FastMCP]", Callable[..., "Tool"]]:

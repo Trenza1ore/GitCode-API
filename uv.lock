@@ -786,6 +786,7 @@ mcp = [
 
 [package.dev-dependencies]
 binary = [
+    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
     { name = "pyinstaller" },
 ]
 dev = [
@@ -842,7 +843,10 @@ requires-dist = [
 provides-extras = ["mcp"]
 
 [package.metadata.requires-dev]
-binary = [{ name = "pyinstaller", specifier = ">=6.0,<7" }]
+binary = [
+    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "pyinstaller", specifier = ">=6.0,<7" },
+]
 dev = [
     { name = "beautifulsoup4" },
     { name = "coverage" },
