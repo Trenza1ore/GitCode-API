@@ -207,8 +207,6 @@ class GitCodeLLMTool:
         decrypt: Optional[Callable] = None,
     ) -> None:
         """Create a reusable tool with lazy sync and async clients."""
-        if not (api_key or os.getenv(DEFAULT_TOKEN_ENV)):
-            raise GitCodeConfigurationError("No API key provided. Pass api_key=... or set GITCODE_ACCESS_TOKEN.")
         self._client = client
         self._async_client = async_client
         self._client_kwargs = {
@@ -220,10 +218,15 @@ class GitCodeLLMTool:
             "decrypt": decrypt,
         }
 
+    def _require_api_key_for_clients(self) -> None:
+        if not (self._client_kwargs.get("api_key") or os.getenv(DEFAULT_TOKEN_ENV)):
+            raise GitCodeConfigurationError("No API key provided. Pass api_key=... or set GITCODE_ACCESS_TOKEN.")
+
     @property
     def client(self) -> GitCode:
         """Return the synchronous client, creating it lazily when needed."""
         if self._client is None:
+            self._require_api_key_for_clients()
             self._client = GitCode(**self._client_kwargs)  # type: ignore[arg-type]
         return self._client
 
@@ -231,6 +234,7 @@ class GitCodeLLMTool:
     def async_client(self) -> AsyncGitCode:
         """Return the asynchronous client, creating it lazily when needed."""
         if self._async_client is None:
+            self._require_api_key_for_clients()
             self._async_client = AsyncGitCode(**self._client_kwargs)  # type: ignore[arg-type]
         return self._async_client
 
