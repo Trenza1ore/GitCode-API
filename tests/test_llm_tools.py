@@ -6,9 +6,10 @@ import pytest
 from gitcode_api.llm import (
     GitCodeOpenAITool,
     create_mcp_gitcode_api_tool,
+    create_mcp_server,
     register_mcp_gitcode_api_tool,
 )
-from gitcode_api.llm._tool import GitCodeLLMTool
+from gitcode_api.llm._tool import GitCodeLLMTool, MCP_SERVER_INSTRUCTIONS, OP_TYPE_ENUM
 
 
 def test_openai_tool_exposes_function_schema() -> None:
@@ -84,6 +85,21 @@ async def test_mcp_tool_callable_uses_shared_tool(async_client_factory: Any) -> 
     assert callable_tool.__name__ == "gitcode_api_tool"
     assert "/repos/SushiNinja/GitCode-API" in captured["url"]
     assert result == {"full_name": "SushiNinja/GitCode-API"}
+
+
+def test_create_mcp_server_default_instructions() -> None:
+    server = create_mcp_server()
+    assert server.instructions
+    assert "gitcode_api_tool" in server.instructions
+    assert "op_type" in server.instructions
+    for name in OP_TYPE_ENUM:
+        assert name in server.instructions
+    assert server.instructions == MCP_SERVER_INSTRUCTIONS
+
+
+def test_create_mcp_server_custom_instructions() -> None:
+    server = create_mcp_server(instructions="Custom host copy.")
+    assert server.instructions == "Custom host copy."
 
 
 def test_mcp_registers_with_existing_server() -> None:

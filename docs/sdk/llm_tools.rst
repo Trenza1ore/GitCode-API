@@ -134,7 +134,10 @@ Public helpers (see module reference below):
 
 * :func:`~gitcode_api.llm.mcp.create_mcp_server` — returns a ``FastMCP`` instance with
   ``gitcode_api_tool`` already registered; ``name=``, ``tool=``, and other
-  keyword arguments are forwarded to ``FastMCP(...)``.
+  keyword arguments are forwarded to ``FastMCP(...)``. Unless you pass
+  ``instructions=``, the server receives default MCP server instructions that
+  summarize the tool, parameters, base64-wrapped bytes, and the valid ``op_type``
+  names for the installed SDK.
 * :class:`~gitcode_api.llm.mcp.GitCodeMCP` — constructs that server and registers
   the tool; unknown attributes are delegated to the underlying ``FastMCP``
   object (for example transport helpers for your installed FastMCP version).

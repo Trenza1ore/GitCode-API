@@ -26,6 +26,22 @@ OP_TYPES = frozenset(
     if inspect.isclass(annotation) and issubclass(annotation, SyncResource)
 )
 OP_TYPE_ENUM = sorted(OP_TYPES)
+
+MCP_SERVER_INSTRUCTIONS = (
+    "This MCP server exposes the GitCode REST API through the gitcode-api Python SDK.\n\n"
+    "Use the single tool gitcode_api_tool with:\n"
+    "- op_type (required): the SDK resource groups.\n"
+    "- action: the method on that resource (for example get, list).\n"
+    "- params: keyword arguments for that method as a JSON object; omit or null means {}.\n"
+    "- help: when true, returns formatted help (available methods or a method signature) instead of "
+    "calling the API where applicable.\n\n"
+    "Successful results are JSON-serializable. Raw bytes from endpoints such as contents.get_raw are "
+    'returned as {"encoding": "base64", "data": "<ascii>"}.\n'
+    'Failures are objects with "error": true and a "message" string.\n\n'
+    "Valid op_type values for this SDK build:\n- "
+    + "\n- ".join(OP_TYPE_ENUM)
+)
+
 TOOL_NAME = "gitcode_api_tool"
 TOOL_DESCRIPTION = (
     "Call the GitCode REST API through the gitcode-api SDK. Use op_type to choose a client resource group, "

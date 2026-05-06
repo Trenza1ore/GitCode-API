@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
-from ._tool import TOOL_DESCRIPTION, TOOL_NAME, GitCodeLLMTool
+from ._tool import MCP_SERVER_INSTRUCTIONS, TOOL_DESCRIPTION, TOOL_NAME, GitCodeLLMTool
 
 if TYPE_CHECKING:
     from fastmcp import FastMCP
@@ -69,12 +69,15 @@ class GitCodeMCP:
 
     :param name: MCP server name.
     :param tool: Optional preconfigured shared GitCode LLM tool.
-    :param kwargs: Forwarded to ``fastmcp.FastMCP``.
+    :param kwargs: Forwarded to ``fastmcp.FastMCP``. If ``instructions`` is omitted, a default overview
+        of the tool (parameters, byte encoding, and valid ``op_type`` values) is supplied.
     """
 
-    def __init__(self, name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs) -> None:
+    def __init__(self, name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs: Any) -> None:
         """Create a FastMCP server and register the GitCode API tool."""
         fastmcp, *_ = _load_fastmcp()
+        if "instructions" not in kwargs:
+            kwargs["instructions"] = MCP_SERVER_INSTRUCTIONS
         self.mcp = fastmcp(name, **kwargs)
         self.gitcode_api_tool = register_mcp_gitcode_api_tool(self.mcp, tool)
 
@@ -83,8 +86,17 @@ class GitCodeMCP:
         return getattr(self.mcp, name)
 
 
-def create_mcp_server(name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs) -> "FastMCP":
-    """Create a FastMCP server with the GitCode API tool already registered."""
+def create_mcp_server(
+    name: str = "GitCode API", tool: Optional[GitCodeLLMTool] = None, **kwargs: Any
+) -> "FastMCP":
+    """Create a FastMCP server with the GitCode API tool already registered.
+
+    :param name: MCP server display name.
+    :param tool: Optional preconfigured :class:`~gitcode_api.llm._tool.GitCodeLLMTool`.
+    :param kwargs: Forwarded to :class:`GitCodeMCP` and then to ``fastmcp.FastMCP`` (for example
+        ``instructions=`` to override the default server instructions).
+    :returns: Configured ``FastMCP`` instance with ``gitcode_api_tool`` registered.
+    """
     return GitCodeMCP(name=name, tool=tool, **kwargs).mcp
 
 
