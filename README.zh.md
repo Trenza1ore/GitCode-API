@@ -5,7 +5,7 @@
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)](README.md)
 
-`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组组织的调用方式，以及轻量响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。
+`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组组织的调用方式，以及轻量响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。`gitcode_api.llm` 还提供 OpenAI 格式的工具以及 MCP 服务，便于智能体复用同一套资源型 API。
 
 ## 项目定位
 
@@ -51,6 +51,14 @@ client = GitCode(
 gitcode-api repos get --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API
 python -m gitcode_api pulls list --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API --state open
 ```
+
+已安装 `gitcode-api[mcp]`（Python 3.10+）时，可通过 stdio 启动内置的 FastMCP 服务：
+
+```bash
+gitcode-api serve --api-key "$GITCODE_ACCESS_TOKEN"
+```
+
+`gitcode-api serve -h` 可查看 `--owner`、`--repo`、`--transport` 等选项。
 
 子命令与**同步客户端** `GitCode` 上各资源组的方法一一对应，形如 `gitcode-api <resource> <method> ...`。若某方法还支持 `**params` 或 `**payload` 等额外参数，可多次使用 `--set key=value`，或使用 `--set-json '{"key": "value"}'` 传入 JSON。
 
@@ -166,6 +174,63 @@ for repo in repos:
 
 每个资源组（例如 `client.pulls`、`client.repos`）在共享基类上带有缓存属性 `methods`：值为该组**对外可调用的方法名**组成的 `tuple`。顺序由 SDK 根据方法名中下划线分段生成排序键决定，**并非**对完整方法名做字典序排列。不包含以下划线开头的名称，也不包含内省辅助方法 `methods` 与 `method_signature`。适合在交互环境或工具链中快速查看某组暴露了哪些接口。若需要单个方法的参数与返回类型，可调用 `client.pulls.method_signature("list_issues")`（基于 `inspect.signature` 的缓存字符串，注解中的 `gitcode_api._models.` 前缀会被去掉）。
 
+## LLM 工具与 MCP
+
+`gitcode_api.llm` 模块对外提供统一的逻辑工具 **`gitcode_api_tool`**，将调用路由到同步或异步 SDK 资源。面向模型的参数与 OpenAI 风格函数工具的 JSON Schema 一致：
+
+| 参数 | 作用 |
+| --- | --- |
+| `op_type` | 必填。客户端上的资源组名（与 `GitCode` 属性一致，如 `repos`、`pulls`、`issues` 等）。 |
+| `action` | 该资源上的方法名（如 `get`、`list`）。在配合 `help` 时若为空，可返回方法发现说明文本。 |
+| `params` | 传给该方法的**关键字参数**组成的 JSON 对象；省略或 `null` 视为 `{}`。 |
+| `help` | 为 `true` 时，在适用场景下返回格式化的帮助信息（可用方法或目标方法签名），而非执行常规 API 请求。 |
+
+成功时返回值为 JSON 友好结构（如 `APIObject.to_dict()`、对 `bytes` 做 base64 包装等）。失败时返回包含 `"error": true` 与 `"message"` 的对象（HTTP、配置类错误在可用时附带额外字段）。
+
+### OpenAI 工具（`GitCodeOpenAITool`）
+
+除核心包外无需额外依赖。通过 `.tool` 或 `to_dict()` 生成 Chat Completions 风格的工具定义，再用上文参数以同步方式调用同一实例；需要 `await` 时启用异步模式。
+
+```python
+from gitcode_api.llm import GitCodeOpenAITool
+
+tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API")
+tools_payload = [tool.tool]  # 或单条使用 tool.to_dict()
+
+# 默认：同步调用
+result = tool("repos", "get", params={})
+
+# 异步客户端 / 可 await 的封装
+async_tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API", async_mode=True)
+# await async_tool("pulls", "list", params={"state": "open", "per_page": 5})
+```
+
+构造参数与 `GitCode` / `AsyncGitCode` 对齐：`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`。若从字典等结构组装且需保留 `async` 这个名字，可使用 `**{"async": True}` 代替 `async_mode=True`（二者勿同时使用）。
+
+### MCP 服务与 MCP 工具（FastMCP）
+
+[MCP](https://modelcontextprotocol.io) 集成基于 [FastMCP](https://github.com/jlowin/fastmcp)。请安装可选依赖组（因 `fastmcp` 约束，需 **Python 3.10+**）：
+
+```bash
+pip install 'gitcode-api[mcp]'
+```
+
+- **`create_mcp_server`** — 创建已注册 `gitcode_api_tool` 的 `FastMCP` 实例；可选 `name=`、`tool=` 以及其余关键字参数会原样传给 `FastMCP(...)`。
+- **`GitCodeMCP`** — 薄封装：构造上述服务并注册工具；未定义的属性会委托给底层 `FastMCP` 对象（例如各版本 FastMCP 暴露的传输相关接口）。
+- **`create_mcp_gitcode_api_tool`** — 返回独立的异步可调用对象，作为工具实现，供自定义挂载。
+- **`register_mcp_gitcode_api_tool`** — 将上述可调用对象注册到已有的 FastMCP 兼容对象上（`mcp.tool(...)` 或 `mcp.add_tool(...)`）。
+
+```python
+from gitcode_api.llm import create_mcp_server
+
+mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-API")
+# 按你所用的 FastMCP 版本文档启动或导出服务（stdio、HTTP 等）。
+```
+
+等价地也可通过命令行 `gitcode-api serve` 启动同一套内置服务（见上文 [CLI](#cli) 小节）。
+
+若要在多个工具间共享认证或客户端，可只构造一次 `GitCodeLLMTool`（`from gitcode_api.llm._tool import GitCodeLLMTool`），再以 `tool=` 传入 `GitCodeMCP`、`create_mcp_server`、`register_mcp_gitcode_api_tool` 或 `create_mcp_gitcode_api_tool`。
+
 ## 示例
 
 可运行脚本位于 `examples/`：
@@ -205,6 +270,29 @@ make docs
 - `make test` — 将包安装到当前环境并运行 pytest。
 - `make docstring` — 对 `gitcode_api/` 运行 pydocstyle 检查。
 - `make binary` — 使用 PyInstaller 打包单文件 CLI 到 `dist/`（需 `binary` 依赖组）。
+
+## 常见问题
+
+### SSL 或企业网络报错（如「自签名证书」）
+
+若在企业代理或私有 PKI 环境下访问 GitCode HTTPS 失败，可为 `httpx` 指定 `verify` 指向 CA 证书包路径（思路类似 `requests` 使用的 `REQUESTS_CA_BUNDLE`）：
+
+```python
+from gitcode_api import GitCode
+from httpx import Client
+
+with GitCode(
+    owner="SushiNinja",
+    repo="GitCode-API",
+    http_client=Client(verify="path/to/my/certificate.crt"),
+) as client:
+    repo = client.repos.get()
+    pulls = client.pulls.list(state="open", per_page=5)
+```
+
+异步场景请对 `AsyncGitCode` 使用 `httpx.AsyncClient(verify=...)`。
+
+OpenAI 工具（`GitCodeOpenAITool`）与 MCP 相关接口同样支持传入已配置好的 `client=` / `async_client=`（或通过 `tool=` 传入已设置上述客户端的 `GitCodeLLMTool`）。先用自定义 `http_client` 构造 `GitCode` / `AsyncGitCode`，再传入这些适配器，LLM 工具调用会沿用同一套 TLS 与证书配置，不必另做一套处理。
 
 ## 项目状态
 

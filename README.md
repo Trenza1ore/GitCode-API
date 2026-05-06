@@ -5,7 +5,7 @@
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md)](README.zh.md)
 
-`gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, repository-scoped helpers, and lightweight response models so you can work with GitCode from Python without hand-writing raw HTTP requests.
+`gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, repository-scoped helpers, and lightweight response models so you can work with GitCode from Python without hand-writing raw HTTP requests. The `gitcode_api.llm` module adds an OpenAI-style function tool and MCP service so agents can reuse the same resource-oriented API.
 
 ## Why This Project
 
@@ -53,6 +53,14 @@ After installation, you can invoke the SDK directly from the command line:
 gitcode-api repos get --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API
 python -m gitcode_api pulls list --api-key "$GITCODE_ACCESS_TOKEN" --owner SushiNinja --repo GitCode-API --state open
 ```
+
+With `gitcode-api[mcp]` installed (Python 3.10+), you can start the bundled FastMCP server over stdio:
+
+```bash
+gitcode-api serve --api-key "$GITCODE_ACCESS_TOKEN"
+```
+
+Use `gitcode-api serve -h` for defaults such as `--owner`, `--repo`, and `--transport`.
 
 Commands mirror the synchronous resource methods on `GitCode`, using the pattern
 `gitcode-api <resource> <method> ...`. For methods that accept extra `**params`
@@ -170,6 +178,63 @@ Both `GitCode` and `AsyncGitCode` expose:
 
 Every resource group inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and the introspection helpers `methods` and `method_signature` are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list. For one method’s parameters and return type, call `client.pulls.method_signature("list_issues")` (a cached string from `inspect.signature`, with `gitcode_api._models.` stripped from annotations).
 
+## LLM tools and MCP
+
+The `gitcode_api.llm` module exposes a single logical tool, **`gitcode_api_tool`**, that routes calls to sync or async SDK resources. Model-facing parameters match the JSON schema used by OpenAI-style function tools:
+
+| Parameter | Role |
+| --- | --- |
+| `op_type` | Required. Resource group on the client (same names as `GitCode` attributes: `repos`, `pulls`, `issues`, and so on). |
+| `action` | Method on that resource (for example `get`, `list`). Empty with `help` returns method discovery text. |
+| `params` | Keyword arguments for the method as a JSON object; omitted or `null` is treated as `{}`. |
+| `help` | When `true`, returns formatted help (available methods or a target signature) instead of performing a normal API call where applicable. |
+
+Successful results are JSON-friendly (`APIObject.to_dict()`, base64-wrapped `bytes`, and similar). Failures are returned as objects with `"error": true` and a `"message"` string (HTTP and configuration errors include extra fields when available).
+
+### OpenAI tool (`GitCodeOpenAITool`)
+
+No extra dependencies beyond the core package. Build a Chat Completions–style tool definition with `.tool` or `.to_dict()`, then invoke the same instance with the arguments above (sync) or configure async mode for `await`.
+
+```python
+from gitcode_api.llm import GitCodeOpenAITool
+
+tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API")
+tools_payload = [tool.tool]  # or tool.to_dict() for a single entry
+
+# Sync invocation (default)
+result = tool("repos", "get", params={})
+
+# Async client / awaitable wrapper
+async_tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API", async_mode=True)
+# await async_tool("pulls", "list", params={"state": "open", "per_page": 5})
+```
+
+Constructor options mirror `GitCode` / `AsyncGitCode`: `client=`, `async_client=`, `api_key=`, `owner=`, `repo=`, `base_url=`, `timeout=`, and `decrypt=`. For dict-driven setups that reserve the name `async`, you may pass `**{"async": True}` instead of `async_mode=True` (but not both).
+
+### MCP server and MCP tool (FastMCP)
+
+[MCP](https://modelcontextprotocol.io) integration uses [FastMCP](https://github.com/jlowin/fastmcp). Install the optional extra (requires **Python 3.10+** because of the `fastmcp` dependency):
+
+```bash
+pip install 'gitcode-api[mcp]'
+```
+
+- **`create_mcp_server`** — builds a `FastMCP` instance with `gitcode_api_tool` already registered; optional `name=`, `tool=`, and extra keyword arguments are forwarded to `FastMCP(...)`.
+- **`GitCodeMCP`** — thin wrapper that constructs that server and registers the tool; unknown attributes are delegated to the underlying `FastMCP` object (for example transport helpers exposed by your FastMCP version).
+- **`create_mcp_gitcode_api_tool`** — returns the standalone async callable used as the tool body (for custom wiring).
+- **`register_mcp_gitcode_api_tool`** — attaches that callable to an existing FastMCP-compatible object (`mcp.tool(...)` or `mcp.add_tool(...)`).
+
+```python
+from gitcode_api.llm import create_mcp_server
+
+mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-API")
+# Run or export the server using FastMCP’s API for your version (stdio, HTTP, etc.).
+```
+
+The same server is available from the CLI as `gitcode-api serve` (see the [CLI](#cli) section).
+
+To share auth or clients across tools, build `GitCodeLLMTool` once (`from gitcode_api.llm._tool import GitCodeLLMTool`) and pass it as `tool=` into `GitCodeMCP`, `create_mcp_server`, `register_mcp_gitcode_api_tool`, or `create_mcp_gitcode_api_tool`.
+
 ## Examples
 
 Runnable examples live in `examples/`:
@@ -209,6 +274,29 @@ Other common targets from the repository root (after `uv sync --all-groups` so o
 - `make test` — install the package into the active environment and run pytest.
 - `make docstring` — pydocstyle checks for `gitcode_api/`.
 - `make binary` — PyInstaller one-file CLI under `dist/` (requires the `binary` group).
+
+## FAQ
+
+### SSL or corporate network errors ("self-signed certificate")
+
+If GitCode HTTPS fails behind a corporate proxy or private PKI, point `httpx` at a CA bundle with `verify` (similar in spirit to `REQUESTS_CA_BUNDLE` for `requests`):
+
+```python
+from gitcode_api import GitCode
+from httpx import Client
+
+with GitCode(
+    owner="SushiNinja",
+    repo="GitCode-API",
+    http_client=Client(verify="path/to/my/certificate.crt"),
+) as client:
+    repo = client.repos.get()
+    pulls = client.pulls.list(state="open", per_page=5)
+```
+
+Use `httpx.AsyncClient(verify=...)` with `AsyncGitCode` for async code.
+
+The OpenAI tool (`GitCodeOpenAITool`) and MCP helpers accept the same `client=` / `async_client=` arguments (or a shared `GitCodeLLMTool` via `tool=` with those clients set). Build `GitCode` / `AsyncGitCode` with your custom `http_client` once and pass it through so LLM tool calls reuse the same TLS settings.
 
 ## Project Status
 
