@@ -1,6 +1,7 @@
 # GitCode-API
 
-[![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F)](https://pypi.org/project/gitcode-api) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/gitcode-api?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=RED&left_text=downloads)](https://pepy.tech/projects/gitcode-api) [![CodeFactor](https://www.codefactor.io/repository/github/trenza1ore/gitcode-api/badge)](https://www.codefactor.io/repository/github/trenza1ore/gitcode-api) 
+[![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F)](https://pypi.org/project/gitcode-api) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/gitcode-api?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=RED&left_text=downloads)](https://pepy.tech/projects/gitcode-api) [![CodeFactor](https://www.codefactor.io/repository/github/trenza1ore/gitcode-api/badge)](https://www.codefactor.io/repository/github/trenza1ore/gitcode-api)
+[![Install in Cursor](https://img.shields.io/badge/Install_in-Cursor-000000?style=flat-square&logoColor=white)](https://cursor.com/en/install-mcp?name=GitCode%20API&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXRjb2RlLWFwaVttY3BdIiwiZ2l0Y29kZS1hcGkiLCJzZXJ2ZSJdLCJlbnYiOnsiR0lUQ09ERV9BQ0NFU1NfVE9LRU4iOiIke2lucHV0OmdpdGNvZGVfYWNjZXNzX3Rva2VufSJ9LCJpbnB1dHMiOlt7ImlkIjoiZ2l0Y29kZV9hY2Nlc3NfdG9rZW4iLCJ0eXBlIjoicHJvbXB0U3RyaW5nIiwiZGVzY3JpcHRpb24iOiJFbnRlciBHSVRDT0RFX0FDQ0VTU19UT0tFTiIsInBhc3N3b3JkIjp0cnVlfV19) [![Install in VS Code](https://img.shields.io/badge/Install_in-VS_Code-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
 [![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API)](https://github.com/Trenza1ore/GitCode-API) [![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API)](https://gitcode.com/SushiNinja/GitCode-API)
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md)](README.zh.md)
@@ -14,6 +15,8 @@
 - Resource groups such as `client.repos`, `client.pulls`, and `client.users`.
 - Repository defaults via `owner=` and `repo=` on the client.
 - Sphinx docs plus a mirrored GitCode REST API reference in `docs/`.
+- Provides MCP server & OpenAI tool for LLM agent usage.
+- Provide MCP service that directly installs to your IDE of choice, such as Cursor and VS Code!
 
 ## Installation
 
@@ -22,6 +25,16 @@ Install from PyPI:
 ```bash
 pip install -U gitcode-api
 ```
+
+Install the MCP server to your AI-powered IDE of choice:
+[![Install in Cursor](https://img.shields.io/badge/Install_in-Cursor-000000?style=flat-square&logoColor=white)](https://cursor.com/en/install-mcp?name=GitCode%20API&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXRjb2RlLWFwaVttY3BdIiwiZ2l0Y29kZS1hcGkiLCJzZXJ2ZSJdLCJlbnYiOnsiR0lUQ09ERV9BQ0NFU1NfVE9LRU4iOiIke2lucHV0OmdpdGNvZGVfYWNjZXNzX3Rva2VufSJ9LCJpbnB1dHMiOlt7ImlkIjoiZ2l0Y29kZV9hY2Nlc3NfdG9rZW4iLCJ0eXBlIjoicHJvbXB0U3RyaW5nIiwiZGVzY3JpcHRpb24iOiJFbnRlciBHSVRDT0RFX0FDQ0VTU19UT0tFTiIsInBhc3N3b3JkIjp0cnVlfV19)
+[![Install in VS Code](https://img.shields.io/badge/Install_in-VS_Code-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
+[![Install in VS Code Insiders](https://img.shields.io/badge/Install_in-VS_Code_Insiders-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D&quality=insiders)
+[![Install in Visual Studio](https://img.shields.io/badge/Install_in-Visual_Studio-C16FDE?style=flat-square&logo=visualstudio&logoColor=white)](https://vs-open.link/mcp-install?%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
+[![Install in Goose](https://block.github.io/goose/img/extension-install-dark.svg)](https://block.github.io/goose/extension?cmd=uvx&arg=--from%2520gitcode-api%5Bmcp%5D%2520gitcode-api%2520serve&id=GitCode%20API&name=GitCode%20API&description=MCP%20Server%20for%20GitCode%20API)
+[![Add MCP Server GitCode API to LM Studio](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=GitCode%20API&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXRjb2RlLWFwaVttY3BdIiwiZ2l0Y29kZS1hcGkiLCJzZXJ2ZSJdLCJlbnYiOnsiR0lUQ09ERV9BQ0NFU1NfVE9LRU4iOiIke2lucHV0OmdpdGNvZGVfYWNjZXNzX3Rva2VufSJ9LCJpbnB1dHMiOlt7ImlkIjoiZ2l0Y29kZV9hY2Nlc3NfdG9rZW4iLCJ0eXBlIjoicHJvbXB0U3RyaW5nIiwiZGVzY3JpcHRpb24iOiJFbnRlciBHSVRDT0RFX0FDQ0VTU19UT0tFTiIsInBhc3N3b3JkIjp0cnVlfV19)
+
+For detailed setup (including installing to services like Claude Code / Codex): see [install_mcp_server.md](install_mcp_server.md).
 
 ## Authentication
 
