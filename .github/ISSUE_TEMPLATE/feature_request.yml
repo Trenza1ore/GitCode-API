@@ -1,0 +1,52 @@
+name: Feature request
+description: Suggest REST parity, new helpers, or improvements across SDK, CLI, MCP, or OpenAI tools
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project mirrors the GitCode REST API in Python and exposes the same capabilities through several surfaces.
+        Pick every surface that should gain the behavior so maintainers can keep them aligned.
+
+  - type: dropdown
+    id: surfaces
+    attributes:
+      label: Which surfaces should this apply to?
+      description: Choose every surface that should change (multi-select).
+      multiple: true
+      options:
+        - Python SDK only (new or extended `client.*` methods and models)
+        - CLI only (`gitcode-api` / `python -m gitcode_api` wiring)
+        - MCP only (FastMCP tools / `gitcode-api serve`)
+        - OpenAI tool adapter only (Chat Completions tool schema and invocation)
+        - All of the above (keep SDK, CLI, MCP, and OpenAI tool in sync)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What you cannot do today, or what is awkward or missing?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Desired API shape, CLI flags, tool name, or behavior. Link to upstream GitCode REST docs if relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional. Other designs or workarounds you thought about.
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Examples, diagrams, or related issues.

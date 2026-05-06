@@ -1,0 +1,83 @@
+name: Bug report
+description: Report incorrect behavior in the SDK, CLI, MCP server, or OpenAI tool adapter
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please redact tokens, cookies, and private repository names where possible.
+        If the problem is a **response shape vs model / JSON Schema** mismatch, use the schema section below.
+
+  - type: dropdown
+    id: surfaces
+    attributes:
+      label: Where does this occur?
+      description: Choose every surface that applies (multi-select).
+      multiple: true
+      options:
+        - Python SDK (sync/async `GitCode` clients and `client.*` resources)
+        - CLI (`gitcode-api` or `python -m gitcode_api`)
+        - MCP (FastMCP / `gitcode-api serve` and tool registration)
+        - OpenAI tool adapter (`GitCodeOpenAITool` / Chat Completions tools)
+    validations:
+      required: true
+
+  - type: textarea
+    id: versions
+    attributes:
+      label: Environment
+      description: Versions help reproduce serialization, typing, and CLI differences.
+      placeholder: |
+        gitcode-api: 0.0.0
+        Python: 3.12
+        OS: macOS 14
+        Optional extras installed (if any): e.g. `[mcp]`
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What went wrong?
+      description: Short summary of the bug and any error message or traceback.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Steps, minimal code, or exact CLI flags. Prefer the smallest example that still fails.
+      placeholder: |
+        ```python
+        from gitcode_api import GitCode
+        with GitCode(api_key="...") as client:
+            ...
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: schema
+    attributes:
+      label: Schema / models / tool shape (optional)
+      description: |
+        Use this when the REST payload, Pydantic-style model, OpenAI function schema, or MCP tool schema does not match reality.
+        Include the resource or CLI subcommand, field names, and a small redacted JSON sample if you can.
+      placeholder: |
+        - Client method or REST path:
+        - Wrong or missing field (SDK model, OpenAI parameters, MCP input):
+        - Sample response or arguments (redacted):
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Links to GitCode API docs, related issues, or workarounds you found.
