@@ -2,6 +2,34 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.5](https://github.com/Trenza1ore/GitCode-API/compare/1.2.4...1.2.5) — 2026-05-06
+
+Changes since `1.2.4`…`1.2.5`.
+
+### Feature
+
+- **LLM integrations:** optional adapters under `gitcode_api.llm` for agent workflows — `GitCodeOpenAITool` (OpenAI Chat Completions tool shape) and **MCP** helpers (`GitCodeMCP`, `create_mcp_gitcode_api_tool`, `register_mcp_gitcode_api_tool`, `create_mcp_server`) built on FastMCP when the `mcp` extra is installed (`pip install 'gitcode-api[mcp]'`; requires Python **3.10+** for FastMCP). Heavy dependencies load lazily via `gitcode_api.llm.__getattr__`.
+
+### Refactor
+
+- Tightened typing across the package so `mypy -p gitcode_api` passes cleanly.
+
+### Chore
+
+- Expanded PyPI metadata (description, keywords, classifiers) to mention CLI and optional LLM/MCP integration.
+- Added a `changelog` URL entry in `[project.urls]` pointing at this file.
+- **`make docs`** now also builds Sphinx **epub** and **singlehtml** outputs (alongside **html**), using a shared doctree cache to avoid EPUB mimetype warnings.
+
+### Docs
+
+- README updates for MCP and OpenAI tool usage, plus an FAQ section aligned with the bundled skill.
+- Sphinx SDK guide `docs/sdk/llm_tools.rst` (OpenAI `GitCodeOpenAITool`, MCP / FastMCP helpers, shared `GitCodeLLMTool`, TLS notes) linked from `docs/sdk/index.rst` and the docs landing page; `gitcode_api.llm` modules added to the autosummary reference.
+- Added a CodeFactor badge; fixed a broken link in `README.zh.md`.
+- `AGENTS.md`: documented the preferred git commit message convention.
+- README Makefile section refreshed for the current targets.
+
+---
+
 ## [1.2.4](https://github.com/Trenza1ore/GitCode-API/compare/1.2.3...1.2.4) — 2026-05-01
 
 Changes since `1.2.3`…`1.2.4`.
