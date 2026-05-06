@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.7](https://github.com/Trenza1ore/GitCode-API/compare/1.2.6...1.2.7) — 2026-05-06
+
+Changes since `1.2.6`…`1.2.7`.
+
+### Feature
+
+- **MCP:** default instructions on the FastMCP server, plus **help resources** so clients can discover usage without calling the GitCode tool first.
+
+### Fix
+
+- **MCP / LLM tools:** API-key validation no longer requires a configured key for help-oriented behavior (aligned with the new help surface).
+- **MCP / LLM tools:** tightened return types by removing a few unnecessary `Any` annotations.
+
+### Docs
+
+- **MCP:** setup guidance for IDEs and agents, including badges/pointers for editors such as VS Code and Cursor.
+- Sphinx: fixed a spot that mixed Markdown-style markup with reST; `AGENTS.md` now warns against that pattern.
+- `AGENTS.md`: brought agent guidance in line with post-1.2.5 behavior.
+
+---
+
 ## [1.2.6](https://github.com/Trenza1ore/GitCode-API/compare/1.2.5...1.2.6) — 2026-05-06
 
 Changes since `1.2.5`…`1.2.6`.
