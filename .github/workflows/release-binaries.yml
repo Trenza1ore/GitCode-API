@@ -54,7 +54,7 @@ jobs:
         run: uv sync --frozen --group binary
 
       - name: Build executable
-        run: uv run --group binary pyinstaller --clean --noconfirm gitcode-api.spec
+        run: uv run --group binary pyinstaller --clean --noconfirm scripts/gitcode-api.spec
 
       - name: Build release zip
         run: |

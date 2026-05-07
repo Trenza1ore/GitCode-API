@@ -51,10 +51,10 @@ amend:
 
 # One-file executable: dist/gitcode-api (macOS/Linux) or dist/gitcode-api.exe (Windows).
 binary:
-	uv run --group binary pyinstaller --clean --noconfirm gitcode-api.spec
+	uv run --group binary pyinstaller --clean --noconfirm scripts/gitcode-api.spec
 
 # MCP Bundles (.mcpb) are zip archives containing a local MCP server (basically a MCP wheel for Claude)
 mcpb:
 	uv run python scripts/build_manifest.py
 	mcpb pack . gitcode.mcpb
-	@rm manifest.json
+	@rm manifest.json .mcpbignore

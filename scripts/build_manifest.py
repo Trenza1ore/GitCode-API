@@ -31,6 +31,29 @@ PLACEHOLDER_SOURCES: Dict[str, Tuple[str, str]] = {
     "{{REPOSITORY_URL}}": ("urls", "github"),
 }
 
+MCPB_IGNORE_CONTENT = '''
+.*/
+.*
+**/__pycache__/
+
+# Build
+build/
+dist/
+gitcode_api.egg-info/
+
+# Scaffoldings, I guess?
+docs/
+examples/
+tests/
+scripts/
+Makefile
+*.md
+*.mcpb
+*.spec
+test.py
+uv.lock
+'''
+
 
 def normalize_license(license_obj: Any) -> str:
     """Coerce PEP 621 ``license`` to a string for JSON."""
@@ -135,6 +158,7 @@ def write_manifest(manifest: Mapping[str, Any], output_path: Path) -> None:
     with output_path.open("w", encoding="utf-8", newline="\n") as handle:
         json.dump(manifest, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
+    (output_path.parent / ".mcpbignore").write_text(MCPB_IGNORE_CONTENT, encoding="utf-8", newline="\n")
 
 
 def main() -> None:

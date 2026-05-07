@@ -4,7 +4,7 @@
 from pathlib import Path
 
 block_cipher = None
-spec_dir = Path(SPECPATH)
+spec_dir = Path(SPECPATH).parent
 
 a = Analysis(
     [str(spec_dir / "scripts" / "pyinstaller_cli_entry.py")],
