@@ -203,11 +203,11 @@ The `gitcode_api.llm` module exposes a single logical tool, **`gitcode_api_tool`
 | `params` | Keyword arguments for the method as a JSON object; omitted or `null` is treated as `{}`. |
 | `help` | When `true`, returns formatted help (available methods or a target signature) instead of performing a normal API call where applicable. |
 
-Successful results are JSON-friendly (`APIObject.to_dict()`, base64-wrapped `bytes`, and similar). Failures are returned as objects with `"error": true` and a `"message"` string (HTTP and configuration errors include extra fields when available).
+Tool payloads are JSON-serialized strings: successes look like plain objects (`APIObject.to_dict()`, base64-wrapped `bytes`, and similar); failures use `"error": true`, a `"message"` string, and optional extra fields on HTTP/configuration errors.
 
 ### OpenAI tool (`GitCodeOpenAITool`)
 
-No extra dependencies beyond the core package. Build a Chat Completions–style tool definition with `.tool` or `.to_dict()`, then invoke the same instance with the arguments above (sync) or configure async mode for `await`.
+No extra dependencies beyond the core package. Build a Chat Completions–style tool definition with `.tool` or `.to_dict()`, then invoke the same instance with the arguments above (sync) or configure async mode for `await`. Each invocation applies `json.dumps` to payload so the return type is **always `str`**. The default keyword argument `indent=2` pretty-prints JSON; pass `indent=None` for a compact single-line string.
 
 ```python
 from gitcode_api.llm import GitCodeOpenAITool
@@ -264,8 +264,6 @@ while True:
     if not response.tool_calls:
         break
 ```
-
-Constructor options mirror `GitCode` / `AsyncGitCode`: `client=`, `async_client=`, `api_key=`, `owner=`, `repo=`, `base_url=`, `timeout=`, and `decrypt=`. For dict-driven setups that reserve the name `async`, you may pass `**{"async": True}` instead of `async_mode=True` (but not both).
 
 ### MCP server and MCP tool (FastMCP)
 

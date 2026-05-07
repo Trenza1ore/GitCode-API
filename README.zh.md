@@ -198,11 +198,11 @@ for repo in repos:
 | `params` | 传给该方法的**关键字参数**组成的 JSON 对象；省略或 `null` 视为 `{}`。 |
 | `help` | 为 `true` 时，在适用场景下返回格式化的帮助信息（可用方法或目标方法签名），而非执行常规 API 请求。 |
 
-成功时返回值为 JSON 友好结构（如 `APIObject.to_dict()`、对 `bytes` 做 base64 包装等）。失败时返回包含 `"error": true` 与 `"message"` 的对象（HTTP、配置类错误在可用时附带额外字段）。
+工具负载为经 JSON 序列化后的字符串：成功时其内容类似普通对象（如 `APIObject.to_dict()`、对 `bytes` 做 base64 包装等）；失败时使用 `"error": true`、`"message"` 字段，HTTP 或配置错误在可用时附带额外字段。
 
 ### OpenAI 工具（`GitCodeOpenAITool`）
 
-除核心包外无需额外依赖。通过 `.tool` 或 `to_dict()` 生成 Chat Completions 风格的工具定义，再用上文参数以同步方式调用同一实例；需要 `await` 时启用异步模式。
+除核心包外无需额外依赖。通过 `.tool` 或 `to_dict()` 生成 Chat Completions 风格的工具定义，再用上文参数以同步方式调用同一实例；需要 `await` 时启用异步模式。每次调用都会对负载执行 `json.dumps`，因此返回值**始终为 `str`**。默认关键字参数 `indent=2` 会美化 JSON；传入 `indent=None` 可得到紧凑的单行字符串。
 
 ```python
 from gitcode_api.llm import GitCodeOpenAITool
@@ -257,8 +257,6 @@ while True:
     if not response.tool_calls:
         break
 ```
-
-构造参数与 `GitCode` / `AsyncGitCode` 对齐：`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`。若从字典等结构组装且需保留 `async` 这个名字，可使用 `**{"async": True}` 代替 `async_mode=True`（二者勿同时使用）。
 
 ### MCP 服务与 MCP 工具（FastMCP）
 

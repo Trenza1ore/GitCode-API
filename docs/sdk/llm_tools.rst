@@ -38,9 +38,7 @@ calling:
      - When ``true``, returns formatted help (available methods or a target
        signature) instead of performing a request where applicable.
 
-Successful values are JSON-friendly (``APIObject.to_dict()``, base64-wrapped
-``bytes``, and similar). Failures are objects with ``"error": true`` and a
-``"message"`` string; HTTP and configuration errors may include extra fields.
+Tool payloads are JSON-serialized strings: successes look like plain objects (``APIObject.to_dict()``, base64-wrapped ``bytes``, and similar); failures use ``"error": true``, a ``"message"`` string, and optional extra fields on HTTP/configuration errors.
 
 OpenAI Chat Completions tool
 ----------------------------
@@ -52,7 +50,9 @@ MCP extra). It wraps :class:`~gitcode_api.llm._tool.GitCodeLLMTool` with:
   OpenAI Chat Completions ``tools`` shape (``type: function``, name
   ``gitcode_api_tool``, shared schema).
 * Callable invocation with ``(op_type, action, params=..., help=...)`` in sync
-  mode, or ``async_mode=True`` for the async path.
+  mode, or ``async_mode=True`` for the async path — each call returns JSON text
+  as ``str`` (``json.dumps`` with ``ensure_ascii=False``; default ``indent=2``,
+  override with ``indent=None`` or another width).
 
 .. code-block:: python
 
@@ -107,11 +107,6 @@ handle tool calls directly:
       print(MESSAGE_SEP)
       if not response.tool_calls:
           break
-
-Constructor arguments mirror the clients: ``client=``, ``async_client=``,
-``api_key=``, ``owner=``, ``repo=``, ``base_url=``, ``timeout=``, ``decrypt=``.
-For dict-driven setups that reserve the name ``async``, you may pass
-``**{"async": True}`` instead of ``async_mode=True`` (but not both).
 
 Shared tool instance
 --------------------
