@@ -146,7 +146,7 @@ Version information is stored in both `pyproject.toml` and `gitcode_api/version.
 
 `.github/workflows/release-mcpb.yml` builds a `gitcode-<version>.mcpb` MCP bundle on each published GitHub Release (`scripts/build_manifest.py` plus the official `mcpb` CLI) for Claude Desktop extension installs; see https://claude.com/docs/connectors/building/mcpb.
 
-For pre-release changelog sections, use the title format `## [next-version](https://github.com/Trenza1ore/GitCode-API/compare/previous-version...main) — Unreleased`, for example `## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...main) — Unreleased`. Released sections use the same compare-link style but end with the release date, such as `— 2026-05-01`.
+For pre-release changelog sections, use the title format `## [next-version](https://github.com/Trenza1ore/GitCode-API/releases/tag/<next-version>) — Unreleased`, for example `## [1.2.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.1) — Unreleased`. Released sections use the same compare-link style but end with the release date, such as `— 2026-05-01`.
 
 **Changelog voice:** `CHANGELOG.md` is **user-facing** release notes for SDK users and operators. Describe what they can do or what changed in behavior, install requirements, or public API—not internal work (skip routine test/lockfile/style bullets unless a user-visible guarantee changed). Prefer a handful of clear **Feature** / **Fix** / **Docs** lines over a commit-by-commit inventory.
 

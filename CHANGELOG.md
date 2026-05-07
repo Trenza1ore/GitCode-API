@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
-## [1.2.10](https://github.com/Trenza1ore/GitCode-API/compare/1.2.9...1.2.10) — 2026-05-07
+## [1.2.10](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.10) — 2026-05-07
 
 Changes since `1.2.9`…`1.2.10`.
 
@@ -17,7 +17,7 @@ Changes since `1.2.9`…`1.2.10`.
 
 ---
 
-## [1.2.9](https://github.com/Trenza1ore/GitCode-API/compare/1.2.8...1.2.9) — 2026-05-07
+## [1.2.9](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.9) — 2026-05-07
 
 Changes since `1.2.8`…`1.2.9`.
 
@@ -31,7 +31,7 @@ Changes since `1.2.8`…`1.2.9`.
 
 ---
 
-## [1.2.8](https://github.com/Trenza1ore/GitCode-API/compare/1.2.7...1.2.8) — 2026-05-07
+## [1.2.8](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.8) — 2026-05-07
 
 Changes since `1.2.7`…`1.2.8`.
 
@@ -50,7 +50,7 @@ Changes since `1.2.7`…`1.2.8`.
 
 ---
 
-## [1.2.7](https://github.com/Trenza1ore/GitCode-API/compare/1.2.6...1.2.7) — 2026-05-06
+## [1.2.7](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.7) — 2026-05-06
 
 Changes since `1.2.6`…`1.2.7`.
 
@@ -68,7 +68,7 @@ Changes since `1.2.6`…`1.2.7`.
 
 ---
 
-## [1.2.6](https://github.com/Trenza1ore/GitCode-API/compare/1.2.5...1.2.6) — 2026-05-06
+## [1.2.6](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.6) — 2026-05-06
 
 ### Fix
 
@@ -76,7 +76,7 @@ Changes since `1.2.6`…`1.2.7`.
 
 ---
 
-## [1.2.5](https://github.com/Trenza1ore/GitCode-API/compare/1.2.4...1.2.5) — 2026-05-06
+## [1.2.5](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.5) — 2026-05-06
 
 Changes since `1.2.4`…`1.2.5`.
 
@@ -92,7 +92,7 @@ Changes since `1.2.4`…`1.2.5`.
 
 ---
 
-## [1.2.4](https://github.com/Trenza1ore/GitCode-API/compare/1.2.3...1.2.4) — 2026-05-01
+## [1.2.4](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.4) — 2026-05-01
 
 ### Fix
 
@@ -100,7 +100,7 @@ Changes since `1.2.4`…`1.2.5`.
 
 ---
 
-## [1.2.3](https://github.com/Trenza1ore/GitCode-API/compare/1.2.2...1.2.3) — 2026-05-01
+## [1.2.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.3) — 2026-05-01
 
 ### Feature
 
@@ -108,7 +108,7 @@ Changes since `1.2.4`…`1.2.5`.
 
 ---
 
-## [1.2.2](https://github.com/Trenza1ore/GitCode-API/compare/1.2.1...1.2.2) — 2026-05-01
+## [1.2.2](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.2) — 2026-05-01
 
 Changes since `1.2.1`…`1.2.2`.
 
@@ -123,7 +123,7 @@ Changes since `1.2.1`…`1.2.2`.
 
 ---
 
-## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...1.2.1) — 2026-05-01
+## [1.2.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.1) — 2026-05-01
 
 Changes since `1.2.0`…`1.2.1`.
 
@@ -138,7 +138,7 @@ Changes since `1.2.0`…`1.2.1`.
 
 ---
 
-## [1.2.0](https://github.com/Trenza1ore/GitCode-API/compare/1.1.3...1.2.0) — 2026-05-01
+## [1.2.0](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.0) — 2026-05-01
 
 Changes since `1.1.3`…`1.2.0`.
 
@@ -159,7 +159,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ---
 
-## [1.1.3](https://github.com/Trenza1ore/GitCode-API/compare/1.1.2...1.1.3) — 2026-04-18
+## [1.1.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.1.3) — 2026-04-18
 
 ### Feature
 
@@ -171,7 +171,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ---
 
-## [1.1.2](https://github.com/Trenza1ore/GitCode-API/compare/1.1.1...1.1.2) — 2026-04-16
+## [1.1.2](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.1.2) — 2026-04-16
 
 ### Feature
 
@@ -188,7 +188,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ---
 
-## [1.1.1](https://github.com/Trenza1ore/GitCode-API/compare/1.1.0...1.1.1) — 2026-04-16
+## [1.1.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.1.1) — 2026-04-16
 
 ### Feature
 
@@ -204,7 +204,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ---
 
-## [1.1.0](https://github.com/Trenza1ore/GitCode-API/compare/v1.0.3...1.1.0) — 2026-04-16
+## [1.1.0](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.1.0) — 2026-04-16
 
 Changes since `v1.0.3`…`1.1.0`.
 
@@ -222,7 +222,7 @@ Changes since `v1.0.3`…`1.1.0`.
 
 ---
 
-## [1.0.3](https://github.com/Trenza1ore/GitCode-API/compare/v1.0.2...v1.0.3) — 2026-04-16
+## [1.0.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/v1.0.3) — 2026-04-16
 
 ### Chore
 
@@ -230,7 +230,7 @@ Changes since `v1.0.3`…`1.1.0`.
 
 ---
 
-## [1.0.2](https://github.com/Trenza1ore/GitCode-API/compare/v1.0.1...v1.0.2) — 2026-04-16
+## [1.0.2](https://github.com/Trenza1ore/GitCode-API/releases/tag/v1.0.2) — 2026-04-16
 
 ### Fix
 
@@ -238,7 +238,7 @@ Changes since `v1.0.3`…`1.1.0`.
 
 ---
 
-## [1.0.1](https://github.com/Trenza1ore/GitCode-API/compare/v1.0.0...v1.0.1) — 2026-04-16
+## [1.0.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/v1.0.1) — 2026-04-16
 
 ### Fix
 
