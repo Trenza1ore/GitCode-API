@@ -23,6 +23,8 @@ class ExampleConfig:
     username: str
     pull_state: str
     per_page: int
+    llm_api_key: str
+    llm_api_base: str
 
 
 def load_config() -> ExampleConfig:
@@ -48,4 +50,6 @@ def load_config() -> ExampleConfig:
         username=os.environ["GITCODE_USERNAME"],
         pull_state=os.getenv("GITCODE_PULL_STATE", "open") or "open",
         per_page=int(os.getenv("GITCODE_PER_PAGE", "5") or "5"),
+        llm_api_key=os.getenv("LLM_API_KEY") or "",
+        llm_api_base=os.getenv("LLM_API_BASE") or "",
     )
