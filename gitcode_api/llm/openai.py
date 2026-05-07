@@ -2,7 +2,7 @@
 
 import json
 from functools import cached_property
-from typing import Any, Coroutine, Dict, Optional, Union
+from typing import Any, Coroutine, Dict, Union
 
 from ._tool import TOOL_DESCRIPTION, TOOL_NAME, TOOL_PARAMETERS, GitCodeLLMTool
 
@@ -11,22 +11,19 @@ class GitCodeOpenAITool(GitCodeLLMTool):
     """OpenAI-compatible callable tool for invoking GitCode SDK resources.
 
     :param async_mode: When true, calling the instance returns the async tool coroutine.
-    :param kwargs: Forwarded to :class:`gitcode_api.llm.GitCodeLLMTool`. ``{"async": True}``
-        is also accepted for frameworks that construct tools from dictionaries.
+    :param indent: ``indent`` argument passed to :func:`json.dumps` when serializing
+        invocation results (default ``2``).
+    :param kwargs: Passed to :class:`gitcode_api.llm.GitCodeLLMTool` ---
+        ``client``, ``async_client``, ``api_key``, ``owner``, ``repo``, ``base_url``, ``timeout``, ``decrypt``.
     """
 
     name = TOOL_NAME
     description = TOOL_DESCRIPTION
     parameters = TOOL_PARAMETERS
 
-    def __init__(self, async_mode: Optional[bool] = None, **kwargs) -> None:
+    def __init__(self, async_mode: bool = False, indent: int = 2, **kwargs) -> None:
         """Create an OpenAI tool wrapper."""
-        async_kw = kwargs.pop("async", None)
-        if async_mode is None:
-            async_mode = bool(async_kw)
-        elif async_kw is not None:
-            raise TypeError("Pass only one of async_mode or async")
-        self.indent = kwargs.pop("indent", 2)
+        self.indent = indent
         self.async_mode = bool(async_mode)
         super().__init__(**kwargs)
 
