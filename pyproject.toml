@@ -1,6 +1,6 @@
 [project]
 name = "gitcode-api"
-version = "1.2.7"
+version = "1.2.8"
 description = "Easy to use Python SDK for the GitCode REST API. Providing builtin CLI tool, and optional LLM integration (MCP and OpenAI tool) for agents. Community-maintained."
 keywords = [
     "gitcode", "git", "devops", "api", "sdk", "python", "httpx", "client",

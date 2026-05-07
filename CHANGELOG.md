@@ -2,11 +2,18 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
-## [1.2.8](https://github.com/Trenza1ore/GitCode-API/compare/1.2.7...main) — Unreleased
+## [1.2.8](https://github.com/Trenza1ore/GitCode-API/compare/1.2.7...1.2.8) — 2026-05-07
+
+Changes since `1.2.7`…`1.2.8`.
 
 ### CI
 
 - **MCPB:** `.github/workflows/release-mcpb.yml` builds and uploads `gitcode-<version>.mcpb` to published GitHub Releases.
+
+### Chore
+
+- **MCPB:** `scripts/build_manifest.py`, tracked `scripts/manifest.json`, `.mcpbignore`, and **`make mcpb`** (manifest build plus `mcpb pack`); `tests/test_build_manifest.py` covers the manifest step.
+- **GitHub:** bug report and feature request issue templates, with wording and metadata follow-ups.
 
 ### Docs
 
