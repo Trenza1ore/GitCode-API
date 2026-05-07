@@ -194,7 +194,7 @@ Every resource group inherits a cached `methods` property from the shared resour
 
 ## LLM tools, MCP, and openJiuwen
 
-The `gitcode_api.llm` module exposes a single logical tool, **`gitcode_api_tool`**, that routes calls to sync or async SDK resources. Model-facing parameters match the JSON schema used by OpenAI-style function tools:
+The `gitcode_api.llm` module exposes a single unified tool, **`gitcode_api_tool`**, that routes calls to respective sync or async SDK resource groups. Model-facing parameters match the JSON schema used by OpenAI-style function tools:
 
 | Parameter | Role |
 | --- | --- |

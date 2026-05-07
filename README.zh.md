@@ -189,7 +189,7 @@ for repo in repos:
 
 ## LLM 工具、MCP 与 openJiuwen
 
-`gitcode_api.llm` 模块对外提供统一的逻辑工具 **`gitcode_api_tool`**，将调用路由到同步或异步 SDK 资源。面向模型的参数与 OpenAI 风格函数工具的 JSON Schema 一致：
+`gitcode_api.llm` 模块对外提供一个统一的工具 **`gitcode_api_tool`**，自动将调用路由到对应的同步或异步 SDK 资源组。面向模型的参数与 OpenAI 风格函数工具的 JSON Schema 一致：
 
 | 参数 | 作用 |
 | --- | --- |

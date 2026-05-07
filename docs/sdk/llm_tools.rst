@@ -11,10 +11,10 @@ Heavy dependencies (for example FastMCP or the `openJiuwen <https://openjiuwen.c
 Python package) load **lazily** when you import symbols from ``gitcode_api.llm``;
 only the symbols you use trigger their submodule imports.
 
-Logical tool: ``gitcode_api_tool``
+Unified tool: ``gitcode_api_tool``
 ----------------------------------
 
-All adapters expose one logical function tool named ``gitcode_api_tool``.
+All adapters expose one unified function tool named ``gitcode_api_tool``.
 Model-facing arguments follow the JSON Schema used by OpenAI-style function
 calling:
 
