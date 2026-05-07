@@ -6,6 +6,10 @@ All notable changes to this project are documented here. Release ranges link to 
 
 Changes since `1.2.7`…`1.2.8`.
 
+### Feature
+
+- **MCPB:** We now provide [MCPB bundle](https://claude.com/docs/connectors/building/mcpb) for Claude Desktop App.
+
 ### CI
 
 - **MCPB:** `.github/workflows/release-mcpb.yml` builds and uploads `gitcode-<version>.mcpb` to published GitHub Releases.
