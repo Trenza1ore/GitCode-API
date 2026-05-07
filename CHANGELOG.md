@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.8](https://github.com/Trenza1ore/GitCode-API/compare/1.2.7...main) — Unreleased
+
+### CI
+
+- **MCPB:** `.github/workflows/release-mcpb.yml` builds and uploads `gitcode-<version>.mcpb` to published GitHub Releases.
+
+### Docs
+
+- **MCP / Claude Desktop:** README, `install_mcp_server.md`, `docs/sdk/llm_tools.rst`, and `AGENTS.md` point to Anthropic’s [Build a desktop extension with MCPB](https://claude.com/docs/connectors/building/mcpb) guide for the `.mcpb` install flow.
+
+---
+
 ## [1.2.7](https://github.com/Trenza1ore/GitCode-API/compare/1.2.6...1.2.7) — 2026-05-06
 
 Changes since `1.2.6`…`1.2.7`.

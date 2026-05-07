@@ -278,6 +278,8 @@ The same server is available from the CLI as `gitcode-api serve` (see the [CLI](
 
 To share auth or clients across tools, build `GitCodeLLMTool` once (`from gitcode_api.llm._tool import GitCodeLLMTool`) and pass it as `tool=` into `GitCodeMCP`, `create_mcp_server`, `register_mcp_gitcode_api_tool`, or `create_mcp_gitcode_api_tool`.
 
+**Claude Desktop (MCPB):** published GitHub Releases include a `gitcode-<version>.mcpb` bundle for one-click installation as a Claude Desktop extension; see Anthropic’s guide, [Build a desktop extension with MCPB](https://claude.com/docs/connectors/building/mcpb). From a checkout you can run `make mcpb` (requires the [`@anthropic-ai/mcpb`](https://www.npmjs.com/package/@anthropic-ai/mcpb) CLI on your `PATH`).
+
 ## Examples
 
 Runnable examples live in `examples/`:

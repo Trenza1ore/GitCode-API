@@ -158,6 +158,8 @@ claude mcp add GitCode API uvx --from gitcode-api[mcp] gitcode-api serve
 <summary>Claude Desktop</summary>
 
 Follow the MCP install [guide](https://modelcontextprotocol.io/quickstart/user), use the standard config above.
+
+Alternatively, download the **`gitcode-<version>.mcpb`** asset from the matching [GitHub Release](https://github.com/Trenza1ore/GitCode-API/releases) and install it in Claude Desktop (double-click, drag-and-drop, or **Settings → Extensions → Advanced settings → Install Extension…**). That format is Anthropic’s MCP bundle for local servers; see [Build a desktop extension with MCPB](https://claude.com/docs/connectors/building/mcpb).
 </details>
 
 <details>

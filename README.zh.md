@@ -274,6 +274,8 @@ mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-AP
 
 若要在多个工具间共享认证或客户端，可只构造一次 `GitCodeLLMTool`（`from gitcode_api.llm._tool import GitCodeLLMTool`），再以 `tool=` 传入 `GitCodeMCP`、`create_mcp_server`、`register_mcp_gitcode_api_tool` 或 `create_mcp_gitcode_api_tool`。
 
+**Claude Desktop（MCPB）：** 每个已发布的 GitHub Release 会附带 `gitcode-<version>.mcpb`，可在 Claude Desktop 中作为扩展一键安装；说明见 Anthropic 文档 [使用 MCPB 构建桌面扩展](https://claude.com/docs/connectors/building/mcpb)。在仓库根目录执行 `make mcpb` 可在本地打包（需已安装 [`@anthropic-ai/mcpb`](https://www.npmjs.com/package/@anthropic-ai/mcpb) 并可在 `PATH` 中调用 `mcpb`）。
+
 ## 示例
 
 可运行脚本位于 `examples/`：

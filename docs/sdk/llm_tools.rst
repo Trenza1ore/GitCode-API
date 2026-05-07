@@ -165,6 +165,11 @@ Public helpers (see module reference below):
 The same server is exposed from the CLI as ``gitcode-api serve``; see
 :doc:`cli`.
 
+Published GitHub Releases also ship a ``gitcode-<version>.mcpb`` bundle for
+`Claude Desktop <https://claude.com/docs/connectors/building/mcpb>`__ extension
+installs (local MCP via MCPB). A checkout can run ``make mcpb`` when the
+official ``mcpb`` CLI is available.
+
 Corporate TLS / custom ``httpx`` clients
 ----------------------------------------
 

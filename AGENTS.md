@@ -45,6 +45,7 @@ The `Makefile` currently defines:
 - `docstring`: runs `pydocstyle` against `gitcode_api/` to check PEP 257/reST-style docstrings.
 - `release`: bumps `gitcode_api/version.txt`, `pyproject.toml`, locks, commits, tags, and pushes. Do not run it unless the user explicitly asks for a release.
 - `binary`: runs PyInstaller from `gitcode-api.spec`; produces `dist/gitcode-api` (Unix) or `dist/gitcode-api.exe` (Windows). Build on each target OS; the binary embeds the Python used to build it. On GitHub Release publish, `release-binaries.yml` builds those platforms and uploads a zip per runner (binary, `.claude/`, `README.md`, `README.zh.md`) via `scripts/package_release_zip.py`.
+- `mcpb`: runs `scripts/build_manifest.py` then `mcpb pack` to produce `gitcode.mcpb` (requires the `@anthropic-ai/mcpb` CLI on `PATH`). Claude Desktop bundle UX is documented by Anthropic at https://claude.com/docs/connectors/building/mcpb.
 
 Project metadata and tool configuration live in `pyproject.toml`:
 
@@ -142,6 +143,8 @@ The `.claude/skills/gitcode-api/` directory is a packaged agent skill for using 
 ## Release And Publishing Notes
 
 Version information is stored in both `pyproject.toml` and `gitcode_api/version.txt`. Releases are published to PyPI by `.github/workflows/python-publish.yml` when a GitHub Release is published, using trusted publishing.
+
+`.github/workflows/release-mcpb.yml` builds a `gitcode-<version>.mcpb` MCP bundle on each published GitHub Release (`scripts/build_manifest.py` plus the official `mcpb` CLI) for Claude Desktop extension installs; see https://claude.com/docs/connectors/building/mcpb.
 
 For pre-release changelog sections, use the title format `## [next-version](https://github.com/Trenza1ore/GitCode-API/compare/previous-version...main) — Unreleased`, for example `## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...main) — Unreleased`. Released sections use the same compare-link style but end with the release date, such as `— 2026-05-01`.
 
