@@ -16,7 +16,7 @@ Changes since `1.2.10`…`1.2.11`.
 - README and SDK LLM guide use consistent “unified tool” wording for `gitcode_api_tool`.
 - Changelog section titles point at GitHub release pages; markdown structure cleaned up.
 
-### Contributing
+### File Layout Improvement
 
 - PyInstaller spec moved to `scripts/gitcode-api.spec`; `make binary` and the release-binaries workflow call that path (repo root stays simpler).
 - `scripts/build_manifest.py` emits a transient ``.mcpbignore`` for MCP bundle packing; tracked top-level `.mcpbignore` was removed — `make mcpb` still removes generated artifacts afterward.
