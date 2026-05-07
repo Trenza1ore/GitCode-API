@@ -76,7 +76,7 @@ issues = "https://github.com/Trenza1ore/GitCode-API/issues"
 documentation = "https://gitcode-api.readthedocs.io"
 gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
 github = "https://github.com/Trenza1ore/GitCode-API"
-homepage = "https://linktr.ee/Hugoooo"
+homepage = "https://linktr.ee/gitcode_api"
 author = "https://hugohuang.com"
 
 [project.scripts]
