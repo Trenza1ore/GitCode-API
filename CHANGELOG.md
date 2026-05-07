@@ -8,12 +8,12 @@ Changes since `1.2.9`…`1.2.10`.
 
 ### Feature
 
-- **OpenAI tool (**`GitCodeOpenAITool`**):** Invocation results are now **JSON strings** (`str`) from `json.dumps` with `ensure_ascii=False`, so payloads fit Chat Completions **tool** message `content` without extra serialization. `**indent`** controls formatting (default `**2**`; pass `**None**` for compact single-line JSON).
-- **OpenAI tool constructor:** `**async_mode`** defaults to `**False**`. Use `**async_mode=True**` and `**await**` the coroutine returned from the instance — the `**async**` keyword alias for async mode is no longer accepted on `GitCodeOpenAITool`.
+- **OpenAI tool (`GitCodeOpenAITool`):** Invocation results are now **JSON strings** (`str`) from `json.dumps` with `ensure_ascii=False`, so payloads fit Chat Completions **tool** message `content` without extra serialization. `indent` controls formatting (default `2`; pass `None` for compact single-line JSON).
+- **OpenAI tool constructor:** `async_mode` defaults to `False`. Use `async_mode=True` and `await` the coroutine returned from the instance — the `async` keyword alias for async mode is no longer accepted on `GitCodeOpenAITool`.
 
 ### Docs
 
-- README (English and Chinese), SDK LLM guide, and new runnable example `**examples/openai_tool_call.py**` updated for string tool results and a multi-turn Chat Completions loop.
+- README (English and Chinese), SDK LLM guide, and new runnable example `examples/openai_tool_call.py` updated for string tool results and a multi-turn Chat Completions loop.
 
 ---
 
@@ -42,7 +42,7 @@ Changes since `1.2.7`…`1.2.8`.
 ### Docs
 
 - README, MCP install notes, and the SDK LLM guide link to Anthropic’s MCPB guide for the `.mcpb` flow.
-- To build the same bundle yourself, run `**make mcpb`** with the official `mcpb` CLI on your `PATH`.
+- To build the same bundle yourself, run `make mcpb` with the official `mcpb` CLI on your `PATH`.
 
 ### Contributing
 
@@ -129,7 +129,7 @@ Changes since `1.2.0`…`1.2.1`.
 
 ### Feature
 
-- `**AGENTS.md`:** In-repo guidance for AI-assisted work on this SDK.
+- `AGENTS.md`: In-repo guidance for AI-assisted work on this SDK.
 - **Bundled skill:** Clearer GitCode API workflows for Cursor and similar tools; improved helper script for skill-driven CLI use.
 
 ### Docs
@@ -144,7 +144,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ### Feature
 
-- **Discovery:** Resource namespaces expose `**methods`** (list callable API operations) and `**method_signature`** (inspect parameters and returns) for runtime introspection.
+- **Discovery:** Resource namespaces expose `methods` (list callable API operations) and `method_signature` (inspect parameters and returns) for runtime introspection.
 - **Example:** `examples/inspect_resource_group_methods.py` shows how to use those helpers.
 
 ### Fix
@@ -154,7 +154,7 @@ Changes since `1.1.3`…`1.2.0`.
 ### Docs
 
 - CLI usage documented in the main docs site; REST “quickstart” page removed in favor of SDK-first navigation.
-- `**pulls.create`:** Docstring clarified for fork-based pull requests.
+- `pulls.create`: Docstring clarified for fork-based pull requests.
 - **Terminology:** Docs and bundled skill use **resource group** consistently.
 
 ---
@@ -163,7 +163,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ### Feature
 
-- `**gitcode-api` CLI** (experimental): command-line access to SDK operations.
+- `gitcode-api CLI` (experimental): command-line access to SDK operations.
 
 ### Docs
 
@@ -210,7 +210,7 @@ Changes since `v1.0.3`…`1.1.0`.
 
 ### Feature
 
-- **Examples:** Refreshed; `**python-dotenv` is no longer a required dependency** of the package (load env in your own app or examples as you prefer).
+- **Examples:** Refreshed; `python-dotenv` is no longer a required dependency of the package (load env in your own app or examples as you prefer).
 
 ### Style
 
@@ -257,9 +257,8 @@ Initial published release on PyPI.
 
 ### Feature
 
-- `**gitcode-api`:** First public Python SDK for the GitCode REST API, built on HTTPX with sync and async clients.
+- `gitcode-api`: First public Python SDK for the GitCode REST API, built on HTTPX with sync and async clients.
 
 ### Docs
 
 - README and publishing metadata for the launch.
-
