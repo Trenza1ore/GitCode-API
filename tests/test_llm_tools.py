@@ -1,3 +1,4 @@
+import importlib.util
 from typing import Any, Dict
 
 import httpx
@@ -7,6 +8,7 @@ from gitcode_api.llm import (
     GitCodeOpenAITool,
     create_mcp_gitcode_api_tool,
     create_mcp_server,
+    create_openjiuwen_gitcode_api_tool,
     register_mcp_gitcode_api_tool,
 )
 from gitcode_api.llm._tool import (
@@ -130,12 +132,14 @@ def test_help_resource_index_body() -> None:
 @pytest.mark.asyncio
 async def test_create_mcp_server_registers_help_resources() -> None:
     mcp = create_mcp_server()
-    static = await mcp.list_resources()
-    templates = await mcp.list_resource_templates()
+    static = await mcp._list_resources_mcp()
+    templates = await mcp._list_resource_templates_mcp()
     assert any(str(r.uri) == "gitcode-api://help" for r in static)
-    assert any("{op_type}" in str(t.uri_template) for t in templates)
-    read = await mcp.read_resource("gitcode-api://help/pulls")
-    payload = read.contents[0].content
+    assert any(
+        "{op_type}" in str(getattr(t, "uri_template", None) or getattr(t, "uriTemplate", None)) for t in templates
+    )
+    read = await mcp._read_resource_mcp("gitcode-api://help/pulls")
+    payload = read[0].content
     assert "Resource: pulls" in payload
 
 
@@ -156,3 +160,53 @@ def test_mcp_registers_with_existing_server() -> None:
 
     assert registered.__name__ == "gitcode_api_tool"
     assert server.registered[0]["name"] == "gitcode_api_tool"
+
+
+@pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is not None, reason="openjiuwen is installed")
+def test_create_openjiuwen_gitcode_api_tool_raises_when_openjiuwen_missing() -> None:
+    with pytest.raises(ImportError, match="openjiuwen|openJiuwen"):
+        create_openjiuwen_gitcode_api_tool(api_key="test-token")
+
+
+@pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is None, reason="openjiuwen not installed")
+def test_create_openjiuwen_gitcode_api_tool_exposes_tool_card() -> None:
+    lf = create_openjiuwen_gitcode_api_tool(api_key="test-token")
+    assert lf.card.name == "gitcode_api_tool"
+    assert "op_type" in lf.card.input_params.get("properties", {})
+
+
+@pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is None, reason="openjiuwen not installed")
+def test_create_openjiuwen_gitcode_api_tool_custom_name_and_description() -> None:
+    lf = create_openjiuwen_gitcode_api_tool(
+        api_key="test-token",
+        name="my_gitcode",
+        description="Custom GitCode tool copy.",
+    )
+    assert lf.card.name == "my_gitcode"
+    assert lf.card.description == "Custom GitCode tool copy."
+
+
+@pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is None, reason="openjiuwen not installed")
+@pytest.mark.asyncio
+async def test_create_openjiuwen_gitcode_api_tool_invoke(async_client_factory: Any) -> None:
+    captured: Dict[str, Any] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured["url"] = str(request.url)
+        return httpx.Response(200, json={"full_name": "SushiNinja/GitCode-API"})
+
+    client, http_client = async_client_factory(handler)
+    try:
+        lf = create_openjiuwen_gitcode_api_tool(async_client=client)
+        result = await lf.invoke(
+            {
+                "op_type": "repos",
+                "action": "get",
+                "params": {"owner": "SushiNinja", "repo": "GitCode-API"},
+            }
+        )
+    finally:
+        await http_client.aclose()
+
+    assert "/repos/SushiNinja/GitCode-API" in captured["url"]
+    assert result == {"full_name": "SushiNinja/GitCode-API"}

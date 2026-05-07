@@ -4,6 +4,7 @@ from importlib import import_module
 from typing import TYPE_CHECKING, Any, Dict
 
 if TYPE_CHECKING:
+    from .jiuwen import create_openjiuwen_gitcode_api_tool
     from .mcp import (
         GitCodeMCP,
         create_mcp_gitcode_api_tool,
@@ -21,6 +22,7 @@ _IMPORT_MAP = {
     "register_mcp_gitcode_api_tool": ".mcp",
     "register_mcp_help_resources": ".mcp",
     "GitCodeOpenAITool": ".openai",
+    "create_openjiuwen_gitcode_api_tool": ".jiuwen",
 }
 
 _IMPORT_CACHE: Dict[str, Any] = {}
@@ -54,4 +56,5 @@ __all__ = [
     "create_mcp_server",
     "register_mcp_gitcode_api_tool",
     "register_mcp_help_resources",
+    "create_openjiuwen_gitcode_api_tool",
 ]
