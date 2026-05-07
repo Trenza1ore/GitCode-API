@@ -17,6 +17,7 @@
 - 本仓库含 Sphinx 文档与 GitCode REST API 参考镜像。
 - 提供面向 LLM 智能体的 MCP 服务与 OpenAI 工具。
 - 提供可一键安装到常用 AI IDE（如 Cursor、VS Code）的 MCP 服务。
+- 提供可直接安装至 Claude 桌面应用使用的 [mcpb包](https://www.anthropic.com/engineering/desktop-extensions)，在 [Release 页面](https://github.com/Trenza1ore/GitCode-API/releases/latest)下载。
 
 ## 安装
 
@@ -31,7 +32,6 @@ pip install -U gitcode-api
 [![Install in VS Code](https://img.shields.io/badge/Install_in-VS_Code-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
 [![Install in VS Code Insiders](https://img.shields.io/badge/Install_in-VS_Code_Insiders-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D&quality=insiders)
 [![Install in Visual Studio](https://img.shields.io/badge/Install_in-Visual_Studio-C16FDE?style=flat-square&logo=visualstudio&logoColor=white)](https://vs-open.link/mcp-install?%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
-[![Install in Goose](https://block.github.io/goose/img/extension-install-dark.svg)](https://block.github.io/goose/extension?cmd=uvx&arg=--from%2520gitcode-api%5Bmcp%5D%2520gitcode-api%2520serve&id=GitCode%20API&name=GitCode%20API&description=MCP%20Server%20for%20GitCode%20API)
 [![Add MCP Server GitCode API to LM Studio](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=GitCode%20API&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXRjb2RlLWFwaVttY3BdIiwiZ2l0Y29kZS1hcGkiLCJzZXJ2ZSJdLCJlbnYiOnsiR0lUQ09ERV9BQ0NFU1NfVE9LRU4iOiIke2lucHV0OmdpdGNvZGVfYWNjZXNzX3Rva2VufSJ9LCJpbnB1dHMiOlt7ImlkIjoiZ2l0Y29kZV9hY2Nlc3NfdG9rZW4iLCJ0eXBlIjoicHJvbXB0U3RyaW5nIiwiZGVzY3JpcHRpb24iOiJFbnRlciBHSVRDT0RFX0FDQ0VTU19UT0tFTiIsInBhc3N3b3JkIjp0cnVlfV19)
 
 详细安装说明（包括安装到 Claude Code / Codex 等服务）见 [install_mcp_server.md](install_mcp_server.md)。
