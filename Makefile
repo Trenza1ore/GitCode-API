@@ -37,7 +37,8 @@ release:
 	printf '%s\n' "$(VERSION)" > gitcode_api/version.txt
 	sed -i '' 's/^version = ".*"/version = "$(VERSION)"/' pyproject.toml
 	uv lock
-	git add pyproject.toml uv.lock gitcode_api/version.txt
+	uv python scripts/mutate_badge.py
+	git add pyproject.toml uv.lock gitcode_api/version.txt README*.md
 	git commit -m "chore: bump version to $(VERSION)"
 	git tag -a "$(VERSION)" -m "$(VERSION)"
 	git push --tags
@@ -58,3 +59,7 @@ mcpb:
 	uv run python scripts/build_manifest.py
 	mcpb pack . gitcode.mcpb
 	@rm manifest.json .mcpbignore
+
+# Mutate badge with uuid to force refresh GitCode cache
+badge:
+	uv python scripts/mutate_badge.py
