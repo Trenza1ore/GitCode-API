@@ -1,4 +1,4 @@
-.PHONY: docs docs-clean format test release docstring amend binary mcpb
+.PHONY: docs docs-clean format test release lint docstring amend binary mcpb
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build
 DOCS_SOURCE_DIR := docs
