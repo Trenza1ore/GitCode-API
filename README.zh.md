@@ -6,7 +6,7 @@
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)](README.md)
 
-`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组组织的调用方式，以及轻量响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。`gitcode_api.llm` 还提供 OpenAI 格式的工具以及 MCP 服务，便于智能体复用同一套资源型 API。
+`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组组织的调用方式，以及轻量响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。`gitcode_api.llm` 还提供 OpenAI 格式的工具、MCP 服务，以及 [openJiuwen](https://openjiuwen.com) 格式的工具集成，便于智能体复用同一套资源型 API。
 
 ## 项目定位
 
@@ -15,7 +15,7 @@
 - 通过 `client.repos`、`client.pulls`、`client.users` 等资源组挂载具体 API。
 - 可在构造客户端时设置 `owner=`、`repo=`，作为仓库相关接口的默认上下文。
 - 本仓库含 Sphinx 文档与 GitCode REST API 参考镜像。
-- 提供面向 LLM 智能体的 MCP 服务与 OpenAI 工具。
+- 提供面向 LLM 智能体的 MCP 服务、OpenAI 工具，以及 [openJiuwen](https://openjiuwen.com) 工具。
 - 提供可一键安装到常用 AI IDE（如 Cursor、VS Code）的 MCP 服务。
 - 提供可直接安装至 Claude 桌面应用使用的 [mcpb包](https://www.anthropic.com/engineering/desktop-extensions)，在 [Release 页面](https://github.com/Trenza1ore/GitCode-API/releases/latest)下载。
 
@@ -187,7 +187,7 @@ for repo in repos:
 
 每个资源组（例如 `client.pulls`、`client.repos`）在共享基类上带有缓存属性 `methods`：值为该组**对外可调用的方法名**组成的 `tuple`。顺序由 SDK 根据方法名中下划线分段生成排序键决定，**并非**对完整方法名做字典序排列。不包含以下划线开头的名称，也不包含内省辅助方法 `methods` 与 `method_signature`。适合在交互环境或工具链中快速查看某组暴露了哪些接口。若需要单个方法的参数与返回类型，可调用 `client.pulls.method_signature("list_issues")`（基于 `inspect.signature` 的缓存字符串，注解中的 `gitcode_api._models.` 前缀会被去掉）。
 
-## LLM 工具与 MCP
+## LLM 工具、MCP 与 openJiuwen
 
 `gitcode_api.llm` 模块对外提供统一的逻辑工具 **`gitcode_api_tool`**，将调用路由到同步或异步 SDK 资源。面向模型的参数与 OpenAI 风格函数工具的 JSON Schema 一致：
 
@@ -274,6 +274,24 @@ mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-AP
 
 若要在多个工具间共享认证或客户端，可只构造一次 `GitCodeLLMTool`（`from gitcode_api.llm._tool import GitCodeLLMTool`），再以 `tool=` 传入 `GitCodeMCP`、`create_mcp_server`、`register_mcp_gitcode_api_tool` 或 `create_mcp_gitcode_api_tool`。
 
+### openJiuwen（`LocalFunction`）
+
+[openJiuwen](https://openjiuwen.com) 是开放的智能体平台。另行安装 `openjiuwen` 包（**Python 3.11+**）后，可使用 `create_openjiuwen_gitcode_api_tool` 获得与 OpenAI 适配器相同的 `op_type` / `action` / `params` / `help` 约定的 `LocalFunction`。调用方式为 **仅异步**（`await lf.invoke({...})`）。
+
+```bash
+pip install openjiuwen
+```
+
+```python
+from gitcode_api.llm import create_openjiuwen_gitcode_api_tool
+
+lf = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
+# lf.card — 名称、描述、input_params
+# await lf.invoke({"op_type": "repos", "action": "get", "params": {}})
+```
+
+可用 `name=`、`description=` 覆盖默认工具卡。其余构造参数与 `GitCode` / `AsyncGitCode` 一致（`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`）。
+
 **Claude Desktop（MCPB）：** 每个已发布的 GitHub Release 会附带 `gitcode-<version>.mcpb`，可在 Claude Desktop 中作为扩展一键安装；说明见 Anthropic 文档 [使用 MCPB 构建桌面扩展](https://claude.com/docs/connectors/building/mcpb)。在仓库根目录执行 `make mcpb` 可在本地打包（需已安装 [`@anthropic-ai/mcpb`](https://www.npmjs.com/package/@anthropic-ai/mcpb) 并可在 `PATH` 中调用 `mcpb`）。
 
 ## 示例
@@ -337,7 +355,7 @@ with GitCode(
 
 异步场景请对 `AsyncGitCode` 使用 `httpx.AsyncClient(verify=...)`。
 
-OpenAI 工具（`GitCodeOpenAITool`）与 MCP 相关接口同样支持传入已配置好的 `client=` / `async_client=`（或通过 `tool=` 传入已设置上述客户端的 `GitCodeLLMTool`）。先用自定义 `http_client` 构造 `GitCode` / `AsyncGitCode`，再传入这些适配器，LLM 工具调用会沿用同一套 TLS 与证书配置，不必另做一套处理。
+OpenAI 工具（`GitCodeOpenAITool`）、MCP 相关接口与 `create_openjiuwen_gitcode_api_tool` 同样支持传入已配置好的 `client=` / `async_client=`（OpenAI 与 MCP 还可通过 `tool=` 传入已设置上述客户端的 `GitCodeLLMTool`）。先用自定义 `http_client` 构造 `GitCode` / `AsyncGitCode`，再传入这些适配器，LLM 工具调用会沿用同一套 TLS 与证书配置，不必另做一套处理。
 
 ## 项目状态
 

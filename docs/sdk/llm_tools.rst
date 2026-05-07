@@ -1,5 +1,5 @@
-LLM tools: OpenAI and MCP
-=========================
+LLM tools: OpenAI, MCP, and openJiuwen
+======================================
 
 .. versionadded:: 1.2.5
 
@@ -7,9 +7,9 @@ The ``gitcode_api.llm`` package bundles optional adapters so agents can call the
 same resource-oriented API as :class:`~gitcode_api.GitCode` and
 :class:`~gitcode_api.AsyncGitCode`, without duplicating endpoint logic.
 
-Heavy dependencies (for example FastMCP) load **lazily** when you import symbols
-from ``gitcode_api.llm``; only the symbols you use trigger their submodule
-imports.
+Heavy dependencies (for example FastMCP or the `openJiuwen <https://openjiuwen.com>`__
+Python package) load **lazily** when you import symbols from ``gitcode_api.llm``;
+only the symbols you use trigger their submodule imports.
 
 Logical tool: ``gitcode_api_tool``
 ----------------------------------
@@ -165,6 +165,35 @@ Public helpers (see module reference below):
 The same server is exposed from the CLI as ``gitcode-api serve``; see
 :doc:`cli`.
 
+openJiuwen ``LocalFunction``
+----------------------------
+
+`openJiuwen <https://openjiuwen.com>`__ is an open source agent platform. When the
+separate ``openjiuwen`` distribution is installed (**Python 3.11+**),
+:func:`~gitcode_api.llm.jiuwen.create_openjiuwen_gitcode_api_tool` wraps the
+same :class:`~gitcode_api.llm._tool.GitCodeLLMTool` logic in an openJiuwen
+``LocalFunction`` that exposes the standard ``op_type`` /
+``action`` / ``params`` / ``help`` schema. The implementation is **async
+only**: use ``await jiuwen_tool.invoke(...)`` (or your runtime’s equivalent) rather than
+calling the underlying coroutine synchronously.
+
+.. code-block:: bash
+
+   pip install openjiuwen
+
+.. code-block:: python
+
+   from gitcode_api.llm import create_openjiuwen_gitcode_api_tool
+
+   jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
+   # jiuwen_tool.card.name, jiuwen_tool.card.description, jiuwen_tool.card.input_params — tool metadata
+   # await jiuwen_tool.invoke({"op_type": "repos", "action": "get", "params": {}})
+
+Constructor arguments mirror the clients: ``client=``, ``async_client=``,
+``api_key=``, ``owner=``, ``repo=``, ``base_url=``, ``timeout=``, ``decrypt=``,
+plus optional ``name=`` and ``description=`` for the tool card (defaults match
+``gitcode_api_tool`` and the shared description).
+
 Published GitHub Releases also ship a ``gitcode-<version>.mcpb`` bundle for
 `Claude Desktop <https://claude.com/docs/connectors/building/mcpb>`__ extension
 installs (local MCP via MCPB). A checkout can run ``make mcpb`` when the
@@ -175,9 +204,11 @@ Corporate TLS / custom ``httpx`` clients
 
 If you need a custom CA or proxy settings, build :class:`~gitcode_api.GitCode` /
 :class:`~gitcode_api.AsyncGitCode` with ``http_client=`` / ``async_client=`` and
-pass those instances into ``GitCodeOpenAITool`` or MCP helpers via ``client=`` /
-``async_client=``, or pass a preconfigured :class:`~gitcode_api.llm._tool.GitCodeLLMTool`
-via ``tool=``, so tool calls reuse the same TLS stack as the rest of your app.
+pass those instances into ``GitCodeOpenAITool``, MCP helpers, or
+:func:`~gitcode_api.llm.jiuwen.create_openjiuwen_gitcode_api_tool` via
+``client=`` / ``async_client=``, or pass a preconfigured
+:class:`~gitcode_api.llm._tool.GitCodeLLMTool` via ``tool=`` into the OpenAI /
+MCP adapters, so tool calls reuse the same TLS stack as the rest of your app.
 
 Further reading
 ---------------

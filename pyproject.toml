@@ -1,10 +1,10 @@
 [project]
 name = "gitcode-api"
 version = "1.2.8"
-description = "Easy to use Python SDK for the GitCode REST API. Providing builtin CLI tool, and optional LLM integration (MCP and OpenAI tool) for agents. Community-maintained."
+description = "Easy to use Python SDK for the GitCode REST API. Providing builtin CLI tool, and optional LLM integration (MCP, OpenAI tool, and openJiuwen tool) for agents. Community-maintained."
 keywords = [
     "gitcode", "git", "devops", "api", "sdk", "python", "httpx", "client",
-    "mcp", "agent", "fastmcp", "llm", "mcp client", "mcp server", "model context protocol",
+    "mcp", "agent", "fastmcp", "llm", "openjiuwen", "mcp client", "mcp server", "model context protocol",
 ]
 readme = "README.md"
 requires-python = ">=3.9,<4"

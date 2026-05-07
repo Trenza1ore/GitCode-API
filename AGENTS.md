@@ -14,7 +14,7 @@ Primary source paths:
 - `gitcode_api/_base_resource.py`: shared resource introspection (`methods`, `method_signature`).
 - `gitcode_api/resources/`: sync and async REST resource groups.
 - `gitcode_api/_models.py`: dictionary-backed response models and typed parameter payloads.
-- `gitcode_api/llm/`: optional adapters — `GitCodeOpenAITool`, `GitCodeMCP`, `create_mcp_*` / `register_mcp_*` / `create_mcp_server`; shared logic in `gitcode_api/llm/_tool.py` (`GitCodeLLMTool`). Public names load lazily through `gitcode_api.llm.__getattr__`.
+- `gitcode_api/llm/`: optional adapters — `GitCodeOpenAITool`, `GitCodeMCP`, `create_openjiuwen_gitcode_api_tool` (openJiuwen `LocalFunction`, requires `openjiuwen` on Python 3.11+), `create_mcp_*` / `register_mcp_*` / `create_mcp_server`; shared logic in `gitcode_api/llm/_tool.py` (`GitCodeLLMTool`). Public names load lazily through `gitcode_api.llm.__getattr__`.
 - `gitcode_api/cli.py`: installed CLI entry point, exposed as `gitcode-api`.
 - `tests/`: unit tests and docs-backed endpoint/response checks.
 - `docs/`: Sphinx documentation.

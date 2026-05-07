@@ -6,7 +6,7 @@
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md)](README.zh.md)
 
-`gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, repository-scoped helpers, and lightweight response models so you can work with GitCode from Python without hand-writing raw HTTP requests. The `gitcode_api.llm` module adds an OpenAI-style function tool and MCP service so agents can reuse the same resource-oriented API.
+`gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, repository-scoped helpers, and lightweight response models so you can work with GitCode from Python without hand-writing raw HTTP requests. The `gitcode_api.llm` module adds an OpenAI-style function tool, an MCP service, and an [openJiuwen](https://openjiuwen.com) tool integration so agents can reuse the same resource-oriented API.
 
 ## Why This Project
 
@@ -15,7 +15,7 @@
 - Resource groups such as `client.repos`, `client.pulls`, and `client.users`.
 - Repository defaults via `owner=` and `repo=` on the client.
 - Sphinx docs plus a mirrored GitCode REST API reference in `docs/`.
-- Provides MCP server & OpenAI tool for LLM agent usage.
+- Provides MCP server, OpenAI tool, and [openJiuwen](https://openjiuwen.com) tool for LLM agent usage.
 - Provide MCP service that directly installs to your IDE of choice, such as Cursor and VS Code!
 - Provides an [mcpb bundle](https://www.anthropic.com/engineering/desktop-extensions) you can install directly in the Claude desktop app; download it from [Release](https://github.com/Trenza1ore/GitCode-API/releases/latest).
 
@@ -192,7 +192,7 @@ Both `GitCode` and `AsyncGitCode` expose:
 
 Every resource group inherits a cached `methods` property from the shared resource base: a `tuple` of public callable names in stable SDK order (underscore-segment sort key, not plain A–Z on the full identifier). Private names and the introspection helpers `methods` and `method_signature` are omitted. For example, `client.pulls.methods` helps with discovery or tooling without reading the full manual list. For one method’s parameters and return type, call `client.pulls.method_signature("list_issues")` (a cached string from `inspect.signature`, with `gitcode_api._models.` stripped from annotations).
 
-## LLM tools and MCP
+## LLM tools, MCP, and openJiuwen
 
 The `gitcode_api.llm` module exposes a single logical tool, **`gitcode_api_tool`**, that routes calls to sync or async SDK resources. Model-facing parameters match the JSON schema used by OpenAI-style function tools:
 
@@ -279,6 +279,24 @@ The same server is available from the CLI as `gitcode-api serve` (see the [CLI](
 
 To share auth or clients across tools, build `GitCodeLLMTool` once (`from gitcode_api.llm._tool import GitCodeLLMTool`) and pass it as `tool=` into `GitCodeMCP`, `create_mcp_server`, `register_mcp_gitcode_api_tool`, or `create_mcp_gitcode_api_tool`.
 
+### openJiuwen (`LocalFunction`)
+
+[openJiuwen](https://openjiuwen.com) is an open agent platform. With the separate `openjiuwen` package installed (**Python 3.11+**), `create_openjiuwen_gitcode_api_tool` returns an openJiuwen `LocalFunction` that uses the same `op_type` / `action` / `params` / `help` contract as the OpenAI adapter. Invocation is async-only (`await lf.invoke({...})`).
+
+```bash
+pip install openjiuwen
+```
+
+```python
+from gitcode_api.llm import create_openjiuwen_gitcode_api_tool
+
+lf = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
+# lf.card — name, description, input_params
+# await lf.invoke({"op_type": "repos", "action": "get", "params": {}})
+```
+
+Optional `name=` and `description=` override the default tool card. Constructor options otherwise mirror `GitCode` / `AsyncGitCode` (`client=`, `async_client=`, `api_key=`, `owner=`, `repo=`, `base_url=`, `timeout=`, `decrypt=`).
+
 **Claude Desktop (MCPB):** published GitHub Releases include a `gitcode-<version>.mcpb` bundle for one-click installation as a Claude Desktop extension; see Anthropic’s guide, [Build a desktop extension with MCPB](https://claude.com/docs/connectors/building/mcpb). From a checkout you can run `make mcpb` (requires the [`@anthropic-ai/mcpb`](https://www.npmjs.com/package/@anthropic-ai/mcpb) CLI on your `PATH`).
 
 ## Examples
@@ -342,7 +360,7 @@ with GitCode(
 
 Use `httpx.AsyncClient(verify=...)` with `AsyncGitCode` for async code.
 
-The OpenAI tool (`GitCodeOpenAITool`) and MCP helpers accept the same `client=` / `async_client=` arguments (or a shared `GitCodeLLMTool` via `tool=` with those clients set). Build `GitCode` / `AsyncGitCode` with your custom `http_client` once and pass it through so LLM tool calls reuse the same TLS settings.
+The OpenAI tool (`GitCodeOpenAITool`), MCP helpers, and `create_openjiuwen_gitcode_api_tool` accept the same `client=` / `async_client=` arguments (OpenAI and MCP also accept a shared `GitCodeLLMTool` via `tool=`). Build `GitCode` / `AsyncGitCode` with your custom `http_client` once and pass it through so LLM tool calls reuse the same TLS settings.
 
 ## Project Status
 

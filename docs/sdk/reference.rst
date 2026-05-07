@@ -24,4 +24,5 @@ Module index
    gitcode_api.resources.repositories
    gitcode_api.llm
    gitcode_api.llm.openai
+   gitcode_api.llm.jiuwen
    gitcode_api.llm.mcp

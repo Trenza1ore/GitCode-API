@@ -22,8 +22,9 @@ Highlights
 - Shared repository context via ``owner=`` and ``repo=`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
 - Matching sync and async resource surfaces.
-- Optional :doc:`llm_tools` adapters: OpenAI Chat Completions tool shape and MCP
-  server helpers (FastMCP) for agent workflows.
+- Optional :doc:`llm_tools` adapters: OpenAI Chat Completions tool shape, MCP
+  server helpers (FastMCP), and `openJiuwen <https://openjiuwen.com>`__ ``LocalFunction``
+  when ``openjiuwen`` is installed.
 - Each resource group exposes a cached ``methods`` property (public
   callable names in stable SDK order) and ``method_signature(name)`` for a
   single method’s signature string, for runtime introspection.
@@ -42,6 +43,13 @@ For **MCP / FastMCP** helpers (Python **3.10+**), install the optional extra:
 .. code-block:: bash
 
    pip install 'gitcode-api[mcp]'
+
+For **openJiuwen** ``LocalFunction`` integration (see :doc:`llm_tools`), install
+the upstream ``openjiuwen`` package separately (**Python 3.11+**):
+
+.. code-block:: bash
+
+   pip install openjiuwen
 
 For local development, install the project and optional documentation
 dependencies with ``uv``:
@@ -113,5 +121,6 @@ Next steps
 - See :doc:`quickstart` for common usage patterns.
 - See :doc:`cli` for the command-line entry point and examples.
 - See :doc:`client_api` for the client-oriented chained API reference.
-- See :doc:`llm_tools` for OpenAI tool definitions and MCP (FastMCP) usage.
+- See :doc:`llm_tools` for OpenAI tool definitions, MCP (FastMCP), and openJiuwen
+  usage.
 - See :doc:`reference` for the autodoc-generated module reference.
