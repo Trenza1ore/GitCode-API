@@ -3,6 +3,8 @@
 from importlib import import_module
 from typing import TYPE_CHECKING, Any, Dict
 
+from ._tool import GitCodeLLMTool
+
 if TYPE_CHECKING:
     from .jiuwen import create_openjiuwen_gitcode_api_tool
     from .mcp import (
@@ -25,7 +27,7 @@ _IMPORT_MAP = {
     "create_openjiuwen_gitcode_api_tool": ".jiuwen",
 }
 
-_IMPORT_CACHE: Dict[str, Any] = {}
+_IMPORT_CACHE: Dict[str, Any] = {"GitCodeLLMTool": GitCodeLLMTool}
 
 
 def __getattr__(name: str) -> object:
@@ -50,6 +52,7 @@ def __dir__() -> list[str]:
 
 
 __all__ = [
+    "GitCodeLLMTool",
     "GitCodeOpenAITool",
     "GitCodeMCP",
     "create_mcp_gitcode_api_tool",
