@@ -31,7 +31,7 @@ PLACEHOLDER_SOURCES: Dict[str, Tuple[str, str]] = {
     "{{REPOSITORY_URL}}": ("urls", "github"),
 }
 
-MCPB_IGNORE_CONTENT = '''
+MCPB_IGNORE_CONTENT = """
 .*/
 .*
 **/__pycache__/
@@ -52,7 +52,7 @@ Makefile
 *.spec
 test.py
 uv.lock
-'''
+"""
 
 
 def normalize_license(license_obj: Any) -> str:

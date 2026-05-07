@@ -30,8 +30,30 @@ def _openjiuwen_tool_decorator() -> Callable[..., Any]:
 class _GitCodeJiuwenTool(GitCodeLLMTool):
     """Build an openJiuwen ``LocalFunction`` bound to :class:`GitCodeLLMTool` (async invoke only)."""
 
-    def __init__(self, *, name: Optional[str] = None, description: Optional[str] = None, **kwargs) -> None:
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        *,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        client: Optional[GitCode] = None,
+        async_client: Optional[AsyncGitCode] = None,
+        api_key: Optional[str] = None,
+        base_url: str = DEFAULT_BASE_URL,
+        timeout: Optional[float] = None,
+        decrypt: Optional[Callable[..., Any]] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> None:
+        super().__init__(
+            client=client,
+            async_client=async_client,
+            api_key=api_key,
+            owner=owner,
+            repo=repo,
+            base_url=base_url,
+            timeout=timeout,
+            decrypt=decrypt,
+        )
         tool_name = name if name is not None else TOOL_NAME
         tool_description = description if description is not None else TOOL_DESCRIPTION
         oj_tool = _openjiuwen_tool_decorator()
@@ -60,11 +82,11 @@ def create_openjiuwen_gitcode_api_tool(
     client: Optional[GitCode] = None,
     async_client: Optional[AsyncGitCode] = None,
     api_key: Optional[str] = None,
-    owner: Optional[str] = None,
-    repo: Optional[str] = None,
     base_url: str = DEFAULT_BASE_URL,
     timeout: Optional[float] = None,
     decrypt: Optional[Callable[..., Any]] = None,
+    owner: Optional[str] = None,
+    repo: Optional[str] = None,
 ) -> "LocalFunction":
     """Create an openJiuwen ``LocalFunction`` for the GitCode API tool.
 
@@ -73,11 +95,11 @@ def create_openjiuwen_gitcode_api_tool(
     :param client: Optional synchronous GitCode client.
     :param async_client: Optional asynchronous GitCode client.
     :param api_key: Personal access token when clients are not supplied.
-    :param owner: Default repository owner for generated clients.
-    :param repo: Default repository name for generated clients.
     :param base_url: Base URL for generated clients.
     :param timeout: Request timeout for generated clients.
     :param decrypt: Optional decryption function for encrypted access tokens.
+    :param owner: Default repository owner for generated clients.
+    :param repo: Default repository name for generated clients.
     :returns: openJiuwen ``LocalFunction`` with the standard parameter schema.
     """
     adapter = _GitCodeJiuwenTool(

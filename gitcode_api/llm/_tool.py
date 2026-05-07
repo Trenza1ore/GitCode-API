@@ -227,11 +227,11 @@ class GitCodeLLMTool:
     :param client: Optional synchronous GitCode client.
     :param async_client: Optional asynchronous GitCode client.
     :param api_key: Personal access token used when clients are not supplied.
-    :param owner: Default repository owner for generated clients.
-    :param repo: Default repository name for generated clients.
     :param base_url: Base URL for generated clients.
     :param timeout: Request timeout for generated clients.
     :param decrypt: Optional decryption function for encrypted access tokens.
+    :param owner: Default repository owner for generated clients.
+    :param repo: Default repository name for generated clients.
     """
 
     def __init__(
@@ -240,11 +240,11 @@ class GitCodeLLMTool:
         client: Optional[GitCode] = None,
         async_client: Optional[AsyncGitCode] = None,
         api_key: Optional[str] = None,
-        owner: Optional[str] = None,
-        repo: Optional[str] = None,
         base_url: str = DEFAULT_BASE_URL,
         timeout: Optional[float] = None,
         decrypt: Optional[Callable] = None,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> None:
         """Create a reusable tool with lazy sync and async clients."""
         self._client = client
