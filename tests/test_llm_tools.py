@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from typing import Any, Dict
 
 import httpx
@@ -44,7 +45,7 @@ def test_openai_tool_invokes_sync_client(sync_client_factory: Any) -> None:
         http_client.close()
 
     assert "/repos/SushiNinja/GitCode-API" in captured["url"]
-    assert result == {"full_name": "SushiNinja/GitCode-API"}
+    assert json.loads(result) == {"full_name": "SushiNinja/GitCode-API"}
 
 
 @pytest.mark.asyncio
@@ -63,7 +64,7 @@ async def test_openai_tool_invokes_async_client(async_client_factory: Any) -> No
         await http_client.aclose()
 
     assert "/users/octocat" in captured["url"]
-    assert result == {"login": "octocat"}
+    assert json.loads(result) == {"login": "octocat"}
 
 
 def test_tool_help_does_not_require_api_key(monkeypatch: Any) -> None:

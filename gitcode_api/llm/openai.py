@@ -1,7 +1,8 @@
 """OpenAI tool adapter for the GitCode SDK."""
 
+import json
 from functools import cached_property
-from typing import Any, Dict, Optional
+from typing import Any, Coroutine, Dict, Optional, Union
 
 from ._tool import TOOL_DESCRIPTION, TOOL_NAME, TOOL_PARAMETERS, GitCodeLLMTool
 
@@ -25,10 +26,9 @@ class GitCodeOpenAITool(GitCodeLLMTool):
             async_mode = bool(async_kw)
         elif async_kw is not None:
             raise TypeError("Pass only one of async_mode or async")
+        self.indent = kwargs.pop("indent", 2)
         self.async_mode = bool(async_mode)
         super().__init__(**kwargs)
-        if self.async_mode:
-            self.__call__ = self.__async_call__  # type: ignore[method-assign]
 
     @cached_property
     def tool(self) -> Dict[str, Any]:
@@ -46,11 +46,15 @@ class GitCodeOpenAITool(GitCodeLLMTool):
         """Return this tool in OpenAI Chat Completions tool format."""
         return self.tool
 
-    def __call__(self, *args: Any, **kwargs) -> Any:
+    async def __async_call__(self, *args, **kwargs) -> str:
+        result = await super().__async_call__(*args, **kwargs)
+        return json.dumps(result, ensure_ascii=False, indent=self.indent)
+
+    def __call__(self, *args, **kwargs) -> Union[str, Coroutine[Any, Any, str]]:
         """Invoke the configured sync or async tool callable."""
         if self.async_mode:
             return self.__async_call__(*args, **kwargs)
-        return super().__call__(*args, **kwargs)
+        return json.dumps(super().__call__(*args, **kwargs), ensure_ascii=False, indent=self.indent)
 
 
 __all__ = ["GitCodeOpenAITool"]
