@@ -22,14 +22,6 @@ Click one of the buttons below to install the MCP server in your preferred IDE:
 
 ```js
 {
-  "inputs": [
-    {
-      "id": "gitcode_access_token",
-      "type": "promptString",
-      "description": "Enter GITCODE_ACCESS_TOKEN",
-      "password": true
-    }
-  ],
   "servers": {
     "GitCode API": {
       "command": "uvx",
@@ -46,6 +38,8 @@ Click one of the buttons below to install the MCP server in your preferred IDE:
   }
 }
 ```
+
+Replace `${input:gitcode_access_token}` with your actual [GitCode access token](https://docs.gitcode.com/en/docs/help/home/user_center/security_management/user_pat/) and you can start using the service.
 
 <details>
 <summary>VS Code</summary>
