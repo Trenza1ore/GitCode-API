@@ -223,29 +223,39 @@ async_tool = GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API", async_mod
 
 ```python
 import json
+import os
+from typing import Dict, List
 from openai import OpenAI
 from gitcode_api.llm import GitCodeOpenAITool
 
-tools = {
-    "gitcode_api_tool": GitCodeOpenAITool(owner="SushiNinja", repo="GitCode-API"),
-}
-client = OpenAI(
-    api_key="your-openai-compatible-api-key",
-    base_url="https://your-openai-compatible-base-url/v1",
-)
+MESSAGE_SEP = "\n" + "=" * 60 + "\n"
+USER_QUERY = "List the repos owned by SushiNinja."
+CONVERSATION: List[Dict[str, str]] = [dict(role="user", content=USER_QUERY)]
 
-response = client.chat.completions.create(
-    model="gpt-4.1-mini",
-    messages=[{"role": "user", "content": "列出最近 5 条提交。"}],
-    tools=[tools["gitcode_api_tool"].tool],
-)
+tools = {"gitcode_api_tool": GitCodeOpenAITool()}
+client = OpenAI()
 
-for tool_call in response.choices[0].message.tool_calls:
-    selected_tool = tools[tool_call.function.name]
-    print(f"Calling tool {tool_call.function.name}({tool_call.function.arguments}):")
-    print("---result---")
-    print(selected_tool(**json.loads(tool_call.function.arguments)))
-    print("---result---")
+print("U:\n" + USER_QUERY + MESSAGE_SEP)
+while True:
+    response = (
+        client.chat.completions.create(
+            model="gpt-5.4-nano",
+            messages=CONVERSATION,
+            tools=[tools["gitcode_api_tool"].tool],
+        )
+        .choices[0]
+        .message
+    )
+    CONVERSATION.append(response.to_dict())
+    print("A:\n" + (response.content or ""))
+    for tool_call in response.tool_calls or []:
+        selected_tool = tools[tool_call.function.name]
+        result = selected_tool(**json.loads(tool_call.function.arguments))
+        CONVERSATION.append(dict(role="tool", tool_call_id=tool_call.id, content=result))
+        print(f"<Calling tool {tool_call.function.name}({tool_call.function.arguments})>")
+    print(MESSAGE_SEP)
+    if not response.tool_calls:
+        break
 ```
 
 构造参数与 `GitCode` / `AsyncGitCode` 对齐：`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`。若从字典等结构组装且需保留 `async` 这个名字，可使用 `**{"async": True}` 代替 `async_mode=True`（二者勿同时使用）。
