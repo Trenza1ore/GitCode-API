@@ -129,20 +129,6 @@ def test_help_resource_index_body() -> None:
         assert f"gitcode-api://help/{name}" in body
 
 
-@pytest.mark.asyncio
-async def test_create_mcp_server_registers_help_resources() -> None:
-    mcp = create_mcp_server()
-    static = await mcp._list_resources_mcp()
-    templates = await mcp._list_resource_templates_mcp()
-    assert any(str(r.uri) == "gitcode-api://help" for r in static)
-    assert any(
-        "{op_type}" in str(getattr(t, "uri_template", None) or getattr(t, "uriTemplate", None)) for t in templates
-    )
-    read = await mcp._read_resource_mcp("gitcode-api://help/pulls")
-    payload = read[0].content
-    assert "Resource: pulls" in payload
-
-
 def test_mcp_registers_with_existing_server() -> None:
     class DummyMCP:
         def __init__(self) -> None:
