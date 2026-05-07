@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.10](https://github.com/Trenza1ore/GitCode-API/compare/1.2.9...1.2.10) — 2026-05-07
+
+Changes since `1.2.9`…`1.2.10`.
+
+### Feature
+
+- **OpenAI tool (**`GitCodeOpenAITool`**):** Invocation results are now **JSON strings** (`str`) from `json.dumps` with `ensure_ascii=False`, so payloads fit Chat Completions **tool** message `content` without extra serialization. `**indent`** controls formatting (default `**2**`; pass `**None**` for compact single-line JSON).
+- **OpenAI tool constructor:** `**async_mode`** defaults to `**False**`. Use `**async_mode=True**` and `**await**` the coroutine returned from the instance — the `**async**` keyword alias for async mode is no longer accepted on `GitCodeOpenAITool`.
+
+### Docs
+
+- README (English and Chinese), SDK LLM guide, and new runnable example `**examples/openai_tool_call.py**` updated for string tool results and a multi-turn Chat Completions loop.
+
+---
+
 ## [1.2.9](https://github.com/Trenza1ore/GitCode-API/compare/1.2.8...1.2.9) — 2026-05-07
 
 Changes since `1.2.8`…`1.2.9`.
@@ -129,7 +144,7 @@ Changes since `1.1.3`…`1.2.0`.
 
 ### Feature
 
-- **Discovery:** Resource namespaces expose `**methods`** (list callable API operations) and `**method_signature**` (inspect parameters and returns) for runtime introspection.
+- **Discovery:** Resource namespaces expose `**methods`** (list callable API operations) and `**method_signature`** (inspect parameters and returns) for runtime introspection.
 - **Example:** `examples/inspect_resource_group_methods.py` shows how to use those helpers.
 
 ### Fix
