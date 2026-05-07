@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.11](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.11) — 2026-05-07
+
+Changes since `1.2.10`…`1.2.11`.
+
+### Feature
+
+- **`gitcode_api.llm`:** `GitCodeLLMTool` is eagerly imported and exposed in namespace, easier for custom adapters, MCP wiring, and static analysis.
+- **LLM adapters (OpenAI, openJiuwen):** `GitCodeOpenAITool`, `create_openjiuwen_gitcode_api_tool`, and the openJiuwen binding use explicit keyword parameters for GitCode clients (`client`, `async_client`, `api_key`, `base_url`, `timeout`, `decrypt`, `owner`, `repo`) instead of a `**kwargs` catch-all — clearer signatures, better editor hints, and the same ordering as `GitCodeLLMTool`.
+
+### Docs
+
+- README and SDK LLM guide use consistent “unified tool” wording for `gitcode_api_tool`.
+- Changelog section titles point at GitHub release pages; markdown structure cleaned up.
+
+### Contributing
+
+- PyInstaller spec moved to `scripts/gitcode-api.spec`; `make binary` and the release-binaries workflow call that path (repo root stays simpler).
+- `scripts/build_manifest.py` emits a transient ``.mcpbignore`` for MCP bundle packing; tracked top-level `.mcpbignore` was removed — `make mcpb` still removes generated artifacts afterward.
+
+---
+
 ## [1.2.10](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.10) — 2026-05-07
 
 Changes since `1.2.9`…`1.2.10`.
