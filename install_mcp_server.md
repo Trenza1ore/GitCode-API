@@ -13,10 +13,9 @@ Click one of the buttons below to install the MCP server in your preferred IDE:
 
 ### Manual Installation
 
-> **Note:** This configuration includes secure password prompts. When you install the MCP server, you'll be prompted to enter the following:
+> **Note:** When you install the MCP server, you may be prompted to enter the following:
 > - **gitcode_access_token**: Enter GITCODE_ACCESS_TOKEN
->
-> These values are stored securely and never hardcoded in your configuration.
+> Replace `${input:gitcode_access_token}` with your actual [GitCode access token](https://docs.gitcode.com/en/docs/help/home/user_center/security_management/user_pat/) and you can start using the service.
 
 **Standard config** works in most tools:
 
@@ -38,8 +37,6 @@ Click one of the buttons below to install the MCP server in your preferred IDE:
   }
 }
 ```
-
-Replace `${input:gitcode_access_token}` with your actual [GitCode access token](https://docs.gitcode.com/en/docs/help/home/user_center/security_management/user_pat/) and you can start using the service.
 
 <details>
 <summary>VS Code</summary>
