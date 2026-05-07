@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.9](https://github.com/Trenza1ore/GitCode-API/compare/1.2.8...1.2.9) — 2026-05-07
+
+Changes since `1.2.8`…`1.2.9`.
+
+### Feature
+
+- **LLM tools:** Optional [openJiuwen](https://openjiuwen.com) support — use `create_openjiuwen_gitcode_api_tool` from `gitcode_api.llm` after installing `openjiuwen` (Python **3.11+**). Same GitCode tool behavior as the OpenAI and MCP adapters.
+
+### Docs
+
+- English and Chinese READMEs, Sphinx LLM guide, and PyPI project description updated for openJiuwen.
+
+---
+
 ## [1.2.8](https://github.com/Trenza1ore/GitCode-API/compare/1.2.7...1.2.8) — 2026-05-07
 
 Changes since `1.2.7`…`1.2.8`.

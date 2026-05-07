@@ -276,7 +276,7 @@ mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-AP
 
 ### openJiuwen（`LocalFunction`）
 
-[openJiuwen](https://openjiuwen.com) 是开放的智能体平台。另行安装 `openjiuwen` 包（**Python 3.11+**）后，可使用 `create_openjiuwen_gitcode_api_tool` 获得与 OpenAI 适配器相同的 `op_type` / `action` / `params` / `help` 约定的 `LocalFunction`。调用方式为 **仅异步**（`await lf.invoke({...})`）。
+[openJiuwen](https://openjiuwen.com) 是开放的智能体平台。另行安装 `openjiuwen` 包（**Python 3.11+**）后，可使用 `create_openjiuwen_gitcode_api_tool` 获得与 OpenAI 适配器使用相同 `op_type` / `action` / `params` / `help` 参数的 `LocalFunction`。调用方式为 **仅异步**（`await jiuwen_tool.invoke({...})`）。
 
 ```bash
 pip install openjiuwen
@@ -285,9 +285,9 @@ pip install openjiuwen
 ```python
 from gitcode_api.llm import create_openjiuwen_gitcode_api_tool
 
-lf = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
-# lf.card — 名称、描述、input_params
-# await lf.invoke({"op_type": "repos", "action": "get", "params": {}})
+jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
+# jiuwen_tool.card — 名称、描述、input_params
+# await jiuwen_tool.invoke({"op_type": "repos", "action": "get", "params": {}})
 ```
 
 可用 `name=`、`description=` 覆盖默认工具卡。其余构造参数与 `GitCode` / `AsyncGitCode` 一致（`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`）。

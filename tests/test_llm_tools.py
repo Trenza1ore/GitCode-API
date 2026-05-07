@@ -170,20 +170,20 @@ def test_create_openjiuwen_gitcode_api_tool_raises_when_openjiuwen_missing() -> 
 
 @pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is None, reason="openjiuwen not installed")
 def test_create_openjiuwen_gitcode_api_tool_exposes_tool_card() -> None:
-    lf = create_openjiuwen_gitcode_api_tool(api_key="test-token")
-    assert lf.card.name == "gitcode_api_tool"
-    assert "op_type" in lf.card.input_params.get("properties", {})
+    jiuwen_tool = create_openjiuwen_gitcode_api_tool(api_key="test-token")
+    assert jiuwen_tool.card.name == "gitcode_api_tool"
+    assert "op_type" in jiuwen_tool.card.input_params.get("properties", {})
 
 
 @pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is None, reason="openjiuwen not installed")
 def test_create_openjiuwen_gitcode_api_tool_custom_name_and_description() -> None:
-    lf = create_openjiuwen_gitcode_api_tool(
+    jiuwen_tool = create_openjiuwen_gitcode_api_tool(
         api_key="test-token",
         name="my_gitcode",
         description="Custom GitCode tool copy.",
     )
-    assert lf.card.name == "my_gitcode"
-    assert lf.card.description == "Custom GitCode tool copy."
+    assert jiuwen_tool.card.name == "my_gitcode"
+    assert jiuwen_tool.card.description == "Custom GitCode tool copy."
 
 
 @pytest.mark.skipif(importlib.util.find_spec("openjiuwen") is None, reason="openjiuwen not installed")
@@ -197,8 +197,8 @@ async def test_create_openjiuwen_gitcode_api_tool_invoke(async_client_factory: A
 
     client, http_client = async_client_factory(handler)
     try:
-        lf = create_openjiuwen_gitcode_api_tool(async_client=client)
-        result = await lf.invoke(
+        jiuwen_tool = create_openjiuwen_gitcode_api_tool(async_client=client)
+        result = await jiuwen_tool.invoke(
             {
                 "op_type": "repos",
                 "action": "get",

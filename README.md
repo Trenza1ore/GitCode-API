@@ -281,7 +281,7 @@ To share auth or clients across tools, build `GitCodeLLMTool` once (`from gitcod
 
 ### openJiuwen (`LocalFunction`)
 
-[openJiuwen](https://openjiuwen.com) is an open agent platform. With the separate `openjiuwen` package installed (**Python 3.11+**), `create_openjiuwen_gitcode_api_tool` returns an openJiuwen `LocalFunction` that uses the same `op_type` / `action` / `params` / `help` contract as the OpenAI adapter. Invocation is async-only (`await lf.invoke({...})`).
+[openJiuwen](https://openjiuwen.com) is an open agent platform. With the separate `openjiuwen` package installed (**Python 3.11+**), `create_openjiuwen_gitcode_api_tool` returns an openJiuwen `LocalFunction` that uses the same `op_type` / `action` / `params` / `help` arguments as the OpenAI adapter. Invocation is async-only (`await jiuwen_tool.invoke({...})`).
 
 ```bash
 pip install openjiuwen
@@ -290,9 +290,9 @@ pip install openjiuwen
 ```python
 from gitcode_api.llm import create_openjiuwen_gitcode_api_tool
 
-lf = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
-# lf.card — name, description, input_params
-# await lf.invoke({"op_type": "repos", "action": "get", "params": {}})
+jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCode-API")
+# jiuwen_tool.card — name, description, input_params
+# await jiuwen_tool.invoke({"op_type": "repos", "action": "get", "params": {}})
 ```
 
 Optional `name=` and `description=` override the default tool card. Constructor options otherwise mirror `GitCode` / `AsyncGitCode` (`client=`, `async_client=`, `api_key=`, `owner=`, `repo=`, `base_url=`, `timeout=`, `decrypt=`).

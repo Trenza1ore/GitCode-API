@@ -148,6 +148,8 @@ Version information is stored in both `pyproject.toml` and `gitcode_api/version.
 
 For pre-release changelog sections, use the title format `## [next-version](https://github.com/Trenza1ore/GitCode-API/compare/previous-version...main) — Unreleased`, for example `## [1.2.1](https://github.com/Trenza1ore/GitCode-API/compare/1.2.0...main) — Unreleased`. Released sections use the same compare-link style but end with the release date, such as `— 2026-05-01`.
 
+**Changelog voice:** `CHANGELOG.md` is **user-facing** release notes for SDK users and operators. Describe what they can do or what changed in behavior, install requirements, or public API—not internal work (skip routine test/lockfile/style bullets unless a user-visible guarantee changed). Prefer a handful of clear **Feature** / **Fix** / **Docs** lines over a commit-by-commit inventory.
+
 Do not create tags, push, publish, or run `make release` unless the user explicitly requests it. If changing release notes or changelogs, keep `CHANGELOG.md`, `docs/changelog.md`, and any release note files consistent with the requested version.
 
 ## Git commit messages
