@@ -5,6 +5,7 @@
 [![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API)](https://github.com/Trenza1ore/GitCode-API) [![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API)](https://gitcode.com/SushiNinja/GitCode-API)
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md)](README.zh.md)
+[![SafeSkill 50/100](https://img.shields.io/badge/SafeSkill-50%2F100_Use%20with%20Caution-orange)](https://safeskill.dev/scan/trenza1ore-gitcode-api)
 
 `gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, repository-scoped helpers, and lightweight response models so you can work with GitCode from Python without hand-writing raw HTTP requests. The `gitcode_api.llm` module adds an OpenAI-style function tool, an MCP service, and an [openJiuwen](https://openjiuwen.com) tool integration so agents can reuse the same resource-oriented API.
 
