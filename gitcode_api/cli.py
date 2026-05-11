@@ -179,8 +179,6 @@ def _invocation_parent_parser() -> argparse.ArgumentParser:
     """Parser with flags for real API calls (attached only to leaf METHOD parsers, not top-level usage)."""
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--api-key", help=f"GitCode access token. Defaults to {DEFAULT_TOKEN_ENV}.")
-    parser.add_argument("--owner", help="Default repository owner.")
-    parser.add_argument("--repo", help="Default repository name.")
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for the REST API.")
     parser.add_argument("--timeout", type=float, default=None, help="Request timeout in seconds.")
     parser.add_argument("--output-file", help="Write the response to a file instead of stdout.")
@@ -210,7 +208,13 @@ def _serve_parser() -> argparse.ArgumentParser:
     parser.add_argument("--repo", help="Default repository name.")
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Base URL for the REST API.")
     parser.add_argument("--timeout", type=float, default=None, help="Request timeout in seconds.")
-    parser.add_argument("--transport", default="stdio", help="FastMCP transport to run, such as stdio or http.")
+    parser.add_argument(
+        "--transport",
+        default="stdio",
+        choices=("stdio", "http", "sse"),
+        metavar="{stdio,http,sse}",
+        help="FastMCP transport to run, such as stdio or http.",
+    )
     parser.add_argument("--host", default=None, help="Host for HTTP-based transports.")
     parser.add_argument("--port", type=int, default=None, help="Port for HTTP-based transports.")
     parser.add_argument("--path", default=None, help="Path for HTTP-based transports.")
@@ -427,8 +431,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
         with GitCode(
             api_key=args.api_key,
-            owner=args.owner,
-            repo=args.repo,
             base_url=args.base_url,
             timeout=args.timeout,
         ) as client:
