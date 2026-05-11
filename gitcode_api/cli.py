@@ -192,6 +192,15 @@ def _root_banner() -> str:
     return "Connection and defaults are documented on each method's help: %(prog)s RESOURCE METHOD -h."
 
 
+def _parse_true_false(raw: str) -> bool:
+    value = raw.strip().lower()
+    if value == "true":
+        return True
+    if value == "false":
+        return False
+    raise argparse.ArgumentTypeError("Expected 'true' or 'false'.")
+
+
 def _serve_parser() -> argparse.ArgumentParser:
     """Parser with options for starting the bundled MCP server."""
     parser = argparse.ArgumentParser(add_help=False)
@@ -205,6 +214,15 @@ def _serve_parser() -> argparse.ArgumentParser:
     parser.add_argument("--host", default=None, help="Host for HTTP-based transports.")
     parser.add_argument("--port", type=int, default=None, help="Port for HTTP-based transports.")
     parser.add_argument("--path", default=None, help="Path for HTTP-based transports.")
+    parser.add_argument(
+        "-b",
+        "--show-banner",
+        type=_parse_true_false,
+        choices=(True, False),
+        default=None,
+        metavar="{true,false}",
+        help="Show the FastMCP startup banner.",
+    )
     return parser
 
 
@@ -356,7 +374,7 @@ def _run_mcp_server(args: argparse.Namespace) -> int:
         if value is not None:
             run_kwargs[key] = value
 
-    server.run(**run_kwargs)
+    server.run(show_banner=args.show_banner, **run_kwargs)
     return 0
 
 
