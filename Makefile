@@ -32,12 +32,11 @@ test:
 	uv pip install .
 	uv run pytest
 
-release:
+release: badge
 	@$(if $(strip $(VERSION)),:,$(error VERSION is required, e.g. make release VERSION=1.2.3))
 	printf '%s\n' "$(VERSION)" > gitcode_api/version.txt
 	sed -i '' 's/^version = ".*"/version = "$(VERSION)"/' pyproject.toml
 	uv lock
-	uv python scripts/mutate_badge.py
 	git add pyproject.toml uv.lock gitcode_api/version.txt README*.md
 	git commit -m "chore: bump version to $(VERSION)"
 	git tag -a "$(VERSION)" -m "$(VERSION)"
@@ -62,4 +61,4 @@ mcpb:
 
 # Mutate badge with uuid to force refresh GitCode cache
 badge:
-	uv python scripts/mutate_badge.py
+	uv run python scripts/mutate_badge.py

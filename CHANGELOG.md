@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.12](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.12) — 2026-05-11
+
+Changes since `1.2.11`…`1.2.12`.
+
+### Feature
+
+- **CLI:** `-e` / `--escape` takes a string of `\`-style escape sequences (for example `"\n\t"`) to un-escape, which makes multiline payloads easier for human users (e.g. `gitcode-api pulls create ... --body 'Line1\nLine2' -e '\n'`).
+- **CLI:** The shared cli argument parser no longer passes `--owner` / `--repo` into the `GitCode` client constructor. Use each method’s own flags so defaults match the SDK method signatures.
+- **CLI (`gitcode-api serve`):** `--show-banner` / `-b` accepts `true` or `false` and forwards to FastMCP’s `run(show_banner=…)`; omit it to keep the library default.
+- **CLI (`gitcode-api serve`):** `--transport` is validated against `stdio`, `http`, and `sse`.
+
+### Docs
+
+- Added a homepage for this project: [https://hugohuang.com/gitcode-api](https://hugohuang.com/gitcode-api)
+- README, SDK CLI page (`docs/sdk/cli.rst`), `install_mcp_server.md`, and PyPI homepage links updated for the new CLI and MCP options.
+- Download stat & PyPI version badges now are mutated automatically per-release to suit GitCode's image-caching strategy for `README.md`.
+
+---
+
 ## [1.2.11](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.11) — 2026-05-07
 
 Changes since `1.2.10`…`1.2.11`.
