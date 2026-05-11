@@ -161,12 +161,14 @@ def test_run_mcp_server_passes_fastmcp_options(monkeypatch: Any) -> None:
         host="127.0.0.1",
         port=8000,
         path="/mcp",
+        show_banner=None,
     )
 
     assert _run_mcp_server(args) == 0
     assert captured["server_kwargs"]["name"] == "GitCode API"
     assert captured["server_kwargs"]["tool"]._client_kwargs["api_key"] == "test-token"
     assert captured["run_kwargs"] == {
+        "show_banner": None,
         "transport": "http",
         "host": "127.0.0.1",
         "port": 8000,

@@ -1,6 +1,7 @@
 """Command-line interface for the GitCode SDK."""
 
 import argparse
+import codecs
 import inspect
 import json
 import re
@@ -8,7 +9,7 @@ import sys
 import textwrap
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, List, Optional, Union, get_args, get_origin
+from typing import Any, Dict, List, Optional, Union, get_args, get_origin
 
 import httpx
 
@@ -34,6 +35,40 @@ def _plain_cli_inline(text: str) -> str:
     t = re.sub(r":\w+:`([^`]*)`", r"\1", t)
     t = re.sub(r"`([^`]+)`", r"\1", t)
     return t
+
+
+_ESCAPE_PATTERN = re.compile(r"\\\w+")
+
+
+def _unescape_input(value: str, replacements: Dict[str, str]) -> str:
+    """Unescape CLI input with provided escape sequences."""
+    for token, decoded in replacements.items():
+        value = value.replace(token, decoded)
+    return value
+
+
+def _unescape_namespace(args: argparse.Namespace) -> None:
+    mapping = ((token, codecs.decode(token, "unicode-escape")) for token in _ESCAPE_PATTERN.findall(str(args.escape)))
+    replacements = {token: decoded for token, decoded in mapping if token and (token != decoded)}
+    if not replacements:
+        raise argparse.ArgumentTypeError("No valid escape sequence provided!")
+    for key, value in vars(args).items():
+        if key in {"escape", "base_url", "resource", "method", "api_key"}:
+            continue
+        if isinstance(value, str):
+            setattr(args, key, _unescape_input(value, replacements=replacements))
+            continue
+        if isinstance(value, list):
+            updated = []
+            changed = False
+            for item in value:
+                if isinstance(item, str):
+                    updated.append(_unescape_input(item, replacements=replacements))
+                    changed = True
+                else:
+                    updated.append(item)
+            if changed:
+                setattr(args, key, updated)
 
 
 def _unwrap_optional(annotation: Any) -> Any:
@@ -183,6 +218,13 @@ def _invocation_parent_parser() -> argparse.ArgumentParser:
     parser.add_argument("--timeout", type=float, default=None, help="Request timeout in seconds.")
     parser.add_argument("--output-file", help="Write the response to a file instead of stdout.")
     parser.add_argument("--compact", action="store_true", help="Print JSON without indentation.")
+    parser.add_argument(
+        "-e",
+        "--escape",
+        default="",
+        metavar="SEQUENCES",
+        help='Unescape certain escape sequences (e.g. -e "\\n\\t") in arguments.',
+    )
     return parser
 
 
@@ -424,6 +466,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             parser.epilog = saved_epilog
         return 0
     args = parser.parse_args(effective)
+    escape_seq = getattr(args, "escape", None)
+    if escape_seq and isinstance(escape_seq, str):
+        _unescape_namespace(args)
 
     try:
         if getattr(args, "command", None) == "serve":
