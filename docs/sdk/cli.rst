@@ -32,12 +32,12 @@ Or install the local project in editable mode while developing:
 
    pip install -e .
 
-Authentication and shared options
----------------------------------
+Authentication and connection options
+---------------------------------------
 
 Pass ``--api-key`` directly or set ``GITCODE_ACCESS_TOKEN`` in your environment.
-The CLI also accepts shared client options such as ``--owner``, ``--repo``,
-``--base-url``, and ``--timeout``.
+Most leaf commands share ``--base-url``, ``--timeout``, ``--output-file``,
+``--compact``, and ``-e`` / ``--escape`` (see :ref:`cli-escaping`).
 
 The CLI does **not** expose the Python client's ``decrypt`` or custom
 ``http_client`` hooks. If you store an encrypted token or need a bespoke
@@ -54,6 +54,21 @@ The CLI does **not** expose the Python client's ``decrypt`` or custom
 
 If a command calls a repository-scoped method and no ``owner`` / ``repo`` is
 available from the command line, the SDK raises ``GitCodeConfigurationError``.
+
+Bundled MCP server (``serve``)
+------------------------------
+
+With the ``[mcp]`` extra installed (**Python 3.10+**), ``gitcode-api serve``
+starts the bundled FastMCP server (same tool as :doc:`llm_tools`).
+
+* ``--transport`` — ``stdio``, ``http``, or ``sse`` (default ``stdio``).
+* ``--show-banner`` — ``true`` or ``false`` to show or hide the FastMCP startup
+  banner; omit the flag to use FastMCP’s default.
+* ``--owner`` / ``--repo`` — optional defaults for repository-scoped tool calls.
+
+.. code-block:: bash
+
+   gitcode-api serve --api-key "$GITCODE_ACCESS_TOKEN"
 
 Discovering commands
 --------------------
@@ -168,6 +183,24 @@ a file:
        --repo GitCode-API \
        --path README.md \
        --output-file README.downloaded.md
+
+.. _cli-escaping:
+
+Escaping and multi-line input
+-----------------------------
+
+When using string arguments with escape sequences (such as a line break as
+``\n``), your shell may leave the backslashes as literal characters instead of
+turning them into the intended character. Pass ``-e`` / ``--escape`` with the
+sequences you want un-escaped—for example ``-e '\n\t'``. Those tokens are
+substituted into other string arguments and into string elements of list
+arguments. The escape flag itself, ``resource``, ``method``, ``api_key``, and
+``base_url`` are not rewritten. If ``--escape`` is set but contains no valid
+tokens, argument parsing fails.
+
+.. code-block:: bash
+
+   gitcode-api pulls create ... --body 'Line1\nLine2' -e '\n'
 
 Module invocation
 -----------------

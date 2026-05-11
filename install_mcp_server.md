@@ -237,6 +237,19 @@ For more information, see the [GitHub Copilot Coding Agent MCP documentation](ht
 - **Package:** `gitcode-api`
 - **From:** `gitcode-api[mcp]`
 
+**Optional — quiet stdio startup:** Some hosts prefer minimal stdout noise from MCP servers. Append `--show-banner` and `false` to the `serve` arguments (after `serve`):
+
+```js
+"args": [
+  "--from",
+  "gitcode-api[mcp]",
+  "gitcode-api",
+  "serve",
+  "--show-banner",
+  "false"
+]
+```
+
 ### Need Help?
 
 For more information about the Model Context Protocol, visit [modelcontextprotocol.io](https://modelcontextprotocol.io).
