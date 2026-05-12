@@ -13,14 +13,14 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ============================== ===== =========
-Parameter      Description                    Type  Data Type
-============== ============================== ===== =========
-access_token\* personal access token          query string
-username\*     username(username/login)       path  string
-page           Current Page Number，default:1 query string
-per_page       Items Per Page,maximum is 100  query string
-============== ============================== ===== =========
+============== ====== ========= ===============================
+Parameter      Type   Data Type Description                    
+============== ====== ========= ===============================
+access_token\* query  string    personal access token          
+username\*     path   string    username(username/login)       
+page           uery s tring     Current Page Number，default:1 q
+per_page       query  string    Items Per Page,maximum is 100  
+============== ====== ========= ===============================
 
 Response
 ~~~~~~~~
@@ -66,14 +66,14 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ============================== ===== =========
-Parameter      Description                    Type  Data Type
-============== ============================== ===== =========
-access_token\* personal access token          query string
-page           Current Page Number，default:1 query string
-per_page       Items Per Page, maximum is 100 query string
-admin          Filter by Admin Permissions    query boolean
-============== ============================== ===== =========
+============== ====== ========= ===============================
+Parameter      Type   Data Type Description                    
+============== ====== ========= ===============================
+access_token\* query  string    personal access token          
+page           uery s tring     Current Page Number，default:1 q
+per_page       query  string    Items Per Page, maximum is 100 
+admin          query  boolean   Filter by Admin Permissions    
+============== ====== ========= ===============================
 
 
 Response
@@ -122,13 +122,13 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ============================== ===== =========
-Parameter      Description                    Type  Data Type
-============== ============================== ===== =========
-access_token\* personal access token          query string
-org\*          Organization Path (path/login) path  string
-username\*     username(username/login)       path  string
-============== ============================== ===== =========
+============== ===== ========= ==============================
+Parameter      Type  Data Type Description                   
+============== ===== ========= ==============================
+access_token\* query string    personal access token         
+org\*          path  string    Organization Path (path/login)
+username\*     path  string    username(username/login)      
+============== ===== ========= ==============================
 
 
 Response
@@ -177,12 +177,12 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ============================== ===== =========
-Parameter      Description                    Type  Data Type
-============== ============================== ===== =========
-access_token\* personal access token          query string
-org\*          Organization Path (path/login) path  string
-============== ============================== ===== =========
+============== ===== ========= ==============================
+Parameter      Type  Data Type Description                   
+============== ===== ========= ==============================
+access_token\* query string    personal access token         
+org\*          path  string    Organization Path (path/login)
+============== ===== ========= ==============================
 
 
 Response
@@ -232,22 +232,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | Organization Path (path/login)  | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| type           | Filter Repository by Type,      | query | string    |
-|                | which can be: all, public,      |       |           |
-|                | private. Default: all           |       |           |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | query | int       |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | Organization Path (path/login)  |
++----------------+-------+-----------+---------------------------------+
+| type           | query | string    | Filter Repository by Type,      |
+|                |       |           | which can be: all, public,      |
+|                |       |           | private. Default: all           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -310,73 +310,73 @@ Request
 
 ``POST https://api.gitcode.com/api/v5/orgs/{org}/repos``
 
-+-----------------------+-----------------------+----------+-----------+
-| Parameter             | Description           | Type     | Data Type |
-+=======================+=======================+==========+===========+
-| access_token\*        | personal access token | query    | string    |
-+-----------------------+-----------------------+----------+-----------+
-| org\*                 | Organization Path     | path     | string    |
-|                       | (path/login)          |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| name\*                | Repository Name       | body     | string    |
-+-----------------------+-----------------------+----------+-----------+
-| description           | Repository            | body     | string    |
-|                       | Description           |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| homepage              | homepage              | body     | string    |
-+-----------------------+-----------------------+----------+-----------+
-| has_issues            | Allow Issues to Be    | body     | boolean   |
-|                       | Created               |          |           |
-|                       | (Enabled/Disabled).   |          |           |
-|                       | Default: true         |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| has_wiki              | Provide Wiki          | body     | boolean   |
-|                       | (Enabled/Disabled).   |          |           |
-|                       | Default: true         |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| can_comment           | Allow Users to        | body     | boolean   |
-|                       | Comment on            |          |           |
-|                       | Repositories.         |          |           |
-|                       | Default: true         |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| public                | Repository Open       | body     | int       |
-|                       | Source Type: 0        |          |           |
-|                       | (Private), 1          |          |           |
-|                       | (External Open        |          |           |
-|                       | Source), 2 (Internal  |          |           |
-|                       | Open Source). Note:   |          |           |
-|                       | This is mutually      |          |           |
-|                       | exclusive with        |          |           |
-|                       | private and is        |          |           |
-|                       | primarily based on    |          |           |
-|                       | public                |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| private               | Repository Visibility | body     | boolean   |
-|                       | (Public or Private).  |          |           |
-|                       | Default: Public       |          |           |
-|                       | (false) . Note: This  |          |           |
-|                       | is mutually exclusive |          |           |
-|                       | with public and is    |          |           |
-|                       | primarily based on    |          |           |
-|                       | public.               |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| auto_init             | If the value is true, | body     | boolean   |
-|                       | the repository will   |          |           |
-|                       | be initialized with a |          |           |
-|                       | README. Default: Not  |          |           |
-|                       | Initialized (false)   |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| gitignore_template    | gitignore template    | body     | string    |
-+-----------------------+-----------------------+----------+-----------+
-| license_template      | license template      | body     | string    |
-+-----------------------+-----------------------+----------+-----------+
-| path                  | Repository Path       | body     | string    |
-+-----------------------+-----------------------+----------+-----------+
-| default_branch        | Default Branch Name   | formData | string    |
-|                       | when Initializing a   |          |           |
-|                       | Repository.Default:   |          |           |
-|                       | main                  |          |           |
-+-----------------------+-----------------------+----------+-----------+
++-----------------------+----------+-----------+-----------------------+
+| Parameter             | Type     | Data Type | Description           |
++=======================+==========+===========+=======================+
+| access_token\*        | query    | string    | personal access token |
++-----------------------+----------+-----------+-----------------------+
+| org\*                 | path     | string    | Organization Path     |
+|                       |          |           | (path/login)          |
++-----------------------+----------+-----------+-----------------------+
+| name\*                | body     | string    | Repository Name       |
++-----------------------+----------+-----------+-----------------------+
+| description           | body     | string    | Repository            |
+|                       |          |           | Description           |
++-----------------------+----------+-----------+-----------------------+
+| homepage              | body     | string    | homepage              |
++-----------------------+----------+-----------+-----------------------+
+| has_issues            | body     | boolean   | Allow Issues to Be    |
+|                       |          |           | Created               |
+|                       |          |           | (Enabled/Disabled).   |
+|                       |          |           | Default: true         |
++-----------------------+----------+-----------+-----------------------+
+| has_wiki              | body     | boolean   | Provide Wiki          |
+|                       |          |           | (Enabled/Disabled).   |
+|                       |          |           | Default: true         |
++-----------------------+----------+-----------+-----------------------+
+| can_comment           | body     | boolean   | Allow Users to        |
+|                       |          |           | Comment on            |
+|                       |          |           | Repositories.         |
+|                       |          |           | Default: true         |
++-----------------------+----------+-----------+-----------------------+
+| public                | body     | int       | Repository Open       |
+|                       |          |           | Source Type: 0        |
+|                       |          |           | (Private), 1          |
+|                       |          |           | (External Open        |
+|                       |          |           | Source), 2 (Internal  |
+|                       |          |           | Open Source). Note:   |
+|                       |          |           | This is mutually      |
+|                       |          |           | exclusive with        |
+|                       |          |           | private and is        |
+|                       |          |           | primarily based on    |
+|                       |          |           | public                |
++-----------------------+----------+-----------+-----------------------+
+| private               | body     | boolean   | Repository Visibility |
+|                       |          |           | (Public or Private).  |
+|                       |          |           | Default: Public       |
+|                       |          |           | (false) . Note: This  |
+|                       |          |           | is mutually exclusive |
+|                       |          |           | with public and is    |
+|                       |          |           | primarily based on    |
+|                       |          |           | public.               |
++-----------------------+----------+-----------+-----------------------+
+| auto_init             | body     | boolean   | If the value is true, |
+|                       |          |           | the repository will   |
+|                       |          |           | be initialized with a |
+|                       |          |           | README. Default: Not  |
+|                       |          |           | Initialized (false)   |
++-----------------------+----------+-----------+-----------------------+
+| gitignore_template    | body     | string    | gitignore template    |
++-----------------------+----------+-----------+-----------------------+
+| license_template      | body     | string    | license template      |
++-----------------------+----------+-----------+-----------------------+
+| path                  | body     | string    | Repository Path       |
++-----------------------+----------+-----------+-----------------------+
+| default_branch        | formData | string    | Default Branch Name   |
+|                       |          |           | when Initializing a   |
+|                       |          |           | Repository.Default:   |
+|                       |          |           | main                  |
++-----------------------+----------+-----------+-----------------------+
 
 
 Response
@@ -452,13 +452,13 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== =========================== ===== =========
-Parameter      Description                 Type  Data Type
-============== =========================== ===== =========
-access_token\* personal access token       query string
-enterprise\*   Enterprise Path(path/login) path  string
-username\*     username(username/login)    path  string
-============== =========================== ===== =========
+============== ===== ========= ===========================
+Parameter      Type  Data Type Description                
+============== ===== ========= ===========================
+access_token\* query string    personal access token      
+enterprise\*   path  string    Enterprise Path(path/login)
+username\*     path  string    username(username/login)   
+============== ===== ========= ===========================
 
 
 Response
@@ -509,12 +509,12 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== =========================== ===== =========
-Parameter      Description                 Type  Data Type
-============== =========================== ===== =========
-access_token\* personal access token       query string
-org\*          Enterprise Path(path/login) path  string
-============== =========================== ===== =========
+============== ===== ========= ===========================
+Parameter      Type  Data Type Description                
+============== ===== ========= ===========================
+access_token\* query string    personal access token      
+org\*          path  string    Enterprise Path(path/login)
+============== ===== ========= ===========================
 
 
 Response
@@ -570,15 +570,15 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ======================================== ===== =========
-Parameter      Description                              Type  Data Type
-============== ======================================== ===== =========
-access_token\* personal access token                    query string
-org\*          Enterprise Path(path/login)              path  string
-page           Current Page Number，default:1           query int
-per_page       Items Per Page, Maximum 100,default:20   query int
-role           Filter Members by Role(all/admin/member) query string
-============== ======================================== ===== =========
+============== ====== ========= =========================================
+Parameter      Type   Data Type Description                              
+============== ====== ========= =========================================
+access_token\* query  string    personal access token                    
+org\*          path   string    Enterprise Path(path/login)              
+page           uery i nt        Current Page Number，default:1           q
+per_page       query  int       Items Per Page, Maximum 100,default:20   
+role           query  string    Filter Members by Role(all/admin/member) 
+============== ====== ========= =========================================
 
 
 Response
@@ -626,15 +626,15 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ======================================== ===== =========
-Parameter      Description                              Type  Data Type
-============== ======================================== ===== =========
-access_token\* personal access token                    query string
-org\*          Enterprise Path(path/login)              path  string
-page           Current Page Number，default:1           query int
-per_page       Items Per Page, Maximum 100,default:20   query int
-role           Filter Members by Role(all/admin/member) query string
-============== ======================================== ===== =========
+============== ====== ========= =========================================
+Parameter      Type   Data Type Description                              
+============== ====== ========= =========================================
+access_token\* query  string    personal access token                    
+org\*          path   string    Enterprise Path(path/login)              
+page           uery i nt        Current Page Number，default:1           q
+per_page       query  int       Items Per Page, Maximum 100,default:20   
+role           query  string    Filter Members by Role(all/admin/member) 
+============== ====== ========= =========================================
 
 
 Response
@@ -684,13 +684,13 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ============================== ===== =========
-Parameter      Description                    Type  Data Type
-============== ============================== ===== =========
-access_token\* personal access token          query string
-org\*          Organization Path (path/login) path  string
-username\*     username(username/login)       path  string
-============== ============================== ===== =========
+============== ===== ========= ==============================
+Parameter      Type  Data Type Description                   
+============== ===== ========= ==============================
+access_token\* query string    personal access token         
+org\*          path  string    Organization Path (path/login)
+username\*     path  string    username(username/login)      
+============== ===== ========= ==============================
 
 
 Response
@@ -726,20 +726,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | query | int       |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -784,14 +784,14 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | Repository Ownership Path       | path  | string    |
-|                | (Company or Organization Path)  |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company or Organization Path)  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -869,26 +869,26 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| username\*     | username/login                  | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| permission     | Member permissions: pull        | body  | string    |
-|                | code(pull), push code(push),    |       |           |
-|                | maintainer(admin). Default:     |       |           |
-|                | push, customized (custom role)  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| role_id        | Role ID. Required if            | body  | string    |
-|                | ‘permission’ is set to          |       |           |
-|                | ‘customized’                    |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| username\*     | path  | string    | username/login                  |
++----------------+-------+-----------+---------------------------------+
+| permission     | body  | string    | Member permissions: pull        |
+|                |       |           | code(pull), push code(push),    |
+|                |       |           | maintainer(admin). Default:     |
+|                |       |           | push, customized (custom role)  |
++----------------+-------+-----------+---------------------------------+
+| role_id        | body  | string    | Role ID. Required if            |
+|                |       |           | ‘permission’ is set to          |
+|                |       |           | ‘customized’                    |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -941,20 +941,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access token\* | Personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| enterprise\*   | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| username\*     | Username (username/login)       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| role\*         | Enterprise role (viewer、       | body  | string    |
-|                | tester、 developer、            |       |           |
-|                | maintainer、 admin)             |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access token\* | query | string    | Personal access token           |
++----------------+-------+-----------+---------------------------------+
+| enterprise\*   | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| username\*     | path  | string    | Username (username/login)       |
++----------------+-------+-----------+---------------------------------+
+| role\*         | body  | string    | Enterprise role (viewer、       |
+|                |       |           | tester、 developer、            |
+|                |       |           | maintainer、 admin)             |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1002,17 +1002,17 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ================================= ========= =========
-Parameter      Description                       Type      Data Type
-============== ================================= ========= =========
-access_token\* Personal access token             query     string
-org\*          Repository Owner Path(path/login) path      string
-name           Repository Owner Name             form-data string
-email          Repository Owner Email            form-data string
-location       Repository Owner Location         form-data string
-description    Repository Owner Description      form-data string
-html_url       Repository Owner Site             form-data string
-============== ================================= ========= =========
+============== ========= ========= =================================
+Parameter      Type      Data Type Description                      
+============== ========= ========= =================================
+access_token\* query     string    Personal access token            
+org\*          path      string    Repository Owner Path(path/login)
+name           formData string    Repository Owner Name            
+email          formData string    Repository Owner Email           
+location       formData string    Repository Owner Location        
+description    formData string    Repository Owner Description     
+html_url       formData string    Repository Owner Site            
+============== ========= ========= =================================
 
 
 Response
@@ -1072,12 +1072,12 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ================================= ===== =========
-Parameter      Description                       Type  Data Type
-============== ================================= ===== =========
-access_token\* Personal access token             query string
-org\*          Repository Owner Path(path/login) path  string
-============== ================================= ===== =========
+============== ===== ========= =================================
+Parameter      Type  Data Type Description                      
+============== ===== ========= =================================
+access_token\* query string    Personal access token            
+org\*          path  string    Repository Owner Path(path/login)
+============== ===== ========= =================================
 
 
 Response

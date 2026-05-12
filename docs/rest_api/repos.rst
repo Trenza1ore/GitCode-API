@@ -13,27 +13,27 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sha\*          | Can be a branch name (e.g.,     | path  | string    |
-|                | master), a commit SHA, or a     |       |           |
-|                | directory tree SHA              |       |           |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| recursive      | Set to 1 to recursively         | query | int       |
-|                | retrieve the directory          |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| sha\*          | path  | string    | Can be a branch name (e.g.,     |
+|                |       |           | master), a commit SHA, or a     |
+|                |       |           | directory tree SHA              |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
+| recursive      | query | int       | Set to 1 to recursively         |
+|                |       |           | retrieve the directory          |
++----------------+-------+-----------+---------------------------------+
 
 Response
 ~~~~~~~~
@@ -78,22 +78,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| path\*         | Path of the File                | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| ref            | Branch, tag, or commit.         | query | string    |
-|                | Default: Repository’s default   |       |           |
-|                | branch (main)                   |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| path\*         | path  | string    | Path of the File                |
++----------------+-------+-----------+---------------------------------+
+| ref            | query | string    | Branch, tag, or commit.         |
+|                |       |           | Default: Repository’s default   |
+|                |       |           | branch (main)                   |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -144,20 +144,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| ref_name       | ref(Branch, tag, or commit)     | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| file_name      | file name                       | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| ref_name       | query | string    | ref(Branch, tag, or commit)     |
++----------------+-------+-----------+---------------------------------+
+| file_name      | query | string    | file name                       |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -192,29 +192,29 @@ Request
 
 ``POST https://api.gitcode.com/api/v5/repos/{owner}/{repo}/contents/{path}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| path\*         | file path                       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| content\*      | File content, must be Base64    | body  | string    |
-|                | encoded.                        |       |           |
-+----------------+---------------------------------+-------+-----------+
-| message\*      | commit message                  | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| branch         | branch                          | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| author[name]   | author name                     | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| author[email]  | author email                    | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| path\*         | path  | string    | file path                       |
++----------------+-------+-----------+---------------------------------+
+| content\*      | body  | string    | File content, must be Base64    |
+|                |       |           | encoded.                        |
++----------------+-------+-----------+---------------------------------+
+| message\*      | body  | string    | commit message                  |
++----------------+-------+-----------+---------------------------------+
+| branch         | body  | string    | branch                          |
++----------------+-------+-----------+---------------------------------+
+| author[name]   | body  | string    | author name                     |
++----------------+-------+-----------+---------------------------------+
+| author[email]  | body  | string    | author email                    |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -276,31 +276,31 @@ Request
 
 ``PUT https://api.gitcode.com/api/v5/repos/{owner}/{repo}/contents/{path}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| path\*         | file path                       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| content\*      | File content, must be Base64    | body  | string    |
-|                | encoded.                        |       |           |
-+----------------+---------------------------------+-------+-----------+
-| sha\*          | 文件的 Blob SHA                 | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| branch         | branch                          | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| message\*      | commit message                  | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| author[name]   | author name                     | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| author[email]  | author email                    | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| path\*         | path  | string    | file path                       |
++----------------+-------+-----------+---------------------------------+
+| content\*      | body  | string    | File content, must be Base64    |
+|                |       |           | encoded.                        |
++----------------+-------+-----------+---------------------------------+
+| sha\*          | body  | string    | 文件的 Blob SHA                 |
++----------------+-------+-----------+---------------------------------+
+| branch         | body  | string    | branch                          |
++----------------+-------+-----------+---------------------------------+
+| message\*      | body  | string    | commit message                  |
++----------------+-------+-----------+---------------------------------+
+| author[name]   | body  | string    | author name                     |
++----------------+-------+-----------+---------------------------------+
+| author[email]  | body  | string    | author email                    |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -350,24 +350,24 @@ Request
 
 ``DELETE https://api.gitcode.com/api/v5/repos/{owner}/{repo}/contents/{path}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| path\*         | file path                       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sha\*          | file Blob SHA                   | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| branch         | branch name                     | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| message\*      | commit message                  | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| path\*         | path  | string    | file path                       |
++----------------+-------+-----------+---------------------------------+
+| sha\*          | body  | string    | file Blob SHA                   |
++----------------+-------+-----------+---------------------------------+
+| branch         | body  | string    | branch name                     |
++----------------+-------+-----------+---------------------------------+
+| message\*      | body  | string    | commit message                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -424,18 +424,18 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/git/blobs/{sha}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sha\*          | blob sha                        | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| sha\*          | path  | string    | blob sha                        |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -477,16 +477,16 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | formData | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -527,20 +527,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| type           | Contributor                     | query | string    |
-|                | Type(committers/authors)        |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| type           | query | string    | Contributor                     |
+|                |       |           | Type(committers/authors)        |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -582,31 +582,31 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+-----------------------+-----------------------+----------+-----------+
-| Parameter             | Description           | Type     | Data Type |
-+=======================+=======================+==========+===========+
-| access_token\*        | personal access token | formData | string    |
-+-----------------------+-----------------------+----------+-----------+
-| owner\*               | Repository Owner Path | path     | string    |
-|                       | (Organization or User |          |           |
-|                       | Path)                 |          |           |
-+-----------------------+-----------------------+----------+-----------+
-| repo\*                | Repository Path(path) | path     | string    |
-+-----------------------+-----------------------+----------+-----------+
-| has_wiki              | wiki                  | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
-| has_issue             | issue                 | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
-| has_security          | security issue        | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
-| has_merge_request     | merge request         | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
-| has_fork              | fork allowed          | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
-| has_analysis          | analysis              | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
-| has_discussion        | discussion            | body     | boolean   |
-+-----------------------+-----------------------+----------+-----------+
++-----------------------+----------+-----------+-----------------------+
+| Parameter             | Type     | Data Type | Description           |
++=======================+==========+===========+=======================+
+| access_token\*        | formData | string    | personal access token |
++-----------------------+----------+-----------+-----------------------+
+| owner\*               | path     | string    | Repository Owner Path |
+|                       |          |           | (Organization or User |
+|                       |          |           | Path)                 |
++-----------------------+----------+-----------+-----------------------+
+| repo\*                | path     | string    | Repository Path(path) |
++-----------------------+----------+-----------+-----------------------+
+| has_wiki              | body     | boolean   | wiki                  |
++-----------------------+----------+-----------+-----------------------+
+| has_issue             | body     | boolean   | issue                 |
++-----------------------+----------+-----------+-----------------------+
+| has_security          | body     | boolean   | security issue        |
++-----------------------+----------+-----------+-----------------------+
+| has_merge_request     | body     | boolean   | merge request         |
++-----------------------+----------+-----------+-----------------------+
+| has_fork              | body     | boolean   | fork allowed          |
++-----------------------+----------+-----------+-----------------------+
+| has_analysis          | body     | boolean   | analysis              |
++-----------------------+----------+-----------+-----------------------+
+| has_discussion        | body     | boolean   | discussion            |
++-----------------------+----------+-----------+-----------------------+
 
 
 Response
@@ -648,31 +648,31 @@ Request
 
 ``PATCH https://api.gitcode.com/api/v5/repos/{owner}/{repo}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| name\*         | Repository Name                 | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| description    | Repository Description          | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| homepage       | homepage, eg:                   | body  | string    |
-|                | https://gitcode.com             |       |           |
-+----------------+---------------------------------+-------+-----------+
-| path           | Repository Path                 | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| private        | private: true/false             | body  | boolean   |
-+----------------+---------------------------------+-------+-----------+
-| default_branch | default branch                  | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| lfs_enabled    | lfs enabled                     | body  | boolean   |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| name\*         | body  | string    | Repository Name                 |
++----------------+-------+-----------+---------------------------------+
+| description    | body  | string    | Repository Description          |
++----------------+-------+-----------+---------------------------------+
+| homepage       | body  | string    | homepage, eg:                   |
+|                |       |           | https://gitcode.com             |
++----------------+-------+-----------+---------------------------------+
+| path           | body  | string    | Repository Path                 |
++----------------+-------+-----------+---------------------------------+
+| private        | body  | boolean   | private: true/false             |
++----------------+-------+-----------+---------------------------------+
+| default_branch | body  | string    | default branch                  |
++----------------+-------+-----------+---------------------------------+
+| lfs_enabled    | body  | boolean   | lfs enabled                     |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -749,30 +749,30 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------+-------------------------------+-------+-----------+
-| Parameter        | Description                   | Type  | Data Type |
-+==================+===============================+=======+===========+
-| access_token\*   | personal access token         | query | string    |
-+------------------+-------------------------------+-------+-----------+
-| owner\*          | Repository Owner Path         | path  | string    |
-|                  | (Organization or User Path)   |       |           |
-+------------------+-------------------------------+-------+-----------+
-| repo\*           | Repository Path(path)         | path  | string    |
-+------------------+-------------------------------+-------+-----------+
-| assignees        | aprroval username, can        | body  | string    |
-|                  | provide multiple values,      |       |           |
-|                  | separated by commas. eg:      |       |           |
-|                  | (username1,username2)         |       |           |
-+------------------+-------------------------------+-------+-----------+
-| testers          | tester username, can provide  | body  | string    |
-|                  | multiple values, separated by |       |           |
-|                  | commas. eg:                   |       |           |
-|                  | (username1,username2)         |       |           |
-+------------------+-------------------------------+-------+-----------+
-| assignees_number | Minimum number of approvals   | body  | int       |
-+------------------+-------------------------------+-------+-----------+
-| testers_number   | Minimum number of testers     | body  | int       |
-+------------------+-------------------------------+-------+-----------+
++------------------+-------+-----------+-------------------------------+
+| Parameter        | Type  | Data Type | Description                   |
++==================+=======+===========+===============================+
+| access_token\*   | query | string    | personal access token         |
++------------------+-------+-----------+-------------------------------+
+| owner\*          | path  | string    | Repository Owner Path         |
+|                  |       |           | (Organization or User Path)   |
++------------------+-------+-----------+-------------------------------+
+| repo\*           | path  | string    | Repository Path(path)         |
++------------------+-------+-----------+-------------------------------+
+| assignees        | body  | string    | aprroval username, can        |
+|                  |       |           | provide multiple values,      |
+|                  |       |           | separated by commas. eg:      |
+|                  |       |           | (username1,username2)         |
++------------------+-------+-----------+-------------------------------+
+| testers          | body  | string    | tester username, can provide  |
+|                  |       |           | multiple values, separated by |
+|                  |       |           | commas. eg:                   |
+|                  |       |           | (username1,username2)         |
++------------------+-------+-----------+-------------------------------+
+| assignees_number | body  | int       | Minimum number of approvals   |
++------------------+-------+-----------+-------------------------------+
+| testers_number   | body  | int       | Minimum number of testers     |
++------------------+-------+-----------+-------------------------------+
 
 **Note: At least one of assignees, testers, assignees_number,
 testers_number must be set.**
@@ -818,21 +818,21 @@ Request
 
 ``PUT https://api.gitcode.com/api/v5/org/{org}/repo/{repo}/status``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| status\*       | state, 0: open，2: archived     | body  | int       |
-+----------------+---------------------------------+-------+-----------+
-| password\*     | password                        | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| status\*       | body  | int       | state, 0: open，2: archived     |
++----------------+-------+-----------+---------------------------------+
+| password\*     | body  | string    | password                        |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -874,21 +874,21 @@ Request
 
 ``POST https://api.gitcode.com/api/v5/org/{org}/projects/{repo}/transfer``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path                 | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| transfer_to\*  | target namespace                | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| password\*     | password                        | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path                 |
++----------------+-------+-----------+---------------------------------+
+| transfer_to\*  | body  | string    | target namespace                |
++----------------+-------+-----------+---------------------------------+
+| password\*     | body  | string    | password                        |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -932,16 +932,16 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | formData | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -982,21 +982,21 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| mode\*         | Member permission management    | body  | int       |
-|                | mode: 1 (Inheritance Mode), 2   |       |           |
-|                | (Independent Mode); mixed mode  |       |           |
-|                | settings are not accepted       |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| mode\*         | body  | int       | Member permission management    |
+|                |       |           | mode: 1 (Inheritance Mode), 2   |
+|                |       |           | (Independent Mode); mixed mode  |
+|                |       |           | settings are not accepted       |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1039,36 +1039,36 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------------------+-----------------------+----------+-----------+
-| Parameter                | Description           | Type     | Data Type |
-+==========================+=======================+==========+===========+
-| access_token\*           | personal access token | formData | string    |
-+--------------------------+-----------------------+----------+-----------+
-| owner\*                  | Repository Owner Path | path     | string    |
-|                          | (Organization or User |          |           |
-|                          | Path)                 |          |           |
-+--------------------------+-----------------------+----------+-----------+
-| repo\*                   | Repository Path(path) | path     | string    |
-+--------------------------+-----------------------+----------+-----------+
-| reject_not_signed_by_gpg | Only commits with     | body     | boolean   |
-|                          | verified signatures   |          |           |
-|                          | are allowed           |          |           |
-+--------------------------+-----------------------+----------+-----------+
-| commit_message_regex     | Commit message        | body     | string    |
-|                          | validation            |          |           |
-+--------------------------+-----------------------+----------+-----------+
-| max_file_size            | Commit file size      | body     | Integer   |
-|                          | limit (in MB)         |          |           |
-+--------------------------+-----------------------+----------+-----------+
-| skip_rule_for_owner      | Commits by project    | body     | boolean   |
-|                          | administrators are    |          |           |
-|                          | not subject to the    |          |           |
-|                          | above rules           |          |           |
-+--------------------------+-----------------------+----------+-----------+
-| deny_force_push          | Force push is         | body     | boolean   |
-|                          | prohibited (including |          |           |
-|                          | for administrators)   |          |           |
-+--------------------------+-----------------------+----------+-----------+
++--------------------------+----------+-----------+-----------------------+
+| Parameter                | Type     | Data Type | Description           |
++==========================+==========+===========+=======================+
+| access_token\*           | formData | string    | personal access token |
++--------------------------+----------+-----------+-----------------------+
+| owner\*                  | path     | string    | Repository Owner Path |
+|                          |          |           | (Organization or User |
+|                          |          |           | Path)                 |
++--------------------------+----------+-----------+-----------------------+
+| repo\*                   | path     | string    | Repository Path(path) |
++--------------------------+----------+-----------+-----------------------+
+| reject_not_signed_by_gpg | body     | boolean   | Only commits with     |
+|                          |          |           | verified signatures   |
+|                          |          |           | are allowed           |
++--------------------------+----------+-----------+-----------------------+
+| commit_message_regex     | body     | string    | Commit message        |
+|                          |          |           | validation            |
++--------------------------+----------+-----------+-----------------------+
+| max_file_size            | body     | Integer   | Commit file size      |
+|                          |          |           | limit (in MB)         |
++--------------------------+----------+-----------+-----------------------+
+| skip_rule_for_owner      | body     | boolean   | Commits by project    |
+|                          |          |           | administrators are    |
+|                          |          |           | not subject to the    |
+|                          |          |           | above rules           |
++--------------------------+----------+-----------+-----------------------+
+| deny_force_push          | body     | boolean   | Force push is         |
+|                          |          |           | prohibited (including |
+|                          |          |           | for administrators)   |
++--------------------------+----------+-----------+-----------------------+
 
 
 Response
@@ -1113,16 +1113,16 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | formData | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -1168,16 +1168,16 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | formData | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -1210,38 +1210,38 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------------+-------------------------------------+-------+-----------+
-| Parameter              | Description                         | Type  | Data Type |
-+========================+=====================================+=======+===========+
-| access_token\*         | personal access token               | query | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| name\*                 | Repository Name                     | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| description            | Repository Description              | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| homepage               | homepage                            | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| has_issues             | TRUE Allow Issues to Be Created     | body  | boolean   |
-|                        | (Enabled/Disabled). Default: true   |       |           |
-+------------------------+-------------------------------------+-------+-----------+
-| has_wiki               | has wiki. Default: true             | body  | boolean   |
-+------------------------+-------------------------------------+-------+-----------+
-| auto_init              | When set to true, the repository    | body  | boolean   |
-|                        | will be initialized with a README.  |       |           |
-|                        | Default: Do not initialize (false). |       |           |
-+------------------------+-------------------------------------+-------+-----------+
-| gitignore_template     | gitignore template                  | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| license_template       | license template                    | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| path                   | Repository Path                     | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| private                | private: true/false                 | body  | boolean   |
-+------------------------+-------------------------------------+-------+-----------+
-| import_url             | Repository import URL, which must   | body  | string    |
-|                        | end with .git, for example:         |       |           |
-|                        | https://github.com/apache/kafka.git |       |           |
-+------------------------+-------------------------------------+-------+-----------+
++------------------------+-------+-----------+-------------------------------------+
+| Parameter              | Type  | Data Type | Description                         |
++========================+=======+===========+=====================================+
+| access_token\*         | query | string    | personal access token               |
++------------------------+-------+-----------+-------------------------------------+
+| name\*                 | body  | string    | Repository Name                     |
++------------------------+-------+-----------+-------------------------------------+
+| description            | body  | string    | Repository Description              |
++------------------------+-------+-----------+-------------------------------------+
+| homepage               | body  | string    | homepage                            |
++------------------------+-------+-----------+-------------------------------------+
+| has_issues             | body  | boolean   | TRUE Allow Issues to Be Created     |
+|                        |       |           | (Enabled/Disabled). Default: true   |
++------------------------+-------+-----------+-------------------------------------+
+| has_wiki               | body  | boolean   | has wiki. Default: true             |
++------------------------+-------+-----------+-------------------------------------+
+| auto_init              | body  | boolean   | When set to true, the repository    |
+|                        |       |           | will be initialized with a README.  |
+|                        |       |           | Default: Do not initialize (false). |
++------------------------+-------+-----------+-------------------------------------+
+| gitignore_template     | body  | string    | gitignore template                  |
++------------------------+-------+-----------+-------------------------------------+
+| license_template       | body  | string    | license template                    |
++------------------------+-------+-----------+-------------------------------------+
+| path                   | body  | string    | Repository Path                     |
++------------------------+-------+-----------+-------------------------------------+
+| private                | body  | boolean   | private: true/false                 |
++------------------------+-------+-----------+-------------------------------------+
+| import_url             | body  | string    | Repository import URL, which must   |
+|                        |       |           | end with .git, for example:         |
+|                        |       |           | https://github.com/apache/kafka.git |
++------------------------+-------+-----------+-------------------------------------+
 
 
 Response
@@ -1310,29 +1310,29 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| organization   | Full organization space         | body  | string    |
-|                | address, if not provided, it    |       |           |
-|                | will default to forking to the  |       |           |
-|                | user’s personal space address   |       |           |
-+----------------+---------------------------------+-------+-----------+
-| name           | Forked repository name.         | body  | string    |
-|                | Default: Source repository name |       |           |
-+----------------+---------------------------------+-------+-----------+
-| path           | Forked repository address.      | body  | string    |
-|                | Default: Source repository      |       |           |
-|                | address                         |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| organization   | body  | string    | Full organization space         |
+|                |       |           | address, if not provided, it    |
+|                |       |           | will default to forking to the  |
+|                |       |           | user’s personal space address   |
++----------------+-------+-----------+---------------------------------+
+| name           | body  | string    | Forked repository name.         |
+|                |       |           | Default: Source repository name |
++----------------+-------+-----------+---------------------------------+
+| path           | body  | string    | Forked repository address.      |
+|                |       |           | Default: Source repository      |
+|                |       |           | address                         |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1391,28 +1391,28 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sort           | sort: fork(newest,              | query | string    |
-|                | oldest)，star(stargazers)       |       |           |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| created_after  | created after                   | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| created_before | created before                  | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | sort: fork(newest,              |
+|                |       |           | oldest)，star(stargazers)       |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
+| created_after  | query | string    | created after                   |
++----------------+-------+-----------+---------------------------------+
+| created_before | query | string    | created before                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1487,22 +1487,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| body\*         | File content in base64 format   | body  | string    |
-|                | (limit: 20MB).                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| file_name\*    | File Name                       | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| body\*         | body  | string    | File content in base64 format   |
+|                |       |           | (limit: 20MB).                  |
++----------------+-------+-----------+---------------------------------+
+| file_name\*    | body  | string    | File Name                       |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1547,20 +1547,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Ownership Path    | path     | string    |
-|                | (Company, Organization, or   |          |           |
-|                | Personal Path)               |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| file\*         | File content in base64       | formData | file      |
-|                | format (limit: 20MB)         |          |           |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Ownership Path    |
+|                |          |           | (Company, Organization, or   |
+|                |          |           | Personal Path)               |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
+| file\*         | formData | file      | File content in base64       |
+|                |          |           | format (limit: 20MB)         |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -1603,25 +1603,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| watched_after  | watched after                   | query | String    |
-+----------------+---------------------------------+-------+-----------+
-| watched_before | watched before                  | query | String    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
+| watched_after  | query | String    | watched after                   |
++----------------+-------+-----------+---------------------------------+
+| watched_before | query | String    | watched before                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1666,25 +1666,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| starred_after  | starred after                   | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| starred_before | starred before                  | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
+| starred_after  | query | string    | starred after                   |
++----------------+-------+-----------+---------------------------------+
+| starred_before | query | string    | starred before                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1729,46 +1729,46 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------------------------------------+------------------------+-------+-----------+
-| Parameter                                  | Description            | Type  | Data Type |
-+============================================+========================+=======+===========+
-| access_token\*                             | personal access token  | query | string    |
-+--------------------------------------------+------------------------+-------+-----------+
-| owner\*                                    | Repository Ownership   | path  | string    |
-|                                            | Path (Company,         |       |           |
-|                                            | Organization, or       |       |           |
-|                                            | Personal Path)         |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
-| repo\*                                     | Repository Path(path)  | path  | string    |
-+--------------------------------------------+------------------------+-------+-----------+
-| disable_fork                               | disable fork           | body  | Boolean   |
-+--------------------------------------------+------------------------+-------+-----------+
-| forbidden_developer_create_branch          | forbidden developer    | body  | Boolean   |
-|                                            | create branch          |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
-| forbidden_developer_create_tag             | forbidden developer    | body  | Boolean   |
-|                                            | create tag             |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
-| forbidden_committer_create_branch          | forbidden committer    | body  | Boolean   |
-|                                            | create branch          |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
-| forbidden_developer_create_branch_user_ids | forbidden developer    | body  | String    |
-|                                            | create branch user ids |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
-| branch_name_regex                          | branch name regex      | body  | String    |
-+--------------------------------------------+------------------------+-------+-----------+
-| tag_name_regex                             | tag name regex         | body  | String    |
-+--------------------------------------------+------------------------+-------+-----------+
-| generate_pre_merge_ref                     | generate pre-merge ref | body  | Boolean   |
-+--------------------------------------------+------------------------+-------+-----------+
-| rebase_disable_trigger_webhook             | rebase disable trigger | body  | Boolean   |
-|                                            | webhook                |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
-| open_gpg_verified                          | open gpg verified      | body  | Boolean   |
-+--------------------------------------------+------------------------+-------+-----------+
-| include_lfs_objects                        | ZIP downlaod include   | body  | Boolean   |
-|                                            | lfs objects            |       |           |
-+--------------------------------------------+------------------------+-------+-----------+
++--------------------------------------------+-------+-----------+------------------------+
+| Parameter                                  | Type  | Data Type | Description            |
++============================================+=======+===========+========================+
+| access_token\*                             | query | string    | personal access token  |
++--------------------------------------------+-------+-----------+------------------------+
+| owner\*                                    | path  | string    | Repository Ownership   |
+|                                            |       |           | Path (Company,         |
+|                                            |       |           | Organization, or       |
+|                                            |       |           | Personal Path)         |
++--------------------------------------------+-------+-----------+------------------------+
+| repo\*                                     | path  | string    | Repository Path(path)  |
++--------------------------------------------+-------+-----------+------------------------+
+| disable_fork                               | body  | Boolean   | disable fork           |
++--------------------------------------------+-------+-----------+------------------------+
+| forbidden_developer_create_branch          | body  | Boolean   | forbidden developer    |
+|                                            |       |           | create branch          |
++--------------------------------------------+-------+-----------+------------------------+
+| forbidden_developer_create_tag             | body  | Boolean   | forbidden developer    |
+|                                            |       |           | create tag             |
++--------------------------------------------+-------+-----------+------------------------+
+| forbidden_committer_create_branch          | body  | Boolean   | forbidden committer    |
+|                                            |       |           | create branch          |
++--------------------------------------------+-------+-----------+------------------------+
+| forbidden_developer_create_branch_user_ids | body  | String    | forbidden developer    |
+|                                            |       |           | create branch user ids |
++--------------------------------------------+-------+-----------+------------------------+
+| branch_name_regex                          | body  | String    | branch name regex      |
++--------------------------------------------+-------+-----------+------------------------+
+| tag_name_regex                             | body  | String    | tag name regex         |
++--------------------------------------------+-------+-----------+------------------------+
+| generate_pre_merge_ref                     | body  | Boolean   | generate pre-merge ref |
++--------------------------------------------+-------+-----------+------------------------+
+| rebase_disable_trigger_webhook             | body  | Boolean   | rebase disable trigger |
+|                                            |       |           | webhook                |
++--------------------------------------------+-------+-----------+------------------------+
+| open_gpg_verified                          | body  | Boolean   | open gpg verified      |
++--------------------------------------------+-------+-----------+------------------------+
+| include_lfs_objects                        | body  | Boolean   | ZIP downlaod include   |
+|                                            |       |           | lfs objects            |
++--------------------------------------------+-------+-----------+------------------------+
 
 
 Response
@@ -1815,17 +1815,17 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1870,17 +1870,17 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1944,69 +1944,69 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| Parameter                                        | Description                                     | Type  | Data Type |
-+==================================================+=================================================+=======+===========+
-| access_token\*                                   | personal access token                           | query | string    |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| owner\*                                          | Repository Ownership Path (Company,             | path  | string    |
-|                                                  | Organization, or Personal Path)                 |       |           |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| repo\*                                           | Repository Path(path)                           | path  | string    |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| approval_required_reviewers_enable               | 是否启用审批必需的评审者功能                    | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| approval_required_reviewers                      | 需要的审批者数量(最小评审人数【选择的数字：1~5, | body  | Integer   |
-|                                                  | 如果取消评审人功能传入0】)                      |       |           |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| only_allow_merge_if_all_discussions_are_resolved | 评审问题全部解决才能合入                        | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| only_allow_merge_if_pipeline_succeeds            | 是否仅在流水线成功后才允许合并                  | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| disable_merge_by_self                            | 禁止合入自己创建的合并请求                      | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| can_force_merge                                  | 允许管理员强制合入                              | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| add_notes_after_merged                           | 允许合并请求合并后继续做代码检视和评论          | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| mark_auto_merged_mr_as_closed                    | 是否将自动合并的MR状态标记为关闭状态            | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| can_reopen                                       | 是否可以重新打开一个已经关闭的合并请求          | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| delete_source_branch_when_merged                 | 合并时是否删除源分支，默认删除原分支            | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| disable_squash_merge                             | 禁止 Squash 合并                                | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| auto_squash_merge                                | 新建合并请求，默认开启 Squash 合并              | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| merge_method                                     | 合并模式三选一(通过 merge commit                | body  | String    |
-|                                                  | 合并：merge；通过 merge commit 合并             |       |           |
-|                                                  | （记录半线性历史）：rebase_merge；fast -        |       |           |
-|                                                  | forward 合并：ff)                               |       |           |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| squash_merge_with_no_merge_commit                | Squash 合并不产生 Merge 节点                    | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| merged_commit_author                             | 使用 MR (合入/创建) 者生成 Merge Commit（使用   | body  | String    |
-|                                                  | PR 合入者生成 Merge Commit：传 merged_by; 使用  |       |           |
-|                                                  | PR 创建者生成 Merge Commit：传 created_by）     |       |           |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| approval_required_approvers                      | 需要审批的批准者数量                            | body  | Integer   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| approval_approver_ids                            | 项目审查人, user_id 以逗号分隔                  | body  | String    |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| approval_tester_ids                              | 项目测试人，user_id以逗号分隔                   | body  | String    |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| approval_required_testers                        | 测试最小通过人数                                | body  | Integer   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| is_check_cla                                     | 是否校验CLA                                     | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| is_allow_lite_merge_request                      | 是否启用轻量级 Pull Request                     | body  | Boolean   |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| lite_merge_request_prefix_title                  | 轻量级 pr 的标题前缀                            | body  | String    |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
-| close_issue_when_mr_merged                       | 创建 Pull Request 时,默认选中                   | body  | Boolean   |
-|                                                  | “合并后关闭已关联的 Issue”                      |       |           |
-+--------------------------------------------------+-------------------------------------------------+-------+-----------+
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| Parameter                                        | Type  | Data Type | Description                                     |
++==================================================+=======+===========+=================================================+
+| access_token\*                                   | query | string    | personal access token                           |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| owner\*                                          | path  | string    | Repository Ownership Path (Company,             |
+|                                                  |       |           | Organization, or Personal Path)                 |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| repo\*                                           | path  | string    | Repository Path(path)                           |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| approval_required_reviewers_enable               | body  | Boolean   | 是否启用审批必需的评审者功能                    |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| approval_required_reviewers                      | body  | Integer   | 需要的审批者数量(最小评审人数【选择的数字：1~5, |
+|                                                  |       |           | 如果取消评审人功能传入0】)                      |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| only_allow_merge_if_all_discussions_are_resolved | body  | Boolean   | 评审问题全部解决才能合入                        |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| only_allow_merge_if_pipeline_succeeds            | body  | Boolean   | 是否仅在流水线成功后才允许合并                  |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| disable_merge_by_self                            | body  | Boolean   | 禁止合入自己创建的合并请求                      |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| can_force_merge                                  | body  | Boolean   | 允许管理员强制合入                              |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| add_notes_after_merged                           | body  | Boolean   | 允许合并请求合并后继续做代码检视和评论          |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| mark_auto_merged_mr_as_closed                    | body  | Boolean   | 是否将自动合并的MR状态标记为关闭状态            |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| can_reopen                                       | body  | Boolean   | 是否可以重新打开一个已经关闭的合并请求          |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| delete_source_branch_when_merged                 | body  | Boolean   | 合并时是否删除源分支，默认删除原分支            |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| disable_squash_merge                             | body  | Boolean   | 禁止 Squash 合并                                |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| auto_squash_merge                                | body  | Boolean   | 新建合并请求，默认开启 Squash 合并              |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| merge_method                                     | body  | String    | 合并模式三选一(通过 merge commit                |
+|                                                  |       |           | 合并：merge；通过 merge commit 合并             |
+|                                                  |       |           | （记录半线性历史）：rebase_merge；fast -        |
+|                                                  |       |           | forward 合并：ff)                               |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| squash_merge_with_no_merge_commit                | body  | Boolean   | Squash 合并不产生 Merge 节点                    |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| merged_commit_author                             | body  | String    | 使用 MR (合入/创建) 者生成 Merge Commit（使用   |
+|                                                  |       |           | PR 合入者生成 Merge Commit：传 merged_by; 使用  |
+|                                                  |       |           | PR 创建者生成 Merge Commit：传 created_by）     |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| approval_required_approvers                      | body  | Integer   | 需要审批的批准者数量                            |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| approval_approver_ids                            | body  | String    | 项目审查人, user_id 以逗号分隔                  |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| approval_tester_ids                              | body  | String    | 项目测试人，user_id以逗号分隔                   |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| approval_required_testers                        | body  | Integer   | 测试最小通过人数                                |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| is_check_cla                                     | body  | Boolean   | 是否校验CLA                                     |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| is_allow_lite_merge_request                      | body  | Boolean   | 是否启用轻量级 Pull Request                     |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| lite_merge_request_prefix_title                  | body  | String    | 轻量级 pr 的标题前缀                            |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
+| close_issue_when_mr_merged                       | body  | Boolean   | 创建 Pull Request 时,默认选中                   |
+|                                                  |       |           | “合并后关闭已关联的 Issue”                      |
++--------------------------------------------------+-------+-----------+-------------------------------------------------+
 
 
 Response
@@ -2072,38 +2072,38 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------------+-------------------------------------+-------+-----------+
-| Parameter              | Description                         | Type  | Data Type |
-+========================+=====================================+=======+===========+
-| access_token\*         | personal access token               | query | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| name\*                 | Repository Name                     | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| description            | Repository Description              | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| homepage               | homepage                            | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| has_issues             | TRUE Allow Issues to Be Created     | body  | boolean   |
-|                        | (Enabled/Disabled)Default: true     |       |           |
-+------------------------+-------------------------------------+-------+-----------+
-| has_wiki               | has wiki, Default: true             | body  | boolean   |
-+------------------------+-------------------------------------+-------+-----------+
-| auto_init              | When set to true, the repository    | body  | boolean   |
-|                        | will be initialized with a README.  |       |           |
-|                        | Default: Do not initialize (false). |       |           |
-+------------------------+-------------------------------------+-------+-----------+
-| gitignore_template     | gitignore template                  | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| license_template       | license template                    | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| path                   | Repository Path                     | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| private                | true/false                          | body  | string    |
-+------------------------+-------------------------------------+-------+-----------+
-| import_url             | Repository import URL, which must   | body  | string    |
-|                        | end with .git, for example:         |       |           |
-|                        | https://github.com/apache/kafka.git |       |           |
-+------------------------+-------------------------------------+-------+-----------+
++------------------------+-------+-----------+-------------------------------------+
+| Parameter              | Type  | Data Type | Description                         |
++========================+=======+===========+=====================================+
+| access_token\*         | query | string    | personal access token               |
++------------------------+-------+-----------+-------------------------------------+
+| name\*                 | body  | string    | Repository Name                     |
++------------------------+-------+-----------+-------------------------------------+
+| description            | body  | string    | Repository Description              |
++------------------------+-------+-----------+-------------------------------------+
+| homepage               | body  | string    | homepage                            |
++------------------------+-------+-----------+-------------------------------------+
+| has_issues             | body  | boolean   | TRUE Allow Issues to Be Created     |
+|                        |       |           | (Enabled/Disabled)Default: true     |
++------------------------+-------+-----------+-------------------------------------+
+| has_wiki               | body  | boolean   | has wiki, Default: true             |
++------------------------+-------+-----------+-------------------------------------+
+| auto_init              | body  | boolean   | When set to true, the repository    |
+|                        |       |           | will be initialized with a README.  |
+|                        |       |           | Default: Do not initialize (false). |
++------------------------+-------+-----------+-------------------------------------+
+| gitignore_template     | body  | string    | gitignore template                  |
++------------------------+-------+-----------+-------------------------------------+
+| license_template       | body  | string    | license template                    |
++------------------------+-------+-----------+-------------------------------------+
+| path                   | body  | string    | Repository Path                     |
++------------------------+-------+-----------+-------------------------------------+
+| private                | body  | string    | true/false                          |
++------------------------+-------+-----------+-------------------------------------+
+| import_url             | body  | string    | Repository import URL, which must   |
+|                        |       |           | end with .git, for example:         |
+|                        |       |           | https://github.com/apache/kafka.git |
++------------------------+-------+-----------+-------------------------------------+
 
 
 Response
@@ -2166,27 +2166,27 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| username\*     | username                        | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| permission     | permission: pull, push, admin,  | body  | string    |
-|                | customized role name. Default:  |       |           |
-|                | push                            |       |           |
-+----------------+---------------------------------+-------+-----------+
-| role_id        | role ID, If the permission is   | body  | string    |
-|                | set to “customized”, the role   |       |           |
-|                | ID must be provided.            |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| username\*     | path  | string    | username                        |
++----------------+-------+-----------+---------------------------------+
+| permission     | body  | string    | permission: pull, push, admin,  |
+|                |       |           | customized role name. Default:  |
+|                |       |           | push                            |
++----------------+-------+-----------+---------------------------------+
+| role_id        | body  | string    | role ID, If the permission is   |
+|                |       |           | set to “customized”, the role   |
+|                |       |           | ID must be provided.            |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -2236,18 +2236,18 @@ Request
 
 ``POST https://api.gitcode.com/api/v5/repos/{owner}/{repo}/transfer``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| new_owner\*    | target namespace                | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| new_owner\*    | body  | string    | target namespace                |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -2288,17 +2288,17 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -2346,45 +2346,45 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| start_date     | start date（eg:2024-01-06）     | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| end_date       | end date (eg: 2024-12-06)       | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc, Default: desc         | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| start_date     | query | string    | start date（eg:2024-01-06）     |
++----------------+-------+-----------+---------------------------------+
+| end_date       | query | string    | end date (eg: 2024-12-06)       |
++----------------+-------+-----------+---------------------------------+
+| direction      | query | string    | asc/desc, Default: desc         |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
 ~~~~~~~~
 
-+-----------------------------------+----------------------------+-----------+
-| 字段名                            | Description                | Data Type |
-+===================================+============================+===========+
-| pdate                             | date                       | string    |
-+-----------------------------------+----------------------------+-----------+
-| repo_id                           | repo id                    | string    |
-+-----------------------------------+----------------------------+-----------+
-| total_dl_cnt                      | total downlaod count       | Long      |
-+-----------------------------------+----------------------------+-----------+
-| today_dl_cnt                      | today download count       | Long      |
-+-----------------------------------+----------------------------+-----------+
-| download_statistics_total         | Total downloads within the | Long      |
-|                                   | specified time range       |           |
-+-----------------------------------+----------------------------+-----------+
-| download_statistics_history_total | Total downloads up to the  | Long      |
-|                                   | cutoff date                |           |
-+-----------------------------------+----------------------------+-----------+
++-----------------------------------+-----------+----------------------------+
+| 字段名                            | Data Type | Description                |
++===================================+===========+============================+
+| pdate                             | string    | date                       |
++-----------------------------------+-----------+----------------------------+
+| repo_id                           | string    | repo id                    |
++-----------------------------------+-----------+----------------------------+
+| total_dl_cnt                      | Long      | total downlaod count       |
++-----------------------------------+-----------+----------------------------+
+| today_dl_cnt                      | Long      | today download count       |
++-----------------------------------+-----------+----------------------------+
+| download_statistics_total         | Long      | Total downloads within the |
+|                                   |           | specified time range       |
++-----------------------------------+-----------+----------------------------+
+| download_statistics_history_total | Long      | Total downloads up to the  |
+|                                   |           | cutoff date                |
++-----------------------------------+-----------+----------------------------+
 
 .. container:: highlight
 
@@ -2505,23 +2505,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository path                 | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| path\*         | File path                       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| ref            | Branch, tag, or commit          | query | string    |
-|                | (default: repository’s default  |       |           |
-|                | branch)                         |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository path                 |
++----------------+-------+-----------+---------------------------------+
+| path\*         | path  | string    | File path                       |
++----------------+-------+-----------+---------------------------------+
+| ref            | query | string    | Branch, tag, or commit          |
+|                |       |           | (default: repository’s default  |
+|                |       |           | branch)                         |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -2553,50 +2553,50 @@ Demo
 Parameters
 ~~~~~~~~~~
 
-+----------------+-----------------------------------+-------+---------+
-| Parameter      | Description                       | IN    | Type    |
-+================+===================================+=======+=========+
-| access_token\* | personal access token             | query | string  |
-+----------------+-----------------------------------+-------+---------+
-| owner\*        | Repository Ownership Path         | path  | string  |
-|                | (Company, Organization, or        |       |         |
-|                | Personal Path)                    |       |         |
-+----------------+-----------------------------------+-------+---------+
-| repo\*         | Repository path                   | path  | string  |
-+----------------+-----------------------------------+-------+---------+
-| author         | Filter contributors by username.  | query | string  |
-|                | Specify a username to retrieve    |       |         |
-|                | contribution data for that user.  |       |         |
-|                | By default, returns contribution  |       |         |
-|                | data for all users.               |       |         |
-+----------------+-----------------------------------+-------+---------+
-| current_user   | Whether to return data only for   | query | boolean |
-|                | the current user. ``true``        |       |         |
-|                | returns contribution data only    |       |         |
-|                | for the current user, ``false``   |       |         |
-|                | or omission returns data for all  |       |         |
-|                | users. When set to ``true``, it   |       |         |
-|                | has higher priority than the      |       |         |
-|                | ``author`` parameter.             |       |         |
-+----------------+-----------------------------------+-------+---------+
-| since          | Start date in the format          | query | string  |
-|                | ``YYYY-MM-DD`` or                 |       |         |
-|                | ``YYYY-MM-DD HH:mm:ss``. Used to  |       |         |
-|                | limit the start time of the       |       |         |
-|                | returned contribution data.       |       |         |
-+----------------+-----------------------------------+-------+---------+
-| until          | End date in the format            | query | string  |
-|                | ``YYYY-MM-DD`` or                 |       |         |
-|                | ``YYYY-MM-DD HH:mm:ss``. Used to  |       |         |
-|                | limit the end time of the         |       |         |
-|                | returned contribution data.       |       |         |
-+----------------+-----------------------------------+-------+---------+
-| ref_name       | Specifies the ref_name (branch    | query | string  |
-|                | name, commit id, tag name) for    |       |         |
-|                | which to retrieve contribution    |       |         |
-|                | data. If not provided or empty,   |       |         |
-|                | the ``default branch`` is used.   |       |         |
-+----------------+-----------------------------------+-------+---------+
++----------------+-------+---------+-----------------------------------+
+| Parameter      | IN    | Type    | Description                       |
++================+=======+=========+===================================+
+| access_token\* | query | string  | personal access token             |
++----------------+-------+---------+-----------------------------------+
+| owner\*        | path  | string  | Repository Ownership Path         |
+|                |       |         | (Company, Organization, or        |
+|                |       |         | Personal Path)                    |
++----------------+-------+---------+-----------------------------------+
+| repo\*         | path  | string  | Repository path                   |
++----------------+-------+---------+-----------------------------------+
+| author         | query | string  | Filter contributors by username.  |
+|                |       |         | Specify a username to retrieve    |
+|                |       |         | contribution data for that user.  |
+|                |       |         | By default, returns contribution  |
+|                |       |         | data for all users.               |
++----------------+-------+---------+-----------------------------------+
+| current_user   | query | boolean | Whether to return data only for   |
+|                |       |         | the current user. ``true``        |
+|                |       |         | returns contribution data only    |
+|                |       |         | for the current user, ``false``   |
+|                |       |         | or omission returns data for all  |
+|                |       |         | users. When set to ``true``, it   |
+|                |       |         | has higher priority than the      |
+|                |       |         | ``author`` parameter.             |
++----------------+-------+---------+-----------------------------------+
+| since          | query | string  | Start date in the format          |
+|                |       |         | ``YYYY-MM-DD`` or                 |
+|                |       |         | ``YYYY-MM-DD HH:mm:ss``. Used to  |
+|                |       |         | limit the start time of the       |
+|                |       |         | returned contribution data.       |
++----------------+-------+---------+-----------------------------------+
+| until          | query | string  | End date in the format            |
+|                |       |         | ``YYYY-MM-DD`` or                 |
+|                |       |         | ``YYYY-MM-DD HH:mm:ss``. Used to  |
+|                |       |         | limit the end time of the         |
+|                |       |         | returned contribution data.       |
++----------------+-------+---------+-----------------------------------+
+| ref_name       | query | string  | Specifies the ref_name (branch    |
+|                |       |         | name, commit id, tag name) for    |
+|                |       |         | which to retrieve contribution    |
+|                |       |         | data. If not provided or empty,   |
+|                |       |         | the ``default branch`` is used.   |
++----------------+-------+---------+-----------------------------------+
 
 
 Response
@@ -2711,40 +2711,40 @@ Demo
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------------+-------+--------+
-| Parameter      | Description                        | IN    | Type   |
-+================+====================================+=======+========+
-| access_token\* | personal access token.             | query | string |
-+----------------+------------------------------------+-------+--------+
-| owner\*        | Repository Ownership Path          | path  | string |
-|                | (Company, Organization, or         |       |        |
-|                | Personal Path).                    |       |        |
-+----------------+------------------------------------+-------+--------+
-| repo\*         | Repository path.                   | path  | string |
-+----------------+------------------------------------+-------+--------+
-| filter         | Filter criteria, pass in all       | query | string |
-|                | (all), push (Push event), merged   |       |        |
-|                | (Merged event), issue (issue       |       |        |
-|                | event), comments (comment events), |       |        |
-|                | team (Team events), project        |       |        |
-|                | (Project Event).                   |       |        |
-+----------------+------------------------------------+-------+--------+
-| author         | Event trigger person, enter        | query | string |
-|                | username.                          |       |        |
-+----------------+------------------------------------+-------+--------+
-| before         | The starting date is in the format | query | string |
-|                | of ‘YYYY-MM-DD’. Used to limit the |       |        |
-|                | starting time of the returned      |       |        |
-|                | event.                             |       |        |
-+----------------+------------------------------------+-------+--------+
-| after          | End date, in the format of         | query | string |
-|                | ‘YYYY-MM-DD’. Used to limit the    |       |        |
-|                | end time of the returned event.    |       |        |
-+----------------+------------------------------------+-------+--------+
-| page           | Current Page Number.               | query | int    |
-+----------------+------------------------------------+-------+--------+
-| per_page       | Items Per Page, Maximum 100.       | query | int    |
-+----------------+------------------------------------+-------+--------+
++----------------+-------+--------+------------------------------------+
+| Parameter      | IN    | Type   | Description                        |
++================+=======+========+====================================+
+| access_token\* | query | string | personal access token.             |
++----------------+-------+--------+------------------------------------+
+| owner\*        | path  | string | Repository Ownership Path          |
+|                |       |        | (Company, Organization, or         |
+|                |       |        | Personal Path).                    |
++----------------+-------+--------+------------------------------------+
+| repo\*         | path  | string | Repository path.                   |
++----------------+-------+--------+------------------------------------+
+| filter         | query | string | Filter criteria, pass in all       |
+|                |       |        | (all), push (Push event), merged   |
+|                |       |        | (Merged event), issue (issue       |
+|                |       |        | event), comments (comment events), |
+|                |       |        | team (Team events), project        |
+|                |       |        | (Project Event).                   |
++----------------+-------+--------+------------------------------------+
+| author         | query | string | Event trigger person, enter        |
+|                |       |        | username.                          |
++----------------+-------+--------+------------------------------------+
+| before         | query | string | The starting date is in the format |
+|                |       |        | of ‘YYYY-MM-DD’. Used to limit the |
+|                |       |        | starting time of the returned      |
+|                |       |        | event.                             |
++----------------+-------+--------+------------------------------------+
+| after          | query | string | End date, in the format of         |
+|                |       |        | ‘YYYY-MM-DD’. Used to limit the    |
+|                |       |        | end time of the returned event.    |
++----------------+-------+--------+------------------------------------+
+| page           | query | int    | Current Page Number.               |
++----------------+-------+--------+------------------------------------+
+| per_page       | query | int    | Items Per Page, Maximum 100.       |
++----------------+-------+--------+------------------------------------+
 
 
 Response

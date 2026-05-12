@@ -13,72 +13,72 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------+------------------------------------------------+-------+-----------+
-| Parameter        | Description                                    | Type  | Data Type |
-+==================+================================================+=======+===========+
-| access_token\*   | personal access token                          | query | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| owner\*          | Repository Owner Path (Organization or User    | path  | string    |
-|                  | Path)                                          |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| repo\*           | Repository Path(path)                          | path  | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| state            | Pull Request state:                            | query | string    |
-|                  | all、open、closed、locked、merged，default:all |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| base             | base branch                                    | query | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| since            | Since update time in ISO 8601 format, e.g.,    | quey  | string    |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| direction        | Ascending/Descending order, default:desc 【asc | query | string    |
-|                  | or desc】                                      |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| sort             | Sorting Fields: created、updated,              | query | string    |
-|                  | default:created                                |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| milestone_number | milestone number                               | quey  | int       |
-+------------------+------------------------------------------------+-------+-----------+
-| labels           | Comma-separated list of label names.           | quey  | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| page             | Current Page Number，default:1, default:1      | query | int       |
-+------------------+------------------------------------------------+-------+-----------+
-| per_page         | Items Per Page, Maximum                        | query | int       |
-|                  | 100,default:20,default:20                      |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| author           | Optional. Username of the PR creator           | query | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| assignee         | Optional. Username of the PR assignee          | query | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| reviewer         | Optional. Username of the PR reviewer          | query | string    |
-+------------------+------------------------------------------------+-------+-----------+
-| merged_after     | Return merge requests merged after the         | query | string    |
-|                  | specified time in ISO 8601 format, e.g.,       |       |           |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| merged_before    | Return merge requests merged before the        | query | string    |
-|                  | specified time in ISO 8601 format, e.g.,       |       |           |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| only_count       | If true, only return the count of merge        | query | boolean   |
-|                  | requests. Default: false                       |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| created_after    | Return merge requests created after the        | query | string    |
-|                  | specified time in ISO 8601 format, e.g.,       |       |           |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| created_before   | Return merge requests created before the       | query | string    |
-|                  | specified time in ISO 8601 format, e.g.,       |       |           |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| updated_before   | Return merge requests updated before the       | query | string    |
-|                  | specified time in ISO 8601 format, e.g.,       |       |           |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
-| updated_after    | Return merge requests updated after the        | query | string    |
-|                  | specified time in ISO 8601 format, e.g.,       |       |           |
-|                  | ``2024-11-20T13:00:21+08:00``                  |       |           |
-+------------------+------------------------------------------------+-------+-----------+
++------------------+-------+-----------+------------------------------------------------+
+| Parameter        | Type  | Data Type | Description                                    |
++==================+=======+===========+================================================+
+| access_token\*   | query | string    | personal access token                          |
++------------------+-------+-----------+------------------------------------------------+
+| owner\*          | path  | string    | Repository Owner Path (Organization or User    |
+|                  |       |           | Path)                                          |
++------------------+-------+-----------+------------------------------------------------+
+| repo\*           | path  | string    | Repository Path(path)                          |
++------------------+-------+-----------+------------------------------------------------+
+| state            | query | string    | Pull Request state:                            |
+|                  |       |           | all、open、closed、locked、merged，default:all |
++------------------+-------+-----------+------------------------------------------------+
+| base             | query | string    | base branch                                    |
++------------------+-------+-----------+------------------------------------------------+
+| since            | quey  | string    | Since update time in ISO 8601 format, e.g.,    |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
+| direction        | query | string    | Ascending/Descending order, default:desc 【asc |
+|                  |       |           | or desc】                                      |
++------------------+-------+-----------+------------------------------------------------+
+| sort             | query | string    | Sorting Fields: created、updated,              |
+|                  |       |           | default:created                                |
++------------------+-------+-----------+------------------------------------------------+
+| milestone_number | quey  | int       | milestone number                               |
++------------------+-------+-----------+------------------------------------------------+
+| labels           | quey  | string    | Comma-separated list of label names.           |
++------------------+-------+-----------+------------------------------------------------+
+| page             | query | int       | Current Page Number，default:1, default:1      |
++------------------+-------+-----------+------------------------------------------------+
+| per_page         | query | int       | Items Per Page, Maximum                        |
+|                  |       |           | 100,default:20,default:20                      |
++------------------+-------+-----------+------------------------------------------------+
+| author           | query | string    | Optional. Username of the PR creator           |
++------------------+-------+-----------+------------------------------------------------+
+| assignee         | query | string    | Optional. Username of the PR assignee          |
++------------------+-------+-----------+------------------------------------------------+
+| reviewer         | query | string    | Optional. Username of the PR reviewer          |
++------------------+-------+-----------+------------------------------------------------+
+| merged_after     | query | string    | Return merge requests merged after the         |
+|                  |       |           | specified time in ISO 8601 format, e.g.,       |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
+| merged_before    | query | string    | Return merge requests merged before the        |
+|                  |       |           | specified time in ISO 8601 format, e.g.,       |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
+| only_count       | query | boolean   | If true, only return the count of merge        |
+|                  |       |           | requests. Default: false                       |
++------------------+-------+-----------+------------------------------------------------+
+| created_after    | query | string    | Return merge requests created after the        |
+|                  |       |           | specified time in ISO 8601 format, e.g.,       |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
+| created_before   | query | string    | Return merge requests created before the       |
+|                  |       |           | specified time in ISO 8601 format, e.g.,       |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
+| updated_before   | query | string    | Return merge requests updated before the       |
+|                  |       |           | specified time in ISO 8601 format, e.g.,       |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
+| updated_after    | query | string    | Return merge requests updated after the        |
+|                  |       |           | specified time in ISO 8601 format, e.g.,       |
+|                  |       |           | ``2024-11-20T13:00:21+08:00``                  |
++------------------+-------+-----------+------------------------------------------------+
 
 ..
 
@@ -462,19 +462,19 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+----------------------------------------------------------------------------------------------------------+-------+-----------+
-| Parameter      | Description                                                                                              | Type  | Data Type |
-+================+==========================================================================================================+=======+===========+
-| access_token\* | personal access token                                                                                    | query | string    |
-+----------------+----------------------------------------------------------------------------------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path (Organization or User Path)                                                        | path  | string    |
-+----------------+----------------------------------------------------------------------------------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)                                                                                    | path  | string    |
-+----------------+----------------------------------------------------------------------------------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence number of the pull request in the repository.                              | path  | int       |
-+----------------+----------------------------------------------------------------------------------------------------------+-------+-----------+
-| merge_method   | 可选。合并PR的方法，merge（合并所有提交）、squash（扁平化分支合并）和rebase（变基并合并）。默认为merge。 | body  | string    |
-+----------------+----------------------------------------------------------------------------------------------------------+-------+-----------+
++----------------+-------+-----------+----------------------------------------------------------------------------------------------------------+
+| Parameter      | Type  | Data Type | Description                                                                                              |
++================+=======+===========+==========================================================================================================+
+| access_token\* | query | string    | personal access token                                                                                    |
++----------------+-------+-----------+----------------------------------------------------------------------------------------------------------+
+| owner\*        | path  | string    | Repository Owner Path (Organization or User Path)                                                        |
++----------------+-------+-----------+----------------------------------------------------------------------------------------------------------+
+| repo\*         | path  | string    | Repository Path(path)                                                                                    |
++----------------+-------+-----------+----------------------------------------------------------------------------------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence number of the pull request in the repository.                              |
++----------------+-------+-----------+----------------------------------------------------------------------------------------------------------+
+| merge_method   | body  | string    | 可选。合并PR的方法，merge（合并所有提交）、squash（扁平化分支合并）和rebase（变基并合并）。默认为merge。 |
++----------------+-------+-----------+----------------------------------------------------------------------------------------------------------+
 
 
 Response
@@ -518,25 +518,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path          | path  | string    |
-|                | (Organization or User Path)    |       |           |
-+----------------+--------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)          | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence  | path  | int       |
-|                | number of the pull request in  |       |           |
-|                | the repository.                |       |           |
-+----------------+--------------------------------+-------+-----------+
-| page           | Current Page Number，default:1 | query | int       |
-+----------------+--------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum        | query | int       |
-|                | 100,default:20                 |       |           |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| owner\*        | path  | string    | Repository Owner Path          |
+|                |       |           | (Organization or User Path)    |
++----------------+-------+-----------+--------------------------------+
+| repo\*         | path  | string    | Repository Path(path)          |
++----------------+-------+-----------+--------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence  |
+|                |       |           | number of the pull request in  |
+|                |       |           | the repository.                |
++----------------+-------+-----------+--------------------------------+
+| page           | query | int       | Current Page Number，default:1 |
++----------------+-------+-----------+--------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum        |
+|                |       |           | 100,default:20                 |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -596,34 +596,34 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+-----------------+-------------------------------+-------+-----------+
-| Parameter       | Description                   | Type  | Data Type |
-+=================+===============================+=======+===========+
-| access_token\*  | personal access token         | query | string    |
-+-----------------+-------------------------------+-------+-----------+
-| owner\*         | Repository Owner Path         | path  | string    |
-|                 | (Organization or User Path)   |       |           |
-+-----------------+-------------------------------+-------+-----------+
-| repo\*          | Repository Path(path)         | path  | string    |
-+-----------------+-------------------------------+-------+-----------+
-| number\*        | PR number, i.e., the sequence | path  | int       |
-|                 | number of the pull request in |       |           |
-|                 | the repository.               |       |           |
-+-----------------+-------------------------------+-------+-----------+
-| body\*          | Comment Content               | body  | string    |
-+-----------------+-------------------------------+-------+-----------+
-| path            | Relative Path of the File     | body  | string    |
-+-----------------+-------------------------------+-------+-----------+
-| position        | Relative Line Number in the   | body  | int       |
-|                 | Diff                          |       |           |
-+-----------------+-------------------------------+-------+-----------+
-| need_to_resolve | Whether it needs to be        | body  | boolean   |
-|                 | resolved (true: review        |       |           |
-|                 | comments need to be resolved, |       |           |
-|                 | false: review comments do not |       |           |
-|                 | need to be resolved, default  |       |           |
-|                 | is false)                     |       |           |
-+-----------------+-------------------------------+-------+-----------+
++-----------------+-------+-----------+-------------------------------+
+| Parameter       | Type  | Data Type | Description                   |
++=================+=======+===========+===============================+
+| access_token\*  | query | string    | personal access token         |
++-----------------+-------+-----------+-------------------------------+
+| owner\*         | path  | string    | Repository Owner Path         |
+|                 |       |           | (Organization or User Path)   |
++-----------------+-------+-----------+-------------------------------+
+| repo\*          | path  | string    | Repository Path(path)         |
++-----------------+-------+-----------+-------------------------------+
+| number\*        | path  | int       | PR number, i.e., the sequence |
+|                 |       |           | number of the pull request in |
+|                 |       |           | the repository.               |
++-----------------+-------+-----------+-------------------------------+
+| body\*          | body  | string    | Comment Content               |
++-----------------+-------+-----------+-------------------------------+
+| path            | body  | string    | Relative Path of the File     |
++-----------------+-------+-----------+-------------------------------+
+| position        | body  | int       | Relative Line Number in the   |
+|                 |       |           | Diff                          |
++-----------------+-------+-----------+-------------------------------+
+| need_to_resolve | body  | boolean   | Whether it needs to be        |
+|                 |       |           | resolved (true: review        |
+|                 |       |           | comments need to be resolved, |
+|                 |       |           | false: review comments do not |
+|                 |       |           | need to be resolved, default  |
+|                 |       |           | is false)                     |
++-----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -666,20 +666,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -756,29 +756,29 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path          | path  | string    |
-|                | (Organization or User Path)    |       |           |
-+----------------+--------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)          | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence  | path  | int       |
-|                | number of the pull request in  |       |           |
-|                | the repository.                |       |           |
-+----------------+--------------------------------+-------+-----------+
-| page           | Current Page Number，default:1 | query | int       |
-+----------------+--------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum        | query | int       |
-|                | 100,default:20                 |       |           |
-+----------------+--------------------------------+-------+-----------+
-| direction      | asc/desc                       | query | int       |
-+----------------+--------------------------------+-------+-----------+
-| comment_type   | diff_comment/pr_comment        | query | string    |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| owner\*        | path  | string    | Repository Owner Path          |
+|                |       |           | (Organization or User Path)    |
++----------------+-------+-----------+--------------------------------+
+| repo\*         | path  | string    | Repository Path(path)          |
++----------------+-------+-----------+--------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence  |
+|                |       |           | number of the pull request in  |
+|                |       |           | the repository.                |
++----------------+-------+-----------+--------------------------------+
+| page           | query | int       | Current Page Number，default:1 |
++----------------+-------+-----------+--------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum        |
+|                |       |           | 100,default:20                 |
++----------------+-------+-----------+--------------------------------+
+| direction      | query | int       | asc/desc                       |
++----------------+-------+-----------+--------------------------------+
+| comment_type   | query | string    | diff_comment/pr_comment        |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -828,78 +828,78 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+-----------------------+------------------------+-------+-----------+
-| Parameter             | Description            | Type  | Data Type |
-+=======================+========================+=======+===========+
-| access_token\*        | personal access token  | query | string    |
-+-----------------------+------------------------+-------+-----------+
-| owner\*               | Repository Owner Path  | path  | string    |
-|                       | (Organization or User  |       |           |
-|                       | Path)                  |       |           |
-+-----------------------+------------------------+-------+-----------+
-| repo\*                | Repository Path(path)  | path  | string    |
-+-----------------------+------------------------+-------+-----------+
-| title\*               | title                  | body  | string    |
-+-----------------------+------------------------+-------+-----------+
-| head\*                | head, eg：branch，fork | body  | string    |
-|                       | pr:username:branch     |       |           |
-+-----------------------+------------------------+-------+-----------+
-| base\*                | base                   | body  | string    |
-+-----------------------+------------------------+-------+-----------+
-| body                  | pr description         | body  | string    |
-+-----------------------+------------------------+-------+-----------+
-| milestone_number      | milestone number       | body  | int       |
-+-----------------------+------------------------+-------+-----------+
-| labels                | Comma-separated list   | body  | string    |
-|                       | of label names.        |       |           |
-+-----------------------+------------------------+-------+-----------+
-| issue                 | The title and content  | body  | string    |
-|                       | of the Pull Request    |       |           |
-|                       | can be automatically   |       |           |
-|                       | filled based on the    |       |           |
-|                       | specified Issue ID.    |       |           |
-+-----------------------+------------------------+-------+-----------+
-| assignees             | Optional. Approvals’   | body  | string    |
-|                       | usernames, multiple    |       |           |
-|                       | can be specified,      |       |           |
-|                       | separated by commas    |       |           |
-|                       | (e.g.,                 |       |           |
-|                       | username1,username2).  |       |           |
-|                       | Note: This option is   |       |           |
-|                       | invalid if the         |       |           |
-|                       | repository’s code      |       |           |
-|                       | review settings        |       |           |
-|                       | already have           |       |           |
-|                       | designated approvals.  |       |           |
-+-----------------------+------------------------+-------+-----------+
-| testers               | Optional. Testers’     | body  | string    |
-|                       | usernames, multiple    |       |           |
-|                       | can be specified,      |       |           |
-|                       | separated by commas    |       |           |
-|                       | (e.g.,                 |       |           |
-|                       | username1,username2).  |       |           |
-|                       | Note: This option is   |       |           |
-|                       | invalid if the         |       |           |
-|                       | repository’s code      |       |           |
-|                       | review settings        |       |           |
-|                       | already have           |       |           |
-|                       | designated testers.    |       |           |
-+-----------------------+------------------------+-------+-----------+
-| prune_source_branch   | Whether to delete the  | body  | boolean   |
-|                       | source branch after    |       |           |
-|                       | merging the PR.        |       |           |
-|                       | Default: false (do not |       |           |
-|                       | delete)                |       |           |
-+-----------------------+------------------------+-------+-----------+
-| draft                 | wip pr,default: false  | body  | boolean   |
-+-----------------------+------------------------+-------+-----------+
-| squash                | squash, default: false | body  | boolean   |
-+-----------------------+------------------------+-------+-----------+
-| squash_commit_message | squash message         | body  | string    |
-+-----------------------+------------------------+-------+-----------+
-| fork_path             | fork repo path         | body  | string    |
-|                       | (owner/repo)           |       |           |
-+-----------------------+------------------------+-------+-----------+
++-----------------------+-------+-----------+------------------------+
+| Parameter             | Type  | Data Type | Description            |
++=======================+=======+===========+========================+
+| access_token\*        | query | string    | personal access token  |
++-----------------------+-------+-----------+------------------------+
+| owner\*               | path  | string    | Repository Owner Path  |
+|                       |       |           | (Organization or User  |
+|                       |       |           | Path)                  |
++-----------------------+-------+-----------+------------------------+
+| repo\*                | path  | string    | Repository Path(path)  |
++-----------------------+-------+-----------+------------------------+
+| title\*               | body  | string    | title                  |
++-----------------------+-------+-----------+------------------------+
+| head\*                | body  | string    | head, eg：branch，fork |
+|                       |       |           | pr:username:branch     |
++-----------------------+-------+-----------+------------------------+
+| base\*                | body  | string    | base                   |
++-----------------------+-------+-----------+------------------------+
+| body                  | body  | string    | pr description         |
++-----------------------+-------+-----------+------------------------+
+| milestone_number      | body  | int       | milestone number       |
++-----------------------+-------+-----------+------------------------+
+| labels                | body  | string    | Comma-separated list   |
+|                       |       |           | of label names.        |
++-----------------------+-------+-----------+------------------------+
+| issue                 | body  | string    | The title and content  |
+|                       |       |           | of the Pull Request    |
+|                       |       |           | can be automatically   |
+|                       |       |           | filled based on the    |
+|                       |       |           | specified Issue ID.    |
++-----------------------+-------+-----------+------------------------+
+| assignees             | body  | string    | Optional. Approvals’   |
+|                       |       |           | usernames, multiple    |
+|                       |       |           | can be specified,      |
+|                       |       |           | separated by commas    |
+|                       |       |           | (e.g.,                 |
+|                       |       |           | username1,username2).  |
+|                       |       |           | Note: This option is   |
+|                       |       |           | invalid if the         |
+|                       |       |           | repository’s code      |
+|                       |       |           | review settings        |
+|                       |       |           | already have           |
+|                       |       |           | designated approvals.  |
++-----------------------+-------+-----------+------------------------+
+| testers               | body  | string    | Optional. Testers’     |
+|                       |       |           | usernames, multiple    |
+|                       |       |           | can be specified,      |
+|                       |       |           | separated by commas    |
+|                       |       |           | (e.g.,                 |
+|                       |       |           | username1,username2).  |
+|                       |       |           | Note: This option is   |
+|                       |       |           | invalid if the         |
+|                       |       |           | repository’s code      |
+|                       |       |           | review settings        |
+|                       |       |           | already have           |
+|                       |       |           | designated testers.    |
++-----------------------+-------+-----------+------------------------+
+| prune_source_branch   | body  | boolean   | Whether to delete the  |
+|                       |       |           | source branch after    |
+|                       |       |           | merging the PR.        |
+|                       |       |           | Default: false (do not |
+|                       |       |           | delete)                |
++-----------------------+-------+-----------+------------------------+
+| draft                 | body  | boolean   | wip pr,default: false  |
++-----------------------+-------+-----------+------------------------+
+| squash                | body  | boolean   | squash, default: false |
++-----------------------+-------+-----------+------------------------+
+| squash_commit_message | body  | string    | squash message         |
++-----------------------+-------+-----------+------------------------+
+| fork_path             | body  | string    | fork repo path         |
+|                       |       |           | (owner/repo)           |
++-----------------------+-------+-----------+------------------------+
 
 
 Response
@@ -1326,33 +1326,33 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------+-------------------------------+-------+-----------+
-| Parameter        | Description                   | Type  | Data Type |
-+==================+===============================+=======+===========+
-| access_token\*   | personal access token         | query | string    |
-+------------------+-------------------------------+-------+-----------+
-| owner\*          | Repository Owner Path         | path  | string    |
-|                  | (Organization or User Path)   |       |           |
-+------------------+-------------------------------+-------+-----------+
-| repo\*           | Repository Path(path)         | path  | string    |
-+------------------+-------------------------------+-------+-----------+
-| number\*         | PR number, i.e., the sequence | path  | int       |
-|                  | number of the pull request in |       |           |
-|                  | the repository.               |       |           |
-+------------------+-------------------------------+-------+-----------+
-| title            | title                         | body  | string    |
-+------------------+-------------------------------+-------+-----------+
-| body             | body                          | body  | string    |
-+------------------+-------------------------------+-------+-----------+
-| state            | state                         | body  | string    |
-+------------------+-------------------------------+-------+-----------+
-| milestone_number | milestone number              | body  | int       |
-+------------------+-------------------------------+-------+-----------+
-| labels           | Comma-separated list of label | body  | string    |
-|                  | names.                        |       |           |
-+------------------+-------------------------------+-------+-----------+
-| draft            | wip pr                        | body  | boolean   |
-+------------------+-------------------------------+-------+-----------+
++------------------+-------+-----------+-------------------------------+
+| Parameter        | Type  | Data Type | Description                   |
++==================+=======+===========+===============================+
+| access_token\*   | query | string    | personal access token         |
++------------------+-------+-----------+-------------------------------+
+| owner\*          | path  | string    | Repository Owner Path         |
+|                  |       |           | (Organization or User Path)   |
++------------------+-------+-----------+-------------------------------+
+| repo\*           | path  | string    | Repository Path(path)         |
++------------------+-------+-----------+-------------------------------+
+| number\*         | path  | int       | PR number, i.e., the sequence |
+|                  |       |           | number of the pull request in |
+|                  |       |           | the repository.               |
++------------------+-------+-----------+-------------------------------+
+| title            | body  | string    | title                         |
++------------------+-------+-----------+-------------------------------+
+| body             | body  | string    | body                          |
++------------------+-------+-----------+-------------------------------+
+| state            | body  | string    | state                         |
++------------------+-------+-----------+-------------------------------+
+| milestone_number | body  | int       | milestone number              |
++------------------+-------+-----------+-------------------------------+
+| labels           | body  | string    | Comma-separated list of label |
+|                  |       |           | names.                        |
++------------------+-------+-----------+-------------------------------+
+| draft            | body  | boolean   | wip pr                        |
++------------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1398,20 +1398,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1559,20 +1559,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1645,22 +1645,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
-| labels\*       | labels, eg: [“feat”, “bug”]   | body  | array     |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
+| labels\*       | body  | array     | labels, eg: [“feat”, “bug”]   |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1716,23 +1716,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
-| name\*         | Comma-separated list of label | path  | string    |
-|                | names.                        |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
+| name\*         | path  | string    | Comma-separated list of label |
+|                |       |           | names.                        |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1768,24 +1768,24 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
-| force          | Whether to force the test to  | body  | boolean   |
-|                | pass (default is false), only |       |           |
-|                | effective for administrators  |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
+| force          | body  | boolean   | Whether to force the test to  |
+|                |       |           | pass (default is false), only |
+|                |       |           | effective for administrators  |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1821,24 +1821,24 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
-| force          | Whether to force the test to  | body  | boolean   |
-|                | pass (default is false), only |       |           |
-|                | effective for administrators  |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
+| force          | body  | boolean   | Whether to force the test to  |
+|                |       |           | pass (default is false), only |
+|                |       |           | effective for administrators  |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -1874,27 +1874,27 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path          | path  | string    |
-|                | (Organization or User Path)    |       |           |
-+----------------+--------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)          | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence  | path  | int       |
-|                | number of the pull request in  |       |           |
-|                | the repository.                |       |           |
-+----------------+--------------------------------+-------+-----------+
-| sort           | desc(default), asc             | query | String    |
-+----------------+--------------------------------+-------+-----------+
-| page           | Current Page Number，default:1 | query | int       |
-+----------------+--------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum        | query | int       |
-|                | 100,default:20                 |       |           |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| owner\*        | path  | string    | Repository Owner Path          |
+|                |       |           | (Organization or User Path)    |
++----------------+-------+-----------+--------------------------------+
+| repo\*         | path  | string    | Repository Path(path)          |
++----------------+-------+-----------+--------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence  |
+|                |       |           | number of the pull request in  |
+|                |       |           | the repository.                |
++----------------+-------+-----------+--------------------------------+
+| sort           | query | String    | desc(default), asc             |
++----------------+-------+-----------+--------------------------------+
+| page           | query | int       | Current Page Number，default:1 |
++----------------+-------+-----------+--------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum        |
+|                |       |           | 100,default:20                 |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -1985,20 +1985,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -2055,21 +2055,21 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------------------------+-------+-----------+
-| Parameter      | Description                                     | Type  | Data Type |
-+================+=================================================+=======+===========+
-| access_token\* | personal access token                           | query | string    |
-+----------------+-------------------------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path (Organization or User     | path  | string    |
-|                | Path)                                           |       |           |
-+----------------+-------------------------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)                           | path  | string    |
-+----------------+-------------------------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence number of the     | path  | int       |
-|                | pull request in the repository.                 |       |           |
-+----------------+-------------------------------------------------+-------+-----------+
-| reset_all      | 是否重置所有测试人，默认：false，只对管理员生效 | body  | boolean   |
-+----------------+-------------------------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------------------------+
+| Parameter      | Type  | Data Type | Description                                     |
++================+=======+===========+=================================================+
+| access_token\* | query | string    | personal access token                           |
++----------------+-------+-----------+-------------------------------------------------+
+| owner\*        | path  | string    | Repository Owner Path (Organization or User     |
+|                |       |           | Path)                                           |
++----------------+-------+-----------+-------------------------------------------------+
+| repo\*         | path  | string    | Repository Path(path)                           |
++----------------+-------+-----------+-------------------------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence number of the     |
+|                |       |           | pull request in the repository.                 |
++----------------+-------+-----------+-------------------------------------------------+
+| reset_all      | body  | boolean   | 是否重置所有测试人，默认：false，只对管理员生效 |
++----------------+-------+-----------+-------------------------------------------------+
 
 
 Response
@@ -2109,23 +2109,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence   | path  | int       |
-|                | number of the pull request in   |       |           |
-|                | the repository.                 |       |           |
-+----------------+---------------------------------+-------+-----------+
-| reset_all      | reset all，default: false，only | body  | boolean   |
-|                | worked for admin                |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence   |
+|                |       |           | number of the pull request in   |
+|                |       |           | the repository.                 |
++----------------+-------+-----------+---------------------------------+
+| reset_all      | body  | boolean   | reset all，default: false，only |
+|                |       |           | worked for admin                |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -2165,20 +2165,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -2470,29 +2470,29 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| enterprise\*   | Enterprise Path(path/login)    | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| repo           | 可选。Repository Path(path)    | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| state          | 可选。Pull Request 状态        | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| issue_number   | issue全局id                    | query | int       |
-+----------------+--------------------------------+-------+-----------+
-| sort           | 可选。Sorting Fields，Default: | query | string    |
-|                | Sorted by Creation Time        |       |           |
-+----------------+--------------------------------+-------+-----------+
-| direction      | asc/desc                       | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| page           | Current Page Number，default:1 | query | int       |
-+----------------+--------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum        | query | int       |
-|                | 100,default:20                 |       |           |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| enterprise\*   | path  | string    | Enterprise Path(path/login)    |
++----------------+-------+-----------+--------------------------------+
+| repo           | query | string    | 可选。Repository Path(path)    |
++----------------+-------+-----------+--------------------------------+
+| state          | query | string    | 可选。Pull Request 状态        |
++----------------+-------+-----------+--------------------------------+
+| issue_number   | query | int       | issue全局id                    |
++----------------+-------+-----------+--------------------------------+
+| sort           | query | string    | 可选。Sorting Fields，Default: |
+|                |       |           | Sorted by Creation Time        |
++----------------+-------+-----------+--------------------------------+
+| direction      | query | string    | asc/desc                       |
++----------------+-------+-----------+--------------------------------+
+| page           | query | int       | Current Page Number，default:1 |
++----------------+-------+-----------+--------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum        |
+|                |       |           | 100,default:20                 |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -2578,18 +2578,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-----------------------------+-------+-----------+
-| Parameter      | Description                 | Type  | Data Type |
-+================+=============================+=======+===========+
-| access_token\* | personal access token       | query | string    |
-+----------------+-----------------------------+-------+-----------+
-| owner\*        | Repository Owner Path       | path  | string    |
-|                | (Organization or User Path) |       |           |
-+----------------+-----------------------------+-------+-----------+
-| repo\*         | Repository Path(path)       | path  | string    |
-+----------------+-----------------------------+-------+-----------+
-| id\*           | the ID of a comment         | path  | string    |
-+----------------+-----------------------------+-------+-----------+
++----------------+-------+-----------+-----------------------------+
+| Parameter      | Type  | Data Type | Description                 |
++================+=======+===========+=============================+
+| access_token\* | query | string    | personal access token       |
++----------------+-------+-----------+-----------------------------+
+| owner\*        | path  | string    | Repository Owner Path       |
+|                |       |           | (Organization or User Path) |
++----------------+-------+-----------+-----------------------------+
+| repo\*         | path  | string    | Repository Path(path)       |
++----------------+-------+-----------+-----------------------------+
+| id\*           | path  | string    | the ID of a comment         |
++----------------+-------+-----------+-----------------------------+
 
 
 Response
@@ -2644,20 +2644,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------+-------+-----------+
-| Parameter      | Description                   | Type  | Data Type |
-+================+===============================+=======+===========+
-| access_token\* | personal access token         | query | string    |
-+----------------+-------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path         | path  | string    |
-|                | (Organization or User Path)   |       |           |
-+----------------+-------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)         | path  | string    |
-+----------------+-------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence | path  | int       |
-|                | number of the pull request in |       |           |
-|                | the repository.               |       |           |
-+----------------+-------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------+
+| Parameter      | Type  | Data Type | Description                   |
++================+=======+===========+===============================+
+| access_token\* | query | string    | personal access token         |
++----------------+-------+-----------+-------------------------------+
+| owner\*        | path  | string    | Repository Owner Path         |
+|                |       |           | (Organization or User Path)   |
++----------------+-------+-----------+-------------------------------+
+| repo\*         | path  | string    | Repository Path(path)         |
++----------------+-------+-----------+-------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence |
+|                |       |           | number of the pull request in |
+|                |       |           | the repository.               |
++----------------+-------+-----------+-------------------------------+
 
 
 Response
@@ -2705,23 +2705,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path          | path  | string    |
-|                | (Organization or User Path)    |       |           |
-+----------------+--------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)          | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence  | path  | int       |
-|                | number of the pull request in  |       |           |
-|                | the repository.                |       |           |
-+----------------+--------------------------------+-------+-----------+
-| assignees\*    | User’s personal space address, | body  | string    |
-|                | separated by commas.           |       |           |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| owner\*        | path  | string    | Repository Owner Path          |
+|                |       |           | (Organization or User Path)    |
++----------------+-------+-----------+--------------------------------+
+| repo\*         | path  | string    | Repository Path(path)          |
++----------------+-------+-----------+--------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence  |
+|                |       |           | number of the pull request in  |
+|                |       |           | the repository.                |
++----------------+-------+-----------+--------------------------------+
+| assignees\*    | body  | string    | User’s personal space address, |
+|                |       |           | separated by commas.           |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -2763,23 +2763,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path          | path  | string    |
-|                | (Organization or User Path)    |       |           |
-+----------------+--------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)          | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence  | path  | int       |
-|                | number of the pull request in  |       |           |
-|                | the repository.                |       |           |
-+----------------+--------------------------------+-------+-----------+
-| assignees\*    | User’s personal space address, | body  | string    |
-|                | separated by commas.           |       |           |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| owner\*        | path  | string    | Repository Owner Path          |
+|                |       |           | (Organization or User Path)    |
++----------------+-------+-----------+--------------------------------+
+| repo\*         | path  | string    | Repository Path(path)          |
++----------------+-------+-----------+--------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence  |
+|                |       |           | number of the pull request in  |
+|                |       |           | the repository.                |
++----------------+-------+-----------+--------------------------------+
+| assignees\*    | body  | string    | User’s personal space address, |
+|                |       |           | separated by commas.           |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -2812,20 +2812,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-----------------------------+----------+-----------+
-| Parameter      | Description                 | Type     | Data Type |
-+================+=============================+==========+===========+
-| access_token\* | personal access token       | query    | string    |
-+----------------+-----------------------------+----------+-----------+
-| owner\*        | Repository Owner Path       | path     | string    |
-|                | (Organization or User Path) |          |           |
-+----------------+-----------------------------+----------+-----------+
-| repo\*         | Repository Path(path)       | path     | string    |
-+----------------+-----------------------------+----------+-----------+
-| id\*           | the ID of a cmment          | path     | int       |
-+----------------+-----------------------------+----------+-----------+
-| body\*         | Comment Content             | formData | string    |
-+----------------+-----------------------------+----------+-----------+
++----------------+----------+-----------+-----------------------------+
+| Parameter      | Type     | Data Type | Description                 |
++================+==========+===========+=============================+
+| access_token\* | query    | string    | personal access token       |
++----------------+----------+-----------+-----------------------------+
+| owner\*        | path     | string    | Repository Owner Path       |
+|                |          |           | (Organization or User Path) |
++----------------+----------+-----------+-----------------------------+
+| repo\*         | path     | string    | Repository Path(path)       |
++----------------+----------+-----------+-----------------------------+
+| id\*           | path     | int       | the ID of a cmment          |
++----------------+----------+-----------+-----------------------------+
+| body\*         | formData | string    | Comment Content             |
++----------------+----------+-----------+-----------------------------+
 
 
 Response
@@ -2865,18 +2865,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-----------------------------+-------+-----------+
-| Parameter      | Description                 | Type  | Data Type |
-+================+=============================+=======+===========+
-| access_token\* | personal access token       | query | string    |
-+----------------+-----------------------------+-------+-----------+
-| owner\*        | Repository Owner Path       | path  | string    |
-|                | (Organization or User Path) |       |           |
-+----------------+-----------------------------+-------+-----------+
-| repo\*         | Repository Path(path)       | path  | string    |
-+----------------+-----------------------------+-------+-----------+
-| id\*           | the ID of a comment         | path  | int       |
-+----------------+-----------------------------+-------+-----------+
++----------------+-------+-----------+-----------------------------+
+| Parameter      | Type  | Data Type | Description                 |
++================+=======+===========+=============================+
+| access_token\* | query | string    | personal access token       |
++----------------+-------+-----------+-----------------------------+
+| owner\*        | path  | string    | Repository Owner Path       |
+|                |       |           | (Organization or User Path) |
++----------------+-------+-----------+-----------------------------+
+| repo\*         | path  | string    | Repository Path(path)       |
++----------------+-------+-----------+-----------------------------+
+| id\*           | path  | int       | the ID of a comment         |
++----------------+-------+-----------+-----------------------------+
 
 
 Response
@@ -2912,22 +2912,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence   | path  | int       |
-|                | number of the pull request in   |       |           |
-|                | the repository.                 |       |           |
-+----------------+---------------------------------+-------+-----------+
-| labels\*       | new labels, eg: [“feat”, “bug”] | body  | array     |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence   |
+|                |       |           | number of the pull request in   |
+|                |       |           | the repository.                 |
++----------------+-------+-----------+---------------------------------+
+| labels\*       | body  | array     | new labels, eg: [“feat”, “bug”] |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -2963,23 +2963,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------+-------+-----------+
-| Parameter      | Description                    | Type  | Data Type |
-+================+================================+=======+===========+
-| access_token\* | personal access token          | query | string    |
-+----------------+--------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path          | path  | string    |
-|                | (Organization or User Path)    |       |           |
-+----------------+--------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)          | path  | string    |
-+----------------+--------------------------------+-------+-----------+
-| number\*       | PR number, i.e., the sequence  | path  | int       |
-|                | number of the pull request in  |       |           |
-|                | the repository.                |       |           |
-+----------------+--------------------------------+-------+-----------+
-| testers\*      | User’s personal space address, | body  | string    |
-|                | separated by commas.           |       |           |
-+----------------+--------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------+
+| Parameter      | Type  | Data Type | Description                    |
++================+=======+===========+================================+
+| access_token\* | query | string    | personal access token          |
++----------------+-------+-----------+--------------------------------+
+| owner\*        | path  | string    | Repository Owner Path          |
+|                |       |           | (Organization or User Path)    |
++----------------+-------+-----------+--------------------------------+
+| repo\*         | path  | string    | Repository Path(path)          |
++----------------+-------+-----------+--------------------------------+
+| number\*       | path  | int       | PR number, i.e., the sequence  |
+|                |       |           | number of the pull request in  |
+|                |       |           | the repository.                |
++----------------+-------+-----------+--------------------------------+
+| testers\*      | body  | string    | User’s personal space address, |
+|                |       |           | separated by commas.           |
++----------------+-------+-----------+--------------------------------+
 
 
 Response
@@ -3031,27 +3031,27 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | org(path/login)                 | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| state          | state                           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| issue_number   | Global Issue ID (not iid)       | int   | string    |
-+----------------+---------------------------------+-------+-----------+
-| sort           | Sorting Fields，Default: Sorted | query | string    |
-|                | by Creation Time                |       |           |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | int   | string    |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | org(path/login)                 |
++----------------+-------+-----------+---------------------------------+
+| state          | query | string    | state                           |
++----------------+-------+-----------+---------------------------------+
+| issue_number   | int   | string    | Global Issue ID (not iid)       |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | Sorting Fields，Default: Sorted |
+|                |       |           | by Creation Time                |
++----------------+-------+-----------+---------------------------------+
+| direction      | query | string    | asc/desc                        |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | int   | string    | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -3126,13 +3126,13 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============== ========================= ===== =========
-Parameter      Description               Type  Data Type
-============== ========================= ===== =========
-access_token\* personal access token     query string
-enterprise\*   org(path/login)           path  string
-number\*       Global Issue ID (not iid) path  Integer
-============== ========================= ===== =========
+============== ===== ========= =========================
+Parameter      Type  Data Type Description              
+============== ===== ========= =========================
+access_token\* query string    personal access token    
+enterprise\*   path  string    org(path/login)          
+number\*       path  Integer   Global Issue ID (not iid)
+============== ===== ========= =========================
 
 
 Response

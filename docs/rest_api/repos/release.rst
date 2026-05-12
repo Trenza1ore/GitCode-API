@@ -12,30 +12,30 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------+-------------------------------------------+----------+-----------+
-| Parameter        | Description                               | Type     | Data Type |
-+==================+===========================================+==========+===========+
-| owner\*          | Repository ownership path (company,       | path     | string    |
-|                  | organization, or personal path).          |          |           |
-+------------------+-------------------------------------------+----------+-----------+
-| repo\*           | Repository path.                          | path     | string    |
-+------------------+-------------------------------------------+----------+-----------+
-| access_token\*   | User access token (personal access        | query    | string    |
-|                  | token).                                   |          |           |
-+------------------+-------------------------------------------+----------+-----------+
-| tag_name\*       | Tag name for the release.                 | formData | string    |
-+------------------+-------------------------------------------+----------+-----------+
-| name\*           | Release title.                            | formData | string    |
-+------------------+-------------------------------------------+----------+-----------+
-| body\*           | Release description.                      | formData | string    |
-+------------------+-------------------------------------------+----------+-----------+
-| target_commitish | Branch name or commit SHA. If the tag     | formData | string    |
-|                  | is missing, pass this to create it;       |          |           |
-|                  | if omitted, use default branch tip.       |          |           |
-+------------------+-------------------------------------------+----------+-----------+
-| release_status   | Release status: ``pre`` (pre-release)     | formData | string    |
-|                  | or ``latest`` (latest release).           |          |           |
-+------------------+-------------------------------------------+----------+-----------+
++------------------+----------+-----------+-------------------------------------------+
+| Parameter        | Type     | Data Type | Description                               |
++==================+==========+===========+===========================================+
+| owner\*          | path     | string    | Repository ownership path (company,       |
+|                  |          |           | organization, or personal path).          |
++------------------+----------+-----------+-------------------------------------------+
+| repo\*           | path     | string    | Repository path.                          |
++------------------+----------+-----------+-------------------------------------------+
+| access_token\*   | query    | string    | User access token (personal access        |
+|                  |          |           | token).                                   |
++------------------+----------+-----------+-------------------------------------------+
+| tag_name\*       | formData | string    | Tag name for the release.                 |
++------------------+----------+-----------+-------------------------------------------+
+| name\*           | formData | string    | Release title.                            |
++------------------+----------+-----------+-------------------------------------------+
+| body\*           | formData | string    | Release description.                      |
++------------------+----------+-----------+-------------------------------------------+
+| target_commitish | formData | string    | Branch name or commit SHA. If the tag     |
+|                  |          |           | is missing, pass this to create it;       |
+|                  |          |           | if omitted, use default branch tip.       |
++------------------+----------+-----------+-------------------------------------------+
+| release_status   | formData | string    | Release status: ``pre`` (pre-release)     |
+|                  |          |           | or ``latest`` (latest release).           |
++------------------+----------+-----------+-------------------------------------------+
 
 Response
 ~~~~~~~~
@@ -101,25 +101,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+--------------------------------+----------+-----------+
-| Parameter    | Description                    | Type     | Data Type |
-+==============+================================+==========+===========+
-| access_token | personal access token          | query    | string    |
-+--------------+--------------------------------+----------+-----------+
-| owner\*      | Repository Ownership Path      | path     | string    |
-|              | (Company, Organization, or     |          |           |
-|              | Personal Path)                 |          |           |
-+--------------+--------------------------------+----------+-----------+
-| repo\*       | Repository Path(path)          | path     | string    |
-+--------------+--------------------------------+----------+-----------+
-| tag\*        | Tag name                       | path     | string    |
-+--------------+--------------------------------+----------+-----------+
-| tag_name\*   | Tag name                       | formData | string    |
-+--------------+--------------------------------+----------+-----------+
-| name\*       | Release name                   | formData | string    |
-+--------------+--------------------------------+----------+-----------+
-| body\*       | Release description            | formData | string    |
-+--------------+--------------------------------+----------+-----------+
++--------------+----------+-----------+--------------------------------+
+| Parameter    | Type     | Data Type | Description                    |
++==============+==========+===========+================================+
+| access_token | query    | string    | personal access token          |
++--------------+----------+-----------+--------------------------------+
+| owner\*      | path     | string    | Repository Ownership Path      |
+|              |          |           | (Company, Organization, or     |
+|              |          |           | Personal Path)                 |
++--------------+----------+-----------+--------------------------------+
+| repo\*       | path     | string    | Repository Path(path)          |
++--------------+----------+-----------+--------------------------------+
+| tag\*        | path     | string    | Tag name                       |
++--------------+----------+-----------+--------------------------------+
+| tag_name\*   | formData | string    | Tag name                       |
++--------------+----------+-----------+--------------------------------+
+| name\*       | formData | string    | Release name                   |
++--------------+----------+-----------+--------------------------------+
+| body\*       | formData | string    | Release description            |
++--------------+----------+-----------+--------------------------------+
 
 Response
 ~~~~~~~~
@@ -190,21 +190,21 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+------------------+-------------------------------------------+-------+-----------+
-| Parameter        | Description                               | Type  | Data Type |
-+==================+===========================================+=======+===========+
-| owner\*          | Repository ownership path (company,       | path  | string    |
-|                  | organization, or personal path).          |       |           |
-+------------------+-------------------------------------------+-------+-----------+
-| repo\*           | Repository path.                          | path  | string    |
-+------------------+-------------------------------------------+-------+-----------+
-| tag\*            | Tag name for the release.                 | path  | string    |
-+------------------+-------------------------------------------+-------+-----------+
-| access_token\*   | User access token (personal access        | query | string    |
-|                  | token).                                   |       |           |
-+------------------+-------------------------------------------+-------+-----------+
-| file_name\*      | Name of the file to upload.               | query | string    |
-+------------------+-------------------------------------------+-------+-----------+
++------------------+-------+-----------+-------------------------------------------+
+| Parameter        | Type  | Data Type | Description                               |
++==================+=======+===========+===========================================+
+| owner\*          | path  | string    | Repository ownership path (company,       |
+|                  |       |           | organization, or personal path).          |
++------------------+-------+-----------+-------------------------------------------+
+| repo\*           | path  | string    | Repository path.                          |
++------------------+-------+-----------+-------------------------------------------+
+| tag\*            | path  | string    | Tag name for the release.                 |
++------------------+-------+-----------+-------------------------------------------+
+| access_token\*   | query | string    | User access token (personal access        |
+|                  |       |           | token).                                   |
++------------------+-------+-----------+-------------------------------------------+
+| file_name\*      | query | string    | Name of the file to upload.               |
++------------------+-------+-----------+-------------------------------------------+
 
 Response
 ~~~~~~~~
@@ -252,17 +252,17 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -332,20 +332,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------------------+-------+-----------+
-| Parameter      | Description                               | Type  | Data Type |
-+================+===========================================+=======+===========+
-| owner\*        | Repository ownership path (company,       | path  | string    |
-|                | organization, or personal path).          |       |           |
-+----------------+-------------------------------------------+-------+-----------+
-| repo\*         | Repository path.                          | path  | string    |
-+----------------+-------------------------------------------+-------+-----------+
-| access_token\* | User access token (personal access        | query | string    |
-|                | token).                                   |       |           |
-+----------------+-------------------------------------------+-------+-----------+
-| type           | Release selection type: ``updated``       | query | string    |
-|                | (last updated) or ``latest``.             |       |           |
-+----------------+-------------------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------------------+
+| Parameter      | Type  | Data Type | Description                               |
++================+=======+===========+===========================================+
+| owner\*        | path  | string    | Repository ownership path (company,       |
+|                |       |           | organization, or personal path).          |
++----------------+-------+-----------+-------------------------------------------+
+| repo\*         | path  | string    | Repository path.                          |
++----------------+-------+-----------+-------------------------------------------+
+| access_token\* | query | string    | User access token (personal access        |
+|                |       |           | token).                                   |
++----------------+-------+-----------+-------------------------------------------+
+| type           | query | string    | Release selection type: ``updated``       |
+|                |       |           | (last updated) or ``latest``.             |
++----------------+-------+-----------+-------------------------------------------+
 
 Response
 ~~~~~~~~
@@ -413,23 +413,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+-------------------+-------------------------------------------+-------+-----------+
-| Parameter         | Description                               | Type  | Data Type |
-+===================+===========================================+=======+===========+
-| owner\*           | Repository ownership path (company,       | path  | string    |
-|                   | organization, or personal path).          |       |           |
-+-------------------+-------------------------------------------+-------+-----------+
-| repo\*            | Repository path.                          | path  | string    |
-+-------------------+-------------------------------------------+-------+-----------+
-| tag\*             | Tag name.                                 | path  | string    |
-+-------------------+-------------------------------------------+-------+-----------+
-| access_token\*    | User access token (personal access        | query | string    |
-|                   | token).                                   |       |           |
-+-------------------+-------------------------------------------+-------+-----------+
-| temp_download_url | Whether to return temporary download      | query | string    |
-|                   | URLs for source packages and              |       |           |
-|                   | attachments. Defaults to ``false``.       |       |           |
-+-------------------+-------------------------------------------+-------+-----------+
++-------------------+-------+-----------+-------------------------------------------+
+| Parameter         | Type  | Data Type | Description                               |
++===================+=======+===========+===========================================+
+| owner\*           | path  | string    | Repository ownership path (company,       |
+|                   |       |           | organization, or personal path).          |
++-------------------+-------+-----------+-------------------------------------------+
+| repo\*            | path  | string    | Repository path.                          |
++-------------------+-------+-----------+-------------------------------------------+
+| tag\*             | path  | string    | Tag name.                                 |
++-------------------+-------+-----------+-------------------------------------------+
+| access_token\*    | query | string    | User access token (personal access        |
+|                   |       |           | token).                                   |
++-------------------+-------+-----------+-------------------------------------------+
+| temp_download_url | query | string    | Whether to return temporary download      |
+|                   |       |           | URLs for source packages and              |
+|                   |       |           | attachments. Defaults to ``false``.       |
++-------------------+-------+-----------+-------------------------------------------+
 
 Response
 ~~~~~~~~
@@ -499,19 +499,19 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| tag\*        | Tag name                          | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| tag\*        | path  | string    | Tag name                          |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -578,21 +578,21 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+-------------------------------------------+-------+-----------+
-| Parameter      | Description                               | Type  | Data Type |
-+================+===========================================+=======+===========+
-| owner\*        | Repository ownership path (company,       | path  | string    |
-|                | organization, or personal path).          |       |           |
-+----------------+-------------------------------------------+-------+-----------+
-| repo\*         | Repository path.                          | path  | string    |
-+----------------+-------------------------------------------+-------+-----------+
-| tag\*          | Tag name.                                 | path  | string    |
-+----------------+-------------------------------------------+-------+-----------+
-| file_name\*    | Attachment name.                          | path  | string    |
-+----------------+-------------------------------------------+-------+-----------+
-| access_token\* | User access token (personal access        | query | string    |
-|                | token).                                   |       |           |
-+----------------+-------------------------------------------+-------+-----------+
++----------------+-------+-----------+-------------------------------------------+
+| Parameter      | Type  | Data Type | Description                               |
++================+=======+===========+===========================================+
+| owner\*        | path  | string    | Repository ownership path (company,       |
+|                |       |           | organization, or personal path).          |
++----------------+-------+-----------+-------------------------------------------+
+| repo\*         | path  | string    | Repository path.                          |
++----------------+-------+-----------+-------------------------------------------+
+| tag\*          | path  | string    | Tag name.                                 |
++----------------+-------+-----------+-------------------------------------------+
+| file_name\*    | path  | string    | Attachment name.                          |
++----------------+-------+-----------+-------------------------------------------+
+| access_token\* | query | string    | User access token (personal access        |
+|                |       |           | token).                                   |
++----------------+-------+-----------+-------------------------------------------+
 
 Response
 ~~~~~~~~

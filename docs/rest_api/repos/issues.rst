@@ -13,30 +13,30 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path              | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| title\*        | title                        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| body           | Issue Description            | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| assignee       | assignee                     | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| milestone      | milestone ID                 | formData | int       |
-+----------------+------------------------------+----------+-----------+
-| labels         | Comma-separated list of      | formData | string    |
-|                | label names.                 |          |           |
-+----------------+------------------------------+----------+-----------+
-| security_hole  | Whether the issue is private | formData | string    |
-|                | (default is false)           |          |           |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | formData | string    | Repository Path              |
++----------------+----------+-----------+------------------------------+
+| title\*        | formData | string    | title                        |
++----------------+----------+-----------+------------------------------+
+| body           | formData | string    | Issue Description            |
++----------------+----------+-----------+------------------------------+
+| assignee       | formData | string    | assignee                     |
++----------------+----------+-----------+------------------------------+
+| milestone      | formData | int       | milestone ID                 |
++----------------+----------+-----------+------------------------------+
+| labels         | formData | string    | Comma-separated list of      |
+|                |          |           | label names.                 |
++----------------+----------+-----------+------------------------------+
+| security_hole  | formData | string    | Whether the issue is private |
+|                |          |           | (default is false)           |
++----------------+----------+-----------+------------------------------+
 
 Response
 ~~~~~~~~
@@ -132,35 +132,35 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path              | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| number\*       | Issue number in the          | path     | string    |
-|                | repository                   |          |           |
-+----------------+------------------------------+----------+-----------+
-| title\*        | title                        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| body           | Issue Description            | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| state          | Issue state，reopen、close   | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| assignee       | assignee                     | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| milestone      | milestone ID                 | formData | int       |
-+----------------+------------------------------+----------+-----------+
-| labels         | Comma-separated list of      | formData | string    |
-|                | label names.                 |          |           |
-+----------------+------------------------------+----------+-----------+
-| security_hole  | Whether the issue is private | formData | string    |
-|                | (default is false).          |          |           |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | formData | string    | Repository Path              |
++----------------+----------+-----------+------------------------------+
+| number\*       | path     | string    | Issue number in the          |
+|                |          |           | repository                   |
++----------------+----------+-----------+------------------------------+
+| title\*        | formData | string    | title                        |
++----------------+----------+-----------+------------------------------+
+| body           | formData | string    | Issue Description            |
++----------------+----------+-----------+------------------------------+
+| state          | formData | string    | Issue state，reopen、close   |
++----------------+----------+-----------+------------------------------+
+| assignee       | formData | string    | assignee                     |
++----------------+----------+-----------+------------------------------+
+| milestone      | formData | int       | milestone ID                 |
++----------------+----------+-----------+------------------------------+
+| labels         | formData | string    | Comma-separated list of      |
+|                |          |           | label names.                 |
++----------------+----------+-----------+------------------------------+
+| security_hole  | formData | string    | Whether the issue is private |
+|                |          |           | (default is false).          |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -272,18 +272,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | issue number                    | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | string    | issue number                    |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -373,59 +373,59 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------------+-------+-----------+
-| Parameter      | Description                        | Type  | Data Type |
-+================+====================================+=======+===========+
-| access_token\* | personal access token              | query | string    |
-+----------------+------------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path              | path  | string    |
-|                | (Organization or User Path)        |       |           |
-+----------------+------------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)              | path  | string    |
-+----------------+------------------------------------+-------+-----------+
-| state          | Issue state: open, closed， all.   | query | string    |
-|                | Default: all                       |       |           |
-+----------------+------------------------------------+-------+-----------+
-| labels         | Comma-separated list of label      | query | string    |
-|                | names.                             |       |           |
-+----------------+------------------------------------+-------+-----------+
-| sort           | sort: created，updated. Default:   | query | string    |
-|                | created                            |       |           |
-+----------------+------------------------------------+-------+-----------+
-| direction      | asc/desc, Default: desc            | query | string    |
-+----------------+------------------------------------+-------+-----------+
-| since          | since, eg:                         | query | string    |
-|                | 2024-11-10T08:10:30.000+08:00（The |       |           |
-|                | plus sign (+) should be            |       |           |
-|                | URL-encoded as %2B.）              |       |           |
-+----------------+------------------------------------+-------+-----------+
-| page           | Current Page Number，default:1     | query | int       |
-+----------------+------------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum            | query | int       |
-|                | 100,default:20                     |       |           |
-+----------------+------------------------------------+-------+-----------+
-| created_at     | created at ,eg:                    | query | string    |
-|                | 2024-11-10T08:10:30.000+08:00      |       |           |
-+----------------+------------------------------------+-------+-----------+
-| milestone      | milestone name, none means issues  | query | string    |
-|                | without a milestone                |       |           |
-+----------------+------------------------------------+-------+-----------+
-| assignee       | assignee                           | query | string    |
-+----------------+------------------------------------+-------+-----------+
-| creator        | creator                            | query | string    |
-+----------------+------------------------------------+-------+-----------+
-| created_after  | created after, eg:                 | query | string    |
-|                | 2024-11-10T08:10:30.000+08:00      |       |           |
-+----------------+------------------------------------+-------+-----------+
-| created_before | created before, eg:                | query | string    |
-|                | 2024-11-10T08:10:30.000+08:00      |       |           |
-+----------------+------------------------------------+-------+-----------+
-| updated_after  | updated after , eg:                | query | string    |
-|                | 2024-11-10T08:10:30.000+08:00      |       |           |
-+----------------+------------------------------------+-------+-----------+
-| updated_before | updated before, eg:                | query | string    |
-|                | 2024-11-10T08:10:30.000+08:00      |       |           |
-+----------------+------------------------------------+-------+-----------+
++----------------+-------+-----------+------------------------------------+
+| Parameter      | Type  | Data Type | Description                        |
++================+=======+===========+====================================+
+| access_token\* | query | string    | personal access token              |
++----------------+-------+-----------+------------------------------------+
+| owner\*        | path  | string    | Repository Owner Path              |
+|                |       |           | (Organization or User Path)        |
++----------------+-------+-----------+------------------------------------+
+| repo\*         | path  | string    | Repository Path(path)              |
++----------------+-------+-----------+------------------------------------+
+| state          | query | string    | Issue state: open, closed， all.   |
+|                |       |           | Default: all                       |
++----------------+-------+-----------+------------------------------------+
+| labels         | query | string    | Comma-separated list of label      |
+|                |       |           | names.                             |
++----------------+-------+-----------+------------------------------------+
+| sort           | query | string    | sort: created，updated. Default:   |
+|                |       |           | created                            |
++----------------+-------+-----------+------------------------------------+
+| direction      | query | string    | asc/desc, Default: desc            |
++----------------+-------+-----------+------------------------------------+
+| since          | query | string    | since, eg:                         |
+|                |       |           | 2024-11-10T08:10:30.000+08:00（The |
+|                |       |           | plus sign (+) should be            |
+|                |       |           | URL-encoded as %2B.）              |
++----------------+-------+-----------+------------------------------------+
+| page           | query | int       | Current Page Number，default:1     |
++----------------+-------+-----------+------------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum            |
+|                |       |           | 100,default:20                     |
++----------------+-------+-----------+------------------------------------+
+| created_at     | query | string    | created at ,eg:                    |
+|                |       |           | 2024-11-10T08:10:30.000+08:00      |
++----------------+-------+-----------+------------------------------------+
+| milestone      | query | string    | milestone name, none means issues  |
+|                |       |           | without a milestone                |
++----------------+-------+-----------+------------------------------------+
+| assignee       | query | string    | assignee                           |
++----------------+-------+-----------+------------------------------------+
+| creator        | query | string    | creator                            |
++----------------+-------+-----------+------------------------------------+
+| created_after  | query | string    | created after, eg:                 |
+|                |       |           | 2024-11-10T08:10:30.000+08:00      |
++----------------+-------+-----------+------------------------------------+
+| created_before | query | string    | created before, eg:                |
+|                |       |           | 2024-11-10T08:10:30.000+08:00      |
++----------------+-------+-----------+------------------------------------+
+| updated_after  | query | string    | updated after , eg:                |
+|                |       |           | 2024-11-10T08:10:30.000+08:00      |
++----------------+-------+-----------+------------------------------------+
+| updated_before | query | string    | updated before, eg:                |
+|                |       |           | 2024-11-10T08:10:30.000+08:00      |
++----------------+-------+-----------+------------------------------------+
 
 
 Response
@@ -649,31 +649,31 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+------------------------------------+-------+-----------+
-| Parameter    | Description                        | Type  | Data Type |
-+==============+====================================+=======+===========+
-| access_token | personal access token              | query | string    |
-+--------------+------------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path          | path  | string    |
-|              | (Company, Organization, or         |       |           |
-|              | Personal Path)                     |       |           |
-+--------------+------------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)              | path  | string    |
-+--------------+------------------------------------+-------+-----------+
-| number\*     | issue number                       | path  | string    |
-+--------------+------------------------------------+-------+-----------+
-| page         | Current Page Number，default:1     | query | int       |
-+--------------+------------------------------------+-------+-----------+
-| per_page     | Items Per Page, Maximum            | query | int       |
-|              | 100,default:20                     |       |           |
-+--------------+------------------------------------+-------+-----------+
-| order        | Sorting Order: asc(default),desc   | query | string    |
-+--------------+------------------------------------+-------+-----------+
-| since        | since, eg:                         | query | string    |
-|              | 2024-11-10T08:10:30.000+08:00（The |       |           |
-|              | plus sign (+) should be            |       |           |
-|              | URL-encoded as %2B.）              |       |           |
-+--------------+------------------------------------+-------+-----------+
++--------------+-------+-----------+------------------------------------+
+| Parameter    | Type  | Data Type | Description                        |
++==============+=======+===========+====================================+
+| access_token | query | string    | personal access token              |
++--------------+-------+-----------+------------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path          |
+|              |       |           | (Company, Organization, or         |
+|              |       |           | Personal Path)                     |
++--------------+-------+-----------+------------------------------------+
+| repo\*       | path  | string    | Repository Path(path)              |
++--------------+-------+-----------+------------------------------------+
+| number\*     | path  | string    | issue number                       |
++--------------+-------+-----------+------------------------------------+
+| page         | query | int       | Current Page Number，default:1     |
++--------------+-------+-----------+------------------------------------+
+| per_page     | query | int       | Items Per Page, Maximum            |
+|              |       |           | 100,default:20                     |
++--------------+-------+-----------+------------------------------------+
+| order        | query | string    | Sorting Order: asc(default),desc   |
++--------------+-------+-----------+------------------------------------+
+| since        | query | string    | since, eg:                         |
+|              |       |           | 2024-11-10T08:10:30.000+08:00（The |
+|              |       |           | plus sign (+) should be            |
+|              |       |           | URL-encoded as %2B.）              |
++--------------+-------+-----------+------------------------------------+
 
 
 Response
@@ -743,33 +743,33 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| sort         | Either created or updated.        | query | string    |
-|              | Default: created                  |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| direction    | Either asc or desc. Ignored       | query | string    |
-|              | without the sort parameter.       |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| since        | Only comments updated at or after | query | string    |
-|              | this time are returned. This is a |       |           |
-|              | timestamp in ISO 8601 format:     |       |           |
-|              | YYYY-MM-DDTHH:MM:SSZ              |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| page         | Current Page Number，default:1    | query | int       |
-+--------------+-----------------------------------+-------+-----------+
-| per_page     | Items Per Page, Maximum           | query | int       |
-|              | 100,default:20                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| sort         | query | string    | Either created or updated.        |
+|              |       |           | Default: created                  |
++--------------+-------+-----------+-----------------------------------+
+| direction    | query | string    | Either asc or desc. Ignored       |
+|              |       |           | without the sort parameter.       |
++--------------+-------+-----------+-----------------------------------+
+| since        | query | string    | Only comments updated at or after |
+|              |       |           | this time are returned. This is a |
+|              |       |           | timestamp in ISO 8601 format:     |
+|              |       |           | YYYY-MM-DDTHH:MM:SSZ              |
++--------------+-------+-----------+-----------------------------------+
+| page         | query | int       | Current Page Number，default:1    |
++--------------+-------+-----------+-----------------------------------+
+| per_page     | query | int       | Items Per Page, Maximum           |
+|              |       |           | 100,default:20                    |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -839,25 +839,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| number\*     | issue number                      | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| mode         | 1 (Enhanced mode, returns the     | query | Integer   |
-|              | mergeable status of the PR when   |       |           |
-|              | the above parameters are passed); |       |           |
-|              | 0 (Default, does not return the   |       |           |
-|              | mergeable status).                |       |           |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| number\*     | path  | string    | issue number                      |
++--------------+-------+-----------+-----------------------------------+
+| mode         | query | Integer   | 1 (Enhanced mode, returns the     |
+|              |       |           | mergeable status of the PR when   |
+|              |       |           | the above parameters are passed); |
+|              |       |           | 0 (Default, does not return the   |
+|              |       |           | mergeable status).                |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -959,15 +959,15 @@ Request
 Parameters
 ~~~~~~~~~~
 
-============ ====================================== ===== =========
-Parameter    Description                            Type  Data Type
-============ ====================================== ===== =========
-access_token personal access token                  query string
-enterprise\* enterprise path                        path  string
-issue_id\*   Global Issue ID                        path  string
-page         Current Page Number，default:1         query int
-per_page     Items Per Page, Maximum 100,default:20 query int
-============ ====================================== ===== =========
+============ ====== ========= =======================================
+Parameter    Type   Data Type Description                            
+============ ====== ========= =======================================
+access_token query  string    personal access token                  
+enterprise\* path   string    enterprise path                        
+issue_id\*   path   string    Global Issue ID                        
+page         uery i nt        Current Page Number，default:1         q
+per_page     query  int       Items Per Page, Maximum 100,default:20 
+============ ====== ========= =======================================
 
 
 Response
@@ -1010,20 +1010,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | issue number                    | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| labels\*       | labels, eg: [“feat”, “bug”]     | body  | array     |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | string    | issue number                    |
++----------------+-------+-----------+---------------------------------+
+| labels\*       | body  | array     | labels, eg: [“feat”, “bug”]     |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1070,25 +1070,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | issue number, i.e., the         | path  | string    |
-|                | sequence number of the issue in |       |           |
-|                | the repository.                 |       |           |
-+----------------+---------------------------------+-------+-----------+
-| name\*         | label name (For bulk deletion,  | path  | string    |
-|                | separate the items with an      |       |           |
-|                | English comma, e.g.,            |       |           |
-|                | bug,feature.)                   |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | string    | issue number, i.e., the         |
+|                |       |           | sequence number of the issue in |
+|                |       |           | the repository.                 |
++----------------+-------+-----------+---------------------------------+
+| name\*         | path  | string    | label name (For bulk deletion,  |
+|                |       |           | separate the items with an      |
+|                |       |           | English comma, e.g.,            |
+|                |       |           | bug,feature.)                   |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1120,20 +1120,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| number\*       | issue number                 | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| body\*         | The contents of the comment. | formdata | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
+| number\*       | path     | string    | issue number                 |
++----------------+----------+-----------+------------------------------+
+| body\*         | formdata | string    | The contents of the comment. |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -1202,18 +1202,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | issue number                    | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | query | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | string    | issue number                    |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1333,56 +1333,56 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| enterprise\*   | Enterprise Path(path/login)     | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| state          | state: open, closed, all        | query | string    |
-|                | Default: open                   |       |           |
-+----------------+---------------------------------+-------+-----------+
-| labels         | Comma-separated list of label   | query | string    |
-|                | names.                          |       |           |
-+----------------+---------------------------------+-------+-----------+
-| sort           | sort: created, updated_at.      | query | string    |
-|                | Default: created_at             |       |           |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc, Default: desc         | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| since          | since                           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | query | int       |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| milestone      | milestone name, none means      | query | string    |
-|                | issues without a milestone, and |       |           |
-|                | \* means all issues with a      |       |           |
-|                | milestone.                      |       |           |
-+----------------+---------------------------------+-------+-----------+
-| assignee       | assignee, none means issues     | query | string    |
-|                | without a assignee, and \*      |       |           |
-|                | means all issues with a         |       |           |
-|                | assignee.的                     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| creator        | creator                         | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| program        | The project name. none means no | query | string    |
-|                | associated project, and \*      |       |           |
-|                | means all issues with an        |       |           |
-|                | associated project.             |       |           |
-+----------------+---------------------------------+-------+-----------+
-| created_at     | created at                      | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| created_before | created before                  | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| enterprise\*   | path  | string    | Enterprise Path(path/login)     |
++----------------+-------+-----------+---------------------------------+
+| state          | query | string    | state: open, closed, all        |
+|                |       |           | Default: open                   |
++----------------+-------+-----------+---------------------------------+
+| labels         | query | string    | Comma-separated list of label   |
+|                |       |           | names.                          |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | sort: created, updated_at.      |
+|                |       |           | Default: created_at             |
++----------------+-------+-----------+---------------------------------+
+| direction      | query | string    | asc/desc, Default: desc         |
++----------------+-------+-----------+---------------------------------+
+| since          | query | string    | since                           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
+| milestone      | query | string    | milestone name, none means      |
+|                |       |           | issues without a milestone, and |
+|                |       |           | \* means all issues with a      |
+|                |       |           | milestone.                      |
++----------------+-------+-----------+---------------------------------+
+| assignee       | query | string    | assignee, none means issues     |
+|                |       |           | without a assignee, and \*      |
+|                |       |           | means all issues with a         |
+|                |       |           | assignee.的                     |
++----------------+-------+-----------+---------------------------------+
+| creator        | query | string    | creator                         |
++----------------+-------+-----------+---------------------------------+
+| program        | query | string    | The project name. none means no |
+|                |       |           | associated project, and \*      |
+|                |       |           | means all issues with an        |
+|                |       |           | associated project.             |
++----------------+-------+-----------+---------------------------------+
+| created_at     | query | string    | created at                      |
++----------------+-------+-----------+---------------------------------+
+| created_before | query | string    | created before                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1461,40 +1461,40 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| filter         | filter: assigned, created, all. | query | string    |
-|                | Default: assigned               |       |           |
-+----------------+---------------------------------+-------+-----------+
-| state          | state: open , closed. Default:  | query | string    |
-|                | open                            |       |           |
-+----------------+---------------------------------+-------+-----------+
-| labels         | Comma-separated list of label   | query | string    |
-|                | names.                          |       |           |
-+----------------+---------------------------------+-------+-----------+
-| sort           | sort: created, updated_at.      | query | string    |
-|                | Default: created_at             |       |           |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc, Default: desc         | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| since          | since                           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | query | int       |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| schedule       | schedule                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| deadline       | deadline                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| created_at     | created at                      | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| finished_at    | finished at                     | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| filter         | query | string    | filter: assigned, created, all. |
+|                |       |           | Default: assigned               |
++----------------+-------+-----------+---------------------------------+
+| state          | query | string    | state: open , closed. Default:  |
+|                |       |           | open                            |
++----------------+-------+-----------+---------------------------------+
+| labels         | query | string    | Comma-separated list of label   |
+|                |       |           | names.                          |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | sort: created, updated_at.      |
+|                |       |           | Default: created_at             |
++----------------+-------+-----------+---------------------------------+
+| direction      | query | string    | asc/desc, Default: desc         |
++----------------+-------+-----------+---------------------------------+
+| since          | query | string    | since                           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
+| schedule       | query | string    | schedule                        |
++----------------+-------+-----------+---------------------------------+
+| deadline       | query | string    | deadline                        |
++----------------+-------+-----------+---------------------------------+
+| created_at     | query | string    | created at                      |
++----------------+-------+-----------+---------------------------------+
+| finished_at    | query | string    | finished at                     |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1547,20 +1547,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| id\*           | comment ID                   | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| body\*         | Comment Content              | formDate | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
+| id\*           | path     | string    | comment ID                   |
++----------------+----------+-----------+------------------------------+
+| body\*         | formDate | string    | Comment Content              |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -1596,18 +1596,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| id\*           | the ID of a comment             | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| id\*           | path  | string    | the ID of a comment             |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1637,18 +1637,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| id\*           | the ID of a comment             | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| id\*           | path  | string    | the ID of a comment             |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1703,34 +1703,34 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| filter         | filter: assigned, created, all. | query | string    |
-|                | Default: assigned               |       |           |
-+----------------+---------------------------------+-------+-----------+
-| state          | state: open, closed, Default:   | query | string    |
-|                | open                            |       |           |
-+----------------+---------------------------------+-------+-----------+
-| labels         | Comma-separated list of label   | query | string    |
-|                | names.                          |       |           |
-+----------------+---------------------------------+-------+-----------+
-| sort           | sort: created, updated_at.      | query | string    |
-|                | Default ：created_at            |       |           |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc, default: desc         | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | integer   |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | query | integer   |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| created_at     | created at                      | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| org\*          | Organization Path (path/login)  | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| filter         | query | string    | filter: assigned, created, all. |
+|                |       |           | Default: assigned               |
++----------------+-------+-----------+---------------------------------+
+| state          | query | string    | state: open, closed, Default:   |
+|                |       |           | open                            |
++----------------+-------+-----------+---------------------------------+
+| labels         | query | string    | Comma-separated list of label   |
+|                |       |           | names.                          |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | sort: created, updated_at.      |
+|                |       |           | Default ：created_at            |
++----------------+-------+-----------+---------------------------------+
+| direction      | query | string    | asc/desc, default: desc         |
++----------------+-------+-----------+---------------------------------+
+| page           | query | integer   | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | integer   | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
+| created_at     | query | string    | created at                      |
++----------------+-------+-----------+---------------------------------+
+| org\*          | path  | string    | Organization Path (path/login)  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1796,21 +1796,21 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access token\* | Personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| enterprise\*   | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | Global Issue ID                 | path  | int       |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Number of items per page:       | query | int       |
-|                | maximum 100, default 20         |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access token\* | query | string    | Personal access token           |
++----------------+-------+-----------+---------------------------------+
+| enterprise\*   | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | int       | Global Issue ID                 |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Number of items per page:       |
+|                |       |           | maximum 100, default 20         |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -1866,16 +1866,16 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access token\* | User’s authorization code       | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| enterprise\*   | Path to the repository owner    | path  | string    |
-|                | (organization or user)          |       |           |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | Globally unique ID of the issue | path  | int       |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access token\* | query | string    | User’s authorization code       |
++----------------+-------+-----------+---------------------------------+
+| enterprise\*   | path  | string    | Path to the repository owner    |
+|                |       |           | (organization or user)          |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | int       | Globally unique ID of the issue |
++----------------+-------+-----------+---------------------------------+
 
 
 Response

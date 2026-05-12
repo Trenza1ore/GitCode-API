@@ -13,28 +13,28 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| sha          | Starting SHA value of the commit  | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| path         | Commits containing the specified  | query | string    |
-|              | file                              |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| author       | author username/login             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| since        | since                             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| until        | until                             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| sha          | query | string    | Starting SHA value of the commit  |
++--------------+-------+-----------+-----------------------------------+
+| path         | query | string    | Commits containing the specified  |
+|              |       |           | file                              |
++--------------+-------+-----------+-----------------------------------+
+| author       | query | string    | author username/login             |
++--------------+-------+-----------+-----------------------------------+
+| since        | query | string    | since                             |
++--------------+-------+-----------+-----------------------------------+
+| until        | query | string    | until                             |
++--------------+-------+-----------+-----------------------------------+
 
 Response
 ~~~~~~~~
@@ -104,23 +104,23 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/commits/{sha}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sha\*          | Commit SHA value or branch name | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| show_diff      | Default is false; when true,    | query | boolean   |
-|                | returns the files field, which  |       |           |
-|                | includes up to 100 changed file |       |           |
-|                | names in the local commit       |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| sha\*          | path  | string    | Commit SHA value or branch name |
++----------------+-------+-----------+---------------------------------+
+| show_diff      | query | boolean   | Default is false; when true,    |
+|                |       |           | returns the files field, which  |
+|                |       |           | includes up to 100 changed file |
+|                |       |           | names in the local commit       |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -183,29 +183,29 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/compare/{base}...{head}``
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| base\*       | Comparison starting point: commit | path  | string    |
-|              | SHA, branch name, or tag name     |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| head\*       | Comparison ending point: commit   | path  | string    |
-|              | SHA, branch name, or tag name     |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| straight     | Whether to perform a direct       | query | boolean   |
-|              | comparison. Default is false      |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| suffix       | Filter files by suffix, e.g.,     | query | string    |
-|              | ``.txt``. Only affects ``files``  |       |           |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| base\*       | path  | string    | Comparison starting point: commit |
+|              |       |           | SHA, branch name, or tag name     |
++--------------+-------+-----------+-----------------------------------+
+| head\*       | path  | string    | Comparison ending point: commit   |
+|              |       |           | SHA, branch name, or tag name     |
++--------------+-------+-----------+-----------------------------------+
+| straight     | query | boolean   | Whether to perform a direct       |
+|              |       |           | comparison. Default is false      |
++--------------+-------+-----------+-----------------------------------+
+| suffix       | query | string    | Filter files by suffix, e.g.,     |
+|              |       |           | ``.txt``. Only affects ``files``  |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -367,20 +367,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sha\*          | commit id                       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| body\*         | Comment Content                 | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| sha\*          | path  | string    | commit id                       |
++----------------+-------+-----------+---------------------------------+
+| body\*         | body  | string    | Comment Content                 |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -425,18 +425,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| id\*           | the ID of a comment             | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| id\*           | path  | string    | the ID of a comment             |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -468,23 +468,23 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | integer   |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | integer   |
-+----------------+---------------------------------+-------+-----------+
-| order          | Sorting Order:                  | query | string    |
-|                | asc(default),desc               |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | integer   | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | integer   | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
+| order          | query | string    | Sorting Order:                  |
+|                |       |           | asc(default),desc               |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -532,18 +532,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| id\*           | the ID of a comment             | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| id\*           | path  | string    | the ID of a comment             |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -591,20 +591,20 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| id\*           | the ID of a comment             | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| body\*         | Comment Content                 | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| id\*           | path  | string    | the ID of a comment             |
++----------------+-------+-----------+---------------------------------+
+| body\*         | body  | string    | Comment Content                 |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -656,26 +656,26 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| branch_name\*  | branch name                     | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| author         | author username                 | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| only_self      | only self                       | query | Boolean   |
-+----------------+---------------------------------+-------+-----------+
-| since          | since                           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| until          | until                           | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| branch_name\*  | query | string    | branch name                     |
++----------------+-------+-----------+---------------------------------+
+| author         | query | string    | author username                 |
++----------------+-------+-----------+---------------------------------+
+| only_self      | query | Boolean   | only self                       |
++----------------+-------+-----------+---------------------------------+
+| since          | query | string    | since                           |
++----------------+-------+-----------+---------------------------------+
+| until          | query | string    | until                           |
++----------------+-------+-----------+---------------------------------+
 
 **Note: author takes precedence over only_self.**
 
@@ -737,22 +737,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| ref\*          | commit sha                      | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | integer   |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | integer   |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| ref\*          | path  | string    | commit sha                      |
++----------------+-------+-----------+---------------------------------+
+| page           | query | integer   | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | integer   | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
 
 
 Response

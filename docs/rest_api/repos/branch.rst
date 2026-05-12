@@ -13,25 +13,25 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| sort           | Sorting Fields name/updated     | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc                        | quey  | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number，default:1  | query | int       |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum         | query | int       |
-|                | 100,default:20                  |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | Sorting Fields name/updated     |
++----------------+-------+-----------+---------------------------------+
+| direction      | quey  | string    | asc/desc                        |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number，default:1  |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items Per Page, Maximum         |
+|                |       |           | 100,default:20                  |
++----------------+-------+-----------+---------------------------------+
 
 Response
 ~~~~~~~~
@@ -87,22 +87,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| refs\*         | Branch Starting Point Name,     | body  | string    |
-|                | Default: main                   |       |           |
-+----------------+---------------------------------+-------+-----------+
-| branch_name\*  | new branch                      | body  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| refs\*         | body  | string    | Branch Starting Point Name,     |
+|                |       |           | Default: main                   |
++----------------+-------+-----------+---------------------------------+
+| branch_name\*  | body  | string    | new branch                      |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -163,18 +163,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| branch\*       | branch                          | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| branch\*       | path  | string    | branch                          |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -244,26 +244,26 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| wildcard\*     | wildcard                        | body  | string    |
-+----------------+---------------------------------+-------+-----------+
-| pusher\*       | pusher: develop, admin,         | body  | string    |
-|                | empty(Prohibit Pushes from      |       |           |
-|                | Anyone)                         |       |           |
-+----------------+---------------------------------+-------+-----------+
-| merger\*       | merger: develop, admin,         | body  | string    |
-|                | empty(Prohibit merge from       |       |           |
-|                | Anyone)                         |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| wildcard\*     | body  | string    | wildcard                        |
++----------------+-------+-----------+---------------------------------+
+| pusher\*       | body  | string    | pusher: develop, admin,         |
+|                |       |           | empty(Prohibit Pushes from      |
+|                |       |           | Anyone)                         |
++----------------+-------+-----------+---------------------------------+
+| merger\*       | body  | string    | merger: develop, admin,         |
+|                |       |           | empty(Prohibit merge from       |
+|                |       |           | Anyone)                         |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -305,18 +305,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| wildcard\*     | wildcard                        | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| wildcard\*     | path  | string    | wildcard                        |
++----------------+-------+-----------+---------------------------------+
 
 .. container:: highlight
 
@@ -348,16 +348,16 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -413,26 +413,26 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| wildcard\*     | protected branch wildcard       | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| pusher\*       | pusher: develop, admin,         | body  | string    |
-|                | empty(Prohibit Pushes from      |       |           |
-|                | Anyone)                         |       |           |
-+----------------+---------------------------------+-------+-----------+
-| merger\*       | merger: develop, admin,         | body  | string    |
-|                | empty(Prohibit merge from       |       |           |
-|                | Anyone)                         |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| wildcard\*     | path  | string    | protected branch wildcard       |
++----------------+-------+-----------+---------------------------------+
+| pusher\*       | body  | string    | pusher: develop, admin,         |
+|                |       |           | empty(Prohibit Pushes from      |
+|                |       |           | Anyone)                         |
++----------------+-------+-----------+---------------------------------+
+| merger\*       | body  | string    | merger: develop, admin,         |
+|                |       |           | empty(Prohibit merge from       |
+|                |       |           | Anyone)                         |
++----------------+-------+-----------+---------------------------------+
 
 
 Response

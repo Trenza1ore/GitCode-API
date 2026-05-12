@@ -13,24 +13,24 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+--------------------------------------+-------+-----------+
-| Parameter      | Description                          | Type  | Data Type |
-+================+======================================+=======+===========+
-| access_token\* | personal access token                | query | string    |
-+----------------+--------------------------------------+-------+-----------+
-| page           | Current Page Number Limit: Maximum   | query | int       |
-|                | 100                                  |       |           |
-+----------------+--------------------------------------+-------+-----------+
-| per_page       | Items per Page Limit: Maximum 50     | query | int       |
-+----------------+--------------------------------------+-------+-----------+
-| q\*            | keywords                             | query | string    |
-+----------------+--------------------------------------+-------+-----------+
-| sort           | Sorting                              | query | string    |
-|                | Fields，joined_at(注册时间)，Default |       |           |
-|                | Sorting: Best Match                  |       |           |
-+----------------+--------------------------------------+-------+-----------+
-| order          | Sorting Order (Default: desc)        | query | string    |
-+----------------+--------------------------------------+-------+-----------+
++----------------+-------+-----------+--------------------------------------+
+| Parameter      | Type  | Data Type | Description                          |
++================+=======+===========+======================================+
+| access_token\* | query | string    | personal access token                |
++----------------+-------+-----------+--------------------------------------+
+| page           | query | int       | Current Page Number Limit: Maximum   |
+|                |       |           | 100                                  |
++----------------+-------+-----------+--------------------------------------+
+| per_page       | query | int       | Items per Page Limit: Maximum 50     |
++----------------+-------+-----------+--------------------------------------+
+| q\*            | query | string    | keywords                             |
++----------------+-------+-----------+--------------------------------------+
+| sort           | query | string    | Sorting                              |
+|                |       |           | Fields，joined_at(注册时间)，Default |
+|                |       |           | Sorting: Best Match                  |
++----------------+-------+-----------+--------------------------------------+
+| order          | query | string    | Sorting Order (Default: desc)        |
++----------------+-------+-----------+--------------------------------------+
 
 Response
 ~~~~~~~~
@@ -82,32 +82,32 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number Limit:      | query | int       |
-|                | Maximum 100                     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items per Page Limit: Maximum   | query | int       |
-|                | 50                              |       |           |
-+----------------+---------------------------------+-------+-----------+
-| q\*            | keywords                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| sort           | Sorting                         | query | string    |
-|                | Fields，created_at(created      |       |           |
-|                | time)、last_push_at(update      |       |           |
-|                | time)，Default Sorting: Best    |       |           |
-|                | Match                           |       |           |
-+----------------+---------------------------------+-------+-----------+
-| order          | Sorting Order (Default: desc)   | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| repo           | Repository Path                 | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| state          | 筛选指定状态的 issues,          | query | string    |
-|                | open(开启)、closed(完成)        |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number Limit:      |
+|                |       |           | Maximum 100                     |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items per Page Limit: Maximum   |
+|                |       |           | 50                              |
++----------------+-------+-----------+---------------------------------+
+| q\*            | query | string    | keywords                        |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | Sorting                         |
+|                |       |           | Fields，created_at(created      |
+|                |       |           | time)、last_push_at(update      |
+|                |       |           | time)，Default Sorting: Best    |
+|                |       |           | Match                           |
++----------------+-------+-----------+---------------------------------+
+| order          | query | string    | Sorting Order (Default: desc)   |
++----------------+-------+-----------+---------------------------------+
+| repo           | query | string    | Repository Path                 |
++----------------+-------+-----------+---------------------------------+
+| state          | query | string    | 筛选指定状态的 issues,          |
+|                |       |           | open(开启)、closed(完成)        |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -205,39 +205,39 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number Limit:      | query | int       |
-|                | Maximum 100                     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items per Page Limit: Maximum   | query | int       |
-|                | 50                              |       |           |
-+----------------+---------------------------------+-------+-----------+
-| q\*            | keywords                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| sort           | Sorting                         | query | string    |
-|                | Fields，last_push_at(update     |       |           |
-|                | time)、stars_count(star         |       |           |
-|                | count)、forks_count(fork        |       |           |
-|                | count)，Default Sorting: Best   |       |           |
-|                | Match                           |       |           |
-+----------------+---------------------------------+-------+-----------+
-| order          | Sorting Order (Default: desc)   | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner          | Repository Owner Path           | query | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| fork           | Forked Repositories and Search  | query | string    |
-|                | Visibility,Forked repositories  |       |           |
-|                | are not included in search      |       |           |
-|                | results by default.             |       |           |
-+----------------+---------------------------------+-------+-----------+
-| language       | Filtering Repositories by       | query | string    |
-|                | Programming Language            |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| page           | query | int       | Current Page Number Limit:      |
+|                |       |           | Maximum 100                     |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | int       | Items per Page Limit: Maximum   |
+|                |       |           | 50                              |
++----------------+-------+-----------+---------------------------------+
+| q\*            | query | string    | keywords                        |
++----------------+-------+-----------+---------------------------------+
+| sort           | query | string    | Sorting                         |
+|                |       |           | Fields，last_push_at(update     |
+|                |       |           | time)、stars_count(star         |
+|                |       |           | count)、forks_count(fork        |
+|                |       |           | count)，Default Sorting: Best   |
+|                |       |           | Match                           |
++----------------+-------+-----------+---------------------------------+
+| order          | query | string    | Sorting Order (Default: desc)   |
++----------------+-------+-----------+---------------------------------+
+| owner          | query | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| fork           | query | string    | Forked Repositories and Search  |
+|                |       |           | Visibility,Forked repositories  |
+|                |       |           | are not included in search      |
+|                |       |           | results by default.             |
++----------------+-------+-----------+---------------------------------+
+| language       | query | string    | Filtering Repositories by       |
+|                |       |           | Programming Language            |
++----------------+-------+-----------+---------------------------------+
 
 
 Response

@@ -10,14 +10,14 @@ Request
 
 ``GET https://gitcode.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code&scope={scope}&state={state}``
 
-============== ======================================== ===== =========
-Parameter      Description                              Type  Data Type
-============== ======================================== ===== =========
-client_id\*    The client ID of the GitCode app         query string
-redirect_uri\* redirect url                             query string
-scope          scope                                    query string
-state          State Parameter, Preventing CSRF Attacks query string
-============== ======================================== ===== =========
+============== ===== ========= ========================================
+Parameter      Type  Data Type Description                             
+============== ===== ========= ========================================
+client_id\*    query string    The client ID of the GitCode app        
+redirect_uri\* query string    redirect url                            
+scope          query string    scope                                   
+state          query string    State Parameter, Preventing CSRF Attacks
+============== ===== ========= ========================================
 
 
 2. Redirection
@@ -39,19 +39,19 @@ token endpoint.
 
 ``POST https://gitcode.com/oauth/token?grant_type=authorization_code&code={code}&client_id={client_id}&client_secret={client_secret}``
 
-+-----------------+-------------------+-----------+--------------------+
-| Parameter       | Description       | Type      | Data Type          |
-+=================+===================+===========+====================+
-| grant_type      | grant_type        | query     | authorization_code |
-+-----------------+-------------------+-----------+--------------------+
-| code\*          | code              | query     | string             |
-+-----------------+-------------------+-----------+--------------------+
-| client_id\*     | The client ID of  | query     | string             |
-|                 | the GitCode app   |           |                    |
-+-----------------+-------------------+-----------+--------------------+
-| client_secret\* | The secret of the | form-data | string             |
-|                 | GitCode app       |           |                    |
-+-----------------+-------------------+-----------+--------------------+
++-----------------+-----------+--------------------+-------------------+
+| Parameter       | Type      | Data Type          | Description       |
++=================+===========+====================+===================+
+| grant_type      | query     | authorization_code | grant_type        |
++-----------------+-----------+--------------------+-------------------+
+| code\*          | query     | string             | code              |
++-----------------+-----------+--------------------+-------------------+
+| client_id\*     | query     | string             | The client ID of  |
+|                 |           |                    | the GitCode app   |
++-----------------+-----------+--------------------+-------------------+
+| client_secret\* | formData  | string             | The secret of the |
+|                 |           |                    | GitCode app       |
++-----------------+-----------+--------------------+-------------------+
 
 Response
 ~~~~~~~~

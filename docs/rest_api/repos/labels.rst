@@ -10,23 +10,23 @@ Request
 
 ``PATCH https://api.gitcode.com/api/v5/repos/{owner}/{repo}/labels/{original_name}``
 
-+-----------------+-----------------------------+----------+-----------+
-| Parameter       | Description                 | Type     | Data Type |
-+=================+=============================+==========+===========+
-| access_token\*  | personal access token       | query    | string    |
-+-----------------+-----------------------------+----------+-----------+
-| owner\*         | Repository Ownership Path   | path     | string    |
-|                 | (Company, Organization, or  |          |           |
-|                 | Personal Path)              |          |           |
-+-----------------+-----------------------------+----------+-----------+
-| repo\*          | Repository Path(path)       | path     | string    |
-+-----------------+-----------------------------+----------+-----------+
-| original_name\* | original name               | path     | string    |
-+-----------------+-----------------------------+----------+-----------+
-| name            | name                        | formData | string    |
-+-----------------+-----------------------------+----------+-----------+
-| color           | color                       | formData | string    |
-+-----------------+-----------------------------+----------+-----------+
++-----------------+----------+-----------+-----------------------------+
+| Parameter       | Type     | Data Type | Description                 |
++=================+==========+===========+=============================+
+| access_token\*  | query    | string    | personal access token       |
++-----------------+----------+-----------+-----------------------------+
+| owner\*         | path     | string    | Repository Ownership Path   |
+|                 |          |           | (Company, Organization, or  |
+|                 |          |           | Personal Path)              |
++-----------------+----------+-----------+-----------------------------+
+| repo\*          | path     | string    | Repository Path(path)       |
++-----------------+----------+-----------+-----------------------------+
+| original_name\* | path     | string    | original name               |
++-----------------+----------+-----------+-----------------------------+
+| name            | formData | string    | name                        |
++-----------------+----------+-----------+-----------------------------+
+| color           | formData | string    | color                       |
++-----------------+----------+-----------+-----------------------------+
 
 Response
 ~~~~~~~~
@@ -61,17 +61,17 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/labels``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -116,21 +116,21 @@ Request
 
 ``POST https://api.gitcode.com/api/v5/repos/{owner}/{repo}/labels``
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Ownership Path    | path     | string    |
-|                | (Company, Organization, or   |          |           |
-|                | Personal Path)               |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| name\*         | new name                     | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| color\*        | color, eg: #fff              | formData | string    |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Ownership Path    |
+|                |          |           | (Company, Organization, or   |
+|                |          |           | Personal Path)               |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
+| name\*         | formData | string    | new name                     |
++----------------+----------+-----------+------------------------------+
+| color\*        | formData | string    | color, eg: #fff              |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -168,19 +168,19 @@ Request
 
 ``DELETE https://api.gitcode.com/api/v5/repos/{owner}/{repo}/labels/{name}``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| name\*         | 标签名称                        | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| name\*         | path  | string    | 标签名称                        |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -208,19 +208,19 @@ Request
 
 ``DELETE https://api.gitcode.com/api/v5/repos/{owner}/{repo}/issues/{number}/labels``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | issue number                    | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | string    | issue number                    |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -248,21 +248,21 @@ Request
 
 ``PUT https://api.gitcode.com/api/v5/repos/{owner}/{repo}/issues/{number}/labels``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| number\*       | issue number                    | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| body\*         | labels，eg: [“feat”, “bug”]     | body  | array     |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| number\*       | path  | string    | issue number                    |
++----------------+-------+-----------+---------------------------------+
+| body\*         | body  | array     | labels，eg: [“feat”, “bug”]     |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -292,15 +292,15 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/enterprises/{enterprise}/labels``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| enterprise\*   | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| enterprise\*   | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -340,23 +340,23 @@ Request
 
 ``GET https://api.gitcode.com/api/v8/enterprises/{enterprise}/labels``
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| enterprise\*   | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| search         | keywords                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| direction      | asc/desc                        | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| page           | Current Page Number             | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| per_page       | Items Per Page, Maximum 100     | query | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| enterprise\*   | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| search         | query | string    | keywords                        |
++----------------+-------+-----------+---------------------------------+
+| direction      | query | string    | asc/desc                        |
++----------------+-------+-----------+---------------------------------+
+| page           | query | string    | Current Page Number             |
++----------------+-------+-----------+---------------------------------+
+| per_page       | query | string    | Items Per Page, Maximum 100     |
++----------------+-------+-----------+---------------------------------+
 
 
 Response

@@ -10,28 +10,28 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/milestones``
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| state        | state: open, closed,              | query | string    |
-|              | all。Default: open                |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| sort         | sort: due_on                      | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| direction    | asc/desc, Default: asc            | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| page         | Current Page Number               | query | int       |
-+--------------+-----------------------------------+-------+-----------+
-| per_page     | Items Per Page, Maximum 100       | query | int       |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| state        | query | string    | state: open, closed,              |
+|              |       |           | all。Default: open                |
++--------------+-------+-----------+-----------------------------------+
+| sort         | query | string    | sort: due_on                      |
++--------------+-------+-----------+-----------------------------------+
+| direction    | query | string    | asc/desc, Default: asc            |
++--------------+-------+-----------+-----------------------------------+
+| page         | query | int       | Current Page Number               |
++--------------+-------+-----------+-----------------------------------+
+| per_page     | query | int       | Items Per Page, Maximum 100       |
++--------------+-------+-----------+-----------------------------------+
 
 Response
 ~~~~~~~~
@@ -75,19 +75,19 @@ Request
 
 ``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/milestones/{number}``
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| number\*     | Milestone ID (number)             | path  | int       |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| number\*     | path  | int       | Milestone ID (number)             |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -131,19 +131,19 @@ Request
 
 ``DELETE https://api.gitcode.com/api/v5/repos/{owner}/{repo}/milestones/{number}``
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| number\*     | Milestone ID (number)             | path  | int       |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| number\*     | path  | int       | Milestone ID (number)             |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -171,28 +171,28 @@ Request
 
 ``PATCH https://api.gitcode.com/api/v5/repos/{owner}/{repo}/milestones/{number}``
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| number\*     | Milestone ID (number)             | path  | int       |
-+--------------+-----------------------------------+-------+-----------+
-| title\*      | Milestone Name                    | body  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| state        | state: open, closed,              | body  | string    |
-|              | all。Default: open                |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| description  | Milestone Description             | body  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| due_on\*     | Milestone due date                | body  | string    |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| number\*     | path  | int       | Milestone ID (number)             |
++--------------+-------+-----------+-----------------------------------+
+| title\*      | body  | string    | Milestone Name                    |
++--------------+-------+-----------+-----------------------------------+
+| state        | body  | string    | state: open, closed,              |
+|              |       |           | all。Default: open                |
++--------------+-------+-----------+-----------------------------------+
+| description  | body  | string    | Milestone Description             |
++--------------+-------+-----------+-----------------------------------+
+| due_on\*     | body  | string    | Milestone due date                |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response
@@ -240,23 +240,23 @@ Request
 
 ``POST https://api.gitcode.com/api/v5/repos/{owner}/{repo}/milestones``
 
-+--------------+-----------------------------------+-------+-----------+
-| Parameter    | Description                       | Type  | Data Type |
-+==============+===================================+=======+===========+
-| access_token | personal access token             | query | string    |
-+--------------+-----------------------------------+-------+-----------+
-| owner\*      | Repository Ownership Path         | path  | string    |
-|              | (Company, Organization, or        |       |           |
-|              | Personal Path)                    |       |           |
-+--------------+-----------------------------------+-------+-----------+
-| repo\*       | Repository Path(path)             | path  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| title\*      | Milestone Name                    | body  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| description  | Milestone Description             | body  | string    |
-+--------------+-----------------------------------+-------+-----------+
-| due_on\*     | Milestone due date                | body  | string    |
-+--------------+-----------------------------------+-------+-----------+
++--------------+-------+-----------+-----------------------------------+
+| Parameter    | Type  | Data Type | Description                       |
++==============+=======+===========+===================================+
+| access_token | query | string    | personal access token             |
++--------------+-------+-----------+-----------------------------------+
+| owner\*      | path  | string    | Repository Ownership Path         |
+|              |       |           | (Company, Organization, or        |
+|              |       |           | Personal Path)                    |
++--------------+-------+-----------+-----------------------------------+
+| repo\*       | path  | string    | Repository Path(path)             |
++--------------+-------+-----------+-----------------------------------+
+| title\*      | body  | string    | Milestone Name                    |
++--------------+-------+-----------+-----------------------------------+
+| description  | body  | string    | Milestone Description             |
++--------------+-------+-----------+-----------------------------------+
+| due_on\*     | body  | string    | Milestone due date                |
++--------------+-------+-----------+-----------------------------------+
 
 
 Response

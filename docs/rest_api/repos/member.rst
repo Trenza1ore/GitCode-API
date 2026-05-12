@@ -13,22 +13,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | query    | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| username\*     | username/login               | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| permission     | permission: pull, push,      | formData | string    |
-|                | admin, customer role name.   |          |           |
-|                | Default: push                |          |           |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | query    | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
+| username\*     | path     | string    | username/login               |
++----------------+----------+-----------+------------------------------+
+| permission     | formData | string    | permission: pull, push,      |
+|                |          |           | admin, customer role name.   |
+|                |          |           | Default: push                |
++----------------+----------+-----------+------------------------------+
 
 Response
 ~~~~~~~~
@@ -76,18 +76,18 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Owner Path           | path  | string    |
-|                | (Organization or User Path)     |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| username\*     | username/login                  | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Owner Path           |
+|                |       |           | (Organization or User Path)     |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| username\*     | path  | string    | username/login                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -123,22 +123,22 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+------------------------------+----------+-----------+
-| Parameter      | Description                  | Type     | Data Type |
-+================+==============================+==========+===========+
-| access_token\* | personal access token        | formData | string    |
-+----------------+------------------------------+----------+-----------+
-| owner\*        | Repository Owner Path        | path     | string    |
-|                | (Organization or User Path)  |          |           |
-+----------------+------------------------------+----------+-----------+
-| repo\*         | Repository Path(path)        | path     | string    |
-+----------------+------------------------------+----------+-----------+
-| page           | Current Page                 | query    | int       |
-|                | Number，default:1            |          |           |
-+----------------+------------------------------+----------+-----------+
-| per_page       | Items Per Page, Maximum      | query    | int       |
-|                | 100,default:20               |          |           |
-+----------------+------------------------------+----------+-----------+
++----------------+----------+-----------+------------------------------+
+| Parameter      | Type     | Data Type | Description                  |
++================+==========+===========+==============================+
+| access_token\* | formData | string    | personal access token        |
++----------------+----------+-----------+------------------------------+
+| owner\*        | path     | string    | Repository Owner Path        |
+|                |          |           | (Organization or User Path)  |
++----------------+----------+-----------+------------------------------+
+| repo\*         | path     | string    | Repository Path(path)        |
++----------------+----------+-----------+------------------------------+
+| page           | query    | int       | Current Page                 |
+|                |          |           | Number，default:1            |
++----------------+----------+-----------+------------------------------+
+| per_page       | query    | int       | Items Per Page, Maximum      |
+|                |          |           | 100,default:20               |
++----------------+----------+-----------+------------------------------+
 
 
 Response
@@ -204,19 +204,19 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| username       | username/login                  | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| username       | path  | string    | username/login                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
@@ -258,19 +258,19 @@ Request
 Parameters
 ~~~~~~~~~~
 
-+----------------+---------------------------------+-------+-----------+
-| Parameter      | Description                     | Type  | Data Type |
-+================+=================================+=======+===========+
-| access_token\* | personal access token           | query | string    |
-+----------------+---------------------------------+-------+-----------+
-| owner\*        | Repository Ownership Path       | path  | string    |
-|                | (Company, Organization, or      |       |           |
-|                | Personal Path)                  |       |           |
-+----------------+---------------------------------+-------+-----------+
-| repo\*         | Repository Path(path)           | path  | string    |
-+----------------+---------------------------------+-------+-----------+
-| username\*     | username/login                  | path  | string    |
-+----------------+---------------------------------+-------+-----------+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| username\*     | path  | string    | username/login                  |
++----------------+-------+-----------+---------------------------------+
 
 
 Response
