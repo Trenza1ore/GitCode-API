@@ -1,4 +1,4 @@
-.PHONY: docs docs-clean format test release lint docstring amend binary mcpb
+.PHONY: docs docs-clean format rst-table test release lint docstring amend binary mcpb
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build
 DOCS_SOURCE_DIR := docs
@@ -10,7 +10,7 @@ DOCS_SINGLEHTML_DIR := $(DOCS_BUILD_ROOT)/singlehtml
 # Shared doctree cache outside each builder output to avoid EPUB packager unknown-mimetype warnings.
 DOCS_DOCTREES_DIR := $(DOCS_BUILD_ROOT)/doctrees
 
-docs: docs-clean
+docs: docs-clean rst-table
 	$(SPHINX_BUILD) -d $(DOCS_DOCTREES_DIR) -b html $(DOCS_SOURCE_DIR) $(DOCS_HTML_DIR)
 	@uv run python -c 'from webbrowser import open; from pathlib import Path; open(f"file://{Path.cwd().resolve()}/docs/_build/html/index.html")' || true
 	$(SPHINX_BUILD) -d $(DOCS_DOCTREES_DIR) -b epub $(DOCS_SOURCE_DIR) $(DOCS_EPUB_DIR)
@@ -24,6 +24,9 @@ format:
 	uv run ruff check --fix || true
 	uv run ruff check --select I --fix || true
 	uv run ruff format || true
+
+rst-table:
+	uv run python scripts/fix_rst_table.py docs/**/*.rst
 
 lint:
 	uv run mypy -p gitcode_api
