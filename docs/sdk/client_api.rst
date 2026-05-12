@@ -503,11 +503,23 @@ Miscellaneous repository resources
 
 .. currentmodule:: gitcode_api.resources.misc
 
+.. automethod:: ReleasesResource.create
+   :no-index:
 .. automethod:: ReleasesResource.update
+   :no-index:
+.. automethod:: ReleasesResource.get_upload_url
+   :no-index:
+.. automethod:: ReleasesResource.upload
    :no-index:
 .. automethod:: ReleasesResource.get_by_tag
    :no-index:
 .. automethod:: ReleasesResource.list
+   :no-index:
+.. automethod:: ReleasesResource.get_latest
+   :no-index:
+.. automethod:: ReleasesResource.get
+   :no-index:
+.. automethod:: ReleasesResource.download_attachment
    :no-index:
 
 ``GitCode.tags``
@@ -1035,11 +1047,23 @@ Miscellaneous repository resources
 
 .. currentmodule:: gitcode_api.resources.misc
 
+.. automethod:: AsyncReleasesResource.create
+   :no-index:
 .. automethod:: AsyncReleasesResource.update
+   :no-index:
+.. automethod:: AsyncReleasesResource.get_upload_url
+   :no-index:
+.. automethod:: AsyncReleasesResource.upload
    :no-index:
 .. automethod:: AsyncReleasesResource.get_by_tag
    :no-index:
 .. automethod:: AsyncReleasesResource.list
+   :no-index:
+.. automethod:: AsyncReleasesResource.get_latest
+   :no-index:
+.. automethod:: AsyncReleasesResource.get
+   :no-index:
+.. automethod:: AsyncReleasesResource.download_attachment
    :no-index:
 
 ``AsyncGitCode.tags``
