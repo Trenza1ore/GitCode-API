@@ -23,7 +23,7 @@ BADGES = [
         r"link=https%3A%2F%2Fpypi\.org%2Fproject%2Fgitcode-api%2F)"
         r"[^)]*"
         r"(\))",
-    )
+    ),
 ]
 
 

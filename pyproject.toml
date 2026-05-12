@@ -64,11 +64,19 @@ binary = [
     "pyinstaller>=6.0,<7",
 ]
 
+# FastMCP
 mcp = [
     "fastmcp; python_version >= '3.10'",
 ]
 
-dev = [{ include-group = "test" }, { include-group = "format" }, { include-group = "docs" }]
+dev = [
+    { include-group = "test" },
+    { include-group = "format" },
+    { include-group = "docs" },
+    "githubkit>=0.15.4",
+    "openai",
+    "setuptools",
+]
 
 [project.urls]
 changelog = "https://gitcode-api.readthedocs.io/en/latest/changelog.html"
@@ -83,7 +91,7 @@ author = "https://hugohuang.com"
 gitcode-api = "gitcode_api.cli:main"
 
 [tool.uv]
-default-groups = ['test']
+default-groups = ['dev']
 
 [tool.setuptools.package-data]
 gitcode_api = ["**/version.txt"]

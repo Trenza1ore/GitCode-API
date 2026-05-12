@@ -2172,6 +2172,23 @@ class RepoMemberPermission(APIObject):
 
 
 @dataclass(init=False)
+class ReleaseAsset(APIObject):
+    """Asset metadata embedded in release payloads.
+
+    :ivar browser_download_url: Browser download URL for this asset.
+    :vartype browser_download_url: Optional[str]
+    :ivar name: Asset file name.
+    :vartype name: Optional[str]
+    :ivar type: Asset media type.
+    :vartype type: Optional[str]
+    """
+
+    browser_download_url: Optional[str] = None
+    name: Optional[str] = None
+    type: Optional[str] = None
+
+
+@dataclass(init=False)
 class Release(APIObject):
     """Release payload.
 
@@ -2179,6 +2196,10 @@ class Release(APIObject):
     :vartype id: Optional[Union[int, str]]
     :ivar tag_name: Tag name.
     :vartype tag_name: Optional[str]
+    :ivar target_commitish: Branch or commit SHA targeted by the release tag.
+    :vartype target_commitish: Optional[str]
+    :ivar prerelease: Whether this release is a pre-release.
+    :vartype prerelease: Optional[bool]
     :ivar name: Display name.
     :vartype name: Optional[str]
     :ivar body: Body text of the object.
@@ -2191,16 +2212,38 @@ class Release(APIObject):
     :vartype published_at: Optional[str]
     :ivar html_url: Web URL for this object.
     :vartype html_url: Optional[str]
+    :ivar assets: Release source packages and uploaded attachments.
+    :vartype assets: Optional[List[ReleaseAsset]]
+    :ivar release_status: Release status, for example ``pre`` or ``latest``.
+    :vartype release_status: Optional[str]
     """
 
     id: Optional[Union[int, str]] = None
     tag_name: Optional[str] = None
+    target_commitish: Optional[str] = None
+    prerelease: Optional[bool] = None
     name: Optional[str] = None
     body: Optional[str] = None
     author: Optional[UserRef] = None
     created_at: Optional[str] = None
     published_at: Optional[str] = None
     html_url: Optional[str] = None
+    assets: Optional[List[ReleaseAsset]] = None
+    release_status: Optional[str] = None
+
+
+@dataclass(init=False)
+class ReleaseUploadURL(APIObject):
+    """Pre-signed release attachment upload target.
+
+    :ivar url: Pre-signed object storage URL for uploading with ``PUT``.
+    :vartype url: Optional[str]
+    :ivar headers: Headers to send unchanged with the upload request.
+    :vartype headers: Optional[Dict[str, str]]
+    """
+
+    url: Optional[str] = None
+    headers: Optional[Dict[str, str]] = None
 
 
 @dataclass(init=False)
