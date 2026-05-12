@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.13](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.13) — 2026-05-12
+
+Changes since `1.2.12`…`1.2.13`.
+
+### Feature
+
+- **Releases (`client.releases` / async parity):** Reworked to match the current GitCode API — `create`, tag-based `update`, `list` with `direction` / `page` / `per_page`, `get` / `get_by_tag` / `get_latest` with documented query options, `get_upload_url` and `upload` (input bytes or local file path) for attachments, and `download_attachment` for raw bytes.
+- **Models:** `Release` now exposes `assets` and `release_status`; upload URL responses use `ReleaseUploadURL`.
+
+### Breaking Change
+
+- **`GitCode.releases.update`:** Targets a release by **tag in the URL path** (`tag=…`) instead of `release_id`; the JSON body is `name`, `body`, and optional `release_status` only (no `tag_name` in the payload). Update any code that still passed `release_id` or relied on the old request shape.
+
+### Docs
+
+- REST API mirror: release create/upload and related pages, missing release topics, and table cleanup; SDK release documentation updated for the new methods and parameters.
+- Added example `examples/sync_github_release_to_gitcode.py`.
+
+---
+
 ## [1.2.12](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.12) — 2026-05-11
 
 Changes since `1.2.11`…`1.2.12`.
