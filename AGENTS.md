@@ -32,13 +32,13 @@ Use `uv` from the repository root.
 - Format and fix imports: `make format`.
 - Type-check the package: `make lint` (`mypy -p gitcode_api`).
 - Check docstrings: `make docstring`.
-- Build docs: `make docs`.
+- Build docs: `make docs` (this also runs reST table alignment fixing).
 - Clean docs build artifacts: `make docs-clean`.
 - Build a standalone CLI binary (PyInstaller one-file): `make binary` (uses dependency group `binary`; output under `dist/`).
 
 The `Makefile` currently defines:
 
-- `docs`: removes old docs build/generated SDK files, then runs Sphinx (`html`, `epub`, and `singlehtml` into `docs/_build/{html,epub,singlehtml}/`).
+- `docs`: runs `rst-table`, removes old docs build/generated SDK files, then runs Sphinx (`html`, `epub`, and `singlehtml` into `docs/_build/{html,epub,singlehtml}/`).
 - `format`: runs Ruff fixes, import sorting, and formatting. The commands are allowed to continue on failure because they use `|| true`; inspect output if formatting matters.
 - `lint`: runs mypy against `gitcode_api` (`uv run mypy -p gitcode_api`).
 - `test`: installs the package into the active uv environment, then runs pytest.
@@ -115,7 +115,7 @@ The documentation is a Sphinx project under `docs/`.
 - `docs/changelog.md` includes the root `CHANGELOG.md` through MyST.
 - Read the Docs builds from `.readthedocs.yaml` using Python 3.11 and `docs/requirements.txt`.
 
-Use reStructuredText for existing `.rst` pages. Use MyST Markdown only where the file is already Markdown. Build locally with `make docs` after nontrivial docs changes.
+Use reStructuredText for existing `.rst` pages. Use MyST Markdown only where the file is already Markdown. Build locally with `make docs` after nontrivial docs changes; it automatically runs `scripts/fix_rst_table.py docs/**/*.rst`, so table alignment is fixed before Sphinx builds.
 
 In `.rst` files, do not mix Markdown-only or hybrid markup with reST — stick to docutils/Sphinx constructs. A line like the following is invalid in reST because it combines Markdown-style `**` emphasis with reST inline literals (double backticks around the name):
 
