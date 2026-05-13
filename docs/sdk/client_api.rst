@@ -190,6 +190,13 @@ Repository resources
 Collaboration resources
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+.. _sdk-client-api-templates:
+
+Issue and pull request templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. include:: _snippets/client_api_template_resolution.inc.rst
+
 ``GitCode.issues``
 ^^^^^^^^^^^^^^^^^^
 
@@ -237,6 +244,10 @@ Collaboration resources
 .. automethod:: IssuesResource.list_enterprise_labels
    :no-index:
 .. automethod:: IssuesResource.list_operation_logs
+   :no-index:
+.. automethod:: IssuesResource.list_templates
+   :no-index:
+.. automethod:: IssuesResource.get_template
    :no-index:
 
 ``GitCode.pulls``
@@ -306,6 +317,10 @@ Collaboration resources
 .. automethod:: PullsResource.list_org
    :no-index:
 .. automethod:: PullsResource.list_issue_pull_requests
+   :no-index:
+.. automethod:: PullsResource.list_templates
+   :no-index:
+.. automethod:: PullsResource.get_template
    :no-index:
 
 ``GitCode.labels``
@@ -734,6 +749,11 @@ Repository resources
 Collaboration resources
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+Issue and pull request templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. include:: _snippets/client_api_template_resolution.inc.rst
+
 ``AsyncGitCode.issues``
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -781,6 +801,10 @@ Collaboration resources
 .. automethod:: AsyncIssuesResource.list_enterprise_labels
    :no-index:
 .. automethod:: AsyncIssuesResource.list_operation_logs
+   :no-index:
+.. automethod:: AsyncIssuesResource.list_templates
+   :no-index:
+.. automethod:: AsyncIssuesResource.get_template
    :no-index:
 
 ``AsyncGitCode.pulls``
@@ -850,6 +874,10 @@ Collaboration resources
 .. automethod:: AsyncPullsResource.list_org
    :no-index:
 .. automethod:: AsyncPullsResource.list_issue_pull_requests
+   :no-index:
+.. automethod:: AsyncPullsResource.list_templates
+   :no-index:
+.. automethod:: AsyncPullsResource.get_template
    :no-index:
 
 ``AsyncGitCode.labels``

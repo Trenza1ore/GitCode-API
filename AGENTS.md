@@ -32,13 +32,13 @@ Use `uv` from the repository root.
 - Format and fix imports: `make format`.
 - Type-check the package: `make lint` (`mypy -p gitcode_api`).
 - Check docstrings: `make docstring`.
-- Build docs: `make docs` (this also runs reST table alignment fixing).
-- Clean docs build artifacts: `make docs-clean`.
+- Build docs: `make docs-dev` (this also runs reST table alignment fixing).
 - Build a standalone CLI binary (PyInstaller one-file): `make binary` (uses dependency group `binary`; output under `dist/`).
 
 The `Makefile` currently defines:
 
-- `docs`: runs `rst-table`, removes old docs build/generated SDK files, then runs Sphinx (`html`, `epub`, and `singlehtml` into `docs/_build/{html,epub,singlehtml}/`).
+- `docs-dev`: runs ``rst-table`` (``scripts/fix_rst_table.py``), cleans prior HTML output, then builds **HTML** only into ``docs/_build/html/``. Use this for routine documentation checks.
+- `docs`: runs ``docs-dev``, then opens the HTML index in a browser, then builds **EPUB** and **singlehtml** into ``docs/_build/{epub,singlehtml}/``. Use when you need release-style doc artifacts, not for everyday iteration.
 - `format`: runs Ruff fixes, import sorting, and formatting. The commands are allowed to continue on failure because they use `|| true`; inspect output if formatting matters.
 - `lint`: runs mypy against `gitcode_api` (`uv run mypy -p gitcode_api`).
 - `test`: installs the package into the active uv environment, then runs pytest.
@@ -115,7 +115,7 @@ The documentation is a Sphinx project under `docs/`.
 - `docs/changelog.md` includes the root `CHANGELOG.md` through MyST.
 - Read the Docs builds from `.readthedocs.yaml` using Python 3.11 and `docs/requirements.txt`.
 
-Use reStructuredText for existing `.rst` pages. Use MyST Markdown only where the file is already Markdown. Build locally with `make docs` after nontrivial docs changes; it automatically runs `scripts/fix_rst_table.py docs/**/*.rst`, so table alignment is fixed before Sphinx builds.
+Use reStructuredText for existing `.rst` pages. Use MyST Markdown only where the file is already Markdown. Build locally with `make docs-dev` after nontrivial docs changes; it automatically runs `scripts/fix_rst_table.py docs/**/*.rst`, so table alignment is fixed before Sphinx builds.
 
 In `.rst` files, do not mix Markdown-only or hybrid markup with reST — stick to docutils/Sphinx constructs. A line like the following is invalid in reST because it combines Markdown-style `**` emphasis with reST inline literals (double backticks around the name):
 
@@ -125,7 +125,7 @@ All adapters expose one logical function tool named **``gitcode_api_tool``**.
 
 Prefer one style only: valid reST inline literals for identifiers, a rephrased sentence, or a supported role or directive — not mashed-together syntax from both worlds.
 
-The REST API reference is mirrored from GitCode Help documentation. Broad refreshes should go through `scripts/build_gitcode_sphinx_docs.py`, which requires `pandoc` and downloads upstream pages. Generated REST pages include a footer that says not to edit by hand; avoid hand-editing those pages except for small, user-requested fixes.
+The REST API reference is mirrored from GitCode Help documentation and **manually corrected and extended** in this repository (see ``docs/index.rst`` and ``docs/rest_api/index.rst``). Broad refreshes should go through `scripts/build_gitcode_sphinx_docs.py`, which requires `pandoc` and downloads upstream pages. Generated REST pages include a footer that says not to edit by hand; avoid hand-editing those pages except for small, user-requested fixes.
 
 ## Examples And CLI
 

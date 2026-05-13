@@ -1007,11 +1007,11 @@ Parameter      Type      Data Type Description
 ============== ========= ========= =================================
 access_token\* query     string    Personal access token            
 org\*          path      string    Repository Owner Path(path/login)
-name           formData string    Repository Owner Name            
-email          formData string    Repository Owner Email           
-location       formData string    Repository Owner Location        
-description    formData string    Repository Owner Description     
-html_url       formData string    Repository Owner Site            
+name           formData  string    Repository Owner Name            
+email          formData  string    Repository Owner Email           
+location       formData  string    Repository Owner Location        
+description    formData  string    Repository Owner Description     
+html_url       formData  string    Repository Owner Site            
 ============== ========= ========= =================================
 
 

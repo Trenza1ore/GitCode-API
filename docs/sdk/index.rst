@@ -19,6 +19,12 @@ Highlights
 
 - OpenAI-style resource groups such as ``client.repos`` and
   ``client.pulls``.
+- Issue and pull request **template discovery** on ``client.issues`` and
+  ``client.pulls``: :meth:`~gitcode_api.resources.collaboration.IssuesResource.list_templates`
+  / :meth:`~gitcode_api.resources.collaboration.IssuesResource.get_template` (and the pull
+  request counterparts) walk the GitCode ``.gitcode/`` tree on the default branch and resolve
+  templates across the main repository, the owner's ``.gitcode`` repository, and fork-parent
+  repositories (see :doc:`client_api`).
 - Shared repository context via ``owner=`` and ``repo=`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
 - :func:`~gitcode_api.as_dict` for turning response models into plain

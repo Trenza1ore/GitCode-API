@@ -192,5 +192,6 @@ The repository includes runnable examples under ``examples/`` for:
 
 - current user lookup
 - repository overview
+- issue and pull request template listing (see :ref:`sdk-client-api-templates`)
 - pull request listing
 - asynchronous branch listing

@@ -12,6 +12,7 @@
 
 - 面向需要在 Python 中接入 GitCode 的开发者。
 - 同步（`GitCode`）与异步（`AsyncGitCode`）两套接口形状一致，便于迁移或混用。
+- 提供 REST API 无法直接达成的复杂功能：比如 Issue 与 PR 模版的获取。
 - 通过 `client.repos`、`client.pulls`、`client.users` 等资源组挂载具体 API。
 - 可在构造客户端时设置 `owner=`、`repo=`，作为仓库相关接口的默认上下文。
 - 本仓库含 Sphinx 文档与 GitCode REST API 参考镜像。
@@ -310,6 +311,8 @@ jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCo
 
 - `get_current_user.py`
 - `get_repository_overview.py`
+- `get_issue_templates.py`
+- `get_pull_request_templates.py`
 - `list_pull_requests.py`
 - `async_list_branches.py`
 
@@ -318,6 +321,8 @@ jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCo
 ```bash
 uv run python examples/get_current_user.py
 uv run python examples/get_repository_overview.py
+uv run python examples/get_issue_templates.py
+uv run python examples/get_pull_request_templates.py
 uv run python examples/list_pull_requests.py
 uv run python examples/async_list_branches.py
 ```

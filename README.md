@@ -12,6 +12,7 @@
 
 - Community project for developers who want a practical GitCode Python library.
 - Sync and async clients with a consistent API surface.
+- Convenient methods not offered by REST API directly: such as fetching Issue and PR templates.
 - Resource groups such as `client.repos`, `client.pulls`, and `client.users`.
 - Repository defaults via `owner=` and `repo=` on the client.
 - Sphinx docs plus a mirrored GitCode REST API reference in `docs/`.
@@ -317,6 +318,8 @@ Runnable examples live in `examples/`:
 
 - `get_current_user.py`
 - `get_repository_overview.py`
+- `get_issue_templates.py`
+- `get_pull_request_templates.py`
 - `list_pull_requests.py`
 - `async_list_branches.py`
 
@@ -325,6 +328,8 @@ Example scripts load shared configuration from `examples/.env` using `python-dot
 ```bash
 uv run python examples/get_current_user.py
 uv run python examples/get_repository_overview.py
+uv run python examples/get_issue_templates.py
+uv run python examples/get_pull_request_templates.py
 uv run python examples/list_pull_requests.py
 uv run python examples/async_list_branches.py
 ```
