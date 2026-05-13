@@ -1,3 +1,4 @@
+# Copyright (c) Hugo Huang. 2026.
 .PHONY: docs docs-dev docs-clean format rst-table test release lint docstring amend binary mcpb
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build

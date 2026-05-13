@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.16](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.16) — 2026-05-13
+
+Changes since `1.2.15`…`1.2.16`.
+
+### Feature
+
+- **Default CA Bundle:** When the internal `GitCode` client builds its own `httpx` client (you do not pass `http_client=`), verification uses the path from `GITCODE_CA_BUNDLE` if set, otherwise `REQUESTS_CA_BUNDLE` if set (same convention as many Python HTTP stacks), otherwise the default CA bundle is used. Applies to both `GitCode` and `AsyncGitCode`.
+
+---
+
 ## [1.2.15](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.15) — 2026-05-13
 
 Changes since `1.2.14`…`1.2.15`.
