@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.14](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.14) — 2026-05-13
+
+Changes since `1.2.13`…`1.2.14`.
+
+### Feature
+
+- **Issue and pull request templates:** `client.issues` / `client.pulls` (and async counterparts) now expose `list_templates` and `get_template` for GitCode’s `.gitcode/` issue and PR template files on the default branch, including metadata (`RepositoryGitCodeTemplate` with path, SHA, and resolved `template_owner` / `template_repo`). GitCode does not expose this as a dedicated REST “list/get templates” API, so the SDK composes the behavior from repository content calls with **custom resolution logic** (active template paths, default branch, and upstream template sources). The CLI picks these up automatically as `issues list-templates`, `issues get-template`, `pulls list-templates`, and `pulls get-template`.
+- **`as_dict`:** Top-level helper to turn one `APIObject` (or a list of them) into plain `dict` values via `to_dict`, with an optional `deep_copy` flag for isolated mappings.
+- **`Repository` model:** Responses can include a `parent` field describing the upstream source repository when the API returns it.
+
+### Refactor
+
+- **Models:** Dropped unused legacy `TypedDict` definitions from `gitcode_api._models` (no public API change).
+
+### Docs
+
+- Homepage and REST API index: added a short “Why this project” section and clarified that the REST mirror is based on GitCode Help material but **manually corrected and extended** in this repo.
+- README and SDK docs updated for template listing/fetching; runnable examples under `examples/` for issue and pull request templates.
+
+---
+
 ## [1.2.13](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.13) — 2026-05-12
 
 Changes since `1.2.12`…`1.2.13`.
