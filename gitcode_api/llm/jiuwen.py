@@ -9,7 +9,7 @@ from gitcode_api._base_client import DEFAULT_BASE_URL
 from ._tool import TOOL_DESCRIPTION, TOOL_NAME, TOOL_PARAMETERS, GitCodeLLMTool
 
 if TYPE_CHECKING:
-    from openjiuwen.core.foundation.tool import LocalFunction
+    from openjiuwen.core.foundation.tool import LocalFunction  # type: ignore[import-untyped]
 
 
 def _missing_openjiuwen_error() -> ImportError:
