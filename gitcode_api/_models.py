@@ -513,6 +513,8 @@ class Repository(APIObject):
     :vartype relation: Optional[str]
     :ivar members: Members returned in the repository payload.
     :vartype members: Optional[List[str]]
+    :ivar parent: Upstream source repository information
+    :vartype parent: Optional[Dict[str, Any]]
     :ivar permission: Permission summary for this object.
     :vartype permission: Optional[RepositoryPermission]
     :ivar enterprise: Enterprise associated with the repository.
@@ -566,6 +568,7 @@ class Repository(APIObject):
     status: Optional[str] = None
     relation: Optional[str] = None
     members: Optional[List[str]] = None
+    parent: Optional[Dict[str, Any]] = None
     permission: Optional[RepositoryPermission] = None
     enterprise: Optional[Union[EnterpriseRef, str]] = None
     issue_template_source: Optional[str] = None
