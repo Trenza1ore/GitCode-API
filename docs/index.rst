@@ -1,12 +1,12 @@
 GitCode API documentation
 =========================
 
-.. rubric:: Python SDK and mirrored REST reference
+.. rubric:: Python SDK and curated REST reference
 
 This documentation combines two complementary resources: a **Python SDK** for
-building applications against GitCode, and a **REST API reference** that
-mirrors the public English help content so you can read endpoints alongside
-client usage.
+building applications against GitCode, and a **REST API reference** derived
+from GitCode's public English help content—**manually corrected and extended**
+here—so you can read endpoints alongside client usage.
 
 
 Why this project
@@ -34,20 +34,19 @@ Project links
 -------------
 
 - `Project homepage <https://hugohuang.com/gitcode-api>`__
-- `GitHub (source and issues) <https://github.com/Trenza1ore/GitCode-API
-
-GitCode repository: https://gitcode.com/SushiNinja/GitCode-API
-
-PyPI package page: https://pypi.org/project/gitcode-api
-
-My personal website: https://hugohuang.com
+- `GitHub (source and issues) <https://github.com/Trenza1ore/GitCode-API>`__
+- `GitCode mirror <https://gitcode.com/SushiNinja/GitCode-API>`__
+- `PyPI package <https://pypi.org/project/gitcode-api/>`__
 
 .. note::
 
    The SDK is published on `PyPI <https://pypi.org/project/gitcode-api/>`__,
    developed on `GitHub <https://github.com/Trenza1ore/GitCode-API>`__, and
    mirrored on `GitCode <https://gitcode.com/SushiNinja/GitCode-API>`__. The
-   REST pages are mirrored from GitCode’s official documentation.
+   REST API pages in this tree follow GitCode's public English help site, but
+   they have been **manually corrected and extended** beyond the upstream export
+   (clarity, cross-links, and small factual fixes). Broad regeneration still
+   uses ``scripts/build_gitcode_sphinx_docs.py`` when you refresh from source.
 
    Coffee requests may trigger a small :doc:`hot beverage notice <coffee>`.
 
@@ -65,9 +64,10 @@ My personal website: https://hugohuang.com
 .. topic:: REST API reference
    :class: gc-doc-card
 
-   Request paths, parameters, and response shapes are documented here in
-   parallel with the `GitCode Help Docs <https://docs.gitcode.com/en/docs/>`__
-   English site.
+   Request paths, parameters, and response shapes are documented here alongside
+   the `GitCode Help Docs <https://docs.gitcode.com/en/docs/>`__ English site.
+   This copy is **manually corrected and extended** from the official export;
+   see :doc:`rest_api/index` for scope and regeneration notes.
 
    :doc:`Open the REST API reference <rest_api/index>`
 
