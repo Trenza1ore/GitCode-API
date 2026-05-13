@@ -21,6 +21,8 @@ Highlights
   ``client.pulls``.
 - Shared repository context via ``owner=`` and ``repo=`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
+- :func:`~gitcode_api.as_dict` for turning response models into plain
+  dictionaries (for example before JSON serialization).
 - Matching sync and async resource surfaces.
 - Optional :doc:`llm_tools` adapters: OpenAI Chat Completions tool shape, MCP
   server helpers (FastMCP), and `openJiuwen <https://openjiuwen.com>`__ ``LocalFunction``

@@ -1113,3 +1113,14 @@ Miscellaneous repository resources
    :no-index:
 .. automethod:: AsyncWebhooksResource.test
    :no-index:
+
+Utilities
+---------
+
+Helpers re-exported from the top-level :mod:`gitcode_api` package (alongside
+``GitCode`` / ``AsyncGitCode``).
+
+.. currentmodule:: gitcode_api
+
+.. autofunction:: as_dict
+   :no-index:

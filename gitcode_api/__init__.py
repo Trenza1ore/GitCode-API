@@ -9,6 +9,7 @@ from ._exceptions import (
     GitCodeError,
     GitCodeHTTPStatusError,
 )
+from .utils import as_dict
 
 __version__ = (Path(__file__).parent / "version.txt").read_text().strip()
 
@@ -20,4 +21,5 @@ __all__ = [
     "GitCodeConfigurationError",
     "GitCodeError",
     "GitCodeHTTPStatusError",
+    "as_dict",
 ]

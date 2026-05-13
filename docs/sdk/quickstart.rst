@@ -120,6 +120,19 @@ access for common fields or ``.get()`` when a field may be missing.
 
    payload = pull.to_dict()
 
+For JSON or other consumers that expect ``dict`` objects, use
+:func:`~gitcode_api.as_dict` on one model or on a list of models. With
+``deep_copy=True`` each result is a :func:`copy.deepcopy` of
+:meth:`~gitcode_api._models.APIObject.to_dict` output.
+
+.. code-block:: python
+
+   from gitcode_api import GitCode, as_dict
+
+   client = GitCode(owner="SushiNinja", repo="GitCode-API")
+   pulls = client.pulls.list(state="open", per_page=5)
+   serialized = as_dict(pulls)
+
 Common workflows
 ----------------
 

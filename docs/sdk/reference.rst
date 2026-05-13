@@ -16,6 +16,7 @@ Module index
    gitcode_api._client
    gitcode_api._exceptions
    gitcode_api._models
+   gitcode_api.utils
    gitcode_api.resources
    gitcode_api.resources._shared
    gitcode_api.resources.account
