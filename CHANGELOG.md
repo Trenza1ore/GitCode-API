@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.15](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.15) — 2026-05-13
+
+Changes since `1.2.14`…`1.2.15`.
+
+### Typing
+
+- **openJiuwen adapter (`gitcode_api.llm.jiuwen`):** Silence mypy `import-untyped` on the `TYPE_CHECKING` import of `LocalFunction` from optional `openjiuwen` (no runtime or public API change). Now we fully pass `mypy` checks!
+
+---
+
 ## [1.2.14](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.14) — 2026-05-13
 
 Changes since `1.2.13`…`1.2.14`.
