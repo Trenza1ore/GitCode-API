@@ -112,6 +112,21 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+### 使用 `as_dict` 将返回对象转为字典
+
+接口返回值均为带有类型注释的 `APIObject` 子类。若需要序列化，或下游代码期望使用 `dict` 类型，可直接使用 `as_dict` 函数：传入单个模型得到 `dict`，传入列表（例如 `client.pulls.list(...)` 的返回值）则得到 `list[dict]`。语义上接近 `dataclasses.asdict`，但实际会调用各模型的 `to_dict()` 方法。需要与原始对象完全脱钩的深度拷贝时，请使用 `deep_copy=True`。
+
+```python
+from gitcode_api import GitCode, as_dict
+
+client = GitCode(owner="SushiNinja")
+pulls = client.pulls.list_templates(repo="GitCode-API")
+payload = as_dict(pulls)  # list[dict]
+
+repo = client.repos.get(repo="GitCode-API")
+meta = as_dict(repo)  # dict
+```
+
 ### 上下文管理器
 
 `GitCode` 与 `AsyncGitCode`（以及更底层的 `SyncAPIClient` / `AsyncAPIClient`）均可作为 `with` / `async with` 的上下文使用：离开代码块时会自动调用 `close()` 或 `await close()`，释放底层 httpx 客户端；若你传入了自定义 `http_client=`，也会随 SDK 客户端一并关闭。`close()` 还会清空各资源组上 `method_signature(...)` 的 LRU 缓存见 **资源组**，避免 LRU 缓存在关闭后仍持有引用、影响垃圾回收。

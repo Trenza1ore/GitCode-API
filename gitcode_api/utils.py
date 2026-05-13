@@ -17,7 +17,7 @@ def as_dict(data: List[APIObject], deep_copy: bool = False) -> List[Dict[str, An
 def as_dict(data: Union[APIObject, List[APIObject]], deep_copy: bool = False) -> Union[Dict, List[Dict]]:
     """Convert one :class:`~gitcode_api._models.APIObject` to a plain ``dict``, or several to a list of dicts.
 
-    Each object is converted with :meth:`~gitcode_api._models.APIObject.to_dict`.
+    Similar to :func:`dataclasses.asdict`. Input is converted with :meth:`~gitcode_api._models.APIObject.to_dict`.
     When ``deep_copy`` is true, each mapping is copied with :func:`copy.deepcopy`.
 
     :param data: A single response model or a list of them.

@@ -1148,6 +1148,12 @@ Utilities
 Helpers re-exported from the top-level :mod:`gitcode_api` package (alongside
 ``GitCode`` / ``AsyncGitCode``).
 
+:func:`as_dict` converts typed response wrappers to plain mappings: one
+:class:`~gitcode_api._models.APIObject` becomes a ``dict``, a ``list`` of them
+becomes ``list[dict]``. It is similar in purpose to :func:`dataclasses.asdict`
+for turning structured instances into serializable data, using
+:meth:`~gitcode_api._models.APIObject.to_dict` under the hood.
+
 .. currentmodule:: gitcode_api
 
 .. autofunction:: as_dict

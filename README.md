@@ -117,6 +117,21 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+### Convert typed return objects to dicts with `as_dict`
+
+Response values are typed `APIObject` subclasses. For serialization or code that expects built-in `dict`, import `as_dict` from the package root: pass a single model to get a `dict`, or pass a list (for example from `client.pulls.list(...)`) to get `list[dict]`. This mirrors the idea of `dataclasses.asdict` but uses each model’s `to_dict()` method. Use `deep_copy=True` when you need detached deep copies.
+
+```python
+from gitcode_api import GitCode, as_dict
+
+client = GitCode(owner="SushiNinja")
+pulls = client.pulls.list_templates(repo="GitCode-API")
+payload = as_dict(pulls)  # list[dict]
+
+repo = client.repos.get(repo="GitCode-API")
+meta = as_dict(repo)  # dict
+```
+
 ### Context managers
 
 `GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. Leaving the block calls `close()` / `await close()` on the underlying client automatically, including a custom `http_client=` you passed in. `close()` also clears the LRU cache used by each resource group's `method_signature(...)` helper (see the [Available Resources](#available-resources) section).

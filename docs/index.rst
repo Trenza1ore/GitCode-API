@@ -22,7 +22,9 @@ Why this project
   on the client when you mostly work inside one repository.
 - **Higher-level helpers** where they matter—for example issue and pull request
   :ref:`template discovery <sdk-client-api-templates>` on the issues and pulls
-  resource groups.
+  resource groups, and :func:`as_dict <gitcode_api.as_dict>` to coerce response
+  models to ``dict`` or ``list[dict]`` (similar in spirit to
+  :func:`dataclasses.asdict`).
 - **Single documentation tree** Sphinx SDK reference sits beside a curated
   REST mirror: clarified, cross-linked, and corrected rather than treated as a
   bulk export of upstream help pages.
