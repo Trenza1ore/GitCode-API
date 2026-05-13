@@ -1,10 +1,10 @@
 """Tests for issue/PR ``.gitcode`` template resolution helpers."""
 
-import httpx
-import pytest
 from typing import Optional
 
-from gitcode_api import AsyncGitCode
+import httpx
+import pytest
+
 from gitcode_api._exceptions import GitCodeHTTPStatusError
 
 # ``_resolution_sources_*`` probes ``GET /repos/{owner}/{repo}`` for every candidate; stub these.

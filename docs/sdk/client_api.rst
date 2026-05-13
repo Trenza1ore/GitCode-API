@@ -31,6 +31,23 @@ The same objects provide :meth:`~gitcode_api.resources._shared.SyncResource.meth
 returns that name plus the formatted ``inspect.signature`` string (cached per name, annotations
 shortened by stripping the internal ``gitcode_api._models.`` prefix).
 
+Utilities
+---------
+
+Helpers re-exported from the top-level :mod:`gitcode_api` package (alongside
+``GitCode`` / ``AsyncGitCode``).
+
+:func:`as_dict` converts typed response wrappers to plain mappings: one
+:class:`~gitcode_api._models.APIObject` becomes a ``dict``, a ``list`` of them
+becomes ``list[dict]``. It is similar in purpose to :func:`dataclasses.asdict`
+for turning structured instances into serializable data, using
+:meth:`~gitcode_api._models.APIObject.to_dict` under the hood.
+
+.. currentmodule:: gitcode_api
+
+.. autofunction:: as_dict
+   :no-index:
+
 Synchronous client
 ------------------
 
@@ -1145,21 +1162,4 @@ Miscellaneous repository resources
 .. automethod:: AsyncWebhooksResource.delete
    :no-index:
 .. automethod:: AsyncWebhooksResource.test
-   :no-index:
-
-Utilities
----------
-
-Helpers re-exported from the top-level :mod:`gitcode_api` package (alongside
-``GitCode`` / ``AsyncGitCode``).
-
-:func:`as_dict` converts typed response wrappers to plain mappings: one
-:class:`~gitcode_api._models.APIObject` becomes a ``dict``, a ``list`` of them
-becomes ``list[dict]``. It is similar in purpose to :func:`dataclasses.asdict`
-for turning structured instances into serializable data, using
-:meth:`~gitcode_api._models.APIObject.to_dict` under the hood.
-
-.. currentmodule:: gitcode_api
-
-.. autofunction:: as_dict
    :no-index:
