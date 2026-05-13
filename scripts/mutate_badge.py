@@ -6,9 +6,20 @@ Scans all ``README*.md`` files under the repository root (recursive) and applies
 closing parenthesis in Markdown links.
 """
 
+import random
 import re
 import uuid
 from pathlib import Path
+
+
+def _get_mutated_uuid() -> str:
+    uuid_str = list(uuid.uuid4().hex)
+    change_idx = list(range(32))
+    random.shuffle(change_idx)
+    for idx in change_idx[: random.randrange(0, 17)]:
+        uuid_str[idx] = hex(random.randrange(0, 16))[-1]
+    return "".join(uuid_str)
+
 
 ROOT = Path(__file__).resolve().parent.parent
 BADGES = [
@@ -25,16 +36,18 @@ BADGES = [
         r"(\))",
     ),
 ]
+SEMANTIC_VER = (ROOT / "gitcode_api" / "version.txt").read_text().strip()
 
 
 def main() -> None:
+    random.seed(SEMANTIC_VER)
     total = 0
     for path in sorted(ROOT.glob("**/README*.md")):
         new_text = path.read_text(encoding="utf-8")
         n_total = 0
         for badge in BADGES:
             new_text, n = badge.subn(
-                lambda m: m.group(1) + "&uuid=" + uuid.uuid4().hex + m.group(2),
+                lambda m: m.group(1) + "&uuid=" + _get_mutated_uuid() + m.group(2),
                 new_text,
             )
             n_total += n
