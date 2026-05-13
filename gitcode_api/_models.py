@@ -9,7 +9,6 @@ from typing import (
     Mapping,
     MutableMapping,
     Optional,
-    TypedDict,
     TypeVar,
     Union,
     get_args,
@@ -134,60 +133,6 @@ def as_model(data: Mapping[str, Any], model_type: type[ModelT]) -> ModelT:
 def as_model_list(data: List[Mapping[str, Any]], model_type: type[ModelT]) -> List[ModelT]:
     """Wrap a list of mappings in the requested SDK model type."""
     return [as_model(item, model_type) for item in data]
-
-
-class RepositoryCreateParams(TypedDict, total=False):
-    """Typed fields accepted by repository creation endpoints."""
-
-    name: str
-    description: str
-    has_issues: bool
-    has_wiki: bool
-    auto_init: bool
-    gitignore_template: str
-    license_template: str
-    path: str
-    private: bool
-    public: int
-    default_branch: str
-    homepage: str
-    can_comment: bool
-
-
-class IssueCreateParams(TypedDict, total=False):
-    """Typed fields accepted by issue creation endpoints."""
-
-    title: str
-    body: str
-    assignee: str
-    labels: List[str]
-    milestone: Union[int, str]
-
-
-class PullRequestCreateParams(TypedDict, total=False):
-    """Typed fields accepted by pull request creation endpoints."""
-
-    title: str
-    body: str
-    head: str
-    base: str
-    assignees: List[str]
-    testers: List[str]
-    labels: List[str]
-    draft: bool
-
-
-class WebhookCreateParams(TypedDict, total=False):
-    """Typed fields accepted by webhook creation endpoints."""
-
-    url: str
-    encryption_type: int
-    password: str
-    push_events: bool
-    tag_push_events: bool
-    issues_events: bool
-    note_events: bool
-    merge_requests_events: bool
 
 
 @dataclass(init=False)
