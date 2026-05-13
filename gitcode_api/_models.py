@@ -764,6 +764,31 @@ class ContentObject(APIObject):
 
 
 @dataclass(init=False)
+class RepositoryGitCodeTemplate(APIObject):
+    """Metadata for a ``.gitcode`` issue or pull request template file.
+
+    Returned by :meth:`~gitcode_api.resources.collaboration.IssuesResource.list_templates`
+    and :meth:`~gitcode_api.resources.collaboration.PullsResource.list_templates`. Use
+    :meth:`~gitcode_api.resources.collaboration.IssuesResource.get_template` or
+    :meth:`~gitcode_api.resources.collaboration.PullsResource.get_template` to load the body.
+
+    :ivar path: Repository-relative path (under ``.gitcode/``).
+    :vartype path: Optional[str]
+    :ivar sha: Object SHA for the file.
+    :vartype sha: Optional[str]
+    :ivar template_owner: Owner path of the repository the template was resolved from.
+    :vartype template_owner: Optional[str]
+    :ivar template_repo: Repository name the template was resolved from.
+    :vartype template_repo: Optional[str]
+    """
+
+    path: Optional[str] = None
+    sha: Optional[str] = None
+    template_owner: Optional[str] = None
+    template_repo: Optional[str] = None
+
+
+@dataclass(init=False)
 class CommitIdentity(APIObject):
     """Commit author/committer identity.
 

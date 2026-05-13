@@ -21,10 +21,20 @@ from .._models import (
     RepoMember,
     RepoMemberPermission,
     RepositoryCollaboratorCheck,
+    RepositoryGitCodeTemplate,
     UserSummary,
     as_model,
 )
-from ._shared import AsyncResource, SyncResource
+from ._shared import (
+    GITCODE_ISSUE_TEMPLATE_PATH_RE,
+    GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE,
+    AsyncResource,
+    SyncResource,
+    get_gitcode_template_body_async,
+    get_gitcode_template_body_sync,
+    list_gitcode_template_rows_async,
+    list_gitcode_template_rows_sync,
+)
 
 
 def _comma_join(values: Optional[List[str]]) -> Optional[str]:
@@ -390,6 +400,62 @@ class IssuesResource(SyncResource):
             self._client._path("repos", owner, "issues", number, "operate_logs"),
             IssueOperationLog,
             params={"page": page, "per_page": per_page},
+        )
+
+    def list_templates(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[RepositoryGitCodeTemplate]:
+        """List active issue templates under ``.gitcode/`` for this repository.
+
+        Matches Markdown (``.md``, ``.markdown``) and YAML (``.yml`` / ``.yaml``) paths whose
+        names start with ``ISSUE_TEMPLATE`` under ``.gitcode/`` (case-insensitive), including
+        files inside localized directories such as ``.gitcode/ISSUE_TEMPLATE.en/``.
+
+        Resolution tries the repository, then the owner's ``.gitcode`` repository, then any
+        parent main and ``parent/.gitcode`` pairs discovered from forks (each candidate is
+        inspected with ``GET /repos/{owner}/{repo}``; when ``fork`` is true, its parent's repos
+        are appended, deduplicated, and visited in order). The first source with matching
+        templates wins.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :returns: Template metadata entries (paths and SHAs); empty when none match.
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        rows = list_gitcode_template_rows_sync(
+            self._client, resolved_owner, resolved_repo, GITCODE_ISSUE_TEMPLATE_PATH_RE
+        )
+        return [
+            as_model(
+                {
+                    "path": path,
+                    "sha": sha,
+                    "template_owner": template_owner,
+                    "template_repo": template_repo,
+                },
+                RepositoryGitCodeTemplate,
+            )
+            for template_owner, template_repo, path, sha in rows
+        ]
+
+    def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+        """Load a single issue template file body from the default branch.
+
+        Uses the same resolution order as :meth:`list_templates`. The path must match the
+        active issue template naming convention (see GitCode ``.gitcode`` documentation).
+
+        :param path: Repository-relative path such as ``.gitcode/ISSUE_TEMPLATE_bug.md`` or
+            ``.gitcode/ISSUE_TEMPLATE/config.yml``.
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :returns: Decoded template file contents (UTF-8).
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        return get_gitcode_template_body_sync(
+            self._client, path, GITCODE_ISSUE_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
         )
 
 
@@ -985,6 +1051,57 @@ class PullsResource(SyncResource):
             "GET",
             self._client._path("enterprises", enterprise, "issues", number, "pull_requests"),
             PullRequest,
+        )
+
+    def list_templates(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[RepositoryGitCodeTemplate]:
+        """List active pull request templates under ``.gitcode/`` for this repository.
+
+        Resolution tries the repository, then the owner's ``.gitcode`` repository, then any
+        parent main and ``parent/.gitcode`` pairs discovered from forks (each candidate is
+        inspected with ``GET /repos/{owner}/{repo}``; when ``fork`` is true, its parent's repos
+        are appended, deduplicated, and visited in order). The first source with matching
+        templates wins.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository path. Uses the client default when omitted.
+        :returns: Template metadata entries (paths and SHAs); empty when none match.
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        rows = list_gitcode_template_rows_sync(
+            self._client, resolved_owner, resolved_repo, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE
+        )
+        return [
+            as_model(
+                {
+                    "path": path,
+                    "sha": sha,
+                    "template_owner": template_owner,
+                    "template_repo": template_repo,
+                },
+                RepositoryGitCodeTemplate,
+            )
+            for template_owner, template_repo, path, sha in rows
+        ]
+
+    def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+        """Load a single pull request template file body from the default branch.
+
+        Uses the same resolution order as :meth:`list_templates`. The path must match the
+        active pull request template naming convention (see GitCode ``.gitcode`` documentation).
+
+        :param path: Repository-relative path such as ``.gitcode/PULL_REQUEST_TEMPLATE.md``.
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository path. Uses the client default when omitted.
+        :returns: Decoded template file contents (UTF-8).
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        return get_gitcode_template_body_sync(
+            self._client, path, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
         )
 
 
@@ -1599,6 +1716,62 @@ class AsyncIssuesResource(AsyncResource):
             params=params,
         )
 
+    async def list_templates(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[RepositoryGitCodeTemplate]:
+        """List active issue templates under ``.gitcode/`` for this repository.
+
+        Matches Markdown (``.md``, ``.markdown``) and YAML (``.yml`` / ``.yaml``) paths whose
+        names start with ``ISSUE_TEMPLATE`` under ``.gitcode/`` (case-insensitive), including
+        files inside localized directories such as ``.gitcode/ISSUE_TEMPLATE.en/``.
+
+        Resolution tries the repository, then the owner's ``.gitcode`` repository, then any
+        parent main and ``parent/.gitcode`` pairs discovered from forks (each candidate is
+        inspected with ``GET /repos/{owner}/{repo}``; when ``fork`` is true, its parent's repos
+        are appended, deduplicated, and visited in order). The first source with matching
+        templates wins.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :returns: Template metadata entries (paths and SHAs); empty when none match.
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        rows = await list_gitcode_template_rows_async(
+            self._client, resolved_owner, resolved_repo, GITCODE_ISSUE_TEMPLATE_PATH_RE
+        )
+        return [
+            as_model(
+                {
+                    "path": path,
+                    "sha": sha,
+                    "template_owner": template_owner,
+                    "template_repo": template_repo,
+                },
+                RepositoryGitCodeTemplate,
+            )
+            for template_owner, template_repo, path, sha in rows
+        ]
+
+    async def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+        """Load a single issue template file body from the default branch.
+
+        Uses the same resolution order as :meth:`list_templates`. The path must match the
+        active issue template naming convention (see GitCode ``.gitcode`` documentation).
+
+        :param path: Repository-relative path such as ``.gitcode/ISSUE_TEMPLATE_bug.md`` or
+            ``.gitcode/ISSUE_TEMPLATE/config.yml``.
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :returns: Decoded template file contents (UTF-8).
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        return await get_gitcode_template_body_async(
+            self._client, path, GITCODE_ISSUE_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
+        )
+
 
 class AsyncPullsResource(AsyncResource):
     """Asynchronous pull request endpoints.
@@ -2139,6 +2312,57 @@ class AsyncPullsResource(AsyncResource):
         """
         return await self._models(
             "GET", self._client._path("enterprises", enterprise, "issues", number, "pull_requests"), PullRequest
+        )
+
+    async def list_templates(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[RepositoryGitCodeTemplate]:
+        """List active pull request templates under ``.gitcode/`` for this repository.
+
+        Resolution tries the repository, then the owner's ``.gitcode`` repository, then any
+        parent main and ``parent/.gitcode`` pairs discovered from forks (each candidate is
+        inspected with ``GET /repos/{owner}/{repo}``; when ``fork`` is true, its parent's repos
+        are appended, deduplicated, and visited in order). The first source with matching
+        templates wins.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository path. Uses the client default when omitted.
+        :returns: Template metadata entries (paths and SHAs); empty when none match.
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        rows = await list_gitcode_template_rows_async(
+            self._client, resolved_owner, resolved_repo, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE
+        )
+        return [
+            as_model(
+                {
+                    "path": path,
+                    "sha": sha,
+                    "template_owner": template_owner,
+                    "template_repo": template_repo,
+                },
+                RepositoryGitCodeTemplate,
+            )
+            for template_owner, template_repo, path, sha in rows
+        ]
+
+    async def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+        """Load a single pull request template file body from the default branch.
+
+        Uses the same resolution order as :meth:`list_templates`. The path must match the
+        active pull request template naming convention (see GitCode ``.gitcode`` documentation).
+
+        :param path: Repository-relative path such as ``.gitcode/PULL_REQUEST_TEMPLATE.md``.
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository path. Uses the client default when omitted.
+        :returns: Decoded template file contents (UTF-8).
+        """
+        resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
+        return await get_gitcode_template_body_async(
+            self._client, path, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
         )
 
 
