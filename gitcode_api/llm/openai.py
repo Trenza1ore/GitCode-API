@@ -75,6 +75,7 @@ class GitCodeOpenAITool(GitCodeLLMTool):
         return self.tool
 
     async def __async_call__(self, *args, **kwargs) -> str:
+        """Invoke the configured async tool callable."""
         result = await super().__async_call__(*args, **kwargs)
         return json.dumps(result, ensure_ascii=False, indent=self.indent)
 
