@@ -11,6 +11,11 @@ when the block ends. The same applies to ``SyncAPIClient`` and
 ``AsyncAPIClient``; see :doc:`quickstart` for examples. Closing the SDK client
 also closes a supplied ``http_client`` instance.
 
+Default TLS verification for the built-in ``httpx`` client (including
+``GITCODE_CA_BUNDLE`` / ``REQUESTS_CA_BUNDLE`` env variables) is described under
+:ref:`sdk-tls-default-verify` in :doc:`quickstart`. Pass ``http_client`` when you
+need different TLS settings.
+
 Resource introspection
 ----------------------
 

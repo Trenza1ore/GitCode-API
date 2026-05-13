@@ -390,6 +390,8 @@ with GitCode(
     pulls = client.pulls.list(state="open", per_page=5)
 ```
 
+> Default CA bundle / `verify` behavior for the built-in `httpx` client is documented under **TLS and certificate verification** in [`docs/sdk/quickstart.rst`](docs/sdk/quickstart.rst) and summarized at the top of [`docs/sdk/client_api.rst`](docs/sdk/client_api.rst).
+
 Use `httpx.AsyncClient(verify=...)` with `AsyncGitCode` for async code.
 
 The OpenAI tool (`GitCodeOpenAITool`), MCP helpers, and `create_openjiuwen_gitcode_api_tool` accept the same `client=` / `async_client=` arguments (OpenAI and MCP also accept a shared `GitCodeLLMTool` via `tool=`). Build `GitCode` / `AsyncGitCode` with your custom `http_client` once and pass it through so LLM tool calls reuse the same TLS settings.

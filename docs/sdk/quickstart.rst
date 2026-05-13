@@ -89,6 +89,25 @@ closes the underlying httpx client automatically, including a supplied
 
    asyncio.run(main())
 
+.. _sdk-tls-default-verify:
+
+TLS and certificate verification
+----------------------------------
+
+When ``http_client`` is omitted, ``GitCode`` / ``AsyncGitCode`` (and
+``SyncAPIClient`` / ``AsyncAPIClient``) build an ``httpx`` client whose
+``verify`` argument is resolved from the environment:
+
+#. If ``GITCODE_CA_BUNDLE`` is set to a non-empty string, it is used as the CA
+   bundle path (GitCode-specific).
+#. Else if ``REQUESTS_CA_BUNDLE`` is set to a non-empty string, it is used (same
+   general idea as for the ``requests`` library).
+#. Otherwise ``verify`` is ``True`` (system trust store).
+
+Use this when GitCode HTTPS sits behind a corporate proxy or private PKI. For
+full control, pass ``http_client=`` with your own ``httpx.Client`` or
+``httpx.AsyncClient`` (including custom ``verify`` values).
+
 Repository-scoped defaults
 --------------------------
 

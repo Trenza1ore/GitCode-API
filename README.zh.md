@@ -368,7 +368,7 @@ make docs
 
 ### SSL 或企业网络报错（如「自签名证书」）
 
-若在企业代理或私有 PKI 环境下访问 GitCode HTTPS 失败，可为 `httpx` 指定 `verify` 指向 CA 证书包路径（思路类似 `requests` 使用的 `REQUESTS_CA_BUNDLE`）：
+若在企业代理或私有 PKI 环境下访问 GitCode HTTPS 失败，可为 `httpx` 指定 `verify` 指向 CA 证书路径（思路类似 `requests` 使用的 `REQUESTS_CA_BUNDLE`）：
 
 ```python
 from gitcode_api import GitCode
@@ -382,6 +382,8 @@ with GitCode(
     repo = client.repos.get()
     pulls = client.pulls.list(state="open", per_page=5)
 ```
+
+> `0.1.16` 版本：可通过设置环境变量 `GITCODE_CA_BUNDLE` 或 `REQUESTS_CA_BUNDLE` 指定默认**CA 证书路径**。
 
 异步场景请对 `AsyncGitCode` 使用 `httpx.AsyncClient(verify=...)`。
 

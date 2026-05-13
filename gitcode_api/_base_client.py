@@ -16,6 +16,7 @@ from ._exceptions import GitCodeConfigurationError, GitCodeHTTPStatusError
 DEFAULT_BASE_URL = "https://api.gitcode.com/api/v5"
 DEFAULT_TIMEOUT = 30.0
 DEFAULT_TOKEN_ENV = "GITCODE_ACCESS_TOKEN"
+DEFAULT_CA_ENV = "GITCODE_CA_BUNDLE"
 
 
 def _drop_none_values(mapping: Dict[str, Any]) -> Dict[str, Any]:
@@ -215,7 +216,8 @@ class SyncAPIClient(BaseGitCodeClient):
     ) -> None:
         """Create or reuse an ``httpx.Client`` for synchronous requests."""
         super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout, decrypt=decrypt)
-        self._client = http_client or httpx.Client(timeout=self.timeout)
+        verify = os.environ.get(DEFAULT_CA_ENV, "").strip() or os.environ.get("REQUESTS_CA_BUNDLE", "").strip() or True
+        self._client = http_client or httpx.Client(timeout=self.timeout, verify=verify)
 
     def request(
         self,
@@ -289,7 +291,8 @@ class AsyncAPIClient(BaseGitCodeClient):
     ) -> None:
         """Create or reuse an ``httpx.AsyncClient`` for asynchronous requests."""
         super().__init__(api_key=api_key, owner=owner, repo=repo, base_url=base_url, timeout=timeout, decrypt=decrypt)
-        self._client = http_client or httpx.AsyncClient(timeout=self.timeout)
+        verify = os.environ.get(DEFAULT_CA_ENV, "").strip() or os.environ.get("REQUESTS_CA_BUNDLE", "").strip() or True
+        self._client = http_client or httpx.AsyncClient(timeout=self.timeout, verify=verify)
 
     async def request(
         self,
