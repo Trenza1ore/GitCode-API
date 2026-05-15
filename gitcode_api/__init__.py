@@ -2,6 +2,7 @@
 
 import re
 from importlib.metadata import metadata
+from typing import cast
 
 from . import constants
 from ._client import AsyncGitCode, GitCode
@@ -14,9 +15,10 @@ from ._exceptions import (
 from .utils import as_dict
 
 package_meta = metadata("gitcode_api")
-package_desc = package_meta.get("Description")
-__build_hash__ = re.findall(r"\&uuid=(\w+)", package_desc, flags=re.ASCII)[0]
-__version__ = package_meta.get("Version").strip()
+package_desc = cast(str, package_meta.get("Description"))
+readme_uuids = re.findall(r"\&uuid=(\w+)", package_desc, flags=re.ASCII)
+__build_hash__ = readme_uuids[0] if readme_uuids else "unknown"
+__version__ = cast(str, package_meta.get("Version")).strip()
 
 __all__ = [
     "constants",
