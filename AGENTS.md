@@ -144,9 +144,9 @@ The `.claude/skills/gitcode-api/` directory is a packaged agent skill for using 
 
 Version information is stored in both `pyproject.toml` and `gitcode_api/version.txt`. Releases are published to PyPI by `.github/workflows/python-publish.yml` when a GitHub Release is published, using trusted publishing.
 
-`.github/workflows/release-mcpb.yml` builds a `gitcode-<version>.mcpb` MCP bundle on each published GitHub Release (`scripts/build_manifest.py` plus the official `mcpb` CLI) for Claude Desktop extension installs; see https://claude.com/docs/connectors/building/mcpb.
-
 For pre-release changelog sections, use the title format `## [next-version](https://github.com/Trenza1ore/GitCode-API/releases/tag/<next-version>) — Unreleased`, for example `## [1.2.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.1) — Unreleased`. Released sections use the same compare-link style but end with the release date, such as `— 2026-05-01`.
+
+When developer ask for a new changelog entry, confirm whether it is a pre-release or not, it is rare for pre-release changelogs to be written.
 
 **Changelog voice:** `CHANGELOG.md` is **user-facing** release notes for SDK users and operators. Describe what they can do or what changed in behavior, install requirements, or public API—not internal work (skip routine test/lockfile/style bullets unless a user-visible guarantee changed). Prefer a handful of clear **Feature** / **Fix** / **Docs** lines over a commit-by-commit inventory.
 
