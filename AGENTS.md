@@ -150,6 +150,8 @@ When developer ask for a new changelog entry, confirm whether it is a pre-releas
 
 **Changelog voice:** `CHANGELOG.md` is **user-facing** release notes for SDK users and operators. Describe what they can do or what changed in behavior, install requirements, or public API—not internal work (skip routine test/lockfile/style bullets unless a user-visible guarantee changed). Prefer a handful of clear **Feature** / **Fix** / **Docs** lines over a commit-by-commit inventory.
 
+**Changelog Markdown:** Each bullet should start with a bold lead outside backticks, then the body (put `` `identifiers` `` only in the descriptive part). Do **not** use a leading code span around the emphasis markers (patterns like `` `**name`:** `` or `` `**path/to/file.py`:** ``), which breaks CommonMark / GitHub-style Markdown. Avoid `` `**word`** `` mid-sentence; use plain `` **word** `` or a single `` `code` `` span instead.
+
 Do not create tags, push, publish, or run `make release` unless the user explicitly requests it. If changing release notes or changelogs, keep `CHANGELOG.md`, `docs/changelog.md`, and any release note files consistent with the requested version.
 
 ## Git commit messages

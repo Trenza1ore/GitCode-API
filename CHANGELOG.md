@@ -8,12 +8,12 @@ Changes since `1.2.16`…`1.2.17`.
 
 ### Feature
 
-- **Version metadata:** `__version__` is taken from the installed distribution (`importlib.metadata`), and a new `**__build_hash__`** is exposed for telling builds apart. `gitcode-api --version` and the no-argument welcome banner include the build id; the banner also prints **Home Page** and **Docs** links (homepage URL comes from package **Project-URL** metadata when present).
-- `**gitcode_api.constants`:** New documented module with the default API base URL, HTTP timeout, and the `GITCODE_ACCESS_TOKEN` / `GITCODE_CA_BUNDLE` environment names used by the clients.
+- **Version metadata:** `__version__` is taken from the installed distribution (`importlib.metadata`), and a new `__build_hash__` value is exposed for telling builds apart. `gitcode-api --version` and the no-argument welcome banner include the build id; the banner also prints **Home Page** and **Docs** links (homepage URL comes from package **Project-URL** metadata when present).
+- **gitcode_api.constants:** New documented module with the default API base URL, HTTP timeout, and the `GITCODE_ACCESS_TOKEN` / `GITCODE_CA_BUNDLE` environment names used by the client.
 
 ### Fix
 
-- **Packaging:** Wheel/sdist installs now ship `**py.typed`** via setuptools `package-data`, so type checkers can honor inline typing for the package.
+- **Packaging:** Wheel/sdist installs now ship `py.typed` via setuptools `package-data`, so type checkers can honor inline typing for the package.
 
 ### Docs
 
@@ -21,7 +21,7 @@ Changes since `1.2.16`…`1.2.17`.
 
 ### Examples
 
-- `**examples/sync_github_release_to_gitcode.py`:** Reworked for clearer flow and alignment with current release upload behavior.
+- **examples/sync_github_release_to_gitcode.py:** Reworked for clearer flow and alignment with current release upload behavior.
 
 ---
 
@@ -52,8 +52,8 @@ Changes since `1.2.13`…`1.2.14`.
 ### Feature
 
 - **Issue and pull request templates:** `client.issues` / `client.pulls` (and async counterparts) now expose `list_templates` and `get_template` for GitCode’s `.gitcode/` issue and PR template files on the default branch, including metadata (`RepositoryGitCodeTemplate` with path, SHA, and resolved `template_owner` / `template_repo`). GitCode does not expose this as a dedicated REST “list/get templates” API, so the SDK composes the behavior from repository content calls with **custom resolution logic** (active template paths, default branch, and upstream template sources). The CLI picks these up automatically as `issues list-templates`, `issues get-template`, `pulls list-templates`, and `pulls get-template`.
-- `**as_dict`:** Top-level helper to turn one `APIObject` (or a list of them) into plain `dict` values via `to_dict`, with an optional `deep_copy` flag for isolated mappings.
-- `**Repository` model:** Responses can include a `parent` field describing the upstream source repository when the API returns it.
+- **as_dict:** Top-level helper to turn one `APIObject` (or a list of them) into plain `dict` values via `to_dict`, with an optional `deep_copy` flag for isolated mappings.
+- **Repository model:** Responses can include a `parent` field describing the upstream source repository when the API returns it.
 
 ### Refactor
 
@@ -77,7 +77,7 @@ Changes since `1.2.12`…`1.2.13`.
 
 ### Breaking Change
 
-- `**GitCode.releases.update`:** Targets a release by **tag in the URL path** (`tag=…`) instead of `release_id`; the JSON body is `name`, `body`, and optional `release_status` only (no `tag_name` in the payload). Update any code that still passed `release_id` or relied on the old request shape.
+- **GitCode.releases.update:** Targets a release by **tag in the URL path** (`tag=…`) instead of `release_id`; the JSON body is `name`, `body`, and optional `release_status` only (no `tag_name` in the payload). Update any code that still passed `release_id` or relied on the old request shape.
 
 ### Docs
 
@@ -111,7 +111,7 @@ Changes since `1.2.10`…`1.2.11`.
 
 ### Feature
 
-- `**gitcode_api.llm`:** `GitCodeLLMTool` is eagerly imported and exposed in namespace, easier for custom adapters, MCP wiring, and static analysis.
+- **gitcode_api.llm:** `GitCodeLLMTool` is eagerly imported and exposed in namespace, easier for custom adapters, MCP wiring, and static analysis.
 - **LLM adapters (OpenAI, openJiuwen):** `GitCodeOpenAITool`, `create_openjiuwen_gitcode_api_tool`, and the openJiuwen binding use explicit keyword parameters for GitCode clients (`client`, `async_client`, `api_key`, `base_url`, `timeout`, `decrypt`, `owner`, `repo`) instead of a `**kwargs` catch-all — clearer signatures, better editor hints, and the same ordering as `GitCodeLLMTool`.
 
 ### Docs
