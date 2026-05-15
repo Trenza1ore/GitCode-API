@@ -7,13 +7,15 @@ import httpx
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+ResponseFactory = Callable[[httpx.Request], httpx.Response]
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from gitcode_api import AsyncGitCode, GitCode
-
-ResponseFactory = Callable[[httpx.Request], httpx.Response]
+try:
+    from gitcode_api import AsyncGitCode, GitCode
+except ImportError as e:
+    raise RuntimeError("Cannot import gitcode_api package in unit tests.") from e
 
 
 def make_sync_client(handler: ResponseFactory, **client_kwargs) -> Tuple[GitCode, httpx.Client]:
