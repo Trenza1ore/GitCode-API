@@ -38,7 +38,7 @@ GITCODE_USER, GITHUB_USER = "SushiNinja", "Trenza1ore"  # Don't judge, plz
 GITCODE_REPO = GITHUB_REPO = "GitCode-API"  # For my case, mirror repo has the same name
 PAGE_SIZE = 50  # Just an arbitrary number
 UPLOAD_TIMEOUT = 1800  # 30 minutes, server will probably cancel the put request by now
-ASSETS_PATTERN = re.compile(r".*")  # Pattern for valid asset file name, others are ignored
+ASSETS_PATTERN = re.compile(r"gitcode-.*\.((mcpb)|(zip))")  # Pattern for valid asset file name, others are ignored
 MAX_UPLOAD_THREADS: Optional[int] = None  # Max worker in the thread pool, None = default
 GH_TAGS_RELEASED: Dict[str, GHRelease] = {}  # Mapping of [tag] -> [release] for GitHub
 GC_TAGS_RELEASED: Dict[str, GCRelease] = {}  # Mapping of [tag] -> [release] for GitCode
@@ -76,10 +76,11 @@ with warnings.catch_warnings():
         asset_upload_jobs = {}
 
         # Go through all tags that exist in GitCode and are releases on GitHub, create upload jobs for artefacts
-        for r in tqdm(sorted(GC_TAG_TO_HASH, key=_sort_semantic_version)):
-            if r not in GH_TAGS_RELEASED:
-                continue
+        for r in tqdm(sorted(GC_TAG_TO_HASH, key=_sort_semantic_version), desc="Release"):
             release_name = GH_TAGS_RELEASED[r].name.removeprefix("v")
+            if r not in GH_TAGS_RELEASED:
+                print(f"{CRED}! NOT ON GITCODE: {release_name}{CEND}", flush=True)
+                continue
             body = GH_TAGS_RELEASED[r].body.replace(
                 f"https://github.com/{GITHUB_USER}/{GITHUB_REPO}", f"https://gitcode.com/{GITCODE_USER}/{GITCODE_REPO}"
             )
@@ -93,14 +94,19 @@ with warnings.catch_warnings():
                     target_commitish=GC_TAG_TO_HASH[r],
                     release_status="pre" if GH_TAGS_RELEASED[r].prerelease else "latest",
                 )
-                print(f"{CGRN}- {release_name}: created{CEND}", flush=True)
+                print(f"{CGRN}Create: {release_name}{CEND}", flush=True)
                 gc_uploaded_assets = {}
             else:
+                print(f"{CBLU}Exists: {release_name}{CEND}", flush=True)
                 gc_uploaded_assets = {a.name for a in GC_TAGS_RELEASED[r].assets}
 
             for asset in GH_TAGS_RELEASED[r].assets:
                 file_name: str = asset.name
-                if file_name in gc_uploaded_assets or not ASSETS_PATTERN.search(file_name):
+                if file_name in gc_uploaded_assets:
+                    print(f"{CBLU}  >  existing: {file_name}{CEND}", flush=True)
+                    continue
+                if not ASSETS_PATTERN.fullmatch(file_name):
+                    print(f"{CRED}  >  ignored!: {file_name}{CEND}", flush=True)
                     continue
                 resp = gh_client.repos.get_release_asset(
                     GITHUB_USER, GITHUB_REPO, asset.id, headers={"Accept": "application/octet-stream"}
@@ -113,9 +119,11 @@ with warnings.catch_warnings():
                     upload_timeout=UPLOAD_TIMEOUT,
                 )
                 asset_upload_jobs[future] = (file_name, time.time(), len(resp))
-                print(f"{CBLU}\t+ uploading: {file_name}{CEND}", flush=True)
+                print(f"{CRED}  + uploading: {file_name}{CEND}", flush=True)
 
-        for future in tqdm(concurrent.futures.as_completed(asset_upload_jobs), total=len(asset_upload_jobs)):
+        for future in tqdm(
+            concurrent.futures.as_completed(asset_upload_jobs), total=len(asset_upload_jobs), desc="Uploads"
+        ):
             file_name, start_time, file_size = asset_upload_jobs[future]
             minutes = (time.time() - start_time) / 60
             for unit in ["B", "KB", "MB", "GB"]:
@@ -126,8 +134,8 @@ with warnings.catch_warnings():
                     break
             try:
                 future.result()
-                print(f"{CGRN}\t> uploaded: {file_name} ({file_size} {unit}, {minutes:g} min){CEND}", flush=True)
+                print(f"{CGRN}\t> uploaded: {file_name} ({file_size} {unit}, {minutes:5g} min){CEND}", flush=True)
             except (httpx.TimeoutException, GitCodeError) as e:
                 print(
-                    f"{CRED}\tx fail to upload {file_name} ({file_size} {unit}, {minutes:g} min):{CEND} {e}", flush=True
+                    f"{CRED}\tx fail to upload {file_name} ({file_size} {unit}, {minutes:5g} min):{CEND} {e}", flush=True
                 )
