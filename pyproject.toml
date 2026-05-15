@@ -94,7 +94,7 @@ gitcode-api = "gitcode_api.cli:main"
 default-groups = ['dev']
 
 [tool.setuptools.package-data]
-gitcode_api = ["**/version.txt"]
+gitcode_api = ["**/version.txt", "**/py.typed"]
 
 [tool.coverage.run]
 omit = ["tests/*"]

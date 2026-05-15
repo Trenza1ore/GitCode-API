@@ -12,11 +12,7 @@ import httpx
 
 from ._base_resource import BaseResource
 from ._exceptions import GitCodeConfigurationError, GitCodeHTTPStatusError
-
-DEFAULT_BASE_URL = "https://api.gitcode.com/api/v5"
-DEFAULT_TIMEOUT = 30.0
-DEFAULT_TOKEN_ENV = "GITCODE_ACCESS_TOKEN"
-DEFAULT_CA_ENV = "GITCODE_CA_BUNDLE"
+from .constants import DEFAULT_BASE_URL, DEFAULT_CA_ENV, DEFAULT_TIMEOUT, DEFAULT_TOKEN_ENV
 
 
 def _drop_none_values(mapping: Dict[str, Any]) -> Dict[str, Any]:

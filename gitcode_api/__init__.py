@@ -1,7 +1,9 @@
 """Public package exports for the GitCode SDK."""
 
-from pathlib import Path
+import re
+from importlib.metadata import metadata
 
+from . import constants
 from ._client import AsyncGitCode, GitCode
 from ._exceptions import (
     GitCodeAPIError,
@@ -11,10 +13,15 @@ from ._exceptions import (
 )
 from .utils import as_dict
 
-__version__ = (Path(__file__).parent / "version.txt").read_text().strip()
+package_meta = metadata("gitcode_api")
+package_desc = package_meta.get("Description")
+__build_hash__ = re.findall(r"\&uuid=(\w+)", package_desc, flags=re.ASCII)[0]
+__version__ = package_meta.get("Version").strip()
 
 __all__ = [
+    "constants",
     "__version__",
+    "__build_hash__",
     "AsyncGitCode",
     "GitCode",
     "GitCodeAPIError",

@@ -2,6 +2,8 @@
 
 import sys
 from functools import lru_cache
+from importlib.metadata import metadata
+from typing import List, cast
 
 # ANSI Colour Codes
 CREDBG = "\033[41m"
@@ -24,8 +26,18 @@ BANNER = r"""
 
 
 @lru_cache(maxsize=1)
-def format_default_welcome(version: str) -> str:
+def format_default_welcome(version: str, build: str) -> str:
     """Colored banner and version line for the no-arguments launcher (plain if not a TTY)."""
+    homepage = "https://gitcode-api.readthedocs.io"
+    docspage = "https://gitcode-api.readthedocs.io"
+    banner = BANNER
+    version = f"Ver. {version} (build {build})"
+    for project_url in cast(List[str], metadata("gitcode_api").get_all("Project-URL")):
+        if project_url.casefold().startswith("homepage"):
+            homepage = project_url.split(", ")[1]
     if sys.stdout.isatty():
-        return f"{CRED}{BANNER}{CEND}\n{CBLU}  Ver. {version}{CEND}\n\n"
-    return f"{BANNER}\n  Ver. {version}\n\n"
+        homepage = f"{CBLU}{homepage}{CEND}"
+        docspage = f"{CBLU}{docspage}{CEND}"
+        banner = f"{CRED}{BANNER}{CEND}"
+        version = f"{CREDBG}{version}{CEND}"
+    return f"{banner}\n  {version}\n  Home Page: {homepage}\n  Docs Page: {docspage}\n\n"

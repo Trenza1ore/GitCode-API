@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional, Union, get_args, get_origin
 
 import httpx
 
-from . import GitCode, __version__
+from . import GitCode, __build_hash__, __version__
 from ._base_client import DEFAULT_BASE_URL, DEFAULT_TOKEN_ENV
 from ._cli_banner import format_default_welcome
 from ._exceptions import GitCodeError
@@ -295,7 +295,7 @@ Each method -h opens with resource.method_signature("<name>") from the Python SD
         epilog=epilog,
         formatter_class=_CLIHelpFormatter,
     )
-    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__} (build {__build_hash__})")
 
     client = _probe_gitcode()
     try:
@@ -457,7 +457,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = build_parser()
     effective = list(sys.argv[1:] if argv is None else argv)
     if not effective:
-        print(format_default_welcome(__version__), end="")
+        print(format_default_welcome(__version__, __build_hash__), end="")
         saved_epilog = parser.epilog
         parser.epilog = None
         try:

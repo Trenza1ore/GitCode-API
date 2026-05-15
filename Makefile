@@ -1,5 +1,6 @@
 # Copyright (c) Hugo Huang. 2026.
-.PHONY: docs docs-dev docs-clean format rst-table test release lint docstring amend binary mcpb
+.PHONY: install, docs docs-dev docs-clean format rst-table test release lint docstring amend binary mcpb
+.DEFAULT_GOAL := install
 
 SPHINX_BUILD ?= uv run --group docs sphinx-build
 DOCS_SOURCE_DIR := docs
@@ -70,3 +71,8 @@ mcpb:
 # Mutate badge with uuid to force refresh GitCode cache
 badge:
 	uv run python scripts/mutate_badge.py
+
+# Mutate badge to refresh build hash then build
+install: badge
+	uv run python -m ensurepip
+	uv run python -m pip install .

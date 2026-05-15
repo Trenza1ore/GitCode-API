@@ -1,0 +1,8 @@
+"""Shared constant values for the GitCode SDK."""
+
+DEFAULT_BASE_URL = "https://api.gitcode.com/api/v5"
+DEFAULT_TIMEOUT = 30.0
+DEFAULT_TOKEN_ENV = "GITCODE_ACCESS_TOKEN"
+DEFAULT_CA_ENV = "GITCODE_CA_BUNDLE"
+
+__all__ = ["DEFAULT_BASE_URL", "DEFAULT_TIMEOUT", "DEFAULT_TOKEN_ENV", "DEFAULT_CA_ENV"]
