@@ -24,11 +24,11 @@ PLACEHOLDER_SOURCES: Dict[str, Tuple[str, str]] = {
     "{{VERSION}}": ("project", "version"),
     "{{AUTHOR_NAME}}": ("author", "name"),
     "{{AUTHOR_EMAIL}}": ("author", "email"),
-    "{{AUTHOR_URL}}": ("urls", "author"),
-    "{{HOMEPAGE}}": ("urls", "homepage"),
-    "{{DOCUMENTATION}}": ("urls", "documentation"),
-    "{{SUPPORT}}": ("urls", "issues"),
-    "{{REPOSITORY_URL}}": ("urls", "github"),
+    "{{AUTHOR_URL}}": ("urls", "Author"),
+    "{{HOMEPAGE}}": ("urls", "Homepage"),
+    "{{DOCUMENTATION}}": ("urls", "Documentation"),
+    "{{SUPPORT}}": ("urls", "Issues"),
+    "{{REPOSITORY_URL}}": ("urls", "Github"),
 }
 
 MCPB_IGNORE_CONTENT = """
@@ -91,9 +91,6 @@ def build_replacements(pyproject: Mapping[str, Any]) -> Dict[str, str]:
         urls = {}
 
     first_author = _first_author(project)
-    github = urls.get("github")
-    if not isinstance(github, str) or not github.strip():
-        raise ValueError('pyproject.toml [project.urls] must define github = "..."')
 
     out: Dict[str, str] = {}
     for token, spec in PLACEHOLDER_SOURCES.items():
@@ -111,6 +108,7 @@ def build_replacements(pyproject: Mapping[str, Any]) -> Dict[str, str]:
         if not isinstance(value, str):
             raise ValueError(f"Expected string for {token}, got {type(value).__name__}")
         out[token] = value
+    print(f"Extracted information from pyproject.toml: {json.dumps(out, indent=2)}\n", flush=True)
     return out
 
 

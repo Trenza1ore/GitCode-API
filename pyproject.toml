@@ -79,13 +79,13 @@ dev = [
 ]
 
 [project.urls]
-changelog = "https://gitcode-api.readthedocs.io/en/latest/changelog.html"
-issues = "https://github.com/Trenza1ore/GitCode-API/issues"
-documentation = "https://gitcode-api.readthedocs.io"
-gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
-github = "https://github.com/Trenza1ore/GitCode-API"
-homepage = "https://hugohuang.com/gitcode-api"
-author = "https://hugohuang.com"
+Changelog = "https://gitcode-api.readthedocs.io/en/latest/changelog.html"
+Issues = "https://github.com/Trenza1ore/GitCode-API/issues"
+Documentation = "https://gitcode-api.readthedocs.io"
+Gitcode = "https://gitcode.com/SushiNinja/GitCode-API"
+Github = "https://github.com/Trenza1ore/GitCode-API"
+Homepage = "https://hugohuang.com/gitcode-api"
+Author = "https://hugohuang.com"
 
 [project.scripts]
 gitcode-api = "gitcode_api.cli:main"
@@ -94,7 +94,7 @@ gitcode-api = "gitcode_api.cli:main"
 default-groups = ['dev']
 
 [tool.setuptools.package-data]
-gitcode_api = ["**/version.txt", "**/py.typed"]
+gitcode_api = ["version.txt", "py.typed"]
 
 [tool.coverage.run]
 omit = ["tests/*"]

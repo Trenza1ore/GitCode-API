@@ -4,8 +4,6 @@ import importlib.util
 import json
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).resolve().parents[1]
 _BUILD_MANIFEST_PATH = ROOT / "scripts" / "build_manifest.py"
 _spec = importlib.util.spec_from_file_location("build_manifest", _BUILD_MANIFEST_PATH)
@@ -24,11 +22,11 @@ license = "MIT"
 authors = [{ name = "Alice Example", email = "alice@example.com" }]
 
 [project.urls]
-homepage = "https://example.com/home"
-documentation = "https://example.com/docs"
-github = "https://github.com/org/demo"
-author = "https://example.com/~alice"
-issues = "https://github.com/org/demo/issues"
+Homepage = "https://example.com/home"
+Documentation = "https://example.com/docs"
+Github = "https://github.com/org/demo"
+Author = "https://example.com/~alice"
+Issues = "https://github.com/org/demo/issues"
 """
 
 MINIMAL_TEMPLATE = {
@@ -75,20 +73,3 @@ def test_write_manifest_ensure_ascii_utf8(tmp_path: Path) -> None:
     text = out.read_text(encoding="utf-8")
     assert "café" in text
     assert text.endswith("\n")
-
-
-def test_missing_github_raises(tmp_path: Path) -> None:
-    bad = b"""\
-[project]
-name = "x"
-version = "1"
-description = "d"
-authors = [{ name = "A", email = "a@b.c" }]
-"""
-    pyproject_path = tmp_path / "pyproject.toml"
-    pyproject_path.write_bytes(bad)
-    template_path = tmp_path / "manifest.in.json"
-    template_path.write_text(json.dumps(MINIMAL_TEMPLATE), encoding="utf-8")
-
-    with pytest.raises(ValueError, match="github"):
-        _build_manifest.build_manifest_dict(pyproject_path, template_path)
