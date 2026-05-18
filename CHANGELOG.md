@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.18](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.18) — 2026-05-18
+
+Changes since `1.2.17`…`1.2.18`.
+
+### Feature
+
+- **Decrypt at requests:** Provided GitCode API token is now decrypted at request headers contruction instead of at client constructor due to security concerns, constructor will merely validate it produces a `str` as output.
+- **Version metadata (source checkout):** Improved logic for resolving `__version__` and `__build_hash__` in local development environment.
+
+### Fix
+
+- **Typing:** `py.typed` is now an empty PEP 561 marker as one would expect.
+
+### Examples
+
+- **examples/sync_github_release_to_gitcode.py:** Filters release assets by filename pattern, adds tqdm descriptions and clearer status output for create/skip/upload paths.
+
+---
+
 ## [1.2.17](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.17) — 2026-05-15
 
 Changes since `1.2.16`…`1.2.17`.
