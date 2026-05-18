@@ -1,4 +1,4 @@
-"""Tests for issue/PR ``.gitcode`` template resolution helpers."""
+"""Tests for issue/PR ``.gitcode`` and ``.github`` template resolution helpers."""
 
 from typing import Optional
 
@@ -6,6 +6,10 @@ import httpx
 import pytest
 
 from gitcode_api._exceptions import GitCodeHTTPStatusError
+from gitcode_api.constants import (
+    GITCODE_ISSUE_TEMPLATE_PATH_RE,
+    GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE,
+)
 
 # ``_resolution_sources_*`` probes ``GET /repos/{owner}/{repo}`` for every candidate; stub these.
 _REPO_METADATA_NONFORK_PATHS = frozenset(
@@ -29,12 +33,22 @@ def _repo_metadata_nonfork_stub(request: httpx.Request, path: str) -> Optional[h
     return None
 
 
+def _empty_github_contents_stub(request: httpx.Request, path: str) -> Optional[httpx.Response]:
+    """Stub ``GET .../contents/.github`` from mirrored-repo template walks."""
+    if request.method == "GET" and path.endswith("/contents/.github"):
+        return httpx.Response(404, json={"message": "missing"})
+    return None
+
+
 def test_list_templates_fallback_to_dot_gitcode_repo(sync_client_factory):
     def handler(request: httpx.Request) -> httpx.Response:
         p = request.url.path
         stub = _repo_metadata_nonfork_stub(request, p)
         if stub is not None:
             return stub
+        gh = _empty_github_contents_stub(request, p)
+        if gh is not None:
+            return gh
         if p == "/api/v5/repos/acme/proj" and request.method == "GET":
             return httpx.Response(200, json={"fork": False, "id": 1})
         if p == "/api/v5/repos/acme/proj/contents/.gitcode":
@@ -68,6 +82,9 @@ def test_list_templates_fork_parent_source(sync_client_factory):
         stub = _repo_metadata_nonfork_stub(request, p)
         if stub is not None:
             return stub
+        gh = _empty_github_contents_stub(request, p)
+        if gh is not None:
+            return gh
         if p == "/api/v5/repos/acme/proj" and request.method == "GET":
             return httpx.Response(
                 200,
@@ -111,6 +128,9 @@ def test_list_templates_fork_parent_dot_gitcode_repo(sync_client_factory):
         stub = _repo_metadata_nonfork_stub(request, p)
         if stub is not None:
             return stub
+        gh = _empty_github_contents_stub(request, p)
+        if gh is not None:
+            return gh
         if p == "/api/v5/repos/acme/proj" and request.method == "GET":
             return httpx.Response(
                 200,
@@ -153,6 +173,9 @@ def test_list_templates_includes_yaml_issue_forms(sync_client_factory):
         stub = _repo_metadata_nonfork_stub(request, p)
         if stub is not None:
             return stub
+        gh = _empty_github_contents_stub(request, p)
+        if gh is not None:
+            return gh
         if p == "/api/v5/repos/acme/proj" and request.method == "GET":
             return httpx.Response(200, json={"fork": False})
         if p == "/api/v5/repos/acme/proj/contents/.gitcode":
@@ -224,6 +247,9 @@ def test_pulls_list_and_get_template(sync_client_factory):
         stub = _repo_metadata_nonfork_stub(request, p)
         if stub is not None:
             return stub
+        gh = _empty_github_contents_stub(request, p)
+        if gh is not None:
+            return gh
         if p == "/api/v5/repos/o/r" and request.method == "GET" and "contents" not in p and "raw" not in p:
             return httpx.Response(200, json={"fork": False})
         if p == "/api/v5/repos/o/r/contents/.gitcode":
@@ -257,6 +283,9 @@ async def test_async_issues_list_templates(async_client_factory):
         stub = _repo_metadata_nonfork_stub(request, p)
         if stub is not None:
             return stub
+        gh = _empty_github_contents_stub(request, p)
+        if gh is not None:
+            return gh
         if p == "/api/v5/repos/acme/proj" and request.method == "GET":
             return httpx.Response(200, json={"fork": False})
         if p == "/api/v5/repos/acme/proj/contents/.gitcode":
@@ -280,3 +309,63 @@ async def test_async_issues_list_templates(async_client_factory):
     await http.aclose()
     assert len(items) == 1
     assert items[0].sha == "asyncsha"
+
+
+def test_template_path_patterns_accept_github_paths():
+    assert GITCODE_ISSUE_TEMPLATE_PATH_RE.match(".github/ISSUE_TEMPLATE/bug.md")
+    assert GITCODE_ISSUE_TEMPLATE_PATH_RE.match(".gitcode/ISSUE_TEMPLATE_bug.yml")
+    assert not GITCODE_ISSUE_TEMPLATE_PATH_RE.match(".github/README.md")
+    assert GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE.match(".github/PULL_REQUEST_TEMPLATE.md")
+
+
+def test_list_templates_from_dot_github(sync_client_factory):
+    def handler(request: httpx.Request) -> httpx.Response:
+        p = request.url.path
+        stub = _repo_metadata_nonfork_stub(request, p)
+        if stub is not None:
+            return stub
+        if p == "/api/v5/repos/acme/proj" and request.method == "GET":
+            return httpx.Response(200, json={"fork": False})
+        if p == "/api/v5/repos/acme/proj/contents/.gitcode":
+            return httpx.Response(404, json={"message": "missing"})
+        if p == "/api/v5/repos/acme/proj/contents/.github":
+            return httpx.Response(
+                200,
+                json=[
+                    {
+                        "type": "file",
+                        "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+                        "sha": "ghsha",
+                    }
+                ],
+            )
+        if p == "/api/v5/repos/acme/.gitcode/contents/.gitcode":
+            return httpx.Response(404, json={"message": "missing"})
+        raise AssertionError(f"unexpected {request.method} {p}")
+
+    client, _ = sync_client_factory(handler, owner="acme", repo="proj")
+    items = client.issues.list_templates()
+    assert len(items) == 1
+    assert items[0].path == ".github/ISSUE_TEMPLATE/bug_report.md"
+    assert items[0].sha == "ghsha"
+    assert items[0].template_owner == "acme"
+    assert items[0].template_repo == "proj"
+
+
+def test_get_template_from_dot_github_path(sync_client_factory):
+    path = ".github/PULL_REQUEST_TEMPLATE/default.md"
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        p = request.url.path
+        stub = _repo_metadata_nonfork_stub(request, p)
+        if stub is not None:
+            return stub
+        if p == "/api/v5/repos/acme/proj" and request.method == "GET" and "contents" not in p and "raw" not in p:
+            return httpx.Response(200, json={"fork": False})
+        if p == f"/api/v5/repos/acme/proj/raw/{path}":
+            return httpx.Response(200, content=b"github pr body")
+        raise AssertionError(f"unexpected {request.method} {p}")
+
+    client, _ = sync_client_factory(handler, owner="acme", repo="proj")
+    text = client.pulls.get_template(path=path)
+    assert text == "github pr body"
