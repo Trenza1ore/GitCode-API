@@ -8,7 +8,7 @@ Changes since `1.2.17`…`1.2.18`.
 
 ### Feature
 
-- **Decrypt at requests:** Provided GitCode API token is now decrypted at request headers contruction instead of at client constructor due to security concerns, constructor will merely validate it produces a `str` as output.
+- **Decrypt at request headers construction:** Provided GitCode API token is now decrypted at request headers contruction instead of at client constructor due to security concerns, constructor will merely validate it produces a `str` as output.
 - **Version metadata (source checkout):** Improved logic for resolving `__version__` and `__build_hash__` in local development environment.
 
 ### Fix
