@@ -71,7 +71,7 @@ def test_releases_create_posts_documented_payload_and_models_assets(sync_client_
     client, http_client = sync_client_factory(handler, owner="SushiNinja", repo="GitCode-API")
     try:
         release = client.releases.create(
-            tag_name="v1.0.0",
+            tag="v1.0.0",
             name="v1.0.0",
             body="Release notes",
             target_commitish="main",

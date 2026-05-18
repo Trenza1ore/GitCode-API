@@ -909,7 +909,7 @@ CASES = [
         section_title="1. Create Repository Release",
         method="POST",
         expected_path="/api/v5/repos/SushiNinja/GitCode-API/releases",
-        invoke=lambda client: client.releases.create(tag_name="v1.0.0", name="v1.0.0", body="demo"),
+        invoke=lambda client: client.releases.create(tag="v1.0.0", name="v1.0.0", body="demo"),
         model_type=Release,
         value_path="tag_name",
     ),
