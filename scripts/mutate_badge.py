@@ -9,9 +9,11 @@ closing parenthesis in Markdown links.
 import random
 import re
 import uuid
+from functools import cache
 from pathlib import Path
 
 
+@cache
 def _get_mutated_uuid() -> str:
     uuid_str = list(uuid.uuid4().hex)
     change_idx = list(range(32))
