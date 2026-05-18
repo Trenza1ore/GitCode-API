@@ -20,6 +20,11 @@ def _drop_none_values(mapping: Dict[str, Any]) -> Dict[str, Any]:
     return {key: value for key, value in mapping.items() if value is not None}
 
 
+def _default_decrypt(value: Any) -> str:
+    """Dummy decryption function, basically a no-op."""
+    return value
+
+
 class BaseGitCodeClient:
     """Base configuration shared by synchronous and asynchronous clients.
 
@@ -42,17 +47,16 @@ class BaseGitCodeClient:
         decrypt: Optional[Callable] = None,
     ) -> None:
         """Store client configuration and resolve authentication."""
-        self.api_key = self._resolve_api_key(api_key, decrypt)
+        self.api_key = self._resolve_api_key(api_key)
         self.owner = owner
         self.repo = repo
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
+        self.decrypt = decrypt or _default_decrypt
 
-    def _resolve_api_key(self, api_key: Optional[str], decrypt: Optional[Callable] = None) -> str:
+    def _resolve_api_key(self, api_key: Optional[str]) -> str:
         """Resolve the access token from an argument or environment variable."""
         token = api_key or os.getenv(DEFAULT_TOKEN_ENV)
-        if callable(decrypt):
-            token = decrypt(token)
         if not token:
             raise GitCodeConfigurationError("No API key provided. Pass api_key=... or set GITCODE_ACCESS_TOKEN.")
         return str(token)
@@ -75,7 +79,7 @@ class BaseGitCodeClient:
         """Build request headers for authenticated JSON API calls."""
         headers = {
             "Accept": "application/json",
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Bearer {self.decrypt(self.api_key)}",
         }
         if extra_headers:
             headers.update(extra_headers)
