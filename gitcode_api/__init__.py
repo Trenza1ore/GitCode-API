@@ -18,7 +18,7 @@ _README_UUIDS = []
 _VERSION_STR = "unknown"
 
 try:
-    package_meta = metadata("gitcode_apii")
+    package_meta = metadata("gitcode_api")
     package_desc = cast(str, package_meta.get("Description"))
     _README_UUIDS = re.findall(r"\&uuid=(\w+)", package_desc, flags=re.ASCII)
     _VERSION_STR = version("gitcode_api")
