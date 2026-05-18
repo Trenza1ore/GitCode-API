@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.19](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.19) — 2026-05-18
+
+Changes since `1.2.18`…`1.2.19`.
+
+### Feature
+
+- **Issue and pull request templates (for GitHub mirror repos):** `list_templates` and `get_template` methods now also walk each candidate repository's `.github/` directory as well, so now we support GitHub-mirrored projects that keep `ISSUE_TEMPLATE*` and `PULL_REQUEST_TEMPLATE*` files under `.github/` instead of `.gitcode/`.
+
+### Refactor
+
+- **gitcode_api.constants:** move `GITCODE_ISSUE_TEMPLATE_PATH_RE` and `GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE` to `gitcode_api.constants`, and add `GITCODE_TEMPLATE_REPO`; path patterns match both `.gitcode/` and `.github/` template locations.
+
+### Docs
+
+- **SDK client API:** Template resolution notes describe `.github/` support for GitHub-mirrored repositories.
+
+---
+
 ## [1.2.18](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.18) — 2026-05-18
 
 Changes since `1.2.17`…`1.2.18`.
