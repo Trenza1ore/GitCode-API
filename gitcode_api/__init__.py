@@ -1,7 +1,7 @@
 """Public package exports for the GitCode SDK."""
 
 import re
-from importlib.metadata import metadata
+from importlib.metadata import PackageNotFoundError, metadata, version
 from typing import cast
 
 from . import constants
@@ -14,11 +14,32 @@ from ._exceptions import (
 )
 from .utils import as_dict
 
-package_meta = metadata("gitcode_api")
-package_desc = cast(str, package_meta.get("Description"))
-readme_uuids = re.findall(r"\&uuid=(\w+)", package_desc, flags=re.ASCII)
-__build_hash__ = readme_uuids[0] if readme_uuids else "unknown"
-__version__ = cast(str, package_meta.get("Version")).strip()
+_README_UUIDS = []
+_VERSION_STR = "unknown"
+
+try:
+    package_meta = metadata("gitcode_apii")
+    package_desc = cast(str, package_meta.get("Description"))
+    _README_UUIDS = re.findall(r"\&uuid=(\w+)", package_desc, flags=re.ASCII)
+    _VERSION_STR = version("gitcode_api")
+except PackageNotFoundError:
+    from pathlib import Path
+
+    import tomllib
+
+    pyproject_toml = Path(__file__).parent.parent / "pyproject.toml"
+    if pyproject_toml.exists():
+        _VERSION_STR = tomllib.loads(pyproject_toml.read_text(encoding="utf-8")).get("project", {}).get("version", "")
+    else:
+        version_file = Path(__file__).with_name("version.txt")
+        if version_file.exists():
+            _VERSION_STR = version_file.read_text(encoding="utf-8").strip()
+    read_me_file = pyproject_toml.with_name("README.md")
+    if read_me_file.exists():
+        _README_UUIDS = re.findall(r"\&uuid=(\w+)", read_me_file.read_text(encoding="utf-8").strip(), flags=re.ASCII)
+
+__build_hash__ = _README_UUIDS[0] if _README_UUIDS else "unknown"
+__version__ = _VERSION_STR.strip()
 
 __all__ = [
     "constants",

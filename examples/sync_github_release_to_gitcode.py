@@ -137,5 +137,6 @@ with warnings.catch_warnings():
                 print(f"{CGRN}\t> uploaded: {file_name} ({file_size} {unit}, {minutes:5g} min){CEND}", flush=True)
             except (httpx.TimeoutException, GitCodeError) as e:
                 print(
-                    f"{CRED}\tx fail to upload {file_name} ({file_size} {unit}, {minutes:5g} min):{CEND} {e}", flush=True
+                    f"{CRED}\tx fail to upload {file_name} ({file_size} {unit}, {minutes:5g} min):{CEND} {e}",
+                    flush=True,
                 )
