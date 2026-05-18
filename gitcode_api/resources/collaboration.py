@@ -419,6 +419,8 @@ class IssuesResource(SyncResource):
         are appended, deduplicated, and visited in order). The first source with matching
         templates wins.
 
+        Version 1.2.19: Now also supporting GitHub-mirrored repos with a ``.github/`` folder.
+
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Template metadata entries (paths and SHAs); empty when none match.
@@ -1065,6 +1067,8 @@ class PullsResource(SyncResource):
         inspected with ``GET /repos/{owner}/{repo}``; when ``fork`` is true, its parent's repos
         are appended, deduplicated, and visited in order). The first source with matching
         templates wins.
+
+        Version 1.2.19: Now also supporting GitHub-mirrored repos with a ``.github/`` folder.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
@@ -1733,6 +1737,8 @@ class AsyncIssuesResource(AsyncResource):
         are appended, deduplicated, and visited in order). The first source with matching
         templates wins.
 
+        Version 1.2.19: Now also supporting GitHub-mirrored repos with a ``.github/`` folder.
+
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Template metadata entries (paths and SHAs); empty when none match.
@@ -2326,6 +2332,8 @@ class AsyncPullsResource(AsyncResource):
         inspected with ``GET /repos/{owner}/{repo}``; when ``fork`` is true, its parent's repos
         are appended, deduplicated, and visited in order). The first source with matching
         templates wins.
+
+        Version 1.2.19: Now also supporting GitHub-mirrored repos with a ``.github/`` folder.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.

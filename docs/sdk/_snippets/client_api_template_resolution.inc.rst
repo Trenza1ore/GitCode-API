@@ -23,6 +23,8 @@ for each until it finds paths that match the template naming rules:
    are processed the same way (so a forked ``owner/.gitcode`` repo can still pull
    in its upstream). The walk stops at a bounded number of candidates.
 
+**Version 1.2.19:** Now also supporting GitHub-mirrored repos with a ``.github/`` folder.
+
 **Path filters.** Issue templates match repository-relative paths under
 ``.gitcode/`` whose names start with ``ISSUE_TEMPLATE`` (case-insensitive) and
 end with ``.md``, ``.markdown``, ``.yml``, or ``.yaml``. Pull request templates

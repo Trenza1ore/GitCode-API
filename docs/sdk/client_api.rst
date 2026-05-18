@@ -48,6 +48,12 @@ for turning structured instances into serializable data, using
 .. autofunction:: as_dict
    :no-index:
 
+.. _sdk-client-api-templates:
+Issue and pull request templates
+--------------------------------
+
+.. include:: _snippets/client_api_template_resolution.inc.rst
+
 Synchronous client
 ------------------
 
@@ -211,13 +217,6 @@ Repository resources
 
 Collaboration resources
 ~~~~~~~~~~~~~~~~~~~~~~~
-
-.. _sdk-client-api-templates:
-
-Issue and pull request templates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. include:: _snippets/client_api_template_resolution.inc.rst
 
 ``GitCode.issues``
 ^^^^^^^^^^^^^^^^^^
@@ -770,11 +769,6 @@ Repository resources
 
 Collaboration resources
 ~~~~~~~~~~~~~~~~~~~~~~~
-
-Issue and pull request templates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. include:: _snippets/client_api_template_resolution.inc.rst
 
 ``AsyncGitCode.issues``
 ^^^^^^^^^^^^^^^^^^^^^^^
