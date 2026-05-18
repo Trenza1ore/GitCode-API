@@ -1,19 +1,12 @@
 """Shared resource base classes for the GitCode SDK."""
 
-import re
 from typing import Any, Dict, List, Optional, Pattern, Tuple, Union
 
 from .._base_client import AsyncAPIClient, SyncAPIClient
 from .._base_resource import BaseResource
 from .._exceptions import GitCodeHTTPStatusError
 from .._models import APIObject, ModelT, as_model, as_model_list
-
-GITCODE_ISSUE_TEMPLATE_PATH_RE: Pattern[str] = re.compile(
-    r"\.gitcode/ISSUE_TEMPLATE.*\.(md|markdown|ya?ml)$", re.IGNORECASE
-)
-GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE: Pattern[str] = re.compile(
-    r"\.gitcode/PULL_REQUEST_TEMPLATE.*\.(md|markdown|ya?ml)$", re.IGNORECASE
-)
+from ..constants import GITCODE_TEMPLATE_REPO
 
 
 def _parse_parent_owner_repo(repo_obj: Any) -> Optional[Tuple[str, str]]:
@@ -50,7 +43,7 @@ def _resolution_sources_sync(client: SyncAPIClient, owner: str, repo: str) -> Li
             sources.append(pair)
 
     add((owner, repo))
-    add((owner, ".gitcode"))
+    add((owner, GITCODE_TEMPLATE_REPO))
 
     max_candidates = 64
     index = 0
@@ -68,7 +61,7 @@ def _resolution_sources_sync(client: SyncAPIClient, owner: str, repo: str) -> Li
             continue
         po, pr = parsed
         add((po, pr))
-        add((po, ".gitcode"))
+        add((po, GITCODE_TEMPLATE_REPO))
 
     return sources
 
@@ -86,7 +79,7 @@ async def _resolution_sources_async(client: AsyncAPIClient, owner: str, repo: st
             sources.append(pair)
 
     add((owner, repo))
-    add((owner, ".gitcode"))
+    add((owner, GITCODE_TEMPLATE_REPO))
 
     max_candidates = 64
     index = 0
@@ -104,7 +97,7 @@ async def _resolution_sources_async(client: AsyncAPIClient, owner: str, repo: st
             continue
         po, pr = parsed
         add((po, pr))
-        add((po, ".gitcode"))
+        add((po, GITCODE_TEMPLATE_REPO))
 
     return sources
 
@@ -210,6 +203,8 @@ def list_gitcode_template_rows_sync(
         acc: List[Tuple[str, str, str, str]] = []
         try:
             _walk_dot_gitcode_contents_sync(client, so, sr, ".gitcode", acc)
+            if sr != GITCODE_TEMPLATE_REPO:
+                _walk_dot_gitcode_contents_sync(client, so, sr, ".github", acc)
         except GitCodeHTTPStatusError:
             continue
         rows = [(t_o, t_r, p, s) for t_o, t_r, p, s in acc if path_pattern.match(p)]
@@ -228,6 +223,8 @@ async def list_gitcode_template_rows_async(
         acc: List[Tuple[str, str, str, str]] = []
         try:
             await _walk_dot_gitcode_contents_async(client, so, sr, ".gitcode", acc)
+            if sr != GITCODE_TEMPLATE_REPO:
+                await _walk_dot_gitcode_contents_async(client, so, sr, ".github", acc)
         except GitCodeHTTPStatusError:
             continue
         rows = [(t_o, t_r, p, s) for t_o, t_r, p, s in acc if path_pattern.match(p)]

@@ -25,9 +25,8 @@ from .._models import (
     UserSummary,
     as_model,
 )
+from ..constants import GITCODE_ISSUE_TEMPLATE_PATH_RE, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE
 from ._shared import (
-    GITCODE_ISSUE_TEMPLATE_PATH_RE,
-    GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE,
     AsyncResource,
     SyncResource,
     get_gitcode_template_body_async,
