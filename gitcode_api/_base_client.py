@@ -47,18 +47,24 @@ class BaseGitCodeClient:
         decrypt: Optional[Callable] = None,
     ) -> None:
         """Store client configuration and resolve authentication."""
+        self.decrypt = decrypt or _default_decrypt
         self.api_key = self._resolve_api_key(api_key)
         self.owner = owner
         self.repo = repo
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
-        self.decrypt = decrypt or _default_decrypt
 
     def _resolve_api_key(self, api_key: Optional[str]) -> str:
         """Resolve the access token from an argument or environment variable."""
         token = api_key or os.getenv(DEFAULT_TOKEN_ENV)
         if not token:
             raise GitCodeConfigurationError("No API key provided. Pass api_key=... or set GITCODE_ACCESS_TOKEN.")
+        try:
+            token_decrypt = self.decrypt(str(token))
+            if not isinstance(token_decrypt, str):
+                raise TypeError(f"Decrypted token has type={type(token_decrypt)} instead of str: {token_decrypt}")
+        except Exception as e:
+            raise GitCodeConfigurationError("Invalid decrypt function, check its correctness.") from e
         return str(token)
 
     def _resolve_repo_context(
