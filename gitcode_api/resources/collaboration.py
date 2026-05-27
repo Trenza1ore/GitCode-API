@@ -1448,16 +1448,39 @@ class AsyncIssuesResource(AsyncResource):
     parameter descriptions aligned with ``docs/rest_api`` (Issues API).
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Issue]:
+    async def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Issue]:
         """List issues for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``state``, ``sort``, ``direction``, ``page``, ``per_page``.
+        :param state: Issue state filter such as ``open`` or ``closed`` (see Issues API).
+        :param sort: Optional sort field.
+        :param direction: Optional sort direction.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Matching issues.
         """
         return await self._models(
-            "GET", self._client._repo_path("issues", owner=owner, repo=repo), Issue, params=params
+            "GET",
+            self._client._repo_path("issues", owner=owner, repo=repo),
+            Issue,
+            params={
+                "state": state,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+            },
         )
 
     async def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Issue:
@@ -1556,21 +1579,28 @@ class AsyncIssuesResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[IssueComment]:
         """List comments for an issue.
 
         :param number: Repository-local issue number.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path (name). Uses the client default when omitted.
-        :param params: Optional query parameters (for example ``page``, ``per_page``).
+        :param page: Current page number (query).
+        :param per_page: Page size; maximum per REST API is typically 100.
         :returns: Issue comments.
         """
         return await self._models(
             "GET",
             self._client._repo_path("issues", number, "comments", owner=owner, repo=repo),
             IssueComment,
-            params=params,
+            params={"page": page, "per_page": per_page},
         )
 
     async def create_comment(
@@ -1738,19 +1768,22 @@ class AsyncIssuesResource(AsyncResource):
             "GET", self._client._path("enterprises", enterprise, "issues", issue_id, "labels"), Label
         )
 
-    async def list_operation_logs(self, *, owner: str, number: Union[int, str], **params) -> List[IssueOperationLog]:
+    async def list_operation_logs(
+        self, *, owner: str, number: Union[int, str], page: Optional[int] = None, per_page: Optional[int] = None
+    ) -> List[IssueOperationLog]:
         """List operation (audit) logs for an issue.
 
         :param owner: Repository owner path (path segment ``repos/{owner}/...`` for this endpoint).
         :param number: Repository-local issue number.
-        :param params: Optional query parameters (for example ``page``, ``per_page``).
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Operation log entries.
         """
         return await self._models(
             "GET",
             self._client._path("repos", owner, "issues", number, "operate_logs"),
             IssueOperationLog,
-            params=params,
+            params={"page": page, "per_page": per_page},
         )
 
     async def list_templates(
@@ -1837,21 +1870,47 @@ class AsyncPullsResource(AsyncResource):
     """
 
     async def list(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **params,
     ) -> Union[List[PullRequest], PullRequestCount]:
         """List pull requests for a repository.
 
-        When ``only_count`` is true in ``params``, the API returns a JSON object with counts per state
-        instead of an array (see Pull Request API).
+        When ``only_count`` is true in ``params`` (or passed via ``**params``), the API returns a
+        JSON object with counts per state instead of an array (see Pull Request API).
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path (name). Uses the client default when omitted.
-        :param params: Query parameters: ``state``, ``sort``, ``direction``, ``page``, ``per_page``, ``base``,
-            ``since``, ``author``, ``assignee``, ``reviewer``, ``milestone_number``, ``labels``, time filters,
-            ``only_count``, and other fields documented under ``docs/rest_api``.
+        :param state: PR state filter: ``all``, ``open``, ``closed``, ``locked``, ``merged`` (default ``all`` in API).
+        :param sort: Sort field, typically ``created`` or ``updated``.
+        :param direction: ``asc`` or ``desc`` (API default is usually ``desc``).
+        :param page: Current page number.
+        :param per_page: Page size (max 100 per API documentation).
+        :param params: Extra query parameters from the Pull Request API, for example ``base``,
+            ``since``, ``author``, ``assignee``, ``reviewer``, ``milestone_number``, ``labels`` (comma-separated),
+            ``merged_after``, ``merged_before``, ``created_after``, ``created_before``, ``updated_after``,
+            ``updated_before``, ``only_count`` (boolean), and ISO 8601 timestamps (URL-encoded when sent).
         :returns: A list of pull requests, or an :class:`~gitcode_api._models.APIObject` for count-only responses.
         """
-        response = await self._request("GET", self._client._repo_path("pulls", owner=owner, repo=repo), params=params)
+        response = await self._request(
+            "GET",
+            self._client._repo_path("pulls", owner=owner, repo=repo),
+            params={
+                "state": state,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **params,
+            },
+        )
         if isinstance(response, dict):
             return as_model(response, PullRequestCount)
         return [as_model(item, PullRequest) for item in response]
@@ -2037,21 +2096,28 @@ class AsyncPullsResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[PullRequestComment]:
         """List comments on a pull request.
 
         :param number: Pull request number.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param params: Optional query parameters (for example ``page``, ``per_page``).
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Pull request review comments.
         """
         return await self._models(
             "GET",
             self._client._repo_path("pulls", number, "comments", owner=owner, repo=repo),
             PullRequestComment,
-            params=params,
+            params={"page": page, "per_page": per_page},
         )
 
     async def create_comment(

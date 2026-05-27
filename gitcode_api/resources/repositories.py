@@ -1133,46 +1133,181 @@ class AsyncReposResource(AsyncResource):
         """
         return await self._model("GET", self._client._repo_path(owner=owner, repo=repo), Repository)
 
-    async def list_user(self, **params) -> List[Repository]:
+    async def list_user(
+        self,
+        *,
+        visibility: Optional[str] = None,
+        affiliation: Optional[str] = None,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        q: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Repository]:
         """List repositories visible to the authenticated user.
 
-        Pass query parameters as keyword arguments (same names as :meth:`ReposResource.list_user`,
-        for example ``visibility``, ``affiliation``, ``type``, ``sort``, ``direction``, ``q``, ``page``, ``per_page``).
-
-        :param params: Query parameters for ``GET /user/repos``.
+        :param visibility: Visibility filter such as ``public``, ``private``, or ``all``.
+        :param affiliation: Ownership filter accepted by the REST API.
+        :param type: Repository type filter.
+        :param sort: Sort field such as ``created`` or ``full_name``.
+        :param direction: Sort direction.
+        :param q: Optional keyword filter.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Matching repositories.
         """
-        return await self._models("GET", self._client._path("user", "repos"), Repository, params=params)
+        return await self._models(
+            "GET",
+            self._client._path("user", "repos"),
+            Repository,
+            params={
+                "visibility": visibility,
+                "affiliation": affiliation,
+                "type": type,
+                "sort": sort,
+                "direction": direction,
+                "q": q,
+                "page": page,
+                "per_page": per_page,
+            },
+        )
 
-    async def list_for_owner(self, *, owner: str, **params) -> List[Repository]:
+    async def list_for_owner(
+        self,
+        *,
+        owner: str,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Repository]:
         """List public repositories for a user or owner path.
 
         :param owner: Repository owner path or username.
-        :param params: Query parameters such as ``type``, ``sort``, ``direction``, ``page``, ``per_page``.
+        :param type: Repository type filter.
+        :param sort: Sort field.
+        :param direction: Sort direction.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Matching repositories.
         """
-        return await self._models("GET", self._client._path("users", owner, "repos"), Repository, params=params)
+        return await self._models(
+            "GET",
+            self._client._path("users", owner, "repos"),
+            Repository,
+            params={
+                "type": type,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+            },
+        )
 
-    async def create_personal(self, *, name: str, **payload) -> Repository:
+    async def create_personal(
+        self,
+        *,
+        name: str,
+        description: Optional[str] = None,
+        path: Optional[str] = None,
+        private: Optional[bool] = None,
+        auto_init: Optional[bool] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        default_branch: Optional[str] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
+    ) -> Repository:
         """Create a repository for the authenticated user.
 
-        :param name: Repository name (also written into ``payload``).
-        :param payload: Additional JSON fields; see :meth:`ReposResource.create_personal` for supported keys.
+        :param name: Repository name.
+        :param description: Repository description.
+        :param path: Optional repository path.
+        :param private: Whether the repository should be private.
+        :param auto_init: Whether to initialize the repository with a README.
+        :param has_issues: Whether issues are enabled.
+        :param has_wiki: Whether wiki support is enabled.
+        :param default_branch: Default branch name when initializing.
+        :param gitignore_template: Optional gitignore template.
+        :param license_template: Optional license template.
         :returns: Created repository metadata.
         """
-        payload["name"] = name
-        return await self._model("POST", self._client._path("user", "repos"), Repository, json=payload)
+        return await self._model(
+            "POST",
+            self._client._path("user", "repos"),
+            Repository,
+            json={
+                "name": name,
+                "description": description,
+                "path": path,
+                "private": private,
+                "auto_init": auto_init,
+                "has_issues": has_issues,
+                "has_wiki": has_wiki,
+                "default_branch": default_branch,
+                "gitignore_template": gitignore_template,
+                "license_template": license_template,
+            },
+        )
 
-    async def create_for_org(self, *, org: str, name: str, **payload) -> Repository:
+    async def create_for_org(
+        self,
+        *,
+        org: str,
+        name: str,
+        description: Optional[str] = None,
+        homepage: Optional[str] = None,
+        path: Optional[str] = None,
+        private: Optional[bool] = None,
+        public: Optional[int] = None,
+        auto_init: Optional[bool] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        can_comment: Optional[bool] = None,
+        default_branch: Optional[str] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
+    ) -> Repository:
         """Create a repository under an organization.
 
         :param org: Organization path or login.
-        :param name: Repository name (also written into ``payload``).
-        :param payload: Additional JSON fields; see :meth:`ReposResource.create_for_org`.
+        :param name: Repository name.
+        :param description: Repository description.
+        :param homepage: Repository homepage URL.
+        :param path: Optional repository path.
+        :param private: Whether the repository should be private.
+        :param public: Visibility mode used by the GitCode API.
+        :param auto_init: Whether to initialize the repository with a README.
+        :param has_issues: Whether issues are enabled.
+        :param has_wiki: Whether wiki support is enabled.
+        :param can_comment: Whether comments are enabled.
+        :param default_branch: Default branch name when initializing.
+        :param gitignore_template: Optional gitignore template.
+        :param license_template: Optional license template.
         :returns: Created repository metadata.
         """
-        payload["name"] = name
-        return await self._model("POST", self._client._path("orgs", org, "repos"), Repository, json=payload)
+        return await self._model(
+            "POST",
+            self._client._path("orgs", org, "repos"),
+            Repository,
+            json={
+                "name": name,
+                "description": description,
+                "homepage": homepage,
+                "path": path,
+                "private": private,
+                "public": public,
+                "auto_init": auto_init,
+                "has_issues": has_issues,
+                "has_wiki": has_wiki,
+                "can_comment": can_comment,
+                "default_branch": default_branch,
+                "gitignore_template": gitignore_template,
+                "license_template": license_template,
+            },
+        )
 
     async def update(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **changes) -> Repository:
         """Update repository metadata.
@@ -1192,47 +1327,77 @@ class AsyncReposResource(AsyncResource):
         """
         await self._request("DELETE", self._client._repo_path(owner=owner, repo=repo))
 
-    async def fork(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Repository:
+    async def fork(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        namespace: Optional[str] = None,
+        path: Optional[str] = None,
+        name: Optional[str] = None,
+    ) -> Repository:
         """Fork a repository.
 
-        :param owner: Source repository owner path. Uses the client default when omitted.
-        :param repo: Source repository name. Uses the client default when omitted.
-        :param payload: JSON body fields such as ``namespace``, ``path``, and ``name`` (see :meth:`ReposResource.fork`).
+        :param owner: Source repository owner path.
+        :param repo: Source repository name.
+        :param namespace: Optional destination namespace.
+        :param path: Optional destination repository path.
+        :param name: Optional destination repository name.
         :returns: Forked repository metadata.
         """
         return await self._model(
-            "POST", self._client._repo_path("forks", owner=owner, repo=repo), Repository, json=payload
+            "POST",
+            self._client._repo_path("forks", owner=owner, repo=repo),
+            Repository,
+            json={"namespace": namespace, "path": path, "name": name},
         )
 
     async def list_forks(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Repository]:
         """List forks of a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``sort``, ``page``, ``per_page``.
+        :param sort: Optional sort field.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Fork repositories.
         """
         return await self._models(
-            "GET", self._client._repo_path("forks", owner=owner, repo=repo), Repository, params=params
+            "GET",
+            self._client._repo_path("forks", owner=owner, repo=repo),
+            Repository,
+            params={"sort": sort, "page": page, "per_page": per_page},
         )
 
     async def list_contributors(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[Contributor]:
         """List repository contributors.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``page`` and ``per_page``.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Contributors for the repository.
         """
         return await self._models(
             "GET",
             self._client._repo_path("contributors", owner=owner, repo=repo),
             Contributor,
-            params=params,
+            params={"page": page, "per_page": per_page},
         )
 
     async def list_languages(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> Dict[str, int]:
@@ -1245,34 +1410,49 @@ class AsyncReposResource(AsyncResource):
         return await self._request("GET", self._client._repo_path("languages", owner=owner, repo=repo))
 
     async def list_stargazers(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[UserSummary]:
         """List users who starred a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``page`` and ``per_page``.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Users who starred the repository.
         """
         return await self._models(
-            "GET", self._client._repo_path("stargazers", owner=owner, repo=repo), UserSummary, params=params
+            "GET",
+            self._client._repo_path("stargazers", owner=owner, repo=repo),
+            UserSummary,
+            params={"page": page, "per_page": per_page},
         )
 
     async def list_subscribers(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[UserSummary]:
         """List users watching a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``page`` and ``per_page``.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Subscribers for the repository.
         """
         return await self._models(
             "GET",
             self._client._repo_path("subscribers", owner=owner, repo=repo),
             UserSummary,
-            params=params,
+            params={"page": page, "per_page": per_page},
         )
 
     async def update_module_settings(
@@ -1559,16 +1739,26 @@ class AsyncReposResource(AsyncResource):
         )
 
     async def list_events(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[APIObject]:
         """List repository events.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``page`` and ``per_page``.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Repository event payloads.
         """
-        data = await self._request("GET", self._client._repo_path("events", owner=owner, repo=repo), params=params)
+        data = await self._request(
+            "GET",
+            self._client._repo_path("events", owner=owner, repo=repo),
+            params={"page": page, "per_page": per_page},
+        )
         return [as_model(item, APIObject) for item in data]
 
 
@@ -1788,16 +1978,31 @@ class AsyncBranchesResource(AsyncResource):
     Mirrors :class:`BranchesResource` (``docs/rest_api/repos/branch``).
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Branch]:
+    async def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Branch]:
         """List branches in a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``sort``, ``direction``, ``page``, ``per_page``.
+        :param sort: Optional sort field such as ``name`` or ``updated``.
+        :param direction: Sort direction, usually ``asc`` or ``desc``.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Repository branches.
         """
         return await self._models(
-            "GET", self._client._repo_path("branches", owner=owner, repo=repo), Branch, params=params
+            "GET",
+            self._client._repo_path("branches", owner=owner, repo=repo),
+            Branch,
+            params={"sort": sort, "direction": direction, "page": page, "per_page": per_page},
         )
 
     async def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> BranchDetail:
@@ -1846,16 +2051,31 @@ class AsyncCommitsResource(AsyncResource):
     Mirrors :class:`CommitsResource` (``docs/rest_api/repos/commit``).
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[CommitSummary]:
+    async def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sha: Optional[str] = None,
+        path: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[CommitSummary]:
         """List commits in a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``sha``, ``path``, ``page``, ``per_page``.
+        :param sha: Optional starting SHA or ref.
+        :param path: Optional file path filter.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Matching commits.
         """
         return await self._models(
-            "GET", self._client._repo_path("commits", owner=owner, repo=repo), CommitSummary, params=params
+            "GET",
+            self._client._repo_path("commits", owner=owner, repo=repo),
+            CommitSummary,
+            params={"sha": sha, "path": path, "page": page, "per_page": per_page},
         )
 
     async def get(self, *, sha: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Commit:
@@ -1884,17 +2104,26 @@ class AsyncCommitsResource(AsyncResource):
         )
 
     async def list_comments(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
     ) -> List[CommitComment]:
         """List commit comments for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters such as ``page`` and ``per_page``.
+        :param page: Page number.
+        :param per_page: Page size.
         :returns: Commit comments.
         """
         return await self._models(
-            "GET", self._client._repo_path("comments", owner=owner, repo=repo), CommitComment, params=params
+            "GET",
+            self._client._repo_path("comments", owner=owner, repo=repo),
+            CommitComment,
+            params={"page": page, "per_page": per_page},
         )
 
     async def get_comment(
