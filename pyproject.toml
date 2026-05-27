@@ -109,6 +109,9 @@ addopts = ["-v"]
 line-length = 120
 target-version = "py39"
 
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
 
