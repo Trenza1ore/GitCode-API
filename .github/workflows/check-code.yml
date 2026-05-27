@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  ruff:
+  check:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,7 +19,16 @@ jobs:
         python-version: "3.12"
 
     - name: Install ruff
-      run: python -m pip install --upgrade pip ruff
+      run: python -m pip install --upgrade pip uv ruff
 
     - name: Ruff check
-      run: ruff check
+      run: uv run python -m ruff check
+
+    - name: Install pytest
+      run: uv sync --group test
+
+    - name: Install pytest
+      run: uv pip install .
+
+    - name: Run pytest
+      run: uv run python -m pytest
