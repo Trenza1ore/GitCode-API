@@ -37,6 +37,7 @@ BADGES = [
         r"[^)]*"
         r"(\))",
     ),
+    re.compile(r"(!\[CI Badge\]\(https://github\.com/.*?/.*?/actions/workflows/check-code\.yml/badge\.svg)[^)]*(\))"),
 ]
 SEMANTIC_VER = (ROOT / "gitcode_api" / "version.txt").read_text().strip()
 
@@ -49,7 +50,7 @@ def main() -> None:
         n_total = 0
         for badge in BADGES:
             new_text, n = badge.subn(
-                lambda m: m.group(1) + "&uuid=" + _get_mutated_uuid() + m.group(2),
+                lambda m: m.group(1) + ("&" if "?" in m.group(1) else "?") + "uuid=" + _get_mutated_uuid() + m.group(2),
                 new_text,
             )
             n_total += n
