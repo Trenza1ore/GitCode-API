@@ -8,7 +8,7 @@ Changes since `1.2.18`…`1.2.19`.
 
 ### Feature
 
-- **Issue and pull request templates (for GitHub mirror repos):** `list_templates` and `get_template` methods now also walk each candidate repository's `.github/` directory as well, so now we support GitHub-mirrored projects that keep `ISSUE_TEMPLATE*` and `PULL_REQUEST_TEMPLATE*` files under `.github/` instead of `.gitcode/`.
+- **Issue and pull request templates (for GitHub mirror repos):** `list_templates` method now also walk each candidate repository's `.github/` directory as well, so we can support GitHub-mirrored projects that keep `ISSUE_TEMPLATE*` and `PULL_REQUEST_TEMPLATE*` files under `.github/` instead of `.gitcode/`.
 
 ### Refactor
 
