@@ -442,7 +442,15 @@ class IssuesResource(SyncResource):
             for template_owner, template_repo, path, sha in rows
         ]
 
-    def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+    def get_template(
+        self,
+        *,
+        path: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encoding: str = "utf-8",
+        **decoding_kwargs,
+    ) -> str:
         """Load a single issue template file body from the default branch.
 
         Uses the same resolution order as :meth:`list_templates`. The path must match the
@@ -452,11 +460,20 @@ class IssuesResource(SyncResource):
             ``.gitcode/ISSUE_TEMPLATE/config.yml``.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :returns: Decoded template file contents (UTF-8).
+        :param encoding: Codec to use when decoding raw file bytes. Default ``utf-8``.
+        :param decoding_kwargs: Keyword arguments forwarded to :meth:`bytes.decode`, such as
+            ``errors`` (``"strict"``, ``"ignore"``, or ``"replace"``).
+        :returns: Decoded template file contents.
         """
         resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
         return get_gitcode_template_body_sync(
-            self._client, path, GITCODE_ISSUE_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
+            self._client,
+            path,
+            GITCODE_ISSUE_TEMPLATE_PATH_RE,
+            resolved_owner,
+            resolved_repo,
+            encoding=encoding,
+            **decoding_kwargs,
         )
 
 
@@ -1091,7 +1108,15 @@ class PullsResource(SyncResource):
             for template_owner, template_repo, path, sha in rows
         ]
 
-    def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+    def get_template(
+        self,
+        *,
+        path: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encoding: str = "utf-8",
+        **decoding_kwargs,
+    ) -> str:
         """Load a single pull request template file body from the default branch.
 
         Uses the same resolution order as :meth:`list_templates`. The path must match the
@@ -1100,11 +1125,20 @@ class PullsResource(SyncResource):
         :param path: Repository-relative path such as ``.gitcode/PULL_REQUEST_TEMPLATE.md``.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :returns: Decoded template file contents (UTF-8).
+        :param encoding: Codec to use when decoding raw file bytes. Default ``utf-8``.
+        :param decoding_kwargs: Keyword arguments forwarded to :meth:`bytes.decode`, such as
+            ``errors`` (``"strict"``, ``"ignore"``, or ``"replace"``).
+        :returns: Decoded template file contents.
         """
         resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
         return get_gitcode_template_body_sync(
-            self._client, path, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
+            self._client,
+            path,
+            GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE,
+            resolved_owner,
+            resolved_repo,
+            encoding=encoding,
+            **decoding_kwargs,
         )
 
 
@@ -1760,7 +1794,15 @@ class AsyncIssuesResource(AsyncResource):
             for template_owner, template_repo, path, sha in rows
         ]
 
-    async def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+    async def get_template(
+        self,
+        *,
+        path: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encoding: str = "utf-8",
+        **decoding_kwargs,
+    ) -> str:
         """Load a single issue template file body from the default branch.
 
         Uses the same resolution order as :meth:`list_templates`. The path must match the
@@ -1770,11 +1812,20 @@ class AsyncIssuesResource(AsyncResource):
             ``.gitcode/ISSUE_TEMPLATE/config.yml``.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :returns: Decoded template file contents (UTF-8).
+        :param encoding: Codec to use when decoding raw file bytes. Default ``utf-8``.
+        :param decoding_kwargs: Keyword arguments forwarded to :meth:`bytes.decode`, such as
+            ``errors`` (``"strict"``, ``"ignore"``, or ``"replace"``).
+        :returns: Decoded template file contents.
         """
         resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
         return await get_gitcode_template_body_async(
-            self._client, path, GITCODE_ISSUE_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
+            self._client,
+            path,
+            GITCODE_ISSUE_TEMPLATE_PATH_RE,
+            resolved_owner,
+            resolved_repo,
+            encoding=encoding,
+            **decoding_kwargs,
         )
 
 
@@ -2356,7 +2407,15 @@ class AsyncPullsResource(AsyncResource):
             for template_owner, template_repo, path, sha in rows
         ]
 
-    async def get_template(self, *, path: str, owner: Optional[str] = None, repo: Optional[str] = None) -> str:
+    async def get_template(
+        self,
+        *,
+        path: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encoding: str = "utf-8",
+        **decoding_kwargs,
+    ) -> str:
         """Load a single pull request template file body from the default branch.
 
         Uses the same resolution order as :meth:`list_templates`. The path must match the
@@ -2365,11 +2424,20 @@ class AsyncPullsResource(AsyncResource):
         :param path: Repository-relative path such as ``.gitcode/PULL_REQUEST_TEMPLATE.md``.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :returns: Decoded template file contents (UTF-8).
+        :param encoding: Codec to use when decoding raw file bytes. Default ``utf-8``.
+        :param decoding_kwargs: Keyword arguments forwarded to :meth:`bytes.decode`, such as
+            ``errors`` (``"strict"``, ``"ignore"``, or ``"replace"``).
+        :returns: Decoded template file contents.
         """
         resolved_owner, resolved_repo = self._client._resolve_repo_context(owner, repo)
         return await get_gitcode_template_body_async(
-            self._client, path, GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE, resolved_owner, resolved_repo
+            self._client,
+            path,
+            GITCODE_PULL_REQUEST_TEMPLATE_PATH_RE,
+            resolved_owner,
+            resolved_repo,
+            encoding=encoding,
+            **decoding_kwargs,
         )
 
 

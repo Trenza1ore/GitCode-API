@@ -46,7 +46,7 @@ html_title = f"{project} documentation"
 
 html_theme_options = {
     "style_external_links": True,
-    "navigation_depth": 4,
+    "navigation_depth": 5,
     "collapse_navigation": False,
     "sticky_navigation": True,
     "prev_next_buttons_location": "both",

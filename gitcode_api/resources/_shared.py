@@ -239,6 +239,8 @@ def get_gitcode_template_body_sync(
     path_pattern: Pattern[str],
     owner: str,
     repo: str,
+    encoding: str = "utf-8",
+    **decoding_kwargs,
 ) -> str:
     """Fetch raw template text from the first resolution source that serves ``path``."""
     if not path_pattern.match(path):
@@ -259,7 +261,7 @@ def get_gitcode_template_body_sync(
             last_error = exc
             continue
         if isinstance(raw, bytes):
-            return raw.decode("utf-8")
+            return raw.decode(encoding=encoding, **decoding_kwargs)
         if isinstance(raw, str):
             return raw
         return str(raw)
@@ -278,6 +280,8 @@ async def get_gitcode_template_body_async(
     path_pattern: Pattern[str],
     owner: str,
     repo: str,
+    encoding: str = "utf-8",
+    **decoding_kwargs,
 ) -> str:
     if not path_pattern.match(path):
         raise GitCodeHTTPStatusError(
@@ -297,7 +301,7 @@ async def get_gitcode_template_body_async(
             last_error = exc
             continue
         if isinstance(raw, bytes):
-            return raw.decode("utf-8")
+            return raw.decode(encoding=encoding, **decoding_kwargs)
         if isinstance(raw, str):
             return raw
         return str(raw)
