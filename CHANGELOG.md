@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.20](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.20) — 2026-05-27
+
+Changes since `1.2.19`…`1.2.20`.
+
+### Feature
+
+- **Issue and pull request templates:** `get_template` methods for fetching issue and pull request templates now accept `encoding` (default to `"utf-8"`) and optional `decoding_kwargs` forwarded to `bytes.decode`, so non-UTF-8 template files can be read with the codec and error handling of your choice!
+
+### Fix
+
+- **Async client method signatures:** several async methods that previously took a catch-all `**params` or `**payload` as input now use the same keyword arguments as their sync counterparts.
+
+
+### GitHub Action
+
+- **check-code:** new workflow that runs on push & PR, checks code style (via `ruff`) and ensure all unit tests pass.
+
+---
+
 ## [1.2.19](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.19) — 2026-05-18
 
 Changes since `1.2.18`…`1.2.19`.
