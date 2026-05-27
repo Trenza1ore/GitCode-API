@@ -219,6 +219,7 @@ async def list_gitcode_template_rows_async(
     repo: str,
     path_pattern: Pattern[str],
 ) -> List[Tuple[str, str, str, str]]:
+    """Return ``(template_owner, template_repo, path, sha)`` from the first resolution source with matches."""
     for so, sr in await _resolution_sources_async(client, owner, repo):
         acc: List[Tuple[str, str, str, str]] = []
         try:
@@ -283,6 +284,7 @@ async def get_gitcode_template_body_async(
     encoding: str = "utf-8",
     **decoding_kwargs,
 ) -> str:
+    """Fetch raw template text from the first resolution source that serves ``path``."""
     if not path_pattern.match(path):
         raise GitCodeHTTPStatusError(
             "Path does not match the expected GitCode template pattern for this resource.",

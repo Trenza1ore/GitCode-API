@@ -21,7 +21,7 @@ def _drop_none_values(mapping: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _default_decrypt(value: Any) -> str:
-    """Dummy decryption function, basically a no-op."""
+    """Just a dummy decryption function, basically a no-op."""
     return value
 
 

@@ -508,7 +508,7 @@ class PullsResource(SyncResource):
             ``since``, ``author``, ``assignee``, ``reviewer``, ``milestone_number``, ``labels`` (comma-separated),
             ``merged_after``, ``merged_before``, ``created_after``, ``created_before``, ``updated_after``,
             ``updated_before``, ``only_count`` (boolean), and ISO 8601 timestamps (URL-encoded when sent).
-        :returns: A list of pull requests, or an :class:`~gitcode_api._models.APIObject` when the response is a count object.
+        :returns: A list of pull requests, or an :class:`~gitcode_api._models.APIObject` for count-only responses.
         """
         path = self._client._repo_path("pulls", owner=owner, repo=repo)
         response = self._request(
