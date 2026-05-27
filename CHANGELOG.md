@@ -17,7 +17,7 @@ Changes since `1.2.19`…`1.2.20`.
 
 ### GitHub Action
 
-- **check-code:** new workflow that runs on push & PR, checks code style (via `ruff`) and ensure all unit tests pass.
+- **check-code:** new workflow that runs on push & PR, checking code style (via `ruff`) and ensuring all unit tests pass.
 
 ---
 
