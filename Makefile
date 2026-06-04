@@ -28,7 +28,6 @@ docs-clean:
 
 format:
 	uv run ruff check --fix || true
-	uv run ruff check --select I --fix || true
 	uv run ruff format || true
 
 rst-table:
@@ -53,7 +52,7 @@ release: badge
 	git push
 
 docstring:
-	@uv run pydocstyle gitcode_api/
+	@uv run ruff check --select D gitcode_api/
 
 amend:
 	git commit --amend --no-edit

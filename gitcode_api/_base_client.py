@@ -11,7 +11,7 @@ from urllib.parse import quote
 import httpx
 
 from ._base_resource import BaseResource
-from ._exceptions import GitCodeConfigurationError, GitCodeHTTPStatusError
+from ._exceptions import GitCodeConfigurationError, GitCodeHTTPStatusError, GitCodeTokenError, GitCodeUnauthorizedError
 from .constants import DEFAULT_BASE_URL, DEFAULT_CA_ENV, DEFAULT_TIMEOUT, DEFAULT_TOKEN_ENV
 
 
@@ -165,7 +165,12 @@ class BaseGitCodeClient:
         except ValueError:
             payload = response.text
 
-        raise GitCodeHTTPStatusError(
+        error_cls = GitCodeHTTPStatusError
+        if response.status_code == 401:
+            error_cls = GitCodeUnauthorizedError
+            if "token" in (str(payload) or message).lower():
+                error_cls = GitCodeTokenError
+        raise error_cls(
             message or f"GitCode API request failed with status {response.status_code}.",
             status_code=response.status_code,
             request_id=response.headers.get("X-Request-Id"),

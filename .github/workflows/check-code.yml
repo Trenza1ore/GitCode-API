@@ -27,7 +27,7 @@ jobs:
     - name: Install pytest
       run: uv sync --group test
 
-    - name: Install pytest
+    - name: Install package
       run: uv pip install .
 
     - name: Run pytest
