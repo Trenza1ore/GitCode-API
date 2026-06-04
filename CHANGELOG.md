@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.2.21](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.21) — 2026-06-04
+
+Changes since `1.2.20`…`1.2.21`.
+
+### Feature
+
+- **Authentication errors:** 401 responses now raise `GitCodeUnauthorizedError` (a subclass of `GitCodeHTTPStatusError`), and token-related 401s raise the more specific `GitCodeTokenError`, making it easier to catch and handle expired or invalid tokens without inspecting status codes manually.
+
+### Fix
+
+- **CI workflow:** corrected a duplicate step name in the `check-code` workflow and renamed the workflow from "Code format" to "CI".
+
+### Docs
+
+- **README badges:** added a CI status badge to both `README.md` and `README.zh.md`.
+
+---
+
 ## [1.2.20](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.20) — 2026-05-27
 
 Changes since `1.2.19`…`1.2.20`.
@@ -13,7 +31,6 @@ Changes since `1.2.19`…`1.2.20`.
 ### Fix
 
 - **Async client method signatures:** several async methods that previously took a catch-all `**params` or `**payload` as input now use the same keyword arguments as their sync counterparts.
-
 
 ### GitHub Action
 
@@ -27,7 +44,7 @@ Changes since `1.2.18`…`1.2.19`.
 
 ### Feature
 
-- **Issue and pull request templates (for GitHub mirror repos):** `list_templates` method now also walk each candidate repository's `.github/` directory as well, so we can support GitHub-mirrored projects that keep `ISSUE_TEMPLATE*` and `PULL_REQUEST_TEMPLATE*` files under `.github/` instead of `.gitcode/`.
+- **Issue and pull request templates (for GitHub mirror repos):** `list_templates` method now also walk each candidate repository's `.github/` directory as well, so we can support GitHub-mirrored projects that keep `ISSUE_TEMPLATE`* and `PULL_REQUEST_TEMPLATE*` files under `.github/` instead of `.gitcode/`.
 
 ### Refactor
 
@@ -46,7 +63,7 @@ Changes since `1.2.17`…`1.2.18`.
 ### Feature
 
 - **Decrypt at request headers construction:** Provided GitCode API token is now decrypted at request headers contruction instead of at client constructor due to security concerns, constructor will merely validate it produces a `str` as output.
-- **Version metadata (source checkout):** Improved logic for resolving `__version__` and `__build_hash__` in local development environment.
+- **Version metadata (source checkout):** Improved logic for resolving `__version_`_ and `__build_hash__` in local development environment.
 
 ### Fix
 
@@ -64,7 +81,7 @@ Changes since `1.2.16`…`1.2.17`.
 
 ### Feature
 
-- **Version metadata:** `__version__` is taken from the installed distribution (`importlib.metadata`), and a new `__build_hash__` value is exposed for telling builds apart. `gitcode-api --version` and the no-argument welcome banner include the build id; the banner also prints **Home Page** and **Docs** links (homepage URL comes from package **Project-URL** metadata when present).
+- **Version metadata:** `__version_`_ is taken from the installed distribution (`importlib.metadata`), and a new `__build_hash__` value is exposed for telling builds apart. `gitcode-api --version` and the no-argument welcome banner include the build id; the banner also prints **Home Page** and **Docs** links (homepage URL comes from package **Project-URL** metadata when present).
 - **gitcode_api.constants:** New documented module with the default API base URL, HTTP timeout, and the `GITCODE_ACCESS_TOKEN` / `GITCODE_CA_BUNDLE` environment names used by the client.
 
 ### Fix
