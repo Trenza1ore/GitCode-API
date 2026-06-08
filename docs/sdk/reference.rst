@@ -12,10 +12,8 @@ Module index
    :toctree: generated
 
    gitcode_api
-   gitcode_api._base_client
-   gitcode_api._client
-   gitcode_api._exceptions
-   gitcode_api._models
+   gitcode_api.exceptions
+   gitcode_api.models
    gitcode_api.constants
    gitcode_api.utils
    gitcode_api.resources

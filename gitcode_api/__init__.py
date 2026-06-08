@@ -4,13 +4,15 @@ import re
 from importlib.metadata import PackageNotFoundError, metadata, version
 from typing import cast
 
-from . import constants
+from . import constants, exceptions, models
 from ._client import AsyncGitCode, GitCode
 from ._exceptions import (
     GitCodeAPIError,
     GitCodeConfigurationError,
     GitCodeError,
     GitCodeHTTPStatusError,
+    GitCodeTokenError,
+    GitCodeUnauthorizedError,
 )
 from .utils import as_dict
 
@@ -43,6 +45,8 @@ __version__ = _VERSION_STR.strip()
 
 __all__ = [
     "constants",
+    "exceptions",
+    "models",
     "__version__",
     "__build_hash__",
     "AsyncGitCode",
@@ -51,5 +55,7 @@ __all__ = [
     "GitCodeConfigurationError",
     "GitCodeError",
     "GitCodeHTTPStatusError",
+    "GitCodeTokenError",
+    "GitCodeUnauthorizedError",
     "as_dict",
 ]
