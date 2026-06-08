@@ -4,7 +4,6 @@ import httpx
 import pytest
 
 from gitcode_api import AsyncGitCode
-from gitcode_api.resources import account as account_resources
 
 
 def test_oauth_authorize_url_omits_none_values(sync_client_factory) -> None:
@@ -49,7 +48,7 @@ def test_oauth_exchange_token_uses_expected_request(monkeypatch: pytest.MonkeyPa
             request=httpx.Request("POST", url),
         )
 
-    monkeypatch.setattr(account_resources.httpx, "post", fake_post)
+    monkeypatch.setattr(httpx, "post", fake_post)
 
     client, http_client = sync_client_factory(lambda request: httpx.Response(200, json={}))
     try:
@@ -87,7 +86,7 @@ async def test_async_oauth_refresh_token_uses_async_http_client(monkeypatch: pyt
                 request=httpx.Request("POST", url),
             )
 
-    monkeypatch.setattr(account_resources.httpx, "AsyncClient", FakeAsyncClient)
+    monkeypatch.setattr(httpx, "AsyncClient", FakeAsyncClient)
 
     client = AsyncGitCode(api_key="test-token", http_client=http_client)
     try:

@@ -1122,9 +1122,7 @@ def test_oauth_exchange_token_uses_documented_response_model(
         assert kwargs["params"]["grant_type"] == "authorization_code"
         return httpx.Response(200, json=payload, request=httpx.Request("POST", url))
 
-    from gitcode_api.resources import account as account_resources
-
-    monkeypatch.setattr(account_resources.httpx, "post", fake_post)
+    monkeypatch.setattr(httpx, "post", fake_post)
 
     client, http_client = sync_client_factory(lambda request: httpx.Response(200, json={}, request=request))
     try:
