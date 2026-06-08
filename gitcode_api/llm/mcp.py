@@ -1,6 +1,6 @@
 """FastMCP integration for the GitCode LLM tool."""
 
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union, cast
 
 from ._tool import (
     MCP_SERVER_INSTRUCTIONS,
@@ -25,8 +25,8 @@ def _missing_fastmcp_error() -> ImportError:
 
 def _load_fastmcp() -> tuple["type[FastMCP]", Callable[..., "Tool"]]:
     try:
-        from fastmcp import FastMCP
-        from fastmcp.tools import tool as fastmcp_tool
+        from fastmcp import FastMCP  # pylint: disable=import-outside-toplevel
+        from fastmcp.tools import tool as fastmcp_tool  # pylint: disable=import-outside-toplevel
     except ImportError as exc:
         raise _missing_fastmcp_error() from exc
     return FastMCP, fastmcp_tool  # type: ignore[return-value]
@@ -61,9 +61,9 @@ def register_mcp_gitcode_api_tool(mcp: Union["FastMCP", Any], tool: Optional[Git
     callable_tool = create_mcp_gitcode_api_tool(tool)
     if hasattr(mcp, "tool"):
         try:
-            return mcp.tool(name=TOOL_NAME, description=TOOL_DESCRIPTION)(callable_tool)
+            return cast("Tool", mcp.tool(name=TOOL_NAME, description=TOOL_DESCRIPTION)(callable_tool))
         except TypeError:
-            return mcp.tool()(callable_tool)
+            return cast("Tool", mcp.tool()(callable_tool))
     if hasattr(mcp, "add_tool"):
         _, fastmcp_tool = _load_fastmcp()
         mcp_tool = fastmcp_tool(callable_tool, name=TOOL_NAME, description=TOOL_DESCRIPTION)
