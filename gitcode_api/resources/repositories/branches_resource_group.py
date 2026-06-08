@@ -1,5 +1,6 @@
-"""BranchesResource and AsyncBranchesResource resource group."""
+"""AbstractBranchesResource, BranchesResource, and AsyncBranchesResource resource group."""
 
+from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from ..._models import (
@@ -9,10 +10,14 @@ from ..._models import (
 )
 from .._shared import AsyncResource, SyncResource
 
+# mypy: disable-error-code=override
+# pylint: disable=invalid-overridden-method,protected-access,redefined-builtin
 
-class BranchesResource(SyncResource):
-    """Synchronous branch endpoints."""
 
+class AbstractBranchesResource(ABC):
+    """Interface for Branches resource endpoints."""
+
+    @abstractmethod
     def list(
         self,
         *,
@@ -33,13 +38,8 @@ class BranchesResource(SyncResource):
         :param per_page: Page size.
         :returns: Repository branches.
         """
-        return self._models(
-            "GET",
-            self._client._repo_path("branches", owner=owner, repo=repo),
-            Branch,
-            params={"sort": sort, "direction": direction, "page": page, "per_page": per_page},
-        )
 
+    @abstractmethod
     def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> BranchDetail:
         """Get a single branch.
 
@@ -48,8 +48,8 @@ class BranchesResource(SyncResource):
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Branch details.
         """
-        return self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), BranchDetail)
 
+    @abstractmethod
     def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         """Create a branch from an existing ref.
 
@@ -59,6 +59,41 @@ class BranchesResource(SyncResource):
         :param repo: Repository name. Uses the client default when omitted.
         :returns: Created branch details.
         """
+
+    @abstractmethod
+    def list_protected(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[ProtectedBranch]:
+        """List protected branch rules for a repository.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :returns: Protected branch rules.
+        """
+
+
+class BranchesResource(SyncResource, AbstractBranchesResource):
+    """Synchronous branch endpoints."""
+
+    def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+    ) -> List[Branch]:
+        return self._models(
+            "GET",
+            self._client._repo_path("branches", owner=owner, repo=repo),
+            Branch,
+            params={"sort": sort, "direction": direction, "page": page, "per_page": per_page},
+        )
+
+    def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> BranchDetail:
+        return self._model("GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), BranchDetail)
+
+    def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
         return self._model(
             "POST",
             self._client._repo_path("branches", owner=owner, repo=repo),
@@ -67,12 +102,6 @@ class BranchesResource(SyncResource):
         )
 
     def list_protected(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[ProtectedBranch]:
-        """List protected branch rules for a repository.
-
-        :param owner: Repository owner path. Uses the client default when omitted.
-        :param repo: Repository name. Uses the client default when omitted.
-        :returns: Protected branch rules.
-        """
         return self._models(
             "GET",
             self._client._repo_path("protect_branches", owner=owner, repo=repo),
@@ -80,7 +109,7 @@ class BranchesResource(SyncResource):
         )
 
 
-class AsyncBranchesResource(AsyncResource):
+class AsyncBranchesResource(AsyncResource, AbstractBranchesResource):
     """Asynchronous branch endpoints.
 
     Mirrors :class:`BranchesResource` (``docs/rest_api/repos/branch``).
@@ -96,16 +125,6 @@ class AsyncBranchesResource(AsyncResource):
         page: Optional[int] = None,
         per_page: Optional[int] = None,
     ) -> List[Branch]:
-        """List branches in a repository.
-
-        :param owner: Repository owner path. Uses the client default when omitted.
-        :param repo: Repository name. Uses the client default when omitted.
-        :param sort: Optional sort field such as ``name`` or ``updated``.
-        :param direction: Sort direction, usually ``asc`` or ``desc``.
-        :param page: Page number.
-        :param per_page: Page size.
-        :returns: Repository branches.
-        """
         return await self._models(
             "GET",
             self._client._repo_path("branches", owner=owner, repo=repo),
@@ -114,26 +133,11 @@ class AsyncBranchesResource(AsyncResource):
         )
 
     async def get(self, *, branch: str, owner: Optional[str] = None, repo: Optional[str] = None) -> BranchDetail:
-        """Get a single branch.
-
-        :param branch: Branch name.
-        :param owner: Repository owner path. Uses the client default when omitted.
-        :param repo: Repository name. Uses the client default when omitted.
-        :returns: Branch details.
-        """
         return await self._model(
             "GET", self._client._repo_path("branches", branch, owner=owner, repo=repo), BranchDetail
         )
 
     async def create(self, *, branch: str, ref: str, owner: Optional[str] = None, repo: Optional[str] = None) -> Branch:
-        """Create a branch from an existing ref.
-
-        :param branch: New branch name.
-        :param ref: Starting ref such as a branch, tag, or commit SHA.
-        :param owner: Repository owner path. Uses the client default when omitted.
-        :param repo: Repository name. Uses the client default when omitted.
-        :returns: Created branch details.
-        """
         return await self._model(
             "POST",
             self._client._repo_path("branches", owner=owner, repo=repo),
@@ -142,12 +146,6 @@ class AsyncBranchesResource(AsyncResource):
         )
 
     async def list_protected(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> List[ProtectedBranch]:
-        """List protected branch rules for a repository.
-
-        :param owner: Repository owner path. Uses the client default when omitted.
-        :param repo: Repository name. Uses the client default when omitted.
-        :returns: Protected branch rules.
-        """
         return await self._models(
             "GET", self._client._repo_path("protect_branches", owner=owner, repo=repo), ProtectedBranch
         )

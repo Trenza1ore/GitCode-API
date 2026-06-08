@@ -1,14 +1,19 @@
-"""SearchResource and AsyncSearchResource resource group."""
+"""AbstractSearchResource, SearchResource, and AsyncSearchResource resource group."""
 
+from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from ..._models import SearchIssue, SearchRepository, SearchUser
 from .._shared import AsyncResource, SyncResource
 
+# mypy: disable-error-code=override
+# pylint: disable=invalid-overridden-method,protected-access,redefined-builtin
 
-class SearchResource(SyncResource):
-    """Synchronous search endpoints."""
 
+class AbstractSearchResource(ABC):
+    """Interface for Search resource endpoints."""
+
+    @abstractmethod
     def users(
         self,
         *,
@@ -27,13 +32,8 @@ class SearchResource(SyncResource):
         :param order: Sort order, usually ``asc`` or ``desc``.
         :returns: Matching user search results.
         """
-        return self._models(
-            "GET",
-            self._client._path("search", "users"),
-            SearchUser,
-            params={"q": q, "page": page, "per_page": per_page, "sort": sort, "order": order},
-        )
 
+    @abstractmethod
     def issues(
         self,
         *,
@@ -56,6 +56,64 @@ class SearchResource(SyncResource):
         :param state: Optional issue state filter.
         :returns: Matching issue search results.
         """
+
+    @abstractmethod
+    def repositories(
+        self,
+        *,
+        q: str,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        sort: Optional[str] = None,
+        order: Optional[str] = None,
+        owner: Optional[str] = None,
+        fork: Optional[str] = None,
+        language: Optional[str] = None,
+    ) -> List[SearchRepository]:
+        """Search repositories.
+
+        :param q: Search keywords.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param sort: Optional sort field such as ``stars_count``.
+        :param order: Sort order, usually ``asc`` or ``desc``.
+        :param owner: Optional owner path filter.
+        :param fork: Optional fork visibility filter.
+        :param language: Optional programming language filter.
+        :returns: Matching repository search results.
+        """
+
+
+class SearchResource(SyncResource, AbstractSearchResource):
+    """Synchronous search endpoints."""
+
+    def users(
+        self,
+        *,
+        q: str,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        sort: Optional[str] = None,
+        order: Optional[str] = None,
+    ) -> List[SearchUser]:
+        return self._models(
+            "GET",
+            self._client._path("search", "users"),
+            SearchUser,
+            params={"q": q, "page": page, "per_page": per_page, "sort": sort, "order": order},
+        )
+
+    def issues(
+        self,
+        *,
+        q: str,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        sort: Optional[str] = None,
+        order: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+    ) -> List[SearchIssue]:
         return self._models(
             "GET",
             self._client._path("search", "issues"),
@@ -83,18 +141,6 @@ class SearchResource(SyncResource):
         fork: Optional[str] = None,
         language: Optional[str] = None,
     ) -> List[SearchRepository]:
-        """Search repositories.
-
-        :param q: Search keywords.
-        :param page: Page number.
-        :param per_page: Page size.
-        :param sort: Optional sort field such as ``stars_count``.
-        :param order: Sort order, usually ``asc`` or ``desc``.
-        :param owner: Optional owner path filter.
-        :param fork: Optional fork visibility filter.
-        :param language: Optional programming language filter.
-        :returns: Matching repository search results.
-        """
         return self._models(
             "GET",
             self._client._path("search", "repositories"),
@@ -112,7 +158,7 @@ class SearchResource(SyncResource):
         )
 
 
-class AsyncSearchResource(AsyncResource):
+class AsyncSearchResource(AsyncResource, AbstractSearchResource):
     """Asynchronous search endpoints.
 
     Query parameters match :class:`SearchResource` (``page``, ``per_page``, ``sort``, ``order``, etc.);
@@ -128,15 +174,6 @@ class AsyncSearchResource(AsyncResource):
         sort: Optional[str] = None,
         order: Optional[str] = None,
     ) -> List[SearchUser]:
-        """Search users.
-
-        :param q: Search keywords.
-        :param page: Page number.
-        :param per_page: Page size.
-        :param sort: Optional sort field such as ``joined_at``.
-        :param order: Sort order, usually ``asc`` or ``desc``.
-        :returns: Matching user search results.
-        """
         return await self._models(
             "GET",
             self._client._path("search", "users"),
@@ -155,17 +192,6 @@ class AsyncSearchResource(AsyncResource):
         repo: Optional[str] = None,
         state: Optional[str] = None,
     ) -> List[SearchIssue]:
-        """Search issues.
-
-        :param q: Search keywords.
-        :param page: Page number.
-        :param per_page: Page size.
-        :param sort: Optional sort field.
-        :param order: Sort order, usually ``asc`` or ``desc``.
-        :param repo: Optional repository path filter.
-        :param state: Optional issue state filter.
-        :returns: Matching issue search results.
-        """
         return await self._models(
             "GET",
             self._client._path("search", "issues"),
@@ -193,18 +219,6 @@ class AsyncSearchResource(AsyncResource):
         fork: Optional[str] = None,
         language: Optional[str] = None,
     ) -> List[SearchRepository]:
-        """Search repositories.
-
-        :param q: Search keywords.
-        :param page: Page number.
-        :param per_page: Page size.
-        :param sort: Optional sort field such as ``stars_count``.
-        :param order: Sort order, usually ``asc`` or ``desc``.
-        :param owner: Optional owner path filter.
-        :param fork: Optional fork visibility filter.
-        :param language: Optional programming language filter.
-        :returns: Matching repository search results.
-        """
         return await self._models(
             "GET",
             self._client._path("search", "repositories"),
