@@ -1,4 +1,4 @@
-"""Public exports for misc resource groups."""
+"""Classes for resource groups: releases, tags, and webhooks."""
 
 from .releases_resource_group import AsyncReleasesResource, ReleasesResource
 from .tags_resource_group import AsyncTagsResource, TagsResource

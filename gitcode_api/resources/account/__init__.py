@@ -1,4 +1,4 @@
-"""Public exports for account resource groups."""
+"""Classes for resource groups: OAuth, organizations, search, and users."""
 
 from .oauth_resource_group import AsyncOAuthResource, OAuthResource
 from .orgs_resource_group import AsyncOrgsResource, OrgsResource

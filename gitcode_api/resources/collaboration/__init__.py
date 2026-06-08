@@ -1,4 +1,4 @@
-"""Public exports for collaboration resource groups."""
+"""Classes for resource groups: issues, labels, members, milestones, and pull requests."""
 
 from .issues_resource_group import AsyncIssuesResource, IssuesResource
 from .labels_resource_group import AsyncLabelsResource, LabelsResource

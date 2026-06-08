@@ -1,4 +1,4 @@
-"""Public exports for repositories resource groups."""
+"""Classes for resource groups: branches, commits, file contents, and repositories."""
 
 from .branches_resource_group import AsyncBranchesResource, BranchesResource
 from .commits_resource_group import AsyncCommitsResource, CommitsResource

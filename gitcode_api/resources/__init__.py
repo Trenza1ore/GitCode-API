@@ -1,4 +1,4 @@
-"""Public resource group exports for the GitCode SDK."""
+"""Sync and async resource group classes for all API endpoint families."""
 
 from .account import (
     AsyncOAuthResource,

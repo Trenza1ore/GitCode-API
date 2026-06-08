@@ -1,4 +1,4 @@
-"""Public package exports for the GitCode SDK."""
+"""GitCode API — Python clients for interactions with GitCode REST API."""
 
 import re
 from importlib.metadata import PackageNotFoundError, metadata, version
