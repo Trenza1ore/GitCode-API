@@ -49,6 +49,7 @@ for turning structured instances into serializable data, using
    :no-index:
 
 .. _sdk-client-api-templates:
+
 Issue and pull request templates
 --------------------------------
 

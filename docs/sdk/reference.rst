@@ -12,11 +12,9 @@ Module index
    :toctree: generated
 
    gitcode_api
-   gitcode_api.exceptions
    gitcode_api.models
    gitcode_api.constants
    gitcode_api.utils
-   gitcode_api.resources
    gitcode_api.resources._shared
    gitcode_api.resources.account
    gitcode_api.resources.collaboration
