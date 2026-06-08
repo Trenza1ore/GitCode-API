@@ -6,188 +6,7 @@ from ..._base_client import AsyncAPIClient, SyncAPIClient
 from ..._exceptions import GitCodeHTTPStatusError
 from ...constants import GITCODE_TEMPLATE_REPO
 
-
-def _parse_parent_owner_repo(repo_obj: Any) -> Optional[Tuple[str, str]]:
-    parent = getattr(repo_obj, "parent", None)
-    if parent is None and hasattr(repo_obj, "get"):
-        parent = repo_obj.get("parent")
-    if not isinstance(parent, dict):
-        return None
-    full = str(parent.get("full_name") or "").strip()
-    if "/" not in full:
-        return None
-    owner_path, name = full.rsplit("/", 1)
-    owner_path, name = owner_path.strip(), name.strip()
-    if not owner_path or not name:
-        return None
-    return owner_path, name
-
-
-def _resolution_sources_sync(client: SyncAPIClient, owner: str, repo: str) -> List[Tuple[str, str]]:
-    """Build ordered repo candidates.
-
-    Starts with ``(owner, repo)`` and ``(owner, ".gitcode")``. For every candidate that is a
-    fork (per ``GET /repos/{owner}/{repo}``), appends that repository's parent main repo and
-    ``(parent_owner, ".gitcode")`` when not already listed (deduplicated, breadth-first).
-    """
-    from ..repositories import ReposResource
-
-    sources: List[Tuple[str, str]] = []
-    seen: set[Tuple[str, str]] = set()
-
-    def add(pair: Tuple[str, str]) -> None:
-        if pair not in seen:
-            seen.add(pair)
-            sources.append(pair)
-
-    add((owner, repo))
-    add((owner, GITCODE_TEMPLATE_REPO))
-
-    max_candidates = 64
-    index = 0
-    while index < len(sources) and len(sources) < max_candidates:
-        so, sr = sources[index]
-        index += 1
-        try:
-            meta = ReposResource(client).get(owner=so, repo=sr)
-        except GitCodeHTTPStatusError:
-            continue
-        if not getattr(meta, "fork", None):
-            continue
-        parsed = _parse_parent_owner_repo(meta)
-        if not parsed:
-            continue
-        po, pr = parsed
-        add((po, pr))
-        add((po, GITCODE_TEMPLATE_REPO))
-
-    return sources
-
-
-async def _resolution_sources_async(client: AsyncAPIClient, owner: str, repo: str) -> List[Tuple[str, str]]:
-    """Async counterpart of :func:`_resolution_sources_sync`."""
-    from ..repositories import AsyncReposResource
-
-    sources: List[Tuple[str, str]] = []
-    seen: set[Tuple[str, str]] = set()
-
-    def add(pair: Tuple[str, str]) -> None:
-        if pair not in seen:
-            seen.add(pair)
-            sources.append(pair)
-
-    add((owner, repo))
-    add((owner, GITCODE_TEMPLATE_REPO))
-
-    max_candidates = 64
-    index = 0
-    while index < len(sources) and len(sources) < max_candidates:
-        so, sr = sources[index]
-        index += 1
-        try:
-            meta = await AsyncReposResource(client).get(owner=so, repo=sr)
-        except GitCodeHTTPStatusError:
-            continue
-        if not getattr(meta, "fork", None):
-            continue
-        parsed = _parse_parent_owner_repo(meta)
-        if not parsed:
-            continue
-        po, pr = parsed
-        add((po, pr))
-        add((po, GITCODE_TEMPLATE_REPO))
-
-    return sources
-
-
-def _walk_dot_gitcode_contents_sync(
-    client: SyncAPIClient,
-    template_owner: str,
-    template_repo: str,
-    path: str,
-    acc: List[Tuple[str, str, str, str]],
-) -> None:
-    try:
-        data = client.request(
-            "GET",
-            client._repo_file_path("contents", path, owner=template_owner, repo=template_repo),
-        )
-    except GitCodeHTTPStatusError as exc:
-        if exc.status_code == 404:
-            return
-        raise
-
-    if isinstance(data, dict):
-        t = (data.get("type") or "").lower()
-        if t == "file":
-            sha = data.get("sha") or ""
-            pth = data.get("path") or path
-            if sha and pth:
-                acc.append((template_owner, template_repo, str(pth), str(sha)))
-            return
-        if t in ("dir", "directory", "tree"):
-            pth = data.get("path") or path
-            _walk_dot_gitcode_contents_sync(client, template_owner, template_repo, pth, acc)
-            return
-        return
-
-    if isinstance(data, list):
-        for item in data:
-            if not isinstance(item, dict):
-                continue
-            t = (item.get("type") or "").lower()
-            pth = item.get("path") or ""
-            if t == "file":
-                sha = item.get("sha") or ""
-                if sha and pth:
-                    acc.append((template_owner, template_repo, str(pth), str(sha)))
-            elif t in ("dir", "directory", "tree") and pth:
-                _walk_dot_gitcode_contents_sync(client, template_owner, template_repo, str(pth), acc)
-
-
-async def _walk_dot_gitcode_contents_async(
-    client: AsyncAPIClient,
-    template_owner: str,
-    template_repo: str,
-    path: str,
-    acc: List[Tuple[str, str, str, str]],
-) -> None:
-    try:
-        data = await client.request(
-            "GET",
-            client._repo_file_path("contents", path, owner=template_owner, repo=template_repo),
-        )
-    except GitCodeHTTPStatusError as exc:
-        if exc.status_code == 404:
-            return
-        raise
-
-    if isinstance(data, dict):
-        t = (data.get("type") or "").lower()
-        if t == "file":
-            sha = data.get("sha") or ""
-            pth = data.get("path") or path
-            if sha and pth:
-                acc.append((template_owner, template_repo, str(pth), str(sha)))
-            return
-        if t in ("dir", "directory", "tree"):
-            pth = data.get("path") or path
-            await _walk_dot_gitcode_contents_async(client, template_owner, template_repo, pth, acc)
-            return
-        return
-
-    if isinstance(data, list):
-        for item in data:
-            if not isinstance(item, dict):
-                continue
-            t = (item.get("type") or "").lower()
-            pth = item.get("path") or ""
-            if t == "file":
-                sha = item.get("sha") or ""
-                if sha and pth:
-                    acc.append((template_owner, template_repo, str(pth), str(sha)))
-            elif t in ("dir", "directory", "tree") and pth:
-                await _walk_dot_gitcode_contents_async(client, template_owner, template_repo, str(pth), acc)
+# pylint: disable=invalid-overridden-method,protected-access,redefined-builtin
 
 
 def list_gitcode_template_rows_sync(
@@ -312,3 +131,182 @@ async def get_gitcode_template_body_async(
         status_code=404,
         payload=None,
     )
+
+
+def _parse_parent_owner_repo(repo_obj: Any) -> Optional[Tuple[str, str]]:
+    parent = getattr(repo_obj, "parent", None)
+    if parent is None and hasattr(repo_obj, "get"):
+        parent = repo_obj.get("parent")
+    if not isinstance(parent, dict):
+        return None
+    full = str(parent.get("full_name") or "").strip()
+    if "/" not in full:
+        return None
+    owner_path, name = full.rsplit("/", 1)
+    owner_path, name = owner_path.strip(), name.strip()
+    if not owner_path or not name:
+        return None
+    return owner_path, name
+
+
+def _resolution_sources_sync(client: SyncAPIClient, owner: str, repo: str) -> List[Tuple[str, str]]:
+    """Build ordered repo candidates.
+
+    Starts with ``(owner, repo)`` and ``(owner, ".gitcode")``. For every candidate that is a
+    fork (per ``GET /repos/{owner}/{repo}``), appends that repository's parent main repo and
+    ``(parent_owner, ".gitcode")`` when not already listed (deduplicated, breadth-first).
+    """
+    sources: List[Tuple[str, str]] = []
+    seen: set[Tuple[str, str]] = set()
+
+    def add(pair: Tuple[str, str]) -> None:
+        if pair not in seen:
+            seen.add(pair)
+            sources.append(pair)
+
+    add((owner, repo))
+    add((owner, GITCODE_TEMPLATE_REPO))
+
+    max_candidates = 64
+    index = 0
+    while index < len(sources) and len(sources) < max_candidates:
+        so, sr = sources[index]
+        index += 1
+        try:
+            meta = getattr(client, "repos").get(owner=so, repo=sr)
+        except GitCodeHTTPStatusError:
+            continue
+        if not getattr(meta, "fork", None):
+            continue
+        parsed = _parse_parent_owner_repo(meta)
+        if not parsed:
+            continue
+        po, pr = parsed
+        add((po, pr))
+        add((po, GITCODE_TEMPLATE_REPO))
+
+    return sources
+
+
+async def _resolution_sources_async(client: AsyncAPIClient, owner: str, repo: str) -> List[Tuple[str, str]]:
+    """Async counterpart of :func:`_resolution_sources_sync`."""
+    sources: List[Tuple[str, str]] = []
+    seen: set[Tuple[str, str]] = set()
+
+    def add(pair: Tuple[str, str]) -> None:
+        if pair not in seen:
+            seen.add(pair)
+            sources.append(pair)
+
+    add((owner, repo))
+    add((owner, GITCODE_TEMPLATE_REPO))
+
+    max_candidates = 64
+    index = 0
+    while index < len(sources) and len(sources) < max_candidates:
+        so, sr = sources[index]
+        index += 1
+        try:
+            meta = await getattr(client, "repos").get(owner=so, repo=sr)
+        except GitCodeHTTPStatusError:
+            continue
+        if not getattr(meta, "fork", None):
+            continue
+        parsed = _parse_parent_owner_repo(meta)
+        if not parsed:
+            continue
+        po, pr = parsed
+        add((po, pr))
+        add((po, GITCODE_TEMPLATE_REPO))
+
+    return sources
+
+
+def _walk_dot_gitcode_contents_sync(
+    client: SyncAPIClient,
+    template_owner: str,
+    template_repo: str,
+    path: str,
+    acc: List[Tuple[str, str, str, str]],
+) -> None:
+    try:
+        data = client.request(
+            "GET",
+            client._repo_file_path("contents", path, owner=template_owner, repo=template_repo),
+        )
+    except GitCodeHTTPStatusError as exc:
+        if exc.status_code == 404:
+            return
+        raise
+
+    if isinstance(data, dict):
+        t = (data.get("type") or "").lower()
+        if t == "file":
+            sha = data.get("sha") or ""
+            pth = data.get("path") or path
+            if sha and pth:
+                acc.append((template_owner, template_repo, str(pth), str(sha)))
+            return
+        if t in ("dir", "directory", "tree"):
+            pth = data.get("path") or path
+            _walk_dot_gitcode_contents_sync(client, template_owner, template_repo, pth, acc)
+            return
+        return
+
+    if isinstance(data, list):
+        for item in data:
+            if not isinstance(item, dict):
+                continue
+            t = (item.get("type") or "").lower()
+            pth = item.get("path") or ""
+            if t == "file":
+                sha = item.get("sha") or ""
+                if sha and pth:
+                    acc.append((template_owner, template_repo, str(pth), str(sha)))
+            elif t in ("dir", "directory", "tree") and pth:
+                _walk_dot_gitcode_contents_sync(client, template_owner, template_repo, str(pth), acc)
+
+
+async def _walk_dot_gitcode_contents_async(
+    client: AsyncAPIClient,
+    template_owner: str,
+    template_repo: str,
+    path: str,
+    acc: List[Tuple[str, str, str, str]],
+) -> None:
+    try:
+        data = await client.request(
+            "GET",
+            client._repo_file_path("contents", path, owner=template_owner, repo=template_repo),
+        )
+    except GitCodeHTTPStatusError as exc:
+        if exc.status_code == 404:
+            return
+        raise
+
+    if isinstance(data, dict):
+        t = (data.get("type") or "").lower()
+        if t == "file":
+            sha = data.get("sha") or ""
+            pth = data.get("path") or path
+            if sha and pth:
+                acc.append((template_owner, template_repo, str(pth), str(sha)))
+            return
+        if t in ("dir", "directory", "tree"):
+            pth = data.get("path") or path
+            await _walk_dot_gitcode_contents_async(client, template_owner, template_repo, pth, acc)
+            return
+        return
+
+    if isinstance(data, list):
+        for item in data:
+            if not isinstance(item, dict):
+                continue
+            t = (item.get("type") or "").lower()
+            pth = item.get("path") or ""
+            if t == "file":
+                sha = item.get("sha") or ""
+                if sha and pth:
+                    acc.append((template_owner, template_repo, str(pth), str(sha)))
+            elif t in ("dir", "directory", "tree") and pth:
+                await _walk_dot_gitcode_contents_async(client, template_owner, template_repo, str(pth), acc)
