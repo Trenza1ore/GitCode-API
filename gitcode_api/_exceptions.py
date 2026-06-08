@@ -38,8 +38,10 @@ class GitCodeAPIError(GitCodeError):
 class GitCodeHTTPStatusError(GitCodeAPIError):
     """Raised for non-success HTTP responses from the GitCode API."""
 
+
 class GitCodeUnauthorizedError(GitCodeHTTPStatusError):
     """Raised for 401 unauthorized HTTP responses from the GitCode API."""
+
 
 class GitCodeTokenError(GitCodeUnauthorizedError):
     """Raised for invalid token from the GitCode API."""
