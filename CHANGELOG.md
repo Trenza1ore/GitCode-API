@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.3.0](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.0) — 2026-06-08
+
+Changes since `1.2.21`…`1.3.0`.
+
+### Feature
+
+- **Public `models` and `exceptions` modules:** response models and exception classes are now importable from `gitcode_api.models` and `gitcode_api.exceptions` respectively, giving users a stable, documented import path instead of reaching into private `_models` / `_exceptions` internals.
+
+### Refactor
+
+- **Resource sub-packages:** the `resources/account.py`, `resources/collaboration.py`, `resources/misc.py`, and `resources/repositories.py` files have been split (e.g. `resources/collaboration/pulls_resource_group.py`). The public client API (`client.pulls`, `client.issues`, etc.) is unchanged.
+- **Docstrings on ABCs:** resource method documentation now lives on abstract base classes, avoiding de-synchronization.
+
+---
+
 ## [1.2.21](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.2.21) — 2026-06-04
 
 Changes since `1.2.20`…`1.2.21`.
