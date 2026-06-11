@@ -872,14 +872,14 @@ mcp = [
 
 [package.dev-dependencies]
 binary = [
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extra = ["mcp"] },
     { name = "pyinstaller" },
 ]
 dev = [
     { name = "beautifulsoup4" },
     { name = "coverage", version = "7.10.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "coverage", version = "7.13.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extra = ["mcp"] },
     { name = "githubkit" },
     { name = "json-repair", version = "0.44.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "json-repair", version = "0.59.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
@@ -899,7 +899,7 @@ dev = [
 ]
 docs = [
     { name = "beautifulsoup4" },
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extra = ["mcp"] },
     { name = "myst-parser" },
     { name = "sphinx" },
     { name = "sphinx-rtd-theme" },
@@ -908,7 +908,7 @@ format = [
     { name = "ruff" },
 ]
 mcp = [
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extra = ["mcp"] },
 ]
 test = [
     { name = "coverage", version = "7.10.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
@@ -933,13 +933,13 @@ provides-extras = ["mcp"]
 
 [package.metadata.requires-dev]
 binary = [
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extras = ["mcp"] },
     { name = "pyinstaller", specifier = ">=6.0,<7" },
 ]
 dev = [
     { name = "beautifulsoup4" },
     { name = "coverage" },
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extras = ["mcp"] },
     { name = "githubkit", specifier = ">=0.15.4" },
     { name = "json-repair" },
     { name = "myst-parser", specifier = ">=3.0.1,<4" },
@@ -956,13 +956,13 @@ dev = [
 ]
 docs = [
     { name = "beautifulsoup4" },
-    { name = "fastmcp", marker = "python_full_version >= '3.10'" },
+    { name = "gitcode-api", extras = ["mcp"] },
     { name = "myst-parser", specifier = ">=3.0.1,<4" },
     { name = "sphinx" },
     { name = "sphinx-rtd-theme" },
 ]
 format = [{ name = "ruff" }]
-mcp = [{ name = "fastmcp", marker = "python_full_version >= '3.10'" }]
+mcp = [{ name = "gitcode-api", extras = ["mcp"] }]
 test = [
     { name = "coverage" },
     { name = "json-repair" },

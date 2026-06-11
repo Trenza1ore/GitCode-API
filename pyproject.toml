@@ -10,20 +10,20 @@ readme = "README.md"
 requires-python = ">=3.9,<4"
 license = "MIT"
 authors = [
-    {name = "Hugo Huang", email = "hugo@hugohuang.com"}
+    {name = "Hugo (Jin Huang)", email = "hugo@hugohuang.com"}
 ]
 classifiers = [
-    'Development Status :: 4 - Beta',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: Implementation :: CPython',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.9',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-    'Programming Language :: Python :: 3.14',
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Version Control :: Git",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Intended Audience :: Developers",
@@ -66,7 +66,7 @@ binary = [
 
 # FastMCP
 mcp = [
-    "fastmcp; python_version >= '3.10'",
+    "gitcode-api[mcp]",
 ]
 
 dev = [
@@ -91,7 +91,7 @@ Author = "https://hugohuang.com"
 gitcode-api = "gitcode_api.cli:main"
 
 [tool.uv]
-default-groups = ['dev']
+default-groups = ["dev"]
 
 [tool.setuptools.package-data]
 gitcode_api = ["version.txt", "py.typed"]
