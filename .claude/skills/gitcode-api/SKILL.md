@@ -112,7 +112,7 @@ with GitCode(
 
 ## Repository-scoped defaults
 
-If `owner=` and `repo=` are set on the client, repository resources can omit them per call. If not, pass `owner=` and `repo=` on repository-scoped methods.
+If `owner` and `repo` are set on the client, repository resources can omit them per call. If not, pass `owner` and `repo` on repository-scoped methods.
 
 ## Common resource groups
 

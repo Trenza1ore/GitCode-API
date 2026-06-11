@@ -41,7 +41,7 @@ Create an async client
 Encrypted tokens
 ----------------
 
-Pass ``decrypt=`` when ``api_key=`` or ``GITCODE_ACCESS_TOKEN`` contains an
+Pass ``decrypt`` when ``api_key`` or ``GITCODE_ACCESS_TOKEN`` contains an
 encrypted token value.
 
 .. code-block:: python
@@ -105,13 +105,13 @@ When ``http_client`` is omitted, ``GitCode`` / ``AsyncGitCode`` (and
 #. Otherwise ``verify`` is ``True`` (system trust store).
 
 Use this when GitCode HTTPS sits behind a corporate proxy or private PKI. For
-full control, pass ``http_client=`` with your own ``httpx.Client`` or
+full control, pass ``http_client`` with your own ``httpx.Client`` or
 ``httpx.AsyncClient`` (including custom ``verify`` values).
 
 Repository-scoped defaults
 --------------------------
 
-Most repository resources accept ``owner=`` and ``repo=`` per call. If you set
+Most repository resources accept ``owner`` and ``repo`` per call. If you set
 them on the client, repository methods can omit them:
 
 .. code-block:: python

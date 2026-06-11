@@ -136,7 +136,7 @@ def create_mcp_server(name: str = "GitCode API", tool: Optional[GitCodeLLMTool] 
     :param name: MCP server display name.
     :param tool: Optional preconfigured :class:`~gitcode_api.llm._tool.GitCodeLLMTool`.
     :param kwargs: Forwarded to :class:`GitCodeMCP` and then to ``fastmcp.FastMCP`` (for example
-        ``instructions=`` to override the default server instructions).
+        ``instructions`` to override the default server instructions).
     :returns: Configured ``FastMCP`` instance with ``gitcode_api_tool`` registered.
     """
     return GitCodeMCP(name=name, tool=tool, **kwargs).mcp

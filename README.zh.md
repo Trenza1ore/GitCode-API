@@ -1,12 +1,9 @@
-# GitCode-API
-
-[![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pypi.org/project/gitcode-api) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/gitcode-api?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=RED&left_text=downloads&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pepy.tech/projects/gitcode-api)
-[![Install in Cursor](https://img.shields.io/badge/Install_in-Cursor-000000?logoColor=white)](https://cursor.com/en/install-mcp?name=GitCode%20API&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXRjb2RlLWFwaVttY3BdIiwiZ2l0Y29kZS1hcGkiLCJzZXJ2ZSJdLCJlbnYiOnsiR0lUQ09ERV9BQ0NFU1NfVE9LRU4iOiIke2lucHV0OmdpdGNvZGVfYWNjZXNzX3Rva2VufSJ9LCJpbnB1dHMiOlt7ImlkIjoiZ2l0Y29kZV9hY2Nlc3NfdG9rZW4iLCJ0eXBlIjoicHJvbXB0U3RyaW5nIiwiZGVzY3JpcHRpb24iOiJFbnRlciBHSVRDT0RFX0FDQ0VTU19UT0tFTiIsInBhc3N3b3JkIjp0cnVlfV19) [![Install in VS Code](https://img.shields.io/badge/Install_in-VS_Code-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
-[![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API)](https://github.com/Trenza1ore/GitCode-API) [![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API)](https://gitcode.com/SushiNinja/GitCode-API) [![CI Badge](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/badge.svg?uuid=96abf98469db4ee7bc12ded4646e76d9)](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/)
+# GitCode-API [![GitCode Badge](https://img.shields.io/badge/gitcode-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API)](https://gitcode.com/SushiNinja/GitCode-API) [![GitHub Badge](https://img.shields.io/badge/github-black?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API)](https://github.com/Trenza1ore/GitCode-API) [![CI Badge](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/badge.svg?uuid=96abf98469db4ee7bc12ded4646e76d9)](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/)
+[![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pypi.org/project/gitcode-api) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/gitcode-api?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=BLUE&left_text=PyPI%20Downloads&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pepy.tech/projects/gitcode-api) ![MCP Bundle Downloads](https://img.shields.io/github/downloads/Trenza1ore/GitCode-API/total?style=flat&color=blue&logo=modelcontextprotocol&label=MCP%20Bundle%20Downloads)
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![English README](https://img.shields.io/badge/English-README-blue?style=for-the-badge&logo=googledocs&link=README.md)](README.md)
 
-`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组组织的调用方式，以及轻量响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。`gitcode_api.llm` 还提供 OpenAI 格式的工具、MCP 服务，以及 [openJiuwen](https://openjiuwen.com) 格式的工具集成，便于智能体复用同一套资源型 API。
+`gitcode-api` 是由社区维护的 GitCode REST API Python SDK：提供同步与异步客户端、按资源组分类的调用方式，以及带类型注释的响应模型，让你在 Python 里调用 GitCode 时不必手写底层 HTTP。我们还提供 OpenAI 格式的工具、MCP 服务，以及 [openJiuwen](https://openjiuwen.com) 格式的工具集成，便于智能体复用同一套 API。
 
 ## 项目定位
 
@@ -14,7 +11,7 @@
 - 同步（`GitCode`）与异步（`AsyncGitCode`）两套接口形状一致，便于迁移或混用。
 - 提供 REST API 无法直接达成的复杂功能：比如 Issue 与 PR 模版的获取。
 - 通过 `client.repos`、`client.pulls`、`client.users` 等资源组挂载具体 API。
-- 可在构造客户端时设置 `owner=`、`repo=`，作为仓库相关接口的默认上下文。
+- 可在构造客户端时设置 `owner`、`repo`，作为仓库相关接口的默认上下文。
 - 本仓库含 Sphinx 文档与 GitCode REST API 参考镜像。
 - 提供面向 LLM 智能体的 MCP 服务、OpenAI 工具，以及 [openJiuwen](https://openjiuwen.com) 工具。
 - 提供可一键安装到常用 AI IDE（如 Cursor、VS Code）的 MCP 服务。
@@ -39,13 +36,13 @@ pip install -U gitcode-api
 
 ## 认证
 
-可直接传入 `api_key=`，或将访问令牌写入环境变量：
+可直接传入 `api_key`，或将访问令牌写入环境变量：
 
 ```bash
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
-若令牌以密文形式保存，可在构造客户端时传入 `decrypt=`，在发起请求前解密 `api_key=` 或环境变量 `GITCODE_ACCESS_TOKEN`：
+若令牌以密文形式保存，可在构造客户端时传入 `decrypt`，在发起请求前解密 `api_key` 或环境变量 `GITCODE_ACCESS_TOKEN`：
 
 ```python
 from gitcode_api import GitCode
@@ -129,7 +126,7 @@ meta = as_dict(repo)  # dict
 
 ### 上下文管理器
 
-`GitCode` 与 `AsyncGitCode`（以及更底层的 `SyncAPIClient` / `AsyncAPIClient`）均可作为 `with` / `async with` 的上下文使用：离开代码块时会自动调用 `close()` 或 `await close()`，释放底层 httpx 客户端；若你传入了自定义 `http_client=`，也会随 SDK 客户端一并关闭。`close()` 还会清空各资源组上 `method_signature(...)` 的 LRU 缓存见 **资源组**，避免 LRU 缓存在关闭后仍持有引用、影响垃圾回收。
+`GitCode` 与 `AsyncGitCode`（以及更底层的 `SyncAPIClient` / `AsyncAPIClient`）均可作为 `with` / `async with` 的上下文使用：离开代码块时会自动调用 `close()` 或 `await close()`，释放底层 httpx 客户端；若你传入了自定义 `http_client`，也会随 SDK 客户端一并关闭。`close()` 还会清空各资源组上 `method_signature(...)` 的 LRU 缓存见 **资源组**，避免 LRU 缓存在关闭后仍持有引用、影响垃圾回收。
 
 ```python
 from gitcode_api import GitCode
@@ -284,7 +281,7 @@ while True:
 pip install 'gitcode-api[mcp]'
 ```
 
-- **`create_mcp_server`** — 创建已注册 `gitcode_api_tool` 的 `FastMCP` 实例；可选 `name=`、`tool=` 以及其余关键字参数会原样传给 `FastMCP(...)`。
+- **`create_mcp_server`** — 创建已注册 `gitcode_api_tool` 的 `FastMCP` 实例；可选 `name`、`tool` 以及其余关键字参数会原样传给 `FastMCP(...)`。
 - **`GitCodeMCP`** — 薄封装：构造上述服务并注册工具；未定义的属性会委托给底层 `FastMCP` 对象（例如各版本 FastMCP 暴露的传输相关接口）。
 - **`create_mcp_gitcode_api_tool`** — 返回独立的异步可调用对象，作为工具实现，供自定义挂载。
 - **`register_mcp_gitcode_api_tool`** — 将上述可调用对象注册到已有的 FastMCP 兼容对象上（`mcp.tool(...)` 或 `mcp.add_tool(...)`）。
@@ -298,7 +295,7 @@ mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-AP
 
 等价地也可通过命令行 `gitcode-api serve` 启动同一套内置服务（见上文 [CLI](#cli) 小节）。
 
-若要在多个工具间共享认证或客户端，可只构造一次 `GitCodeLLMTool`（`from gitcode_api.llm._tool import GitCodeLLMTool`），再以 `tool=` 传入 `GitCodeMCP`、`create_mcp_server`、`register_mcp_gitcode_api_tool` 或 `create_mcp_gitcode_api_tool`。
+若要在多个工具间共享认证或客户端，可只构造一次 `GitCodeLLMTool`（`from gitcode_api.llm._tool import GitCodeLLMTool`），再以 `tool` 传入 `GitCodeMCP`、`create_mcp_server`、`register_mcp_gitcode_api_tool` 或 `create_mcp_gitcode_api_tool`。
 
 ### openJiuwen（`LocalFunction`）
 
@@ -316,7 +313,7 @@ jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCo
 # await jiuwen_tool.invoke({"op_type": "repos", "action": "get", "params": {}})
 ```
 
-可用 `name=`、`description=` 覆盖默认工具卡。其余构造参数与 `GitCode` / `AsyncGitCode` 一致（`client=`、`async_client=`、`api_key=`、`owner=`、`repo=`、`base_url=`、`timeout=`、`decrypt=`）。
+可用 `name`、`description` 覆盖默认工具卡。其余构造参数与 `GitCode` / `AsyncGitCode` 一致（`client`、`async_client`、`api_key`、`owner`、`repo`、`base_url`、`timeout`、`decrypt`）。
 
 **Claude Desktop（MCPB）：** 每个已发布的 GitHub Release 会附带 `gitcode-<version>.mcpb`，可在 Claude Desktop 中作为扩展一键安装；说明见 Anthropic 文档 [使用 MCPB 构建桌面扩展](https://claude.com/docs/connectors/building/mcpb)。在仓库根目录执行 `make mcpb` 可在本地打包（需已安装 [`@anthropic-ai/mcpb`](https://www.npmjs.com/package/@anthropic-ai/mcpb) 并可在 `PATH` 中调用 `mcpb`）。
 
@@ -387,7 +384,7 @@ with GitCode(
 
 异步场景请对 `AsyncGitCode` 使用 `httpx.AsyncClient(verify=...)`。
 
-OpenAI 工具（`GitCodeOpenAITool`）、MCP 相关接口与 `create_openjiuwen_gitcode_api_tool` 同样支持传入已配置好的 `client=` / `async_client=`（OpenAI 与 MCP 还可通过 `tool=` 传入已设置上述客户端的 `GitCodeLLMTool`）。先用自定义 `http_client` 构造 `GitCode` / `AsyncGitCode`，再传入这些适配器，LLM 工具调用会沿用同一套 TLS 与证书配置，不必另做一套处理。
+OpenAI 工具（`GitCodeOpenAITool`）、MCP 相关接口与 `create_openjiuwen_gitcode_api_tool` 同样支持传入已配置好的 `client` / `async_client`（OpenAI 与 MCP 还可通过 `tool` 传入已设置上述客户端的 `GitCodeLLMTool`）。先用自定义 `http_client` 构造 `GitCode` / `AsyncGitCode`，再传入这些适配器，LLM 工具调用会沿用同一套 TLS 与证书配置，不必另做一套处理。
 
 ## 项目状态
 

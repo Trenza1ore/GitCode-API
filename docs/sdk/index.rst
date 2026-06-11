@@ -25,7 +25,7 @@ Highlights
   request counterparts) walk the GitCode ``.gitcode/`` tree on the default branch and resolve
   templates across the main repository, the owner's ``.gitcode`` repository, and fork-parent
   repositories (see :doc:`client_api`).
-- Shared repository context via ``owner=`` and ``repo=`` on the client.
+- Shared repository context via ``owner`` and ``repo`` on the client.
 - Lightweight response wrappers that expose JSON fields as attributes.
 - :func:`~gitcode_api.as_dict` for turning response models into plain
   dictionaries—one :class:`~gitcode_api._models.APIObject` becomes a ``dict``,
@@ -74,8 +74,8 @@ dependencies with ``uv``:
 Authentication
 --------------
 
-Pass ``api_key=`` directly or set ``GITCODE_ACCESS_TOKEN`` in your environment.
-If either value is stored in encrypted form, pass ``decrypt=`` so the client can
+Pass ``api_key`` directly or set ``GITCODE_ACCESS_TOKEN`` in your environment.
+If either value is stored in encrypted form, pass ``decrypt`` so the client can
 decode it before authenticating.
 
 .. code-block:: bash

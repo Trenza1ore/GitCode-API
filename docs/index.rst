@@ -18,7 +18,7 @@ Why this project
 - **Synchronous and asynchronous** ``httpx`` clients with a matching API
   surface (``GitCode`` / ``AsyncGitCode``).
 - **Resource-oriented** entry points (``client.repos``, ``client.pulls``,
-  ``client.issues``, and others), with optional default ``owner=`` / ``repo=``
+  ``client.issues``, and others), with optional default ``owner`` / ``repo``
   on the client when you mostly work inside one repository.
 - **Higher-level helpers** where they matter—for example issue and pull request
   :ref:`template discovery <sdk-client-api-templates>` on the issues and pulls

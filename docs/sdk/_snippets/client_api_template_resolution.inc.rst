@@ -6,7 +6,7 @@ repository default branch via the Contents and Raw APIs.
 ``list_templates`` returns :class:`~gitcode_api._models.RepositoryGitCodeTemplate`
 rows: each row includes ``path``, ``sha``, and the ``template_owner`` /
 ``template_repo`` of the repository where that file was found. ``get_template``
-returns the decoded file body as ``str``; pass ``owner=`` and ``repo=`` from
+returns the decoded file body as ``str``; pass ``owner`` and ``repo`` from
 the row when they differ from the client's default context (for example when
 the template was resolved from another repository).
 

@@ -112,7 +112,7 @@ Shared tool instance
 --------------------
 
 To reuse authentication or HTTP clients across several integrations, construct
-:class:`~gitcode_api.llm._tool.GitCodeLLMTool` once and pass it as ``tool=`` into
+:class:`~gitcode_api.llm._tool.GitCodeLLMTool` once and pass it as ``tool`` into
 :class:`~gitcode_api.llm.mcp.GitCodeMCP`, :func:`~gitcode_api.llm.mcp.create_mcp_server`,
 :func:`~gitcode_api.llm.mcp.register_mcp_gitcode_api_tool`, or
 :func:`~gitcode_api.llm.mcp.create_mcp_gitcode_api_tool`.
@@ -124,7 +124,7 @@ To reuse authentication or HTTP clients across several integrations, construct
    shared = GitCodeLLMTool(owner="SushiNinja", repo="GitCode-API")
 
 The ``gitcode_api.llm._tool`` module is internal-facing but stable for this
-``tool=`` sharing pattern (also described in the project README).
+``tool`` sharing pattern (also described in the project README).
 
 MCP (FastMCP)
 -------------
@@ -140,9 +140,9 @@ MCP (FastMCP)
 Public helpers (see module reference below):
 
 * :func:`~gitcode_api.llm.mcp.create_mcp_server` — returns a ``FastMCP`` instance with
-  ``gitcode_api_tool`` already registered; ``name=``, ``tool=``, and other
+  ``gitcode_api_tool`` already registered; ``name``, ``tool``, and other
   keyword arguments are forwarded to ``FastMCP(...)``. Unless you pass
-  ``instructions=``, the server receives default MCP server instructions that
+  ``instructions``, the server receives default MCP server instructions that
   summarize the tool, parameters, base64-wrapped bytes, and the valid ``op_type``
   names for the installed SDK.
 * :class:`~gitcode_api.llm.mcp.GitCodeMCP` — constructs that server and registers
@@ -196,9 +196,9 @@ calling the underlying coroutine synchronously.
    # jiuwen_tool.card.name, jiuwen_tool.card.description, jiuwen_tool.card.input_params — tool metadata
    # await jiuwen_tool.invoke({"op_type": "repos", "action": "get", "params": {}})
 
-Constructor arguments mirror the clients: ``client=``, ``async_client=``,
-``api_key=``, ``owner=``, ``repo=``, ``base_url=``, ``timeout=``, ``decrypt=``,
-plus optional ``name=`` and ``description=`` for the tool card (defaults match
+Constructor arguments mirror the clients: ``client``, ``async_client``,
+``api_key``, ``owner``, ``repo``, ``base_url``, ``timeout``, ``decrypt``,
+plus optional ``name`` and ``description`` for the tool card (defaults match
 ``gitcode_api_tool`` and the shared description).
 
 Published GitHub Releases also ship a ``gitcode-<version>.mcpb`` bundle for
@@ -210,11 +210,11 @@ Corporate TLS / custom ``httpx`` clients
 ----------------------------------------
 
 If you need a custom CA or proxy settings, build :class:`~gitcode_api.GitCode` /
-:class:`~gitcode_api.AsyncGitCode` with ``http_client=`` / ``async_client=`` and
+:class:`~gitcode_api.AsyncGitCode` with ``http_client`` / ``async_client`` and
 pass those instances into ``GitCodeOpenAITool``, MCP helpers, or
 :func:`~gitcode_api.llm.jiuwen.create_openjiuwen_gitcode_api_tool` via
-``client=`` / ``async_client=``, or pass a preconfigured
-:class:`~gitcode_api.llm._tool.GitCodeLLMTool` via ``tool=`` into the OpenAI /
+``client`` / ``async_client``, or pass a preconfigured
+:class:`~gitcode_api.llm._tool.GitCodeLLMTool` via ``tool`` into the OpenAI /
 MCP adapters, so tool calls reuse the same TLS stack as the rest of your app.
 
 Further reading

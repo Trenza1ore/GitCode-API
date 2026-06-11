@@ -119,7 +119,7 @@ Changes since `1.2.15`…`1.2.16`.
 
 ### Feature
 
-- **Default CA Bundle:** When the internal `GitCode` client builds its own `httpx` client (you do not pass `http_client=`), verification uses the path from `GITCODE_CA_BUNDLE` if set, otherwise `REQUESTS_CA_BUNDLE` if set (same convention as many Python HTTP stacks), otherwise the default CA bundle is used. Applies to both `GitCode` and `AsyncGitCode`.
+- **Default CA Bundle:** When the internal `GitCode` client builds its own `httpx` client (you do not pass `http_client`), verification uses the path from `GITCODE_CA_BUNDLE` if set, otherwise `REQUESTS_CA_BUNDLE` if set (same convention as many Python HTTP stacks), otherwise the default CA bundle is used. Applies to both `GitCode` and `AsyncGitCode`.
 
 ---
 

@@ -70,7 +70,7 @@ Follow the existing style before introducing new abstractions.
 - Return typed `APIObject` subclasses or lists of them via `_model(...)` / `_models(...)` where possible.
 - Use `raw=True` only for endpoints that intentionally return bytes.
 - Prefer context managers in examples: `with GitCode(...) as client:` and `async with AsyncGitCode(...) as client:`.
-- Keep authentication behavior centered on `api_key=`, `GITCODE_ACCESS_TOKEN`, and optional `decrypt=`.
+- Keep authentication behavior centered on `api_key`, `GITCODE_ACCESS_TOKEN`, and optional `decrypt`.
 - Do not add network calls to unit tests; use `httpx.MockTransport`.
 - Keep `gitcode_api` passing `make lint` when changing public types or resource surfaces.
 - For `gitcode_api.llm`, preserve lazy loading via `llm/__getattr__` rather than importing FastMCP or heavy helpers at package import time.

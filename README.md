@@ -1,12 +1,9 @@
-# GitCode-API
-
-[![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pypi.org/project/gitcode-api) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/gitcode-api?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=RED&left_text=downloads&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pepy.tech/projects/gitcode-api)
-[![Install in Cursor](https://img.shields.io/badge/Install_in-Cursor-000000?logoColor=white)](https://cursor.com/en/install-mcp?name=GitCode%20API&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLWZyb20iLCJnaXRjb2RlLWFwaVttY3BdIiwiZ2l0Y29kZS1hcGkiLCJzZXJ2ZSJdLCJlbnYiOnsiR0lUQ09ERV9BQ0NFU1NfVE9LRU4iOiIke2lucHV0OmdpdGNvZGVfYWNjZXNzX3Rva2VufSJ9LCJpbnB1dHMiOlt7ImlkIjoiZ2l0Y29kZV9hY2Nlc3NfdG9rZW4iLCJ0eXBlIjoicHJvbXB0U3RyaW5nIiwiZGVzY3JpcHRpb24iOiJFbnRlciBHSVRDT0RFX0FDQ0VTU19UT0tFTiIsInBhc3N3b3JkIjp0cnVlfV19) [![Install in VS Code](https://img.shields.io/badge/Install_in-VS_Code-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=GitCode%20API&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22--from%22%2C%22gitcode-api%5Bmcp%5D%22%2C%22gitcode-api%22%2C%22serve%22%5D%2C%22env%22%3A%7B%22GITCODE_ACCESS_TOKEN%22%3A%22%24%7Binput%3Agitcode_access_token%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22gitcode_access_token%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22Enter%20GITCODE_ACCESS_TOKEN%22%2C%22password%22%3Atrue%7D%5D%7D)
-[![GitHub Badge](https://img.shields.io/badge/github-repo-blue?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API)](https://github.com/Trenza1ore/GitCode-API) [![GitCode Badge](https://img.shields.io/badge/gitcode-repo-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API)](https://gitcode.com/SushiNinja/GitCode-API) [![CI Badge](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/badge.svg?uuid=96abf98469db4ee7bc12ded4646e76d9)](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/)
+# GitCode-API [![GitCode Badge](https://img.shields.io/badge/gitcode-brown?logo=gitcode&link=https%3A%2F%2Fgitcode.com%2FSushiNinja%2FGitCode-API)](https://gitcode.com/SushiNinja/GitCode-API) [![GitHub Badge](https://img.shields.io/badge/github-black?logo=github&link=https%3A%2F%2Fgithub.com%2FTrenza1ore%2FGitCode-API)](https://github.com/Trenza1ore/GitCode-API) [![CI Badge](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/badge.svg?uuid=96abf98469db4ee7bc12ded4646e76d9)](https://github.com/Trenza1ore/GitCode-API/actions/workflows/check-code.yml/)
+[![PyPI - Version](https://img.shields.io/pypi/v/gitcode-api?link=https%3A%2F%2Fpypi.org%2Fproject%2Fgitcode-api%2F&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pypi.org/project/gitcode-api) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/gitcode-api?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=BLUE&left_text=PyPI%20Downloads&uuid=96abf98469db4ee7bc12ded4646e76d9)](https://pepy.tech/projects/gitcode-api) ![MCP Bundle Downloads](https://img.shields.io/github/downloads/Trenza1ore/GitCode-API/total?style=flat&color=blue&logo=modelcontextprotocol&label=MCP%20Bundle%20Downloads)
 
 [![Docs](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-Docs-cyan?style=for-the-badge&logo=readthedocs&link=https%3A%2F%2Fgitcode-api.readthedocs.io%2Fen%2Flatest%2Findex.html)](https://gitcode-api.readthedocs.io) [![中文README](https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-brown?style=for-the-badge&logo=googledocs&link=README.zh.md)](README.zh.md)
 
-`gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, repository-scoped helpers, and lightweight response models so you can work with GitCode from Python without hand-writing raw HTTP requests. The `gitcode_api.llm` module adds an OpenAI-style function tool, an MCP service, and an [openJiuwen](https://openjiuwen.com) tool integration so agents can reuse the same resource-oriented API.
+`gitcode-api` is a community-maintained Python SDK for the GitCode REST API. It provides easy-to-use synchronous and asynchronous clients, helpers methods grouped by resource groups, and type-hinted response models so you can work with GitCode from Python without hand-writing raw HTTP requests. The `gitcode_api.llm` module adds an OpenAI-style function tool, an MCP service, and an [openJiuwen](https://openjiuwen.com) tool integration so agents can reuse the same resource-oriented API.
 
 ## Why This Project
 
@@ -14,7 +11,7 @@
 - Sync and async clients with a consistent API surface.
 - Convenient methods not offered by REST API directly: such as fetching Issue and PR templates.
 - Resource groups such as `client.repos`, `client.pulls`, and `client.users`.
-- Repository defaults via `owner=` and `repo=` on the client.
+- Repository defaults via `owner` and `repo` on the client.
 - Sphinx docs plus a mirrored GitCode REST API reference in `docs/`.
 - Provides MCP server, OpenAI tool, and [openJiuwen](https://openjiuwen.com) tool for LLM agent usage.
 - Provide MCP service that directly installs to your IDE of choice, such as Cursor and VS Code!
@@ -40,14 +37,14 @@ For detailed setup (including installing to services like Claude Code / Codex): 
 
 ## Authentication
 
-Pass `api_key=` directly, or set `GITCODE_ACCESS_TOKEN` in your environment:
+Pass `api_key` directly, or set `GITCODE_ACCESS_TOKEN` in your environment:
 
 ```bash
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
-If your token is stored in encrypted form, pass `decrypt=` to decode either an
-encrypted `api_key=` value or an encrypted `GITCODE_ACCESS_TOKEN` value before
+If your token is stored in encrypted form, pass `decrypt` to decode either an
+encrypted `api_key` value or an encrypted `GITCODE_ACCESS_TOKEN` value before
 the client uses it.
 
 ```python
@@ -134,7 +131,7 @@ meta = as_dict(repo)  # dict
 
 ### Context managers
 
-`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. Leaving the block calls `close()` / `await close()` on the underlying client automatically, including a custom `http_client=` you passed in. `close()` also clears the LRU cache used by each resource group's `method_signature(...)` helper (see the [Available Resources](#available-resources) section).
+`GitCode` and `AsyncGitCode` (and the lower-level `SyncAPIClient` / `AsyncAPIClient`) support `with` / `async with`. Leaving the block calls `close()` / `await close()` on the underlying client automatically, including a custom `http_client` you passed in. `close()` also clears the LRU cache used by each resource group's `method_signature(...)` helper (see the [Available Resources](#available-resources) section).
 
 ```python
 from gitcode_api import GitCode
@@ -291,7 +288,7 @@ while True:
 pip install 'gitcode-api[mcp]'
 ```
 
-- **`create_mcp_server`** — builds a `FastMCP` instance with `gitcode_api_tool` already registered; optional `name=`, `tool=`, and extra keyword arguments are forwarded to `FastMCP(...)`.
+- **`create_mcp_server`** — builds a `FastMCP` instance with `gitcode_api_tool` already registered; optional `name`, `tool`, and extra keyword arguments are forwarded to `FastMCP(...)`.
 - **`GitCodeMCP`** — thin wrapper that constructs that server and registers the tool; unknown attributes are delegated to the underlying `FastMCP` object (for example transport helpers exposed by your FastMCP version).
 - **`create_mcp_gitcode_api_tool`** — returns the standalone async callable used as the tool body (for custom wiring).
 - **`register_mcp_gitcode_api_tool`** — attaches that callable to an existing FastMCP-compatible object (`mcp.tool(...)` or `mcp.add_tool(...)`).
@@ -305,7 +302,7 @@ mcp = create_mcp_server(name="GitCode API", owner="SushiNinja", repo="GitCode-AP
 
 The same server is available from the CLI as `gitcode-api serve` (see the [CLI](#cli) section).
 
-To share auth or clients across tools, build `GitCodeLLMTool` once (`from gitcode_api.llm._tool import GitCodeLLMTool`) and pass it as `tool=` into `GitCodeMCP`, `create_mcp_server`, `register_mcp_gitcode_api_tool`, or `create_mcp_gitcode_api_tool`.
+To share auth or clients across tools, build `GitCodeLLMTool` once (`from gitcode_api.llm._tool import GitCodeLLMTool`) and pass it as `tool` into `GitCodeMCP`, `create_mcp_server`, `register_mcp_gitcode_api_tool`, or `create_mcp_gitcode_api_tool`.
 
 ### openJiuwen (`LocalFunction`)
 
@@ -323,7 +320,7 @@ jiuwen_tool = create_openjiuwen_gitcode_api_tool(owner="SushiNinja", repo="GitCo
 # await jiuwen_tool.invoke({"op_type": "repos", "action": "get", "params": {}})
 ```
 
-Optional `name=` and `description=` override the default tool card. Constructor options otherwise mirror `GitCode` / `AsyncGitCode` (`client=`, `async_client=`, `api_key=`, `owner=`, `repo=`, `base_url=`, `timeout=`, `decrypt=`).
+Optional `name` and `description` override the default tool card. Constructor options otherwise mirror `GitCode` / `AsyncGitCode` (`client`, `async_client`, `api_key`, `owner`, `repo`, `base_url`, `timeout`, `decrypt`).
 
 **Claude Desktop (MCPB):** published GitHub Releases include a `gitcode-<version>.mcpb` bundle for one-click installation as a Claude Desktop extension; see Anthropic’s guide, [Build a desktop extension with MCPB](https://claude.com/docs/connectors/building/mcpb). From a checkout you can run `make mcpb` (requires the [`@anthropic-ai/mcpb`](https://www.npmjs.com/package/@anthropic-ai/mcpb) CLI on your `PATH`).
 
@@ -394,7 +391,7 @@ with GitCode(
 
 Use `httpx.AsyncClient(verify=...)` with `AsyncGitCode` for async code.
 
-The OpenAI tool (`GitCodeOpenAITool`), MCP helpers, and `create_openjiuwen_gitcode_api_tool` accept the same `client=` / `async_client=` arguments (OpenAI and MCP also accept a shared `GitCodeLLMTool` via `tool=`). Build `GitCode` / `AsyncGitCode` with your custom `http_client` once and pass it through so LLM tool calls reuse the same TLS settings.
+The OpenAI tool (`GitCodeOpenAITool`), MCP helpers, and `create_openjiuwen_gitcode_api_tool` accept the same `client` / `async_client` arguments (OpenAI and MCP also accept a shared `GitCodeLLMTool` via `tool`). Build `GitCode` / `AsyncGitCode` with your custom `http_client` once and pass it through so LLM tool calls reuse the same TLS settings.
 
 ## Project Status
 

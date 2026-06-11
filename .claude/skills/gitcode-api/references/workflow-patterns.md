@@ -8,21 +8,21 @@
 pip install -U gitcode-api
 ```
 
-2. Export a token if you do not want to pass `api_key=` explicitly:
+2. Export a token if you do not want to pass `api_key` explicitly:
 
 ```bash
 export GITCODE_ACCESS_TOKEN="your-token"
 ```
 
-If the token is encrypted, pass `decrypt=` on the client so it can decode an
-encrypted `api_key=` value or encrypted `GITCODE_ACCESS_TOKEN` at runtime.
+If the token is encrypted, pass `decrypt` on the client so it can decode an
+encrypted `api_key` value or encrypted `GITCODE_ACCESS_TOKEN` at runtime.
 
 3. Decide whether your task is repository-scoped.
 
-- Repository-scoped: set `owner=` and `repo=` on the client for convenience.
+- Repository-scoped: set `owner` and `repo` on the client for convenience.
 - Account-wide: use `users`, `orgs`, `search`, or `oauth` without repository defaults.
 
-4. Prefer context managers so the underlying `httpx` client closes cleanly, including a supplied `http_client=`.
+4. Prefer context managers so the underlying `httpx` client closes cleanly, including a supplied `http_client`.
 5. If you need a runnable baseline, start from `examples/README.md` and the scripts in `examples/`.
 
 ## Pick the best reference
@@ -78,7 +78,7 @@ with GitCode(owner="SushiNinja", repo="GitCode-API") as client:
 ## Common decision rules
 
 - Need repository metadata, branches, commits, contents, issues, or pull requests:
-  create the client with `owner=` and `repo=` up front.
+  create the client with `owner` and `repo` up front.
 - Need current-user, organization, search, or OAuth actions:
   start with `GitCode()` or `AsyncGitCode()` and only add repo context if a later call needs it.
 - Need a quick demo or smoke test:
@@ -178,8 +178,8 @@ Symptom:
 
 Fix:
 
-- set `owner=` and `repo=` on the client, or
-- pass `owner=` and `repo=` to the specific call
+- set `owner` and `repo` on the client, or
+- pass `owner` and `repo` to the specific call
 
 ### HTTP errors
 
@@ -205,7 +205,7 @@ Fix:
 
 - prefer `with GitCode(...) as client:`
 - prefer `async with AsyncGitCode(...) as client:`
-- remember that closing the SDK client also closes a supplied `http_client=`
+- remember that closing the SDK client also closes a supplied `http_client`
 
 ## CLI helpers
 
