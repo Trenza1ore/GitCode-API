@@ -22,6 +22,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "myst_parser",
+    "sphinx_copybutton",
 ]
 
 autosummary_generate = True
