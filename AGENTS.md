@@ -113,7 +113,7 @@ The documentation is a Sphinx project under `docs/`.
 - SDK docs are under `docs/sdk/`, including `docs/sdk/llm_tools.rst` for OpenAI tools, MCP / FastMCP, `GitCodeLLMTool`, and TLS notes.
 - REST API mirror docs are under `docs/rest_api/`.
 - `docs/changelog.md` includes the root `CHANGELOG.md` through MyST.
-- Read the Docs builds from `.readthedocs.yaml` using Python 3.11 and `docs/requirements.txt`.
+- Read the Docs builds from `.readthedocs.yaml` using Python 3.11 and `docs/pyproject.toml`.
 
 Use reStructuredText for existing `.rst` pages. Use MyST Markdown only where the file is already Markdown. Build locally with `make docs-dev` after nontrivial docs changes; it automatically runs `scripts/fix_rst_table.py docs/**/*.rst`, so table alignment is fixed before Sphinx builds.
 

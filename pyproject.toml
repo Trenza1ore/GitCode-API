@@ -47,10 +47,12 @@ test = [
 # Documentation (Sphinx + mirroring upstream GitCode Help pages)
 docs = [
     { include-group = "mcp" },
-    "sphinx",
-    "sphinx-rtd-theme",
     "beautifulsoup4",
-    "myst-parser>=3.0.1,<4",
+    "sphinx>=5",
+    "sphinx-rtd-theme>=3.0",
+    "sphinx-copybutton",
+    "myst-parser>=3.0.1",
+    "gitcode-api[mcp]",
 ]
 
 # Formatting

@@ -895,6 +895,7 @@ dev = [
     { name = "ruff" },
     { name = "setuptools" },
     { name = "sphinx" },
+    { name = "sphinx-copybutton" },
     { name = "sphinx-rtd-theme" },
 ]
 docs = [
@@ -902,6 +903,7 @@ docs = [
     { name = "gitcode-api", extra = ["mcp"] },
     { name = "myst-parser" },
     { name = "sphinx" },
+    { name = "sphinx-copybutton" },
     { name = "sphinx-rtd-theme" },
 ]
 format = [
@@ -942,7 +944,7 @@ dev = [
     { name = "gitcode-api", extras = ["mcp"] },
     { name = "githubkit", specifier = ">=0.15.4" },
     { name = "json-repair" },
-    { name = "myst-parser", specifier = ">=3.0.1,<4" },
+    { name = "myst-parser", specifier = ">=3.0.1" },
     { name = "openai" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -951,15 +953,17 @@ dev = [
     { name = "pytest-mock" },
     { name = "ruff" },
     { name = "setuptools" },
-    { name = "sphinx" },
-    { name = "sphinx-rtd-theme" },
+    { name = "sphinx", specifier = ">=5" },
+    { name = "sphinx-copybutton" },
+    { name = "sphinx-rtd-theme", specifier = ">=3.0" },
 ]
 docs = [
     { name = "beautifulsoup4" },
     { name = "gitcode-api", extras = ["mcp"] },
-    { name = "myst-parser", specifier = ">=3.0.1,<4" },
-    { name = "sphinx" },
-    { name = "sphinx-rtd-theme" },
+    { name = "myst-parser", specifier = ">=3.0.1" },
+    { name = "sphinx", specifier = ">=5" },
+    { name = "sphinx-copybutton" },
+    { name = "sphinx-rtd-theme", specifier = ">=3.0" },
 ]
 format = [{ name = "ruff" }]
 mcp = [{ name = "gitcode-api", extras = ["mcp"] }]
@@ -2614,6 +2618,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5b/be/50e50cb4f2eff47df05673d361095cafd95521d2a22521b920c67a372dcb/sphinx-7.4.7.tar.gz", hash = "sha256:242f92a7ea7e6c5b406fdc2615413890ba9f699114a9c09192d7dfead2ee9cfe", size = 8067911, upload-time = "2024-07-20T14:46:56.059Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0d/ef/153f6803c5d5f8917dbb7f7fcf6d34a871ede3296fa89c2c703f5f8a6c8e/sphinx-7.4.7-py3-none-any.whl", hash = "sha256:c2419e2135d11f1951cd994d6eb18a1835bd8fdd8429f9ca375dc1f3281bd239", size = 3401624, upload-time = "2024-07-20T14:46:52.142Z" },
+]
+
+[[package]]
+name = "sphinx-copybutton"
+version = "0.5.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sphinx" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fc/2b/a964715e7f5295f77509e59309959f4125122d648f86b4fe7d70ca1d882c/sphinx-copybutton-0.5.2.tar.gz", hash = "sha256:4cf17c82fb9646d1bc9ca92ac280813a3b605d8c421225fd9913154103ee1fbd", size = 23039, upload-time = "2023-04-14T08:10:22.998Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9e/48/1ea60e74949eecb12cdd6ac43987f9fd331156388dcc2319b45e2ebb81bf/sphinx_copybutton-0.5.2-py3-none-any.whl", hash = "sha256:fb543fd386d917746c9a2c50360c7905b605726b9355cd26e9974857afeae06e", size = 13343, upload-time = "2023-04-14T08:10:20.844Z" },
 ]
 
 [[package]]
