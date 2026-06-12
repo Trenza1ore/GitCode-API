@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.3.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.1) — 2026-06-12
+
+Changes since `1.3.0`…`1.3.1`.
+
+### Feature
+
+- **Issue creation `template_path`:** `client.issues.create` now accepts an optional `template_path` parameter, potentially letting you use a repository issue template. *However, GitCode doesn't seem to set it up correctly...*
+
+### Docs
+
+- **Copy button on code blocks:** documentation code blocks now include a one-click copy button (Sphinx `copybutton` extension).
+
+---
+
 ## [1.3.0](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.0) — 2026-06-08
 
 Changes since `1.2.21`…`1.3.0`.
