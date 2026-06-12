@@ -37,6 +37,11 @@ Parameters
 | security_hole  | formData | string    | Whether the issue is private |
 |                |          |           | (default is false)           |
 +----------------+----------+-----------+------------------------------+
+| template_path  | formData | string    | Issue template path, another |
+|                |          |           | undocumented field. Doesn't  |
+|                |          |           | seem to do anything at all.  |
+|                |          |           | I don't know how to use it.  |
++----------------+----------+-----------+------------------------------+
 
 Response
 ~~~~~~~~

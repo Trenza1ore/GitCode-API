@@ -1,5 +1,5 @@
-``IssuesResource.list_templates``, ``IssuesResource.get_template``,
-``PullsResource.list_templates``, and ``PullsResource.get_template`` (and the
+``GitCode.issues.list_templates``, ``GitCode.issues.get_template``,
+``GitCode.pulls.list_templates``, and ``GitCode.pulls.get_template`` (and the
 ``Async*`` equivalents) help you read GitCode **active** templates from the
 repository default branch via the Contents and Raw APIs.
 
@@ -29,6 +29,16 @@ for each until it finds paths that match the template naming rules:
 ``.gitcode/`` whose names start with ``ISSUE_TEMPLATE`` (case-insensitive) and
 end with ``.md``, ``.markdown``, ``.yml``, or ``.yaml``. Pull request templates
 use the ``PULL_REQUEST_TEMPLATE`` prefix with the same extension set.
+
+.. note::
+
+   The ``template_path`` parameter on ``GitCode.issues.create`` is unrelated to
+   the template *reading* helpers above. From testing it does not appear to do
+   anything useful — it only triggers server-side validation errors about the
+   path itself (not the body or any other field). There is no way to pass in
+   field values for YAML issue templates, no labels are applied, and no body is
+   pre-filled. The parameter is forwarded as-is because it exists in the API,
+   but its practical value is unclear.
 
 Runnable examples: ``examples/get_issue_templates.py`` and
 ``examples/get_pull_request_templates.py``.

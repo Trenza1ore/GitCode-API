@@ -76,6 +76,8 @@ class AbstractIssuesResource(ABC):
         labels: Optional[List[str]] = None,
         milestone: Union[int, str, None] = None,
         security_hole: Optional[str] = None,
+        template_path: Optional[str] = None,
+        **kwargs,
     ) -> Issue:
         """Create an issue for a repository.
 
@@ -87,6 +89,9 @@ class AbstractIssuesResource(ABC):
         :param labels: Optional label names.
         :param milestone: Optional milestone identifier.
         :param security_hole: Whether the issue is private; form field described in the Issues API (default public).
+        :param template_path: issue template path, project templates support files under the .gitcode, .github, .gitee
+            directories, and organization templates only support files under the .gitcode directory of .gitcode repo.
+        :param kwargs: Forwarded directly, useful since GitCode has awful documentation...
         :returns: Created issue details.
         """
 
@@ -400,6 +405,8 @@ class IssuesResource(SyncResource, AbstractIssuesResource):
         labels: Optional[List[str]] = None,
         milestone: Union[int, str, None] = None,
         security_hole: Optional[str] = None,
+        template_path: Optional[str] = None,
+        **kwargs,
     ) -> Issue:
         resolved_repo = repo or self._client.repo
         return self._model(
@@ -414,7 +421,8 @@ class IssuesResource(SyncResource, AbstractIssuesResource):
                 "labels": _comma_join(labels),
                 "milestone": milestone,
                 "security_hole": security_hole,
-            },
+                "template_path": template_path,
+            } | kwargs,
         )
 
     def update(
@@ -659,6 +667,8 @@ class AsyncIssuesResource(AsyncResource, AbstractIssuesResource):
         labels: Optional[List[str]] = None,
         milestone: Union[int, str, None] = None,
         security_hole: Optional[str] = None,
+        template_path: Optional[str] = None,
+        **kwargs,
     ) -> Issue:
         resolved_repo = repo or self._client.repo
         return await self._model(
@@ -673,6 +683,7 @@ class AsyncIssuesResource(AsyncResource, AbstractIssuesResource):
                 "labels": _comma_join(labels),
                 "milestone": milestone,
                 "security_hole": security_hole,
+                "template_path": template_path,
             },
         )
 
