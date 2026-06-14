@@ -91,7 +91,7 @@ class AbstractIssuesResource(ABC):
         :param security_hole: Whether the issue is private; form field described in the Issues API (default public).
         :param template_path: issue template path, project templates support files under the .gitcode, .github, .gitee
             directories, and organization templates only support files under the .gitcode directory of .gitcode repo.
-        :param kwargs: Forwarded directly, useful since GitCode has awful documentation...
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Created issue details.
         """
 
@@ -246,28 +246,108 @@ class AbstractIssuesResource(ABC):
         """
 
     @abstractmethod
-    def list_enterprise(self, *, enterprise: str, **params) -> List[Issue]:
+    def list_enterprise(
+        self,
+        *,
+        enterprise: str,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        since: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        milestone: Optional[str] = None,
+        assignee: Optional[str] = None,
+        creator: Optional[str] = None,
+        program: Optional[str] = None,
+        created_at: Optional[str] = None,
+        created_before: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
         """List enterprise issues visible to the caller.
 
         :param enterprise: Enterprise path or login.
-        :param params: Additional query parameters accepted by ``GET .../enterprises/{enterprise}/issues``.
+        :param state: Issue state: ``open``, ``closed``, or ``all``. Default: ``open``.
+        :param labels: Comma-separated list of label names.
+        :param sort: Sort field: ``created`` or ``updated_at``. Default: ``created_at``.
+        :param direction: ``asc`` or ``desc``. Default: ``desc``.
+        :param since: Return issues updated since this timestamp.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param milestone: Milestone name (``none`` for no milestone, ``*`` for any).
+        :param assignee: Assignee username (``none`` for unassigned, ``*`` for any).
+        :param creator: Creator username filter.
+        :param program: Project name (``none`` for unassociated, ``*`` for any).
+        :param created_at: Created-at timestamp filter.
+        :param created_before: Return issues created before this timestamp.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Enterprise-scoped issues.
         """
 
     @abstractmethod
-    def list_user(self, **params) -> List[Issue]:
+    def list_user(
+        self,
+        *,
+        filter: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        since: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        schedule: Optional[str] = None,
+        deadline: Optional[str] = None,
+        created_at: Optional[str] = None,
+        finished_at: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
         """List issues for the authenticated user.
 
-        :param params: Query parameters for ``GET /user/issues`` (filters, pagination, etc.).
+        :param filter: Filter mode: ``assigned``, ``created``, or ``all``. Default: ``assigned``.
+        :param state: Issue state: ``open`` or ``closed``. Default: ``open``.
+        :param labels: Comma-separated list of label names.
+        :param sort: Sort field: ``created`` or ``updated_at``. Default: ``created_at``.
+        :param direction: ``asc`` or ``desc``. Default: ``desc``.
+        :param since: Return issues updated since this timestamp.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param schedule: Schedule filter.
+        :param deadline: Deadline filter.
+        :param created_at: Created-at timestamp filter.
+        :param finished_at: Finished-at timestamp filter.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Issues assigned to or authored by the user, per API rules.
         """
 
     @abstractmethod
-    def list_org(self, *, org: str, **params) -> List[Issue]:
+    def list_org(
+        self,
+        *,
+        org: str,
+        filter: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        created_at: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
         """List organization issues visible to the current user.
 
         :param org: Organization path or login.
-        :param params: Query parameters for ``GET .../orgs/{org}/issues``.
+        :param filter: Filter mode: ``assigned``, ``created``, or ``all``. Default: ``assigned``.
+        :param state: Issue state: ``open`` or ``closed``. Default: ``open``.
+        :param labels: Comma-separated list of label names.
+        :param sort: Sort field: ``created`` or ``updated_at``. Default: ``created_at``.
+        :param direction: ``asc`` or ``desc``. Default: ``desc``.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param created_at: Created-at timestamp filter.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Organization-scoped issues.
         """
 
@@ -281,12 +361,22 @@ class AbstractIssuesResource(ABC):
         """
 
     @abstractmethod
-    def list_enterprise_comments(self, *, enterprise: str, number: Union[int, str], **params) -> List[IssueComment]:
+    def list_enterprise_comments(
+        self,
+        *,
+        enterprise: str,
+        number: Union[int, str],
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[IssueComment]:
         """List comments for an enterprise issue.
 
         :param enterprise: Enterprise path or login.
         :param number: Enterprise issue identifier in the path.
-        :param params: Optional pagination or filter query parameters.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Comments on the enterprise issue.
         """
 
@@ -422,7 +512,8 @@ class IssuesResource(SyncResource, AbstractIssuesResource):
                 "milestone": milestone,
                 "security_hole": security_hole,
                 "template_path": template_path,
-            } | kwargs,
+            }
+            | kwargs,
         )
 
     def update(
@@ -544,24 +635,133 @@ class IssuesResource(SyncResource, AbstractIssuesResource):
     ) -> None:
         self._request("DELETE", self._client._repo_path("issues", number, "labels", name, owner=owner, repo=repo))
 
-    def list_enterprise(self, *, enterprise: str, **params) -> List[Issue]:
-        return self._models("GET", self._client._path("enterprises", enterprise, "issues"), Issue, params=params)
+    def list_enterprise(
+        self,
+        *,
+        enterprise: str,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        since: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        milestone: Optional[str] = None,
+        assignee: Optional[str] = None,
+        creator: Optional[str] = None,
+        program: Optional[str] = None,
+        created_at: Optional[str] = None,
+        created_before: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
+        return self._models(
+            "GET",
+            self._client._path("enterprises", enterprise, "issues"),
+            Issue,
+            params={
+                "state": state,
+                "labels": labels,
+                "sort": sort,
+                "direction": direction,
+                "since": since,
+                "page": page,
+                "per_page": per_page,
+                "milestone": milestone,
+                "assignee": assignee,
+                "creator": creator,
+                "program": program,
+                "created_at": created_at,
+                "created_before": created_before,
+                **kwargs,
+            },
+        )
 
-    def list_user(self, **params) -> List[Issue]:
-        return self._models("GET", self._client._path("user", "issues"), Issue, params=params)
+    def list_user(
+        self,
+        *,
+        filter: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        since: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        schedule: Optional[str] = None,
+        deadline: Optional[str] = None,
+        created_at: Optional[str] = None,
+        finished_at: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
+        return self._models(
+            "GET",
+            self._client._path("user", "issues"),
+            Issue,
+            params={
+                "filter": filter,
+                "state": state,
+                "labels": labels,
+                "sort": sort,
+                "direction": direction,
+                "since": since,
+                "page": page,
+                "per_page": per_page,
+                "schedule": schedule,
+                "deadline": deadline,
+                "created_at": created_at,
+                "finished_at": finished_at,
+                **kwargs,
+            },
+        )
 
-    def list_org(self, *, org: str, **params) -> List[Issue]:
-        return self._models("GET", self._client._path("orgs", org, "issues"), Issue, params=params)
+    def list_org(
+        self,
+        *,
+        org: str,
+        filter: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        created_at: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
+        return self._models(
+            "GET",
+            self._client._path("orgs", org, "issues"),
+            Issue,
+            params={
+                "filter": filter,
+                "state": state,
+                "labels": labels,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                "created_at": created_at,
+                **kwargs,
+            },
+        )
 
     def get_enterprise_issue(self, *, enterprise: str, number: Union[int, str]) -> Issue:
         return self._model("GET", self._client._path("enterprises", enterprise, "issues", number), Issue)
 
-    def list_enterprise_comments(self, *, enterprise: str, number: Union[int, str], **params) -> List[IssueComment]:
+    def list_enterprise_comments(
+        self,
+        *,
+        enterprise: str,
+        number: Union[int, str],
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[IssueComment]:
         return self._models(
             "GET",
             self._client._path("enterprises", enterprise, "issues", number, "comments"),
             IssueComment,
-            params=params,
+            params={"page": page, "per_page": per_page, **kwargs},
         )
 
     def list_enterprise_labels(self, *, enterprise: str, issue_id: Union[int, str]) -> List[Label]:
@@ -785,26 +985,133 @@ class AsyncIssuesResource(AsyncResource, AbstractIssuesResource):
     ) -> None:
         await self._request("DELETE", self._client._repo_path("issues", number, "labels", name, owner=owner, repo=repo))
 
-    async def list_enterprise(self, *, enterprise: str, **params) -> List[Issue]:
-        return await self._models("GET", self._client._path("enterprises", enterprise, "issues"), Issue, params=params)
+    async def list_enterprise(
+        self,
+        *,
+        enterprise: str,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        since: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        milestone: Optional[str] = None,
+        assignee: Optional[str] = None,
+        creator: Optional[str] = None,
+        program: Optional[str] = None,
+        created_at: Optional[str] = None,
+        created_before: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
+        return await self._models(
+            "GET",
+            self._client._path("enterprises", enterprise, "issues"),
+            Issue,
+            params={
+                "state": state,
+                "labels": labels,
+                "sort": sort,
+                "direction": direction,
+                "since": since,
+                "page": page,
+                "per_page": per_page,
+                "milestone": milestone,
+                "assignee": assignee,
+                "creator": creator,
+                "program": program,
+                "created_at": created_at,
+                "created_before": created_before,
+                **kwargs,
+            },
+        )
 
-    async def list_user(self, **params) -> List[Issue]:
-        return await self._models("GET", self._client._path("user", "issues"), Issue, params=params)
+    async def list_user(
+        self,
+        *,
+        filter: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        since: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        schedule: Optional[str] = None,
+        deadline: Optional[str] = None,
+        created_at: Optional[str] = None,
+        finished_at: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
+        return await self._models(
+            "GET",
+            self._client._path("user", "issues"),
+            Issue,
+            params={
+                "filter": filter,
+                "state": state,
+                "labels": labels,
+                "sort": sort,
+                "direction": direction,
+                "since": since,
+                "page": page,
+                "per_page": per_page,
+                "schedule": schedule,
+                "deadline": deadline,
+                "created_at": created_at,
+                "finished_at": finished_at,
+                **kwargs,
+            },
+        )
 
-    async def list_org(self, *, org: str, **params) -> List[Issue]:
-        return await self._models("GET", self._client._path("orgs", org, "issues"), Issue, params=params)
+    async def list_org(
+        self,
+        *,
+        org: str,
+        filter: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        created_at: Optional[str] = None,
+        **kwargs,
+    ) -> List[Issue]:
+        return await self._models(
+            "GET",
+            self._client._path("orgs", org, "issues"),
+            Issue,
+            params={
+                "filter": filter,
+                "state": state,
+                "labels": labels,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                "created_at": created_at,
+                **kwargs,
+            },
+        )
 
     async def get_enterprise_issue(self, *, enterprise: str, number: Union[int, str]) -> Issue:
         return await self._model("GET", self._client._path("enterprises", enterprise, "issues", number), Issue)
 
     async def list_enterprise_comments(
-        self, *, enterprise: str, number: Union[int, str], **params
+        self,
+        *,
+        enterprise: str,
+        number: Union[int, str],
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
     ) -> List[IssueComment]:
         return await self._models(
             "GET",
             self._client._path("enterprises", enterprise, "issues", number, "comments"),
             IssueComment,
-            params=params,
+            params={"page": page, "per_page": per_page, **kwargs},
         )
 
     async def list_enterprise_labels(self, *, enterprise: str, issue_id: Union[int, str]) -> List[Label]:

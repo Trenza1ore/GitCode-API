@@ -14,12 +14,28 @@ class AbstractMilestonesResource(ABC):
     """Interface for Milestones resource endpoints."""
 
     @abstractmethod
-    def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Milestone]:
+    def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[Milestone]:
         """List milestones for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param params: Query parameters accepted by the milestones listing (state, sort, pagination, etc.).
+        :param state: Milestone state: ``open``, ``closed``, or ``all``. Default: ``open``.
+        :param sort: Sort field such as ``due_on``.
+        :param direction: ``asc`` or ``desc``. Default: ``asc``.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Milestones.
         """
 
@@ -90,9 +106,30 @@ class AbstractMilestonesResource(ABC):
 class MilestonesResource(SyncResource, AbstractMilestonesResource):
     """Synchronous milestone endpoints."""
 
-    def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Milestone]:
+    def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[Milestone]:
         return self._models(
-            "GET", self._client._repo_path("milestones", owner=owner, repo=repo), Milestone, params=params
+            "GET",
+            self._client._repo_path("milestones", owner=owner, repo=repo),
+            Milestone,
+            params={
+                "state": state,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
         )
 
     def get(self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Milestone:
@@ -142,9 +179,30 @@ class AsyncMilestonesResource(AsyncResource, AbstractMilestonesResource):
     Mirrors :class:`MilestonesResource`; see that class for parameter documentation.
     """
 
-    async def list(self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params) -> List[Milestone]:
+    async def list(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[Milestone]:
         return await self._models(
-            "GET", self._client._repo_path("milestones", owner=owner, repo=repo), Milestone, params=params
+            "GET",
+            self._client._repo_path("milestones", owner=owner, repo=repo),
+            Milestone,
+            params={
+                "state": state,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
         )
 
     async def get(

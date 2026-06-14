@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+## [1.3.2](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.2) — 2026-06-14
+
+Changes since `1.3.1`…`1.3.2`.
+
+### Feature
+
+- **Explicit query parameters on listing methods:** 11 "list" methods that previously accepted only `**params` now expose some documented query parameters as named keyword arguments — `pulls.list`, `pulls.list_operation_logs`, `pulls.list_enterprise`, `pulls.list_org`, `issues.list_enterprise`, `issues.list_user`, `issues.list_org`, `issues.list_enterprise_comments`, `milestones.list`, `users.list_repos`, and `repos.get_download_statistics`. A trailing `**kwargs` preserves backward compatibility for any extra or undocumented parameters.
+
+---
+
 ## [1.3.1](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.1) — 2026-06-12
 
 Changes since `1.3.0`…`1.3.1`.

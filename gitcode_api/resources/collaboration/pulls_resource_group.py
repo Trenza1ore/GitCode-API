@@ -48,12 +48,26 @@ class AbstractPullsResource(ABC):
         direction: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **params,
+        base: Optional[str] = None,
+        since: Optional[str] = None,
+        milestone_number: Optional[int] = None,
+        labels: Optional[str] = None,
+        author: Optional[str] = None,
+        assignee: Optional[str] = None,
+        reviewer: Optional[str] = None,
+        merged_after: Optional[str] = None,
+        merged_before: Optional[str] = None,
+        only_count: Optional[bool] = None,
+        created_after: Optional[str] = None,
+        created_before: Optional[str] = None,
+        updated_before: Optional[str] = None,
+        updated_after: Optional[str] = None,
+        **kwargs,
     ) -> Union[List[PullRequest], PullRequestCount]:
         """List pull requests for a repository.
 
-        When ``only_count`` is true in ``params`` (or passed via ``**params``), the API returns a
-        JSON object with counts per state instead of an array (see Pull Request API).
+        When ``only_count`` is true, the API returns a JSON object with counts per state
+        instead of an array (see Pull Request API).
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path (name). Uses the client default when omitted.
@@ -62,10 +76,21 @@ class AbstractPullsResource(ABC):
         :param direction: ``asc`` or ``desc`` (API default is usually ``desc``).
         :param page: Current page number.
         :param per_page: Page size (max 100 per API documentation).
-        :param params: Extra query parameters from the Pull Request API, for example ``base``,
-            ``since``, ``author``, ``assignee``, ``reviewer``, ``milestone_number``, ``labels`` (comma-separated),
-            ``merged_after``, ``merged_before``, ``created_after``, ``created_before``, ``updated_after``,
-            ``updated_before``, ``only_count`` (boolean), and ISO 8601 timestamps (URL-encoded when sent).
+        :param base: Base branch filter.
+        :param since: Return PRs updated since this ISO 8601 timestamp.
+        :param milestone_number: Milestone number filter.
+        :param labels: Comma-separated label names.
+        :param author: Username of the PR creator.
+        :param assignee: Username of the PR assignee.
+        :param reviewer: Username of the PR reviewer.
+        :param merged_after: Return PRs merged after this ISO 8601 timestamp.
+        :param merged_before: Return PRs merged before this ISO 8601 timestamp.
+        :param only_count: If true, only return the count of merge requests.
+        :param created_after: Return PRs created after this ISO 8601 timestamp.
+        :param created_before: Return PRs created before this ISO 8601 timestamp.
+        :param updated_before: Return PRs updated before this ISO 8601 timestamp.
+        :param updated_after: Return PRs updated after this ISO 8601 timestamp.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: A list of pull requests, or an :class:`~gitcode_api._models.APIObject` for count-only responses.
         """
 
@@ -366,14 +391,25 @@ class AbstractPullsResource(ABC):
 
     @abstractmethod
     def list_operation_logs(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
     ) -> List[PullRequestOperationLog]:
         """List operation logs for a pull request.
 
         :param number: Pull request number.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param params: Additional query parameters accepted by the operate_logs endpoint.
+        :param sort: Sort direction: ``desc`` (default) or ``asc``.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Log entries as generic API objects.
         """
 
@@ -467,20 +503,56 @@ class AbstractPullsResource(ABC):
         """
 
     @abstractmethod
-    def list_enterprise(self, *, enterprise: str, **params) -> List[PullRequest]:
+    def list_enterprise(
+        self,
+        *,
+        enterprise: str,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        issue_number: Optional[int] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[PullRequest]:
         """List enterprise pull requests.
 
         :param enterprise: Enterprise path or login.
-        :param params: Query parameters for the enterprise pull_requests listing.
+        :param repo: Repository path filter (query parameter).
+        :param state: Pull request state filter.
+        :param issue_number: Issue global id filter.
+        :param sort: Sort field. Default: sorted by creation time.
+        :param direction: ``asc`` or ``desc``.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Pull requests in the enterprise scope.
         """
 
     @abstractmethod
-    def list_org(self, *, org: str, **params) -> List[PullRequest]:
+    def list_org(
+        self,
+        *,
+        org: str,
+        state: Optional[str] = None,
+        issue_number: Optional[int] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[PullRequest]:
         """List pull requests for an organization scope.
 
         :param org: Organization path (``GET .../org/{org}/pull_requests``).
-        :param params: Query parameters accepted by that listing.
+        :param state: Pull request state filter.
+        :param issue_number: Global issue id filter.
+        :param sort: Sort field. Default: sorted by creation time.
+        :param direction: ``asc`` or ``desc``.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Organization-scoped pull requests.
         """
 
@@ -553,7 +625,21 @@ class PullsResource(SyncResource, AbstractPullsResource):
         direction: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **params,
+        base: Optional[str] = None,
+        since: Optional[str] = None,
+        milestone_number: Optional[int] = None,
+        labels: Optional[str] = None,
+        author: Optional[str] = None,
+        assignee: Optional[str] = None,
+        reviewer: Optional[str] = None,
+        merged_after: Optional[str] = None,
+        merged_before: Optional[str] = None,
+        only_count: Optional[bool] = None,
+        created_after: Optional[str] = None,
+        created_before: Optional[str] = None,
+        updated_before: Optional[str] = None,
+        updated_after: Optional[str] = None,
+        **kwargs,
     ) -> Union[List[PullRequest], PullRequestCount]:
         path = self._client._repo_path("pulls", owner=owner, repo=repo)
         response = self._request(
@@ -565,7 +651,21 @@ class PullsResource(SyncResource, AbstractPullsResource):
                 "direction": direction,
                 "page": page,
                 "per_page": per_page,
-                **params,
+                "base": base,
+                "since": since,
+                "milestone_number": milestone_number,
+                "labels": labels,
+                "author": author,
+                "assignee": assignee,
+                "reviewer": reviewer,
+                "merged_after": merged_after,
+                "merged_before": merged_before,
+                "only_count": only_count,
+                "created_after": created_after,
+                "created_before": created_before,
+                "updated_before": updated_before,
+                "updated_after": updated_after,
+                **kwargs,
             },
         )
         if isinstance(response, dict):
@@ -801,12 +901,20 @@ class PullsResource(SyncResource, AbstractPullsResource):
         )
 
     def list_operation_logs(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
     ) -> List[PullRequestOperationLog]:
         data = self._request(
             "GET",
             self._client._repo_path("pulls", number, "operate_logs", owner=owner, repo=repo),
-            params=params,
+            params={"sort": sort, "page": page, "per_page": per_page, **kwargs},
         )
         return [as_model(item, PullRequestOperationLog) for item in data]
 
@@ -871,13 +979,61 @@ class PullsResource(SyncResource, AbstractPullsResource):
     ) -> List[Issue]:
         return self._models("GET", self._client._repo_path("pulls", number, "issues", owner=owner, repo=repo), Issue)
 
-    def list_enterprise(self, *, enterprise: str, **params) -> List[PullRequest]:
+    def list_enterprise(
+        self,
+        *,
+        enterprise: str,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        issue_number: Optional[int] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[PullRequest]:
         return self._models(
-            "GET", self._client._path("enterprises", enterprise, "pull_requests"), PullRequest, params=params
+            "GET",
+            self._client._path("enterprises", enterprise, "pull_requests"),
+            PullRequest,
+            params={
+                "repo": repo,
+                "state": state,
+                "issue_number": issue_number,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
         )
 
-    def list_org(self, *, org: str, **params) -> List[PullRequest]:
-        return self._models("GET", self._client._path("org", org, "pull_requests"), PullRequest, params=params)
+    def list_org(
+        self,
+        *,
+        org: str,
+        state: Optional[str] = None,
+        issue_number: Optional[int] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[PullRequest]:
+        return self._models(
+            "GET",
+            self._client._path("org", org, "pull_requests"),
+            PullRequest,
+            params={
+                "state": state,
+                "issue_number": issue_number,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
+        )
 
     def list_issue_pull_requests(self, *, enterprise: str, number: Union[int, str]) -> List[PullRequest]:
         return self._models(
@@ -947,7 +1103,21 @@ class AsyncPullsResource(AsyncResource, AbstractPullsResource):
         direction: Optional[str] = None,
         page: Optional[int] = None,
         per_page: Optional[int] = None,
-        **params,
+        base: Optional[str] = None,
+        since: Optional[str] = None,
+        milestone_number: Optional[int] = None,
+        labels: Optional[str] = None,
+        author: Optional[str] = None,
+        assignee: Optional[str] = None,
+        reviewer: Optional[str] = None,
+        merged_after: Optional[str] = None,
+        merged_before: Optional[str] = None,
+        only_count: Optional[bool] = None,
+        created_after: Optional[str] = None,
+        created_before: Optional[str] = None,
+        updated_before: Optional[str] = None,
+        updated_after: Optional[str] = None,
+        **kwargs,
     ) -> Union[List[PullRequest], PullRequestCount]:
         response = await self._request(
             "GET",
@@ -958,7 +1128,21 @@ class AsyncPullsResource(AsyncResource, AbstractPullsResource):
                 "direction": direction,
                 "page": page,
                 "per_page": per_page,
-                **params,
+                "base": base,
+                "since": since,
+                "milestone_number": milestone_number,
+                "labels": labels,
+                "author": author,
+                "assignee": assignee,
+                "reviewer": reviewer,
+                "merged_after": merged_after,
+                "merged_before": merged_before,
+                "only_count": only_count,
+                "created_after": created_after,
+                "created_before": created_before,
+                "updated_before": updated_before,
+                "updated_after": updated_after,
+                **kwargs,
             },
         )
         if isinstance(response, dict):
@@ -1173,10 +1357,20 @@ class AsyncPullsResource(AsyncResource, AbstractPullsResource):
         )
 
     async def list_operation_logs(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        sort: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
     ) -> List[PullRequestOperationLog]:
         data = await self._request(
-            "GET", self._client._repo_path("pulls", number, "operate_logs", owner=owner, repo=repo), params=params
+            "GET",
+            self._client._repo_path("pulls", number, "operate_logs", owner=owner, repo=repo),
+            params={"sort": sort, "page": page, "per_page": per_page, **kwargs},
         )
         return [as_model(item, PullRequestOperationLog) for item in data]
 
@@ -1243,13 +1437,61 @@ class AsyncPullsResource(AsyncResource, AbstractPullsResource):
             "GET", self._client._repo_path("pulls", number, "issues", owner=owner, repo=repo), Issue
         )
 
-    async def list_enterprise(self, *, enterprise: str, **params) -> List[PullRequest]:
+    async def list_enterprise(
+        self,
+        *,
+        enterprise: str,
+        repo: Optional[str] = None,
+        state: Optional[str] = None,
+        issue_number: Optional[int] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[PullRequest]:
         return await self._models(
-            "GET", self._client._path("enterprises", enterprise, "pull_requests"), PullRequest, params=params
+            "GET",
+            self._client._path("enterprises", enterprise, "pull_requests"),
+            PullRequest,
+            params={
+                "repo": repo,
+                "state": state,
+                "issue_number": issue_number,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
         )
 
-    async def list_org(self, *, org: str, **params) -> List[PullRequest]:
-        return await self._models("GET", self._client._path("org", org, "pull_requests"), PullRequest, params=params)
+    async def list_org(
+        self,
+        *,
+        org: str,
+        state: Optional[str] = None,
+        issue_number: Optional[int] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[PullRequest]:
+        return await self._models(
+            "GET",
+            self._client._path("org", org, "pull_requests"),
+            PullRequest,
+            params={
+                "state": state,
+                "issue_number": issue_number,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
+        )
 
     async def list_issue_pull_requests(self, *, enterprise: str, number: Union[int, str]) -> List[PullRequest]:
         return await self._models(

@@ -56,14 +56,26 @@ class AbstractUsersResource(ABC):
         """
 
     @abstractmethod
-    def list_repos(self, *, username: str, **params) -> List[Repository]:
+    def list_repos(
+        self,
+        *,
+        username: str,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[Repository]:
         """List public repositories owned by a user.
 
-        Supported filters follow the user repository API documentation, such as
-        ``type``, ``sort``, ``direction``, ``page``, and ``per_page``.
-
         :param username: GitCode username or login.
-        :param params: Query parameters accepted by the REST endpoint.
+        :param type: Ownership filter: ``owner``, ``personal``, ``member``, or ``all``. Default: ``all``.
+        :param sort: Sort field: ``created``, ``updated``, ``pushed``, or ``full_name``. Default: ``full_name``.
+        :param direction: ``asc`` or ``desc``.
+        :param page: Page number.
+        :param per_page: Page size.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Matching repositories.
         """
 
@@ -149,8 +161,30 @@ class UsersResource(SyncResource, AbstractUsersResource):
             params={"year": year, "next": next},
         )
 
-    def list_repos(self, *, username: str, **params) -> List[Repository]:
-        return self._models("GET", self._client._path("users", username, "repos"), Repository, params=params)
+    def list_repos(
+        self,
+        *,
+        username: str,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[Repository]:
+        return self._models(
+            "GET",
+            self._client._path("users", username, "repos"),
+            Repository,
+            params={
+                "type": type,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
+        )
 
     def create_key(self, *, key: str, title: str) -> PublicKey:
         return self._model("POST", self._client._path("user", "keys"), PublicKey, json={"key": key, "title": title})
@@ -210,8 +244,30 @@ class AsyncUsersResource(AsyncResource, AbstractUsersResource):
             params={"year": year, "next": next},
         )
 
-    async def list_repos(self, *, username: str, **params) -> List[Repository]:
-        return await self._models("GET", self._client._path("users", username, "repos"), Repository, params=params)
+    async def list_repos(
+        self,
+        *,
+        username: str,
+        type: Optional[str] = None,
+        sort: Optional[str] = None,
+        direction: Optional[str] = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        **kwargs,
+    ) -> List[Repository]:
+        return await self._models(
+            "GET",
+            self._client._path("users", username, "repos"),
+            Repository,
+            params={
+                "type": type,
+                "sort": sort,
+                "direction": direction,
+                "page": page,
+                "per_page": per_page,
+                **kwargs,
+            },
+        )
 
     async def create_key(self, *, key: str, title: str) -> PublicKey:
         return await self._model(

@@ -474,13 +474,23 @@ class AbstractReposResource(ABC):
 
     @abstractmethod
     def get_download_statistics(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        direction: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryDownloadStatistics:
         """Get download statistics for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param params: Query parameters accepted by the statistics endpoint.
+        :param start_date: Start date filter (e.g. ``2024-01-06``).
+        :param end_date: End date filter (e.g. ``2024-12-06``).
+        :param direction: Sort direction: ``asc`` or ``desc``. Default: ``desc``.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Download statistics payload.
         """
 
@@ -856,13 +866,20 @@ class ReposResource(SyncResource, AbstractReposResource):
         return [as_model(item, RepositoryCustomizedRole) for item in data]
 
     def get_download_statistics(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        direction: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryDownloadStatistics:
         return self._model(
             "GET",
             self._client._repo_path("download_statistics", owner=owner, repo=repo),
             RepositoryDownloadStatistics,
-            params=params,
+            params={"start_date": start_date, "end_date": end_date, "direction": direction, **kwargs},
         )
 
     def get_contributor_statistics(
@@ -1245,13 +1262,20 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
         return [as_model(item, RepositoryCustomizedRole) for item in data]
 
     async def get_download_statistics(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **params
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        direction: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryDownloadStatistics:
         return await self._model(
             "GET",
             self._client._repo_path("download_statistics", owner=owner, repo=repo),
             RepositoryDownloadStatistics,
-            params=params,
+            params={"start_date": start_date, "end_date": end_date, "direction": direction, **kwargs},
         )
 
     async def get_contributor_statistics(
