@@ -512,8 +512,8 @@ class IssuesResource(SyncResource, AbstractIssuesResource):
                 "milestone": milestone,
                 "security_hole": security_hole,
                 "template_path": template_path,
+                **kwargs,
             }
-            | kwargs,
         )
 
     def update(
@@ -884,6 +884,7 @@ class AsyncIssuesResource(AsyncResource, AbstractIssuesResource):
                 "milestone": milestone,
                 "security_hole": security_hole,
                 "template_path": template_path,
+                **kwargs,
             },
         )
 
