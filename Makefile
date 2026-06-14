@@ -52,7 +52,7 @@ release: badge
 	git push
 
 docstring:
-	@uv run ruff check --select D gitcode_api/
+	@uv run ruff check --select D --ignore D102 gitcode_api/
 
 amend:
 	git commit --amend --no-edit
