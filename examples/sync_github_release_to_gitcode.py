@@ -133,9 +133,10 @@ with warnings.catch_warnings():
                 else:
                     break
             try:
-                future.result()
+                response: httpx.Response = future.result()
+                response.raise_for_status()
                 print(f"{CGRN}\t> uploaded: {file_name} ({file_size} {unit}, {minutes:5g} min){CEND}", flush=True)
-            except (httpx.TimeoutException, GitCodeError) as e:
+            except (httpx.TimeoutException, GitCodeError, httpx.HTTPStatusError) as e:
                 print(
                     f"{CRED}\tx fail to upload {file_name} ({file_size} {unit}, {minutes:5g} min):{CEND} {e}",
                     flush=True,

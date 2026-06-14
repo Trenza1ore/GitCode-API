@@ -513,7 +513,7 @@ class IssuesResource(SyncResource, AbstractIssuesResource):
                 "security_hole": security_hole,
                 "template_path": template_path,
                 **kwargs,
-            }
+            },
         )
 
     def update(

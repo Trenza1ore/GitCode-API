@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Optional, Union
 
+import httpx
+
 from ..._models import Release, ReleaseUploadURL
 from .._shared import AsyncResource, SyncResource
 
@@ -83,7 +85,7 @@ class AbstractReleasesResource(ABC):
         owner: Optional[str] = None,
         repo: Optional[str] = None,
         upload_timeout: Optional[float] = 300.0,
-    ) -> None:
+    ) -> httpx.Response:
         """Upload a release attachment through the pre-signed upload URL.
 
         :param tag: Tag name in the release URL path.
@@ -92,6 +94,7 @@ class AbstractReleasesResource(ABC):
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
         :param upload_timeout: Timeout for upload operation. Default to 300 (5 minutes).
+        :returns: Response for upload put request (httpx.Response).
         """
 
     @abstractmethod
@@ -231,7 +234,7 @@ class ReleasesResource(SyncResource, AbstractReleasesResource):
         owner: Optional[str] = None,
         repo: Optional[str] = None,
         upload_timeout: Optional[float] = 300.0,
-    ) -> None:
+    ) -> httpx.Response:
         upload_content = Path(content).read_bytes() if isinstance(content, str) else content
         if not isinstance(upload_content, bytes):
             raise TypeError("content must be bytes or a file path string.")
@@ -240,7 +243,7 @@ class ReleasesResource(SyncResource, AbstractReleasesResource):
         if not upload_url.url:
             raise ValueError("Release upload URL response did not include a URL.")
 
-        self._client._client.request(
+        return self._client._client.request(
             "PUT",
             upload_url.url,
             content=upload_content,
@@ -372,7 +375,7 @@ class AsyncReleasesResource(AsyncResource, AbstractReleasesResource):
         owner: Optional[str] = None,
         repo: Optional[str] = None,
         upload_timeout: Optional[float] = 300.0,
-    ) -> None:
+    ) -> httpx.Response:
         upload_content = Path(content).read_bytes() if isinstance(content, str) else content
         if not isinstance(upload_content, bytes):
             raise TypeError("content must be bytes or a file path string.")
@@ -381,7 +384,7 @@ class AsyncReleasesResource(AsyncResource, AbstractReleasesResource):
         if not upload_url.url:
             raise ValueError("Release upload URL response did not include a URL.")
 
-        await self._client._client.request(
+        return await self._client._client.request(
             "PUT",
             upload_url.url,
             content=upload_content,
