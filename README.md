@@ -75,8 +75,7 @@ gitcode-api serve --api-key "$GITCODE_ACCESS_TOKEN"
 Use `gitcode-api serve -h` for defaults such as `--owner`, `--repo`, `--transport` (`stdio`, `http`, or `sse`), and other options.
 
 Commands mirror the synchronous resource methods on `GitCode`, using the pattern
-`gitcode-api <resource> <method> ...`. For methods that accept extra `**params`
-or `**payload`, pass repeated `--set key=value` flags or `--set-json '{"key": "value"}'`.
+`gitcode-api <resource> <method> ...`. For methods that accept extra `**payload`, pass repeated `--set key=value` flags or `--set-json '{"key": "value"}'`.
 
 When using string arguments with escape sequence (such as line break `\n`), pass `-e` / `--escape` with the sequences to un-escape, such as `-e '\n\t'`.
 

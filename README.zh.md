@@ -71,7 +71,7 @@ gitcode-api serve --api-key "$GITCODE_ACCESS_TOKEN"
 
 `gitcode-api serve -h` 可查看 `--owner`、`--repo`、`--transport`（`stdio`、`http`、`sse`）等选项。
 
-子命令与**同步客户端** `GitCode` 上各资源组的方法一一对应，形如 `gitcode-api <resource> <method> ...`。若某方法还支持 `**params` 或 `**payload` 等额外参数，可多次使用 `--set key=value`，或使用 `--set-json '{"key": "value"}'` 传入 JSON。
+子命令与**同步客户端** `GitCode` 上各资源组的方法一一对应，形如 `gitcode-api <resource> <method> ...`。若某方法还支持 `**payload` 等额外参数，可多次使用 `--set key=value`，或使用 `--set-json '{"key": "value"}'` 传入 JSON。
 
 当传入的参数包含转义字符时（比如换行符 `\n`），可使用 `-e` / `--escape` 指定要反转义的字符，例如 `-e '\n\t'`。
 
