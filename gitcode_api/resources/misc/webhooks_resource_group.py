@@ -32,13 +32,34 @@ class AbstractWebhooksResource(ABC):
         """
 
     @abstractmethod
-    def create(self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Webhook:
+    def create(
+        self,
+        *,
+        url: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encryption_type: Optional[int] = None,
+        password: Optional[str] = None,
+        push_events: Optional[bool] = None,
+        tag_push_events: Optional[bool] = None,
+        issues_events: Optional[bool] = None,
+        note_events: Optional[bool] = None,
+        merge_requests_events: Optional[bool] = None,
+        **kwargs,
+    ) -> Webhook:
         """Create a repository webhook.
 
         :param url: Payload URL GitCode should POST events to.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param payload: Additional fields from the Webhooks API (events list, secret, content type, etc.).
+        :param encryption_type: Encryption type: ``0`` (password), ``1`` (signature key).
+        :param password: Secret included in requests to prevent malicious calls.
+        :param push_events: Trigger on push events.
+        :param tag_push_events: Trigger on tag push events.
+        :param issues_events: Trigger on issue creation/closure events.
+        :param note_events: Trigger on comment events (issue/PR/commit).
+        :param merge_requests_events: Trigger on merge request events.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Created webhook.
         """
 
@@ -60,7 +81,14 @@ class AbstractWebhooksResource(ABC):
         url: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        **payload,
+        encryption_type: Optional[int] = None,
+        password: Optional[str] = None,
+        push_events: Optional[bool] = None,
+        tag_push_events: Optional[bool] = None,
+        issues_events: Optional[bool] = None,
+        note_events: Optional[bool] = None,
+        merge_requests_events: Optional[bool] = None,
+        **kwargs,
     ) -> Webhook:
         """Update a repository webhook.
 
@@ -68,7 +96,14 @@ class AbstractWebhooksResource(ABC):
         :param url: New payload URL (merged into the JSON body).
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param payload: Other mutable webhook fields accepted by the API.
+        :param encryption_type: Encryption type: ``0`` (password), ``1`` (signature key).
+        :param password: Secret included in requests to prevent malicious calls.
+        :param push_events: Trigger on push events.
+        :param tag_push_events: Trigger on tag push events.
+        :param issues_events: Trigger on issue creation/closure events.
+        :param note_events: Trigger on comment events (issue/PR/commit).
+        :param merge_requests_events: Trigger on merge request events.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Updated webhook.
         """
 
@@ -109,9 +144,37 @@ class WebhooksResource(SyncResource, AbstractWebhooksResource):
             params={"page": page, "per_page": per_page},
         )
 
-    def create(self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Webhook:
-        payload["url"] = url
-        return self._model("POST", self._client._repo_path("hooks", owner=owner, repo=repo), Webhook, json=payload)
+    def create(
+        self,
+        *,
+        url: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encryption_type: Optional[int] = None,
+        password: Optional[str] = None,
+        push_events: Optional[bool] = None,
+        tag_push_events: Optional[bool] = None,
+        issues_events: Optional[bool] = None,
+        note_events: Optional[bool] = None,
+        merge_requests_events: Optional[bool] = None,
+        **kwargs,
+    ) -> Webhook:
+        return self._model(
+            "POST",
+            self._client._repo_path("hooks", owner=owner, repo=repo),
+            Webhook,
+            json={
+                "url": url,
+                "encryption_type": encryption_type,
+                "password": password,
+                "push_events": push_events,
+                "tag_push_events": tag_push_events,
+                "issues_events": issues_events,
+                "note_events": note_events,
+                "merge_requests_events": merge_requests_events,
+                **kwargs,
+            },
+        )
 
     def get(self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> Webhook:
         return self._model("GET", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo), Webhook)
@@ -123,11 +186,30 @@ class WebhooksResource(SyncResource, AbstractWebhooksResource):
         url: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        **payload,
+        encryption_type: Optional[int] = None,
+        password: Optional[str] = None,
+        push_events: Optional[bool] = None,
+        tag_push_events: Optional[bool] = None,
+        issues_events: Optional[bool] = None,
+        note_events: Optional[bool] = None,
+        merge_requests_events: Optional[bool] = None,
+        **kwargs,
     ) -> Webhook:
-        payload["url"] = url
         return self._model(
-            "PATCH", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo), Webhook, json=payload
+            "PATCH",
+            self._client._repo_path("hooks", hook_id, owner=owner, repo=repo),
+            Webhook,
+            json={
+                "url": url,
+                "encryption_type": encryption_type,
+                "password": password,
+                "push_events": push_events,
+                "tag_push_events": tag_push_events,
+                "issues_events": issues_events,
+                "note_events": note_events,
+                "merge_requests_events": merge_requests_events,
+                **kwargs,
+            },
         )
 
     def delete(self, *, hook_id: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None) -> None:
@@ -158,10 +240,36 @@ class AsyncWebhooksResource(AsyncResource, AbstractWebhooksResource):
             params={"page": page, "per_page": per_page},
         )
 
-    async def create(self, *, url: str, owner: Optional[str] = None, repo: Optional[str] = None, **payload) -> Webhook:
-        payload["url"] = url
+    async def create(
+        self,
+        *,
+        url: str,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        encryption_type: Optional[int] = None,
+        password: Optional[str] = None,
+        push_events: Optional[bool] = None,
+        tag_push_events: Optional[bool] = None,
+        issues_events: Optional[bool] = None,
+        note_events: Optional[bool] = None,
+        merge_requests_events: Optional[bool] = None,
+        **kwargs,
+    ) -> Webhook:
         return await self._model(
-            "POST", self._client._repo_path("hooks", owner=owner, repo=repo), Webhook, json=payload
+            "POST",
+            self._client._repo_path("hooks", owner=owner, repo=repo),
+            Webhook,
+            json={
+                "url": url,
+                "encryption_type": encryption_type,
+                "password": password,
+                "push_events": push_events,
+                "tag_push_events": tag_push_events,
+                "issues_events": issues_events,
+                "note_events": note_events,
+                "merge_requests_events": merge_requests_events,
+                **kwargs,
+            },
         )
 
     async def get(
@@ -176,11 +284,30 @@ class AsyncWebhooksResource(AsyncResource, AbstractWebhooksResource):
         url: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        **payload,
+        encryption_type: Optional[int] = None,
+        password: Optional[str] = None,
+        push_events: Optional[bool] = None,
+        tag_push_events: Optional[bool] = None,
+        issues_events: Optional[bool] = None,
+        note_events: Optional[bool] = None,
+        merge_requests_events: Optional[bool] = None,
+        **kwargs,
     ) -> Webhook:
-        payload["url"] = url
         return await self._model(
-            "PATCH", self._client._repo_path("hooks", hook_id, owner=owner, repo=repo), Webhook, json=payload
+            "PATCH",
+            self._client._repo_path("hooks", hook_id, owner=owner, repo=repo),
+            Webhook,
+            json={
+                "url": url,
+                "encryption_type": encryption_type,
+                "password": password,
+                "push_events": push_events,
+                "tag_push_events": tag_push_events,
+                "issues_events": issues_events,
+                "note_events": note_events,
+                "merge_requests_events": merge_requests_events,
+                **kwargs,
+            },
         )
 
     async def delete(
