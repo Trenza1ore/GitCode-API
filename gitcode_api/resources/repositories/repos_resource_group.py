@@ -302,22 +302,26 @@ class AbstractReposResource(ABC):
         """
 
     @abstractmethod
-    def set_org_repo_status(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
+    def set_org_repo_status(self, *, org: str, repo: str, status: int, password: str, **kwargs) -> ApiStatusResponse:
         """Update organization repository status metadata.
 
         :param org: Organization path.
         :param repo: Repository path.
-        :param payload: Status fields accepted by the API.
+        :param status: State, 0: open, 2: archived.
+        :param password: User password for verification.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: API response payload.
         """
 
     @abstractmethod
-    def transfer_to_org(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
+    def transfer_to_org(self, *, org: str, repo: str, transfer_to: str, password: str, **kwargs) -> ApiStatusResponse:
         """Transfer a repository to an organization.
 
-        :param org: Destination organization path.
+        :param org: Source organization path.
         :param repo: Repository path.
-        :param payload: Transfer options accepted by the API.
+        :param transfer_to: Target namespace.
+        :param password: User password for verification.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: API response payload.
         """
 
@@ -332,26 +336,41 @@ class AbstractReposResource(ABC):
 
     @abstractmethod
     def update_transition(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, mode: Optional[int] = None, **kwargs
     ) -> ApiStatusResponse:
         """Update repository transition settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Transition settings accepted by the API.
+        :param mode: Permission management mode: 1 (inheritance) or 2 (independent).
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: API response payload.
         """
 
     @abstractmethod
     def update_push_config(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        reject_not_signed_by_gpg: Optional[bool] = None,
+        commit_message_regex: Optional[str] = None,
+        max_file_size: Optional[int] = None,
+        skip_rule_for_owner: Optional[bool] = None,
+        deny_force_push: Optional[bool] = None,
+        **kwargs,
     ) -> RepositoryPushConfig:
         """Update repository push configuration.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Push configuration values accepted by the API.
-        :returns: API response payload.
+        :param reject_not_signed_by_gpg: Only allow commits with verified GPG signatures.
+        :param commit_message_regex: Commit message validation regex.
+        :param max_file_size: Commit file size limit in MB.
+        :param skip_rule_for_owner: Whether project administrators skip push rules.
+        :param deny_force_push: Prohibit force push (including for administrators).
+        :param kwargs: Additional arguments forwarded directly in request.
+        :returns: Updated push configuration.
         """
 
     @abstractmethod
@@ -365,38 +384,78 @@ class AbstractReposResource(ABC):
 
     @abstractmethod
     def upload_image(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        body: Optional[str] = None,
+        file_name: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryUploadResult:
         """Upload an image asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Upload fields accepted by the API.
+        :param body: File content in base64 format (limit: 20 MB).
+        :param file_name: File name.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Uploaded image metadata.
         """
 
     @abstractmethod
     def upload_file(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        file: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryUploadResult:
         """Upload a file asset for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Upload fields accepted by the API.
+        :param file: File content in base64 format (limit: 20 MB).
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Uploaded file metadata.
         """
 
     @abstractmethod
     def update_repo_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        disable_fork: Optional[bool] = None,
+        forbidden_developer_create_branch: Optional[bool] = None,
+        forbidden_developer_create_tag: Optional[bool] = None,
+        forbidden_committer_create_branch: Optional[bool] = None,
+        forbidden_developer_create_branch_user_ids: Optional[str] = None,
+        branch_name_regex: Optional[str] = None,
+        tag_name_regex: Optional[str] = None,
+        generate_pre_merge_ref: Optional[bool] = None,
+        rebase_disable_trigger_webhook: Optional[bool] = None,
+        open_gpg_verified: Optional[bool] = None,
+        include_lfs_objects: Optional[bool] = None,
+        **kwargs,
     ) -> RepositorySettings:
         """Update repository settings.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Settings fields accepted by the API.
-        :returns: API response payload.
+        :param disable_fork: Disable forking.
+        :param forbidden_developer_create_branch: Forbid developers from creating branches.
+        :param forbidden_developer_create_tag: Forbid developers from creating tags.
+        :param forbidden_committer_create_branch: Forbid committers from creating branches.
+        :param forbidden_developer_create_branch_user_ids: User IDs forbidden from creating branches.
+        :param branch_name_regex: Branch name validation regex.
+        :param tag_name_regex: Tag name validation regex.
+        :param generate_pre_merge_ref: Generate pre-merge ref.
+        :param rebase_disable_trigger_webhook: Disable webhook trigger on rebase.
+        :param open_gpg_verified: Enable GPG verification.
+        :param include_lfs_objects: Include LFS objects in ZIP download.
+        :param kwargs: Additional arguments forwarded directly in request.
+        :returns: Updated repository settings.
         """
 
     @abstractmethod
@@ -421,14 +480,64 @@ class AbstractReposResource(ABC):
 
     @abstractmethod
     def update_pull_request_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        approval_required_reviewers_enable: Optional[bool] = None,
+        approval_required_reviewers: Optional[int] = None,
+        only_allow_merge_if_all_discussions_are_resolved: Optional[bool] = None,
+        only_allow_merge_if_pipeline_succeeds: Optional[bool] = None,
+        disable_merge_by_self: Optional[bool] = None,
+        can_force_merge: Optional[bool] = None,
+        add_notes_after_merged: Optional[bool] = None,
+        mark_auto_merged_mr_as_closed: Optional[bool] = None,
+        can_reopen: Optional[bool] = None,
+        delete_source_branch_when_merged: Optional[bool] = None,
+        disable_squash_merge: Optional[bool] = None,
+        auto_squash_merge: Optional[bool] = None,
+        merge_method: Optional[str] = None,
+        squash_merge_with_no_merge_commit: Optional[bool] = None,
+        merged_commit_author: Optional[str] = None,
+        approval_required_approvers: Optional[int] = None,
+        approval_approver_ids: Optional[str] = None,
+        approval_tester_ids: Optional[str] = None,
+        approval_required_testers: Optional[int] = None,
+        is_check_cla: Optional[bool] = None,
+        is_allow_lite_merge_request: Optional[bool] = None,
+        lite_merge_request_prefix_title: Optional[str] = None,
+        close_issue_when_mr_merged: Optional[bool] = None,
+        **kwargs,
     ) -> PullRequestSettings:
         """Update pull request settings for a repository.
 
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Pull request settings accepted by the API.
-        :returns: API response payload.
+        :param approval_required_reviewers_enable: Enable required reviewers approval.
+        :param approval_required_reviewers: Minimum number of required reviewers (1-5, or 0 to disable).
+        :param only_allow_merge_if_all_discussions_are_resolved: Require all discussions resolved before merge.
+        :param only_allow_merge_if_pipeline_succeeds: Only allow merge when pipeline succeeds.
+        :param disable_merge_by_self: Forbid merging self-created pull requests.
+        :param can_force_merge: Allow administrators to force merge.
+        :param add_notes_after_merged: Allow code review comments after merge.
+        :param mark_auto_merged_mr_as_closed: Mark auto-merged MRs as closed.
+        :param can_reopen: Allow reopening closed pull requests.
+        :param delete_source_branch_when_merged: Delete source branch when merged.
+        :param disable_squash_merge: Disable squash merge.
+        :param auto_squash_merge: Default enable squash merge for new pull requests.
+        :param merge_method: Merge method (``merge``, ``rebase_merge``, or ``ff``).
+        :param squash_merge_with_no_merge_commit: Squash merge without producing a merge commit.
+        :param merged_commit_author: Merge commit author (``merged_by`` or ``created_by``).
+        :param approval_required_approvers: Number of required approvers.
+        :param approval_approver_ids: Project reviewer user IDs, comma-separated.
+        :param approval_tester_ids: Project tester user IDs, comma-separated.
+        :param approval_required_testers: Minimum number of testers that must pass.
+        :param is_check_cla: Whether to verify CLA.
+        :param is_allow_lite_merge_request: Enable lightweight pull requests.
+        :param lite_merge_request_prefix_title: Title prefix for lightweight pull requests.
+        :param close_issue_when_mr_merged: Default check "close linked issues on merge".
+        :param kwargs: Additional arguments forwarded directly in request.
+        :returns: Updated pull request settings.
         """
 
     @abstractmethod
@@ -450,15 +559,14 @@ class AbstractReposResource(ABC):
         """
 
     @abstractmethod
-    def transfer(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
-    ) -> RepositoryTransferResult:
+    def transfer(self, *, owner: str, repo: str, new_owner: str, **kwargs) -> RepositoryTransferResult:
         """Transfer a repository to another owner or namespace.
 
-        :param owner: Repository owner path. Uses the client default when omitted.
-        :param repo: Repository name. Uses the client default when omitted.
-        :param payload: Transfer options accepted by the API.
-        :returns: API response payload.
+        :param owner: Repository owner path.
+        :param repo: Repository name.
+        :param new_owner: Target namespace to transfer the repository to.
+        :param kwargs: Additional arguments forwarded directly in request.
+        :returns: Transfer result.
         """
 
     @abstractmethod
@@ -758,14 +866,20 @@ class ReposResource(SyncResource, AbstractReposResource):
             json=settings,
         )
 
-    def set_org_repo_status(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
+    def set_org_repo_status(self, *, org: str, repo: str, status: int, password: str, **kwargs) -> ApiStatusResponse:
         return self._model(
-            "PUT", self._client._path("org", org, "repo", repo, "status"), ApiStatusResponse, json=payload
+            "PUT",
+            self._client._path("org", org, "repo", repo, "status"),
+            ApiStatusResponse,
+            json={"status": status, "password": password, **kwargs},
         )
 
-    def transfer_to_org(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
+    def transfer_to_org(self, *, org: str, repo: str, transfer_to: str, password: str, **kwargs) -> ApiStatusResponse:
         return self._model(
-            "POST", self._client._path("org", org, "projects", repo, "transfer"), ApiStatusResponse, json=payload
+            "POST",
+            self._client._path("org", org, "projects", repo, "transfer"),
+            ApiStatusResponse,
+            json={"transfer_to": transfer_to, "password": password, **kwargs},
         )
 
     def get_transition(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositoryPermissionMode:
@@ -774,47 +888,111 @@ class ReposResource(SyncResource, AbstractReposResource):
         )
 
     def update_transition(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, mode: Optional[int] = None, **kwargs
     ) -> ApiStatusResponse:
         return self._model(
-            "PUT", self._client._repo_path("transition", owner=owner, repo=repo), ApiStatusResponse, json=payload
+            "PUT",
+            self._client._repo_path("transition", owner=owner, repo=repo),
+            ApiStatusResponse,
+            json={"mode": mode, **kwargs},
         )
 
     def update_push_config(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        reject_not_signed_by_gpg: Optional[bool] = None,
+        commit_message_regex: Optional[str] = None,
+        max_file_size: Optional[int] = None,
+        skip_rule_for_owner: Optional[bool] = None,
+        deny_force_push: Optional[bool] = None,
+        **kwargs,
     ) -> RepositoryPushConfig:
         return self._model(
-            "PUT", self._client._repo_path("push_config", owner=owner, repo=repo), RepositoryPushConfig, json=payload
+            "PUT",
+            self._client._repo_path("push_config", owner=owner, repo=repo),
+            RepositoryPushConfig,
+            json={
+                "reject_not_signed_by_gpg": reject_not_signed_by_gpg,
+                "commit_message_regex": commit_message_regex,
+                "max_file_size": max_file_size,
+                "skip_rule_for_owner": skip_rule_for_owner,
+                "deny_force_push": deny_force_push,
+                **kwargs,
+            },
         )
 
     def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositoryPushConfig:
         return self._model("GET", self._client._repo_path("push_config", owner=owner, repo=repo), RepositoryPushConfig)
 
     def upload_image(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        body: Optional[str] = None,
+        file_name: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryUploadResult:
         return self._model(
             "POST",
             self._client._repo_path("img", "upload", owner=owner, repo=repo),
             RepositoryUploadResult,
-            json=payload,
+            json={"body": body, "file_name": file_name, **kwargs},
         )
 
     def upload_file(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        file: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryUploadResult:
         return self._model(
             "POST",
             self._client._repo_path("file", "upload", owner=owner, repo=repo),
             RepositoryUploadResult,
-            json=payload,
+            json={"file": file, **kwargs},
         )
 
     def update_repo_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        disable_fork: Optional[bool] = None,
+        forbidden_developer_create_branch: Optional[bool] = None,
+        forbidden_developer_create_tag: Optional[bool] = None,
+        forbidden_committer_create_branch: Optional[bool] = None,
+        forbidden_developer_create_branch_user_ids: Optional[str] = None,
+        branch_name_regex: Optional[str] = None,
+        tag_name_regex: Optional[str] = None,
+        generate_pre_merge_ref: Optional[bool] = None,
+        rebase_disable_trigger_webhook: Optional[bool] = None,
+        open_gpg_verified: Optional[bool] = None,
+        include_lfs_objects: Optional[bool] = None,
+        **kwargs,
     ) -> RepositorySettings:
         return self._model(
-            "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), RepositorySettings, json=payload
+            "PUT",
+            self._client._repo_path("repo_settings", owner=owner, repo=repo),
+            RepositorySettings,
+            json={
+                "disable_fork": disable_fork,
+                "forbidden_developer_create_branch": forbidden_developer_create_branch,
+                "forbidden_developer_create_tag": forbidden_developer_create_tag,
+                "forbidden_committer_create_branch": forbidden_committer_create_branch,
+                "forbidden_developer_create_branch_user_ids": forbidden_developer_create_branch_user_ids,
+                "branch_name_regex": branch_name_regex,
+                "tag_name_regex": tag_name_regex,
+                "generate_pre_merge_ref": generate_pre_merge_ref,
+                "rebase_disable_trigger_webhook": rebase_disable_trigger_webhook,
+                "open_gpg_verified": open_gpg_verified,
+                "include_lfs_objects": include_lfs_objects,
+                **kwargs,
+            },
         )
 
     def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositorySettings:
@@ -828,13 +1006,65 @@ class ReposResource(SyncResource, AbstractReposResource):
         )
 
     def update_pull_request_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        approval_required_reviewers_enable: Optional[bool] = None,
+        approval_required_reviewers: Optional[int] = None,
+        only_allow_merge_if_all_discussions_are_resolved: Optional[bool] = None,
+        only_allow_merge_if_pipeline_succeeds: Optional[bool] = None,
+        disable_merge_by_self: Optional[bool] = None,
+        can_force_merge: Optional[bool] = None,
+        add_notes_after_merged: Optional[bool] = None,
+        mark_auto_merged_mr_as_closed: Optional[bool] = None,
+        can_reopen: Optional[bool] = None,
+        delete_source_branch_when_merged: Optional[bool] = None,
+        disable_squash_merge: Optional[bool] = None,
+        auto_squash_merge: Optional[bool] = None,
+        merge_method: Optional[str] = None,
+        squash_merge_with_no_merge_commit: Optional[bool] = None,
+        merged_commit_author: Optional[str] = None,
+        approval_required_approvers: Optional[int] = None,
+        approval_approver_ids: Optional[str] = None,
+        approval_tester_ids: Optional[str] = None,
+        approval_required_testers: Optional[int] = None,
+        is_check_cla: Optional[bool] = None,
+        is_allow_lite_merge_request: Optional[bool] = None,
+        lite_merge_request_prefix_title: Optional[str] = None,
+        close_issue_when_mr_merged: Optional[bool] = None,
+        **kwargs,
     ) -> PullRequestSettings:
         return self._model(
             "PUT",
             self._client._repo_path("pull_request_settings", owner=owner, repo=repo),
             PullRequestSettings,
-            json=payload,
+            json={
+                "approval_required_reviewers_enable": approval_required_reviewers_enable,
+                "approval_required_reviewers": approval_required_reviewers,
+                "only_allow_merge_if_all_discussions_are_resolved": only_allow_merge_if_all_discussions_are_resolved,
+                "only_allow_merge_if_pipeline_succeeds": only_allow_merge_if_pipeline_succeeds,
+                "disable_merge_by_self": disable_merge_by_self,
+                "can_force_merge": can_force_merge,
+                "add_notes_after_merged": add_notes_after_merged,
+                "mark_auto_merged_mr_as_closed": mark_auto_merged_mr_as_closed,
+                "can_reopen": can_reopen,
+                "delete_source_branch_when_merged": delete_source_branch_when_merged,
+                "disable_squash_merge": disable_squash_merge,
+                "auto_squash_merge": auto_squash_merge,
+                "merge_method": merge_method,
+                "squash_merge_with_no_merge_commit": squash_merge_with_no_merge_commit,
+                "merged_commit_author": merged_commit_author,
+                "approval_required_approvers": approval_required_approvers,
+                "approval_approver_ids": approval_approver_ids,
+                "approval_tester_ids": approval_tester_ids,
+                "approval_required_testers": approval_required_testers,
+                "is_check_cla": is_check_cla,
+                "is_allow_lite_merge_request": is_allow_lite_merge_request,
+                "lite_merge_request_prefix_title": lite_merge_request_prefix_title,
+                "close_issue_when_mr_merged": close_issue_when_mr_merged,
+                **kwargs,
+            },
         )
 
     def set_member_role(
@@ -852,11 +1082,12 @@ class ReposResource(SyncResource, AbstractReposResource):
             json={"permission": permission},
         )
 
-    def transfer(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
-    ) -> RepositoryTransferResult:
+    def transfer(self, *, owner: str, repo: str, new_owner: str, **kwargs) -> RepositoryTransferResult:
         return self._model(
-            "POST", self._client._repo_path("transfer", owner=owner, repo=repo), RepositoryTransferResult, json=payload
+            "POST",
+            self._client._repo_path("transfer", owner=owner, repo=repo),
+            RepositoryTransferResult,
+            json={"new_owner": new_owner, **kwargs},
         )
 
     def list_customized_roles(
@@ -1145,14 +1376,24 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
             json=settings,
         )
 
-    async def set_org_repo_status(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
+    async def set_org_repo_status(
+        self, *, org: str, repo: str, status: int, password: str, **kwargs
+    ) -> ApiStatusResponse:
         return await self._model(
-            "PUT", self._client._path("org", org, "repo", repo, "status"), ApiStatusResponse, json=payload
+            "PUT",
+            self._client._path("org", org, "repo", repo, "status"),
+            ApiStatusResponse,
+            json={"status": status, "password": password, **kwargs},
         )
 
-    async def transfer_to_org(self, *, org: str, repo: str, **payload) -> ApiStatusResponse:
+    async def transfer_to_org(
+        self, *, org: str, repo: str, transfer_to: str, password: str, **kwargs
+    ) -> ApiStatusResponse:
         return await self._model(
-            "POST", self._client._path("org", org, "projects", repo, "transfer"), ApiStatusResponse, json=payload
+            "POST",
+            self._client._path("org", org, "projects", repo, "transfer"),
+            ApiStatusResponse,
+            json={"transfer_to": transfer_to, "password": password, **kwargs},
         )
 
     async def get_transition(
@@ -1163,20 +1404,39 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
         )
 
     async def update_transition(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self, *, owner: Optional[str] = None, repo: Optional[str] = None, mode: Optional[int] = None, **kwargs
     ) -> ApiStatusResponse:
         return await self._model(
-            "PUT", self._client._repo_path("transition", owner=owner, repo=repo), ApiStatusResponse, json=payload
+            "PUT",
+            self._client._repo_path("transition", owner=owner, repo=repo),
+            ApiStatusResponse,
+            json={"mode": mode, **kwargs},
         )
 
     async def update_push_config(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        reject_not_signed_by_gpg: Optional[bool] = None,
+        commit_message_regex: Optional[str] = None,
+        max_file_size: Optional[int] = None,
+        skip_rule_for_owner: Optional[bool] = None,
+        deny_force_push: Optional[bool] = None,
+        **kwargs,
     ) -> RepositoryPushConfig:
         return await self._model(
             "PUT",
             self._client._repo_path("push_config", owner=owner, repo=repo),
             RepositoryPushConfig,
-            json=payload,
+            json={
+                "reject_not_signed_by_gpg": reject_not_signed_by_gpg,
+                "commit_message_regex": commit_message_regex,
+                "max_file_size": max_file_size,
+                "skip_rule_for_owner": skip_rule_for_owner,
+                "deny_force_push": deny_force_push,
+                **kwargs,
+            },
         )
 
     async def get_push_config(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositoryPushConfig:
@@ -1185,30 +1445,72 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
         )
 
     async def upload_image(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        body: Optional[str] = None,
+        file_name: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryUploadResult:
         return await self._model(
             "POST",
             self._client._repo_path("img", "upload", owner=owner, repo=repo),
             RepositoryUploadResult,
-            json=payload,
+            json={"body": body, "file_name": file_name, **kwargs},
         )
 
     async def upload_file(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        file: Optional[str] = None,
+        **kwargs,
     ) -> RepositoryUploadResult:
         return await self._model(
             "POST",
             self._client._repo_path("file", "upload", owner=owner, repo=repo),
             RepositoryUploadResult,
-            json=payload,
+            json={"file": file, **kwargs},
         )
 
     async def update_repo_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        disable_fork: Optional[bool] = None,
+        forbidden_developer_create_branch: Optional[bool] = None,
+        forbidden_developer_create_tag: Optional[bool] = None,
+        forbidden_committer_create_branch: Optional[bool] = None,
+        forbidden_developer_create_branch_user_ids: Optional[str] = None,
+        branch_name_regex: Optional[str] = None,
+        tag_name_regex: Optional[str] = None,
+        generate_pre_merge_ref: Optional[bool] = None,
+        rebase_disable_trigger_webhook: Optional[bool] = None,
+        open_gpg_verified: Optional[bool] = None,
+        include_lfs_objects: Optional[bool] = None,
+        **kwargs,
     ) -> RepositorySettings:
         return await self._model(
-            "PUT", self._client._repo_path("repo_settings", owner=owner, repo=repo), RepositorySettings, json=payload
+            "PUT",
+            self._client._repo_path("repo_settings", owner=owner, repo=repo),
+            RepositorySettings,
+            json={
+                "disable_fork": disable_fork,
+                "forbidden_developer_create_branch": forbidden_developer_create_branch,
+                "forbidden_developer_create_tag": forbidden_developer_create_tag,
+                "forbidden_committer_create_branch": forbidden_committer_create_branch,
+                "forbidden_developer_create_branch_user_ids": forbidden_developer_create_branch_user_ids,
+                "branch_name_regex": branch_name_regex,
+                "tag_name_regex": tag_name_regex,
+                "generate_pre_merge_ref": generate_pre_merge_ref,
+                "rebase_disable_trigger_webhook": rebase_disable_trigger_webhook,
+                "open_gpg_verified": open_gpg_verified,
+                "include_lfs_objects": include_lfs_objects,
+                **kwargs,
+            },
         )
 
     async def get_repo_settings(self, *, owner: Optional[str] = None, repo: Optional[str] = None) -> RepositorySettings:
@@ -1224,13 +1526,65 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
         )
 
     async def update_pull_request_settings(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        approval_required_reviewers_enable: Optional[bool] = None,
+        approval_required_reviewers: Optional[int] = None,
+        only_allow_merge_if_all_discussions_are_resolved: Optional[bool] = None,
+        only_allow_merge_if_pipeline_succeeds: Optional[bool] = None,
+        disable_merge_by_self: Optional[bool] = None,
+        can_force_merge: Optional[bool] = None,
+        add_notes_after_merged: Optional[bool] = None,
+        mark_auto_merged_mr_as_closed: Optional[bool] = None,
+        can_reopen: Optional[bool] = None,
+        delete_source_branch_when_merged: Optional[bool] = None,
+        disable_squash_merge: Optional[bool] = None,
+        auto_squash_merge: Optional[bool] = None,
+        merge_method: Optional[str] = None,
+        squash_merge_with_no_merge_commit: Optional[bool] = None,
+        merged_commit_author: Optional[str] = None,
+        approval_required_approvers: Optional[int] = None,
+        approval_approver_ids: Optional[str] = None,
+        approval_tester_ids: Optional[str] = None,
+        approval_required_testers: Optional[int] = None,
+        is_check_cla: Optional[bool] = None,
+        is_allow_lite_merge_request: Optional[bool] = None,
+        lite_merge_request_prefix_title: Optional[str] = None,
+        close_issue_when_mr_merged: Optional[bool] = None,
+        **kwargs,
     ) -> PullRequestSettings:
         return await self._model(
             "PUT",
             self._client._repo_path("pull_request_settings", owner=owner, repo=repo),
             PullRequestSettings,
-            json=payload,
+            json={
+                "approval_required_reviewers_enable": approval_required_reviewers_enable,
+                "approval_required_reviewers": approval_required_reviewers,
+                "only_allow_merge_if_all_discussions_are_resolved": only_allow_merge_if_all_discussions_are_resolved,
+                "only_allow_merge_if_pipeline_succeeds": only_allow_merge_if_pipeline_succeeds,
+                "disable_merge_by_self": disable_merge_by_self,
+                "can_force_merge": can_force_merge,
+                "add_notes_after_merged": add_notes_after_merged,
+                "mark_auto_merged_mr_as_closed": mark_auto_merged_mr_as_closed,
+                "can_reopen": can_reopen,
+                "delete_source_branch_when_merged": delete_source_branch_when_merged,
+                "disable_squash_merge": disable_squash_merge,
+                "auto_squash_merge": auto_squash_merge,
+                "merge_method": merge_method,
+                "squash_merge_with_no_merge_commit": squash_merge_with_no_merge_commit,
+                "merged_commit_author": merged_commit_author,
+                "approval_required_approvers": approval_required_approvers,
+                "approval_approver_ids": approval_approver_ids,
+                "approval_tester_ids": approval_tester_ids,
+                "approval_required_testers": approval_required_testers,
+                "is_check_cla": is_check_cla,
+                "is_allow_lite_merge_request": is_allow_lite_merge_request,
+                "lite_merge_request_prefix_title": lite_merge_request_prefix_title,
+                "close_issue_when_mr_merged": close_issue_when_mr_merged,
+                **kwargs,
+            },
         )
 
     async def set_member_role(
@@ -1248,11 +1602,12 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
             json={"permission": permission},
         )
 
-    async def transfer(
-        self, *, owner: Optional[str] = None, repo: Optional[str] = None, **payload
-    ) -> RepositoryTransferResult:
+    async def transfer(self, *, owner: str, repo: str, new_owner: str, **kwargs) -> RepositoryTransferResult:
         return await self._model(
-            "POST", self._client._repo_path("transfer", owner=owner, repo=repo), RepositoryTransferResult, json=payload
+            "POST",
+            self._client._repo_path("transfer", owner=owner, repo=repo),
+            RepositoryTransferResult,
+            json={"new_owner": new_owner, **kwargs},
         )
 
     async def list_customized_roles(

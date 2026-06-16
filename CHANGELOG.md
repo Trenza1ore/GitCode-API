@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented here. Release ranges link to the GitHub compare view. Tag names follow the repository (`v1.0.x` through `v1.0.3`, then `1.1.0` onward).
 
+---
+
+## TODO:
+1. `sync_repo` endpoints:
+- https://docs.gitcode.com/en/docs/apis/get-api-v-5-repos-owner-repo-sync-repo
+- https://docs.gitcode.com/en/docs/apis/put-api-v-5-repos-owner-repo-sync-repo
+
+---
+
 ## [1.3.2](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.2) — 2026-06-14
 
 Changes since `1.3.1`…`1.3.2`.

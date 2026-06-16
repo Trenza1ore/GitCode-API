@@ -415,15 +415,21 @@ class AbstractPullsResource(ABC):
 
     @abstractmethod
     def request_test(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        force: Optional[bool] = None,
+        **kwargs,
     ) -> None:
         """Request testing for a pull request.
 
         :param number: Pull request number.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param payload: JSON fields required by the test request endpoint.
-        :returns: Test request result.
+        :param force: Force the test to pass (default ``False``), only effective for administrators.
+        :param kwargs: Additional arguments forwarded directly in request.
         """
 
     @abstractmethod
@@ -919,12 +925,18 @@ class PullsResource(SyncResource, AbstractPullsResource):
         return [as_model(item, PullRequestOperationLog) for item in data]
 
     def request_test(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        force: Optional[bool] = None,
+        **kwargs,
     ) -> None:
         self._request(
             "POST",
             self._client._repo_path("pulls", number, "test", owner=owner, repo=repo),
-            json=payload,
+            json={"force": force, **kwargs},
         )
 
     def update_testers(
@@ -1375,12 +1387,18 @@ class AsyncPullsResource(AsyncResource, AbstractPullsResource):
         return [as_model(item, PullRequestOperationLog) for item in data]
 
     async def request_test(
-        self, *, number: Union[int, str], owner: Optional[str] = None, repo: Optional[str] = None, **payload
+        self,
+        *,
+        number: Union[int, str],
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        force: Optional[bool] = None,
+        **kwargs,
     ) -> None:
         await self._request(
             "POST",
             self._client._repo_path("pulls", number, "test", owner=owner, repo=repo),
-            json=payload,
+            json={"force": force, **kwargs},
         )
 
     async def update_testers(

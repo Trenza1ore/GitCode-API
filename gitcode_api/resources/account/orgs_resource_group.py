@@ -77,16 +77,43 @@ class AbstractOrgsResource(ABC):
         """
 
     @abstractmethod
-    def create_repo(self, *, org: str, name: str, **payload) -> Repository:
+    def create_repo(
+        self,
+        *,
+        org: str,
+        name: str,
+        description: Optional[str] = None,
+        homepage: Optional[str] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        can_comment: Optional[bool] = None,
+        public: Optional[int] = None,
+        private: Optional[bool] = None,
+        auto_init: Optional[bool] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
+        path: Optional[str] = None,
+        default_branch: Optional[str] = None,
+        **kwargs,
+    ) -> Repository:
         """Create an organization repository.
-
-        Additional payload fields match the organization repository creation
-        endpoint, such as ``description``, ``homepage``, ``private``,
-        ``public``, ``auto_init``, and ``default_branch``.
 
         :param org: Organization path or login.
         :param name: Repository name.
-        :param payload: Additional repository creation fields.
+        :param description: Repository description.
+        :param homepage: Homepage URL.
+        :param has_issues: Allow issues to be created. Default: ``True``.
+        :param has_wiki: Provide wiki. Default: ``True``.
+        :param can_comment: Allow users to comment on repositories. Default: ``True``.
+        :param public: Open source type: ``0`` (private), ``1`` (external), ``2`` (internal).
+            Mutually exclusive with *private*.
+        :param private: Repository visibility. Mutually exclusive with *public*.
+        :param auto_init: Initialize with a README. Default: ``False``.
+        :param gitignore_template: ``.gitignore`` template name.
+        :param license_template: License template name.
+        :param path: Repository path.
+        :param default_branch: Default branch name. Default: ``main``.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Created repository metadata.
         """
 
@@ -184,11 +211,26 @@ class AbstractOrgsResource(ABC):
         """
 
     @abstractmethod
-    def update(self, *, org: str, **payload) -> Organization:
+    def update(
+        self,
+        *,
+        org: str,
+        name: Optional[str] = None,
+        email: Optional[str] = None,
+        location: Optional[str] = None,
+        description: Optional[str] = None,
+        html_url: Optional[str] = None,
+        **kwargs,
+    ) -> Organization:
         """Update organization metadata.
 
         :param org: Organization path or login.
-        :param payload: Updatable fields such as ``name``, ``email``, or ``description``.
+        :param name: Organization name.
+        :param email: Organization email.
+        :param location: Organization location.
+        :param description: Organization description.
+        :param html_url: Organization site URL.
+        :param kwargs: Additional arguments forwarded directly in request.
         :returns: Updated organization details.
         """
 
@@ -239,9 +281,46 @@ class OrgsResource(SyncResource, AbstractOrgsResource):
             params={"type": type, "page": page, "per_page": per_page},
         )
 
-    def create_repo(self, *, org: str, name: str, **payload) -> Repository:
-        payload["name"] = name
-        return self._model("POST", self._client._path("orgs", org, "repos"), Repository, json=payload)
+    def create_repo(
+        self,
+        *,
+        org: str,
+        name: str,
+        description: Optional[str] = None,
+        homepage: Optional[str] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        can_comment: Optional[bool] = None,
+        public: Optional[int] = None,
+        private: Optional[bool] = None,
+        auto_init: Optional[bool] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
+        path: Optional[str] = None,
+        default_branch: Optional[str] = None,
+        **kwargs,
+    ) -> Repository:
+        return self._model(
+            "POST",
+            self._client._path("orgs", org, "repos"),
+            Repository,
+            json={
+                "name": name,
+                "description": description,
+                "homepage": homepage,
+                "has_issues": has_issues,
+                "has_wiki": has_wiki,
+                "can_comment": can_comment,
+                "public": public,
+                "private": private,
+                "auto_init": auto_init,
+                "gitignore_template": gitignore_template,
+                "license_template": license_template,
+                "path": path,
+                "default_branch": default_branch,
+                **kwargs,
+            },
+        )
 
     def get_enterprise_member(self, *, enterprise: str, username: str) -> EnterpriseMember:
         return self._model("GET", self._client._path("enterprises", enterprise, "members", username), EnterpriseMember)
@@ -302,8 +381,30 @@ class OrgsResource(SyncResource, AbstractOrgsResource):
             json={"role": role},
         )
 
-    def update(self, *, org: str, **payload) -> Organization:
-        return self._model("PATCH", self._client._path("orgs", org), Organization, json=payload)
+    def update(
+        self,
+        *,
+        org: str,
+        name: Optional[str] = None,
+        email: Optional[str] = None,
+        location: Optional[str] = None,
+        description: Optional[str] = None,
+        html_url: Optional[str] = None,
+        **kwargs,
+    ) -> Organization:
+        return self._model(
+            "PATCH",
+            self._client._path("orgs", org),
+            Organization,
+            json={
+                "name": name,
+                "email": email,
+                "location": location,
+                "description": description,
+                "html_url": html_url,
+                **kwargs,
+            },
+        )
 
     def leave(self, *, org: str) -> None:
         self._request("DELETE", self._client._path("user", "memberships", "orgs", org))
@@ -351,9 +452,46 @@ class AsyncOrgsResource(AsyncResource, AbstractOrgsResource):
             params={"type": type, "page": page, "per_page": per_page},
         )
 
-    async def create_repo(self, *, org: str, name: str, **payload) -> Repository:
-        payload["name"] = name
-        return await self._model("POST", self._client._path("orgs", org, "repos"), Repository, json=payload)
+    async def create_repo(
+        self,
+        *,
+        org: str,
+        name: str,
+        description: Optional[str] = None,
+        homepage: Optional[str] = None,
+        has_issues: Optional[bool] = None,
+        has_wiki: Optional[bool] = None,
+        can_comment: Optional[bool] = None,
+        public: Optional[int] = None,
+        private: Optional[bool] = None,
+        auto_init: Optional[bool] = None,
+        gitignore_template: Optional[str] = None,
+        license_template: Optional[str] = None,
+        path: Optional[str] = None,
+        default_branch: Optional[str] = None,
+        **kwargs,
+    ) -> Repository:
+        return await self._model(
+            "POST",
+            self._client._path("orgs", org, "repos"),
+            Repository,
+            json={
+                "name": name,
+                "description": description,
+                "homepage": homepage,
+                "has_issues": has_issues,
+                "has_wiki": has_wiki,
+                "can_comment": can_comment,
+                "public": public,
+                "private": private,
+                "auto_init": auto_init,
+                "gitignore_template": gitignore_template,
+                "license_template": license_template,
+                "path": path,
+                "default_branch": default_branch,
+                **kwargs,
+            },
+        )
 
     async def get_enterprise_member(self, *, enterprise: str, username: str) -> EnterpriseMember:
         return await self._model(
@@ -415,8 +553,30 @@ class AsyncOrgsResource(AsyncResource, AbstractOrgsResource):
             json={"role": role},
         )
 
-    async def update(self, *, org: str, **payload) -> Organization:
-        return await self._model("PATCH", self._client._path("orgs", org), Organization, json=payload)
+    async def update(
+        self,
+        *,
+        org: str,
+        name: Optional[str] = None,
+        email: Optional[str] = None,
+        location: Optional[str] = None,
+        description: Optional[str] = None,
+        html_url: Optional[str] = None,
+        **kwargs,
+    ) -> Organization:
+        return await self._model(
+            "PATCH",
+            self._client._path("orgs", org),
+            Organization,
+            json={
+                "name": name,
+                "email": email,
+                "location": location,
+                "description": description,
+                "html_url": html_url,
+                **kwargs,
+            },
+        )
 
     async def leave(self, *, org: str) -> None:
         await self._request("DELETE", self._client._path("user", "memberships", "orgs", org))
