@@ -11,6 +11,26 @@ All notable changes to this project are documented here. Release ranges link to 
 
 ---
 
+## [1.3.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.3) — Unreleased
+
+Changes since `1.3.2`…`1.3.3`.
+
+### Feature
+
+- **Explicit query parameters on mutation methods:** methods that previously accepted `**payload` now expose documented query parameters as named keyword arguments — `orgs.create_repo`, `orgs.update`, `webhooks.create`, `webhooks.update`, `pulls.request_test`, `repos.set_org_repo_status`, `repos.transfer_to_org`, `repos.transfer`, `repos.update_transition`, `repos.update_push_config`, `repos.update_repo_settings`, `repos.update_pull_request_settings`, and `repos.upload`. A trailing `**kwargs` preserves backward compatibility.
+- **Release artefact upload now returning httpx response:** `releases.upload` now returns the `httpx.Response` from the upload PUT request instead of `None`, letting callers inspect status codes and headers.
+
+### Fix
+
+- **Async issue creation kwargs:** `AsyncIssuesResource.create` now correctly forwards `**kwargs` into the request body (the sync variant already did).
+
+### Docs
+
+- **Removed `**payload` / `**params` references:** README, CLI help text, and CLI docs no longer mention `**payload` or `**params`; they now describe extra arguments generically.
+- **Updated README badges:** PyPI download badge switched to monthly + total (via pepy.tech).
+
+---
+
 ## [1.3.2](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.2) — 2026-06-14
 
 Changes since `1.3.1`…`1.3.2`.
