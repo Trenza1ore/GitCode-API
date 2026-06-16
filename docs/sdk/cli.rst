@@ -135,7 +135,7 @@ Build an OAuth authorization URL:
 Passing extra keyword arguments
 -------------------------------
 
-Some SDK methods accept ``**payload`` so the CLI cannot know
+Some SDK methods are not well documented, so the CLI cannot know
 every supported flag ahead of time. For those methods, pass repeated
 ``--set key=value`` pairs or a JSON object with ``--set-json``.
 

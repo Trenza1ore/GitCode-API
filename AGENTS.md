@@ -136,7 +136,7 @@ The package CLI is available as:
 - `gitcode-api ...`
 - `python -m gitcode_api ...`
 
-Commands mirror synchronous `GitCode` resource methods with the pattern `gitcode-api <resource> <method> ...`, where `<resource>` is the same name as on the client (kebab-cased in the CLI). The top-level `gitcode-api serve` command starts the bundled FastMCP server (requires the `mcp` extra / FastMCP on Python 3.10+). Extra `**payload` values can be passed with repeated `--set key=value` flags or `--set-json '{"key": "value"}'`.
+Commands mirror synchronous `GitCode` resource methods with the pattern `gitcode-api <resource> <method> ...`, where `<resource>` is the same name as on the client (kebab-cased in the CLI). The top-level `gitcode-api serve` command starts the bundled FastMCP server (requires the `mcp` extra / FastMCP on Python 3.10+). Extra values can be passed with repeated `--set key=value` flags or `--set-json '{"key": "value"}'`.
 
 The `.claude/skills/gitcode-api/` directory is a packaged agent skill for using this SDK from external agents. Its `scripts/gitcode_api_cli.py` is a legacy helper and explicitly deprecated in favor of the package CLI.
 

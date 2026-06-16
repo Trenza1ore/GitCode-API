@@ -281,7 +281,7 @@ Examples:
   %(prog)s users me --api-key "$GITCODE_ACCESS_TOKEN"
   %(prog)s pulls list --set only_count=true --set reviewer=demo
 
-Extra keyword arguments (**payload on some methods):
+Extra keyword arguments (when needed):
   Repeat --set key=value (value is JSON if it parses as JSON; otherwise a string).
   --set-json merges one JSON object (or @path/to/file.json) into those kwargs.
 
@@ -375,7 +375,7 @@ Each method -h opens with resource.method_signature("<name>") from the Python SD
                             action="append",
                             default=None,
                             metavar="KEY=VALUE",
-                            help="Extra keyword argument (merged into **payload).",
+                            help="Extra keyword arguments.",
                         )
                         method_parser.add_argument(
                             "--set-json",
