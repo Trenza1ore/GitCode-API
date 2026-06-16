@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Rewrite pepy.tech personalized badge URLs with a new uuid query segment.
+"""Rewrite image URLs in README files with a fresh ``uuid`` query parameter.
 
-Scans all ``README*.md`` files under the repository root (recursive) and applies
-``re.sub`` so each matched badge URL ends with ``&uuid=<new hex>`` before the
-closing parenthesis in Markdown links.
+Scans all ``README*.md`` files under the repository root (recursive) and
+replaces every Markdown image (``![alt](url)``) and HTML ``<img src="...">``
+URL with one carrying ``&uuid=<hex>``, using proper URL parsing so existing
+query strings and fragments are preserved.
 """
 
 import random
@@ -11,6 +12,10 @@ import re
 import uuid
 from functools import cache
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+
+ROOT = Path(__file__).resolve().parent.parent
+SEMANTIC_VER = (ROOT / "gitcode_api" / "version.txt").read_text().strip()
 
 
 @cache
@@ -23,43 +28,60 @@ def _get_mutated_uuid() -> str:
     return "".join(uuid_str)
 
 
-ROOT = Path(__file__).resolve().parent.parent
-BADGES = [
-    re.compile(
-        r"(https://static\.pepy\.tech/personalized-badge/gitcode-api\?"
-        r"period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=RED&left_text=downloads)"
-        r"[^)]*"
-        r"(\))",
-    ),
-    re.compile(
-        r"(https://img\.shields\.io/pypi/v/gitcode-api\?"
-        r"link=https%3A%2F%2Fpypi\.org%2Fproject%2Fgitcode-api%2F)"
-        r"[^)]*"
-        r"(\))",
-    ),
-    re.compile(r"(!\[CI Badge\]\(https://github\.com/.*?/.*?/actions/workflows/check-code\.yml/badge\.svg)[^)]*(\))"),
-]
-SEMANTIC_VER = (ROOT / "gitcode_api" / "version.txt").read_text().strip()
+MARKDOWN_IMAGE_RE = re.compile(r"(!\[[^\]]*\]\()([^)#\s]+)((?:#[^)]+)?\))")
+
+HTML_IMG_SRC_RE = re.compile(
+    r'(<img\b[^>]*?\bsrc=["\'])([^"\']+)(["\'][^>]*>)',
+    re.IGNORECASE,
+)
+
+
+def with_uuid_param(uri: str) -> str:
+    """Add or replace ``uuid``, preserving existing query and fragment."""
+    split = urlsplit(uri)
+
+    if not split.scheme and not uri.startswith("//"):
+        return uri
+
+    query = dict(parse_qsl(split.query, keep_blank_values=True))
+    query["uuid"] = _get_mutated_uuid()
+
+    return urlunsplit(
+        (
+            split.scheme,
+            split.netloc,
+            split.path,
+            urlencode(query, doseq=True),
+            split.fragment,
+        )
+    )
+
+
+def mutate_readme(text: str) -> str:
+    """Return *text* with every image URL carrying a version-seeded uuid."""
+
+    def replace_match(match: re.Match[str]) -> str:
+        prefix, uri, suffix = match.groups()
+        return f"{prefix}{with_uuid_param(uri)}{suffix}"
+
+    text = MARKDOWN_IMAGE_RE.sub(replace_match, text)
+    text = HTML_IMG_SRC_RE.sub(replace_match, text)
+    return text
 
 
 def main() -> None:
+    """Scan ``README*.md`` files and rewrite image URLs with a fresh uuid."""
     random.seed(SEMANTIC_VER)
     total = 0
     for path in sorted(ROOT.glob("**/README*.md")):
-        new_text = path.read_text(encoding="utf-8")
-        n_total = 0
-        for badge in BADGES:
-            new_text, n = badge.subn(
-                lambda m: m.group(1) + ("&" if "?" in m.group(1) else "?") + "uuid=" + _get_mutated_uuid() + m.group(2),
-                new_text,
-            )
-            n_total += n
-        if n_total:
+        old_text = path.read_text(encoding="utf-8")
+        new_text = mutate_readme(old_text)
+        if old_text != new_text:
             path.write_text(new_text, encoding="utf-8")
-            total += n_total
-            print(f"{path.relative_to(ROOT)}: {n_total} replacement(s)")
+            total += 1
+            print(f"{path.relative_to(ROOT)}: updated image URIs")
     if total == 0:
-        print("No matches.")
+        print("No image URIs changed.")
 
 
 if __name__ == "__main__":
