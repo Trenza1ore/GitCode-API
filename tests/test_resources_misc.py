@@ -190,7 +190,7 @@ def test_releases_upload_puts_file_content_to_presigned_url(sync_client_factory,
         client.close()
         http_client.close()
 
-    assert result is None
+    assert result.status_code == 200
     assert seen_upload is True
 
 
@@ -275,6 +275,6 @@ async def test_async_releases_get_upload_and_download_attachment(async_client_fa
         await http_client.aclose()
 
     assert release.tag_name == "v1.0.0"
-    assert result is None
+    assert result.status_code == 204
     assert seen_upload is True
     assert content == b"async-checksum-bytes"
