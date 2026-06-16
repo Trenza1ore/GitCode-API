@@ -93,7 +93,7 @@ class AbstractWebhooksResource(ABC):
         """Update a repository webhook.
 
         :param hook_id: Webhook id.
-        :param url: New payload URL (merged into the JSON body).
+        :param url: New payload URL GitCode should POST events to.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
         :param encryption_type: Encryption type: ``0`` (password), ``1`` (signature key).
