@@ -65,7 +65,7 @@ Changes since `1.2.21`…`1.3.0`.
 
 ### Refactor
 
-- **Resource sub-packages:** the `resources/account.py`, `resources/collaboration.py`, `resources/misc.py`, and `resources/repositories.py` files have been split (e.g. `resources/collaboration/pulls_resource_group.py`). The public client API (`client.pulls`, `client.issues`, etc.) is unchanged.
+- **Resource sub-modules:** the `resources/account.py`, `resources/collaboration.py`, `resources/misc.py`, and `resources/repositories.py` files have been split (e.g. `resources/collaboration/pulls_resource_group.py`). The public client API (`client.pulls`, `client.issues`, etc.) is unchanged.
 - **Docstrings on ABCs:** resource method documentation now lives on abstract base classes, avoiding de-synchronization.
 
 ---
