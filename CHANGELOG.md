@@ -11,7 +11,7 @@ All notable changes to this project are documented here. Release ranges link to 
 
 ---
 
-## [1.3.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.3) — Unreleased
+## [1.3.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.3) — 2026-06-16
 
 Changes since `1.3.2`…`1.3.3`.
 
