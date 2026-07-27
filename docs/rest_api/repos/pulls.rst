@@ -612,10 +612,17 @@ Parameters
 +-----------------+-------+-----------+-------------------------------+
 | body\*          | body  | string    | Comment Content               |
 +-----------------+-------+-----------+-------------------------------+
-| path            | body  | string    | Relative Path of the File     |
+| path            | body  | string    | Relative path of the file     |
 +-----------------+-------+-----------+-------------------------------+
-| position        | body  | int       | Relative Line Number in the   |
-|                 |       |           | Diff                          |
+| position        | body  | int       | Line number of the code.      |
+|                 |       |           | Ignored when ``position_type``|
+|                 |       |           | is ``"binary"``.              |
++-----------------+-------+-----------+-------------------------------+
+| position_type   | body  | string    | Comment target type.          |
+|                 |       |           | ``"text"`` for a line comment |
+|                 |       |           | (default); ``"binary"`` for a |
+|                 |       |           | file-level comment            |
+|                 |       |           | (``position`` is ignored).    |
 +-----------------+-------+-----------+-------------------------------+
 | need_to_resolve | body  | boolean   | Whether it needs to be        |
 |                 |       |           | resolved (true: review        |

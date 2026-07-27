@@ -1,7 +1,7 @@
 """AbstractPullsResource, PullsResource, and AsyncPullsResource resource group."""
 
 from abc import ABC, abstractmethod
-from typing import List, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from ..._models import (
     APIObject,
@@ -258,9 +258,9 @@ class AbstractPullsResource(ABC):
         body: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        commit_id: Optional[str] = None,
         path: Optional[str] = None,
         position: Optional[int] = None,
+        position_type: Literal["binary", "text"] = "text",
     ) -> PullRequestComment:
         """Create a pull request (review) comment.
 
@@ -268,9 +268,10 @@ class AbstractPullsResource(ABC):
         :param body: Comment body.
         :param owner: Repository owner path. Uses the client default when omitted.
         :param repo: Repository path. Uses the client default when omitted.
-        :param commit_id: Commit SHA the comment applies to.
-        :param path: File path in the diff.
-        :param position: Line or diff position as defined by the API.
+        :param path: Relative path of the file.
+        :param position: Line number of the code. Ignored when ``position_type`` is ``"binary"``.
+        :param position_type: Comment target type. ``"text"`` for a line comment (default);
+            ``"binary"`` for a file-level comment (``position`` is ignored).
         :returns: Created comment.
         """
 
@@ -813,15 +814,15 @@ class PullsResource(SyncResource, AbstractPullsResource):
         body: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        commit_id: Optional[str] = None,
         path: Optional[str] = None,
         position: Optional[int] = None,
+        position_type: Literal["binary", "text"] = "text",
     ) -> PullRequestComment:
         return self._model(
             "POST",
             self._client._repo_path("pulls", number, "comments", owner=owner, repo=repo),
             PullRequestComment,
-            json={"body": body, "commit_id": commit_id, "path": path, "position": position},
+            json={"body": body, "path": path, "position": position, "position_type": position_type},
         )
 
     def get_comment(
@@ -1294,15 +1295,15 @@ class AsyncPullsResource(AsyncResource, AbstractPullsResource):
         body: str,
         owner: Optional[str] = None,
         repo: Optional[str] = None,
-        commit_id: Optional[str] = None,
         path: Optional[str] = None,
         position: Optional[int] = None,
+        position_type: Literal["binary", "text"] = "text",
     ) -> PullRequestComment:
         return await self._model(
             "POST",
             self._client._repo_path("pulls", number, "comments", owner=owner, repo=repo),
             PullRequestComment,
-            json={"body": body, "commit_id": commit_id, "path": path, "position": position},
+            json={"body": body, "path": path, "position": position, "position_type": position_type},
         )
 
     async def get_comment(

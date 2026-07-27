@@ -1,3 +1,5 @@
+import json
+
 import httpx
 import pytest
 
@@ -125,3 +127,81 @@ def test_pull_review_and_test_requests_return_none_for_no_content(sync_client_fa
     finally:
         client.close()
         http_client.close()
+
+
+def test_pulls_create_comment_sends_path_position_and_position_type(sync_client_factory) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.method == "POST"
+        assert request.url.path == "/api/v5/repos/SushiNinja/GitCode-API/pulls/7/comments"
+        payload = json.loads(request.read().decode())
+        assert payload == {
+            "body": "line note",
+            "path": "src/main.py",
+            "position": 12,
+            "position_type": "text",
+        }
+        return httpx.Response(200, json={"id": 1, "body": "line note", "path": "src/main.py", "position": 12})
+
+    client, http_client = sync_client_factory(handler, owner="SushiNinja", repo="GitCode-API")
+    try:
+        comment = client.pulls.create_comment(
+            number=7,
+            body="line note",
+            path="src/main.py",
+            position=12,
+        )
+        assert comment.id == 1
+        assert comment.body == "line note"
+    finally:
+        client.close()
+        http_client.close()
+
+
+def test_pulls_create_comment_binary_position_type(sync_client_factory) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        payload = json.loads(request.read().decode())
+        assert payload["position_type"] == "binary"
+        assert payload["path"] == "assets/logo.png"
+        assert payload["body"] == "file note"
+        assert "commit_id" not in payload
+        return httpx.Response(200, json={"id": 2, "body": "file note", "path": "assets/logo.png"})
+
+    client, http_client = sync_client_factory(handler, owner="SushiNinja", repo="GitCode-API")
+    try:
+        comment = client.pulls.create_comment(
+            number=7,
+            body="file note",
+            path="assets/logo.png",
+            position_type="binary",
+        )
+        assert comment.id == 2
+    finally:
+        client.close()
+        http_client.close()
+
+
+@pytest.mark.asyncio
+async def test_async_pulls_create_comment_sends_position_type(async_client_factory) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/api/v5/repos/SushiNinja/GitCode-API/pulls/3/comments"
+        payload = json.loads(request.read().decode())
+        assert payload == {
+            "body": "async note",
+            "path": "README.md",
+            "position": 4,
+            "position_type": "text",
+        }
+        return httpx.Response(200, json={"id": 9, "body": "async note"})
+
+    client, http_client = async_client_factory(handler, owner="SushiNinja", repo="GitCode-API")
+    try:
+        comment = await client.pulls.create_comment(
+            number=3,
+            body="async note",
+            path="README.md",
+            position=4,
+        )
+        assert comment.id == 9
+    finally:
+        await client.close()
+        await http_client.aclose()
