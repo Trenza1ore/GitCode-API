@@ -4,6 +4,26 @@ All notable changes to this project are documented here. Release ranges link to 
 
 ---
 
+## [1.3.4](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.4) — 2026-07-27
+
+Changes since `1.3.3`…`1.3.4`.
+
+### Feature
+
+- **Fork repository sync APIs:** added `repos.sync_repo` (PUT) and `repos.check_sync_repo` (GET) with `RepositorySyncResult`, allowing user to sync forked repo with the upstream source and check the sync progress.
+
+### Fix
+
+- **Pull request comment creation payload:** `pulls.create_comment` now sends `position_type` (`"text"` or `"binary"`, default `"text"`) and no longer accepts or forwards the unsupported `commit_id` argument.
+
+### Docs
+
+- **Documented fork sync endpoints** in the Repository REST reference, including progress-check semantics and the official API caveat.
+- **README badge caching:** Shields.io badges now use a 12-hour cache query to reduce upstream rate-limit failures.
+- **Wording:** README / docs “sub-package” corrected to “sub-module”.
+
+---
+
 ## [1.3.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.3) — 2026-06-16
 
 Changes since `1.3.2`…`1.3.3`.
