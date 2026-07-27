@@ -2871,6 +2871,23 @@ class RepositoryTransferResult(APIObject):
 
 
 @dataclass(init=False)
+class RepositorySyncResult(APIObject):
+    """Fork repository sync-task progress/result payload.
+
+    :ivar repo_sync_result: Sync-task oriented flag (idle/success versus
+        in-progress/not-final). This is not whether the fork is up to date.
+    :vartype repo_sync_result: Optional[bool]
+    :ivar repo_sync_message: Optional progress/result token (for example
+        ``success`` or ``committed``). Often omitted when no completed sync
+        message is available.
+    :vartype repo_sync_message: Optional[str]
+    """
+
+    repo_sync_result: Optional[bool] = None
+    repo_sync_message: Optional[str] = None
+
+
+@dataclass(init=False)
 class RepositoryCustomizedRole(APIObject):
     """Customized repository role definition.
 

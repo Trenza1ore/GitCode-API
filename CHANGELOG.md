@@ -4,13 +4,6 @@ All notable changes to this project are documented here. Release ranges link to 
 
 ---
 
-## TODO:
-1. `sync_repo` endpoints:
-- https://docs.gitcode.com/en/docs/apis/get-api-v-5-repos-owner-repo-sync-repo
-- https://docs.gitcode.com/en/docs/apis/put-api-v-5-repos-owner-repo-sync-repo
-
----
-
 ## [1.3.3](https://github.com/Trenza1ore/GitCode-API/releases/tag/1.3.3) — 2026-06-16
 
 Changes since `1.3.2`…`1.3.3`.

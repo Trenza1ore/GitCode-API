@@ -17,6 +17,7 @@ from ..._models import (
     RepositoryPushConfig,
     RepositoryReviewerSettingsUpdate,
     RepositorySettings,
+    RepositorySyncResult,
     RepositoryTransferResult,
     RepositoryUploadResult,
     UserSummary,
@@ -212,6 +213,45 @@ class AbstractReposResource(ABC):
         :param page: Page number.
         :param per_page: Page size.
         :returns: Fork repositories.
+        """
+
+    @abstractmethod
+    def check_sync_repo(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+    ) -> RepositorySyncResult:
+        """Check fork synchronization task progress.
+
+        Reports sync-task progress or last sync outcome. This does not indicate
+        whether the fork is commit-behind its upstream source.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :param branch: Optional branch name.
+        :returns: Fork synchronization task progress payload.
+        """
+
+    @abstractmethod
+    def sync_repo(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+    ) -> RepositorySyncResult:
+        """Sync a fork repository with its source repository.
+
+        Starts a fork sync task. A response with ``repo_sync_result`` false and
+        ``repo_sync_message`` ``committed`` commonly means the sync was accepted.
+        Repeated calls within about 10 minutes may return HTTP 400.
+
+        :param owner: Repository owner path. Uses the client default when omitted.
+        :param repo: Repository name. Uses the client default when omitted.
+        :param branch: Optional branch to pull; omit to update all branches.
+        :returns: Fork synchronization task result payload.
         """
 
     @abstractmethod
@@ -798,6 +838,34 @@ class ReposResource(SyncResource, AbstractReposResource):
             params={"sort": sort, "page": page, "per_page": per_page},
         )
 
+    def check_sync_repo(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+    ) -> RepositorySyncResult:
+        return self._model(
+            "GET",
+            self._client._repo_path("sync_repo", owner=owner, repo=repo),
+            RepositorySyncResult,
+            params={"branch": branch},
+        )
+
+    def sync_repo(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+    ) -> RepositorySyncResult:
+        return self._model(
+            "PUT",
+            self._client._repo_path("sync_repo", owner=owner, repo=repo),
+            RepositorySyncResult,
+            json={"branch": branch},
+        )
+
     def list_contributors(
         self,
         *,
@@ -1306,6 +1374,34 @@ class AsyncReposResource(AsyncResource, AbstractReposResource):
             self._client._repo_path("forks", owner=owner, repo=repo),
             Repository,
             params={"sort": sort, "page": page, "per_page": per_page},
+        )
+
+    async def check_sync_repo(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+    ) -> RepositorySyncResult:
+        return await self._model(
+            "GET",
+            self._client._repo_path("sync_repo", owner=owner, repo=repo),
+            RepositorySyncResult,
+            params={"branch": branch},
+        )
+
+    async def sync_repo(
+        self,
+        *,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+        branch: Optional[str] = None,
+    ) -> RepositorySyncResult:
+        return await self._model(
+            "PUT",
+            self._client._repo_path("sync_repo", owner=owner, repo=repo),
+            RepositorySyncResult,
+            json={"branch": branch},
         )
 
     async def list_contributors(

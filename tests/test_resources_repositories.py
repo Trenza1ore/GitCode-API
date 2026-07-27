@@ -1,3 +1,5 @@
+import json
+
 import httpx
 import pytest
 
@@ -32,6 +34,57 @@ def test_repos_list_user_strips_none_query_params(sync_client_factory) -> None:
     finally:
         client.close()
         http_client.close()
+
+
+def test_repos_check_sync_repo(sync_client_factory) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.method == "GET"
+        assert request.url.path == "/api/v5/repos/o/r/sync_repo"
+        assert request.url.params.get("branch") == "main"
+        return httpx.Response(200, json={"repo_sync_result": True, "repo_sync_message": "success"})
+
+    client, http_client = sync_client_factory(handler, owner="o", repo="r")
+    try:
+        result = client.repos.check_sync_repo(branch="main")
+        assert result.repo_sync_result is True
+        assert result.repo_sync_message == "success"
+    finally:
+        client.close()
+        http_client.close()
+
+
+def test_repos_sync_repo(sync_client_factory) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.method == "PUT"
+        assert request.url.path == "/api/v5/repos/o/r/sync_repo"
+        assert json.loads(request.content.decode()) == {"branch": "main"}
+        return httpx.Response(200, json={"repo_sync_result": True, "repo_sync_message": "sync success"})
+
+    client, http_client = sync_client_factory(handler, owner="o", repo="r")
+    try:
+        result = client.repos.sync_repo(branch="main")
+        assert result.repo_sync_result is True
+        assert result.repo_sync_message == "sync success"
+    finally:
+        client.close()
+        http_client.close()
+
+
+@pytest.mark.asyncio
+async def test_async_repos_check_sync_repo(async_client_factory) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.method == "GET"
+        assert request.url.path == "/api/v5/repos/o/r/sync_repo"
+        return httpx.Response(200, json={"repo_sync_result": False, "repo_sync_message": "pending"})
+
+    client, http_client = async_client_factory(handler, owner="o", repo="r")
+    try:
+        result = await client.repos.check_sync_repo()
+        assert result.repo_sync_result is False
+        assert result.repo_sync_message == "pending"
+    finally:
+        await client.close()
+        await http_client.aclose()
 
 
 @pytest.mark.asyncio

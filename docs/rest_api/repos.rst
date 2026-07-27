@@ -2822,6 +2822,182 @@ Demo
 
       curl --location 'https://api.gitcode.com/api/v5/repos/xiaogang_test/test222/events?access_token=your_token'
 
+
+39. Sync Fork Repository with Source Repository
+-----------------------------------------------
+
+
+Request
+~~~~~~~
+
+``PUT https://api.gitcode.com/api/v5/repos/{owner}/{repo}/sync_repo``
+
+Starts a fork synchronization task against the source repository. Repeated
+calls may return HTTP **400** if less than about 10 minutes have passed since
+the last fork sync.
+
+
+Parameters
+~~~~~~~~~~
+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| branch         | body  | string    | The name of the branch to pull  |
+|                |       |           | the update; omit to update all  |
+|                |       |           | branches                        |
++----------------+-------+-----------+---------------------------------+
+
+
+Response
+~~~~~~~~
+
+A typical accepted sync response (``repo_sync_result: false`` here does
+**not** necessarily mean failure):
+
+.. container:: highlight
+
+   .. code:: text
+
+      {
+          "repo_sync_result": false,
+          "repo_sync_message": "committed"
+      }
+
+
+Response Fields Description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-----------------------+---------+---------------------------------+
+| Field                 | Type    | Description                     |
++=======================+=========+=================================+
+| ``repo_sync_result``  | boolean | Task-oriented flag for the sync |
+|                       |         | request. ``false`` with         |
+|                       |         | ``committed`` commonly means the|
+|                       |         | sync was accepted and is/was    |
+|                       |         | applied, not necessarily        |
+|                       |         | failure.                        |
++-----------------------+---------+---------------------------------+
+| ``repo_sync_message`` | string  | Synchronization result token    |
+|                       |         | (for example ``committed``).    |
++-----------------------+---------+---------------------------------+
+
+
+Demo
+~~~~
+
+.. container:: highlight
+
+   .. code:: text
+
+      curl --location --request PUT 'https://api.gitcode.com/api/v5/repos/xiaogang_test/test222/sync_repo?access_token=your_token' \
+      --header 'Content-Type: application/json' \
+      --data '{
+          "branch": "main"
+      }'
+
+
+40. Check Fork Synchronization Task Progress
+--------------------------------------------
+
+
+Request
+~~~~~~~
+
+``GET https://api.gitcode.com/api/v5/repos/{owner}/{repo}/sync_repo``
+
+This endpoint reports **fork sync-task progress / last sync outcome**. It does
+**not** indicate whether the fork is commit-behind its upstream source.
+Use it after starting a sync with section 39 above.
+
+.. warning::
+
+   The semantics of this endpoint are easy to misread. Live responses do not
+   clearly mean “fork is up to date”, and observed fields (for example
+   ``repo_sync_result`` / ``repo_sync_message``) may change. Prefer the
+   official documentation and re-verify against the live API when in doubt:
+   https://docs.gitcode.com/docs/apis/get-api-v-5-repos-owner-repo-sync-repo
+
+
+Parameters
+~~~~~~~~~~
+
++----------------+-------+-----------+---------------------------------+
+| Parameter      | Type  | Data Type | Description                     |
++================+=======+===========+=================================+
+| access_token\* | query | string    | personal access token           |
++----------------+-------+-----------+---------------------------------+
+| owner\*        | path  | string    | Repository Ownership Path       |
+|                |       |           | (Company, Organization, or      |
+|                |       |           | Personal Path)                  |
++----------------+-------+-----------+---------------------------------+
+| repo\*         | path  | string    | Repository Path(path)           |
++----------------+-------+-----------+---------------------------------+
+| branch         | query | string    | Branch name                     |
++----------------+-------+-----------+---------------------------------+
+
+
+Response
+~~~~~~~~
+
+When a sync has completed successfully:
+
+.. container:: highlight
+
+   .. code:: text
+
+      {
+          "repo_sync_result": true,
+          "repo_sync_message": "success"
+      }
+
+When no completed sync message is available (for example idle / no recent
+task), ``repo_sync_message`` may be omitted:
+
+.. container:: highlight
+
+   .. code:: text
+
+      {
+          "repo_sync_result": true
+      }
+
+
+Response Fields Description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-----------------------+---------+---------------------------------+
+| Field                 | Type    | Description                     |
++=======================+=========+=================================+
+| ``repo_sync_result``  | boolean | Sync-task oriented flag (for    |
+|                       |         | example idle/success versus     |
+|                       |         | in-progress/not-final). This is |
+|                       |         | **not** “fork is up to date”.   |
++-----------------------+---------+---------------------------------+
+| ``repo_sync_message`` | string  | Optional progress/result token  |
+|                       |         | (for example ``success``). Often|
+|                       |         | omitted when no completed sync  |
+|                       |         | message is available.           |
++-----------------------+---------+---------------------------------+
+
+
+Demo
+~~~~
+
+.. container:: highlight
+
+   .. code:: text
+
+      curl --location 'https://api.gitcode.com/api/v5/repos/xiaogang_test/test222/sync_repo?access_token=your_token'
+
 .. This page was generated from upstream GitCode Help documentation.
 .. Source URL: https://docs.gitcode.com/en/docs/repos/
 .. Do not edit by hand; re-run scripts/build_gitcode_sphinx_docs.py
